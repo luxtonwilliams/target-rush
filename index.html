@@ -4,430 +4,318 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Target Rush</title>
+<meta name="description" content="Luxton Arcade - Play free browser games, challenge yourself, and beat your records.">
+<title>Luxton Arcade | Free Browser Games</title>
 <style>
 :root {
-  --bg: #0b1020;
-  --panel: #151e32;
+  --bg: #090f1e;
+  --panel: #151f34;
   --blue: #55a8ff;
-  --text: #f4f7ff;
-  --muted: #9eacc5;
+  --text: #f5f8ff;
+  --muted: #9cacc8;
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(ellipse at top, #1b3155, var(--bg) 65%);
+  background: var(--bg);
   color: var(--text);
   font-family: system-ui, Arial, sans-serif;
-  padding: 24px 16px;
 }
-.container { max-width: 950px; margin: auto; }
-header { text-align: center; margin-bottom: 22px; }
-h1 {
-  margin: 0;
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
-  font-weight: 950;
-  letter-spacing: -3px;
-  font-style: italic;
+a { text-decoration: none; color: inherit; }
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 20px;
 }
-h1 span { color: var(--blue); }
-.subtitle { color: var(--muted); margin-top: 4px; }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 14px;
+nav {
+  border-bottom: 1px solid #26344d;
+  background: #0d1527;
 }
-.stat {
-  background: var(--panel);
-  border: 1px solid #2a3a57;
-  padding: 13px 8px;
-  border-radius: 14px;
-  text-align: center;
-}
-.stat-label {
-  font-size: .7rem;
-  color: var(--muted);
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-.stat-value { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 900; }
-#timer { color: #70e5a3; }
-#combo { color: #ffcc67; }
-.arena {
-  height: 410px;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid #304769;
-  border-radius: 20px;
-  background:
-    linear-gradient(#263e5a22 1px, transparent 1px),
-    linear-gradient(90deg, #263e5a22 1px, transparent 1px),
-    #101a2c;
-  background-size: 28px 28px;
-  box-shadow: 0 18px 45px #0005;
-  touch-action: manipulation;
-}
-#target {
-  position: absolute;
-  display: none;
-  width: 58px;
-  height: 58px;
-  border: 5px solid #fff;
-  border-radius: 50%;
-  cursor: pointer;
-  background: radial-gradient(circle, #fff 0 12%, #ff626e 14% 42%, #d9274c 44% 70%, #fff 72%);
-  box-shadow: 0 0 20px #ff435988;
-  transform: translate(-50%, -50%);
-  transition: width .12s, height .12s;
-  padding: 0;
-  z-index: 2;
-  touch-action: manipulation;
-}
-#target.gold {
-  background: radial-gradient(circle, white 0 12%, #ffe993 14% 42%, #ffb51b 44% 70%, white 72%);
-  box-shadow: 0 0 28px #ffc33dcc;
-  border-color: #fff6cb;
-}
-#target:active { filter: brightness(1.3); }
-#overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
+.nav-inner {
+  min-height: 75px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-  background: #0b1020df;
+  justify-content: space-between;
+  gap: 16px;
 }
-#overlay h2 { font-size: clamp(2rem, 7vw, 3.4rem); margin: 0 0 8px; }
-#overlay p { color: var(--muted); max-width: 390px; line-height: 1.6; }
-button.action {
-  border: 0;
-  border-radius: 11px;
+.logo {
+  font-size: 1.45rem;
+  font-weight: 950;
+  letter-spacing: -1px;
+}
+.logo span { color: var(--blue); }
+.nav-links {
+  display: flex;
+  gap: 22px;
+  color: var(--muted);
+  font-size: .9rem;
+  font-weight: 650;
+}
+.nav-links a:hover { color: var(--blue); }
+.hero {
+  text-align: center;
+  padding: 95px 15px 85px;
+  background: radial-gradient(ellipse at top, #19365c, var(--bg) 70%);
+}
+.eyebrow {
+  color: #83c1ff;
+  font-size: .8rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 16px 0;
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 1000;
+  letter-spacing: -4px;
+  line-height: 1.05;
+}
+.hero h1 span { color: var(--blue); }
+.hero p {
+  max-width: 520px;
+  margin: 0 auto 30px;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+.button {
+  display: inline-block;
   background: var(--blue);
   color: #071426;
-  font-size: 1rem;
+  padding: 15px 28px;
+  border-radius: 12px;
   font-weight: 900;
-  padding: 14px 27px;
-  cursor: pointer;
-  box-shadow: 0 5px 0 #2674c1;
+  transition: transform .2s, background .2s;
 }
-button.action:hover { filter: brightness(1.1); }
-button.action:active { transform: translateY(2px); box-shadow: 0 3px 0 #2674c1; }
-#message {
-  position: absolute;
-  z-index: 4;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: 1000;
-  font-size: clamp(1.5rem, 5vw, 2.6rem);
-  color: #ffcf64;
-  text-shadow: 0 3px 18px #000;
-  pointer-events: none;
-  text-align: center;
-  white-space: nowrap;
+.button:hover {
+  background: #85c2ff;
+  transform: translateY(-3px);
 }
-#feedback {
-  position: absolute;
-  z-index: 3;
-  font-size: 1.2rem;
-  font-weight: 950;
-  color: #fff;
-  text-shadow: 0 2px 10px #000;
-  pointer-events: none;
-  animation: floatUp .65s ease-out forwards;
+.button.secondary {
+  background: #253551;
+  color: white;
 }
-@keyframes floatUp {
-  from { opacity: 1; transform: translate(-50%, 0) scale(.8); }
-  to { opacity: 0; transform: translate(-50%, -48px) scale(1.2); }
+.section {
+  padding: 60px 0;
 }
-.instructions {
+.section h2 {
+  font-size: 2rem;
+  letter-spacing: -1px;
+  margin: 0 0 8px;
+}
+.section-desc {
+  color: var(--muted);
+  margin: 0 0 30px;
+}
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.game-card {
+  background: var(--panel);
+  border: 1px solid #2b3d5a;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform .2s, border-color .2s;
+}
+.game-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--blue);
+}
+.game-art {
+  height: 190px;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px 22px;
-  margin: 18px 0;
+  align-items: center;
+  font-size: 5rem;
+  background: radial-gradient(circle at center, #294e83, #10182c);
+}
+.game-art.purple {
+  background: radial-gradient(circle, #3b2767, #10182c);
+}
+.game-art.green {
+  background: radial-gradient(circle, #18584f, #10182c);
+}
+.game-info { padding: 22px; }
+.game-info h3 {
+  margin: 0 0 9px;
+  font-size: 1.4rem;
+}
+.game-info p {
   color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.6;
+  min-height: 65px;
+}
+.tag {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 900;
+  padding: 6px 11px;
+  border-radius: 20px;
+  background: #204a3c;
+  color: #82efb5;
+  margin-bottom: 12px;
+}
+.tag.soon {
+  background: #3a334d;
+  color: #d0b6ff;
+}
+.card-button {
+  display: block;
+  text-align: center;
+  padding: 13px;
+  background: var(--blue);
+  color: #081426;
+  font-weight: 900;
+  border-radius: 10px;
+}
+.card-button:hover { background: #85c2ff; }
+.card-button.disabled {
+  background: #293751;
+  color: #a3b0c7;
+  cursor: default;
+}
+.about {
+  background: #10192c;
+  border-top: 1px solid #25344e;
+  border-bottom: 1px solid #25344e;
+  text-align: center;
+}
+.about p {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 650px;
+  margin: 15px auto;
+}
+footer {
+  padding: 35px 15px;
+  text-align: center;
+  color: #8292ae;
   font-size: .85rem;
 }
-.instructions strong { color: var(--text); }
-footer { text-align: center; color: #71819d; font-size: .8rem; margin-top: 20px; }
-@media (max-width: 540px) {
-  body { padding: 18px 10px; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .arena { height: 390px; }
-  h1 { letter-spacing: -2px; }
+@media (max-width: 850px) {
+  .games-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .games-grid { grid-template-columns: 1fr; }
+  .hero { padding: 65px 12px; }
+  .hero h1 { letter-spacing: -2px; }
+  .nav-links { gap: 12px; font-size: .8rem; }
+  .logo { font-size: 1.1rem; }
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>TARGET <span>RUSH</span></h1>
-    <div class="subtitle">Lock in. Hit targets. Beat your record.</div>
-  </header>
 
-  <section class="stats">
-    <div class="stat">
-      <div class="stat-label">SCORE</div>
-      <div class="stat-value" id="score">0</div>
+<nav>
+  <div class="container nav-inner">
+    <a class="logo" href="./">LUXTON <span>ARCADE</span></a>
+    <div class="nav-links">
+      <a href="#games">Games</a>
+      <a href="#about">About</a>
     </div>
-    <div class="stat">
-      <div class="stat-label">TIME LEFT</div>
-      <div class="stat-value" id="timer">30.0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">COMBO</div>
-      <div class="stat-value" id="combo">1×</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">PERSONAL BEST</div>
-      <div class="stat-value" id="best">0</div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Welcome to the Arcade</div>
+  <h1>PLAY. COMPETE.<br><span>REPEAT.</span></h1>
+  <p>
+    Your next favorite game starts here.
+    Discover free browser games, challenge your skills,
+    and beat your personal records.
+  </p>
+  <a href="#games" class="button">EXPLORE GAMES ↓</a>
+</header>
+
+<main>
+  <section class="section" id="games">
+    <div class="container">
+      <h2>🎮 Game Library</h2>
+      <p class="section-desc">
+        Pick a game and start playing. No downloads required.
+      </p>
+
+      <div class="games-grid">
+
+        <!-- TARGET RUSH -->
+        <article class="game-card">
+          <div class="game-art">🎯</div>
+          <div class="game-info">
+            <span class="tag">PLAYABLE NOW</span>
+            <h3>Target Rush</h3>
+            <p>
+              Hit targets, build powerful combos,
+              collect Gold Target bonuses, and beat
+              your personal best in 30 seconds!
+            </p>
+            <a href="games/target-rush/" class="card-button">
+              ▶ PLAY NOW
+            </a>
+          </div>
+        </article>
+
+        <!-- FUTURE GAME 2 -->
+        <article class="game-card">
+          <div class="game-art purple">🚀</div>
+          <div class="game-info">
+            <span class="tag soon">COMING SOON</span>
+            <h3>Mystery Game #2</h3>
+            <p>
+              Something new is coming to Luxton Arcade.
+              Stay tuned for the next challenge!
+            </p>
+            <span class="card-button disabled">
+              COMING SOON
+            </span>
+          </div>
+        </article>
+
+        <!-- FUTURE GAME 3 -->
+        <article class="game-card">
+          <div class="game-art green">⚡</div>
+          <div class="game-info">
+            <span class="tag soon">COMING SOON</span>
+            <h3>Mystery Game #3</h3>
+            <p>
+              More games, more challenges, and more
+              ways to have fun are on the way.
+            </p>
+            <span class="card-button disabled">
+              COMING SOON
+            </span>
+          </div>
+        </article>
+
+      </div>
     </div>
   </section>
 
-  <main class="arena" id="arena">
-    <button id="target" aria-label="Hit target"></button>
-    <div id="message"></div>
-    <div id="overlay">
-      <h2 id="overlayTitle">READY?</h2>
-      <p id="overlayText">You have 30 seconds. Hit targets, build combos, and watch for rare Gold Targets!</p>
-      <button class="action" id="startBtn">START GAME</button>
+  <section class="section about" id="about">
+    <div class="container">
+      <h2>About Luxton Arcade</h2>
+      <p>
+        Luxton Arcade is a growing collection of free,
+        browser-based games built for quick challenges
+        and fun competition.
+      </p>
+      <p>
+        Play instantly on your computer or mobile device.
+        New games and updates are planned for the future!
+      </p>
     </div>
-  </main>
+  </section>
+</main>
 
-  <div class="instructions">
-    <span>🎯 <strong>Red:</strong> Normal target</span>
-    <span>⭐ <strong>Gold:</strong> Double points</span>
-    <span>⚡ <strong>Combo:</strong> Hit quickly</span>
-  </div>
-  <footer>Target Rush · V7 · Every hit counts</footer>
-</div>
+<footer>
+  <strong>Luxton Arcade</strong>
+  <p>Play more. Challenge yourself. Have fun.</p>
+  <p>© 2026 Luxton Arcade</p>
+</footer>
 
-<script>
-(() => {
-  const $ = id => document.getElementById(id);
-  const arena = $("arena");
-  const target = $("target");
-  const overlay = $("overlay");
-  const message = $("message");
-  const startBtn = $("startBtn");
-
-  let score = 0;
-  let best = 0;
-  let combo = 1;
-  let timeLeft = 30;
-  let running = false;
-  let phase = "ready";
-  let countdownId = null;
-  let gameEnd = null;
-  let spawnId = null;
-  let comboId = null;
-  let lastHit = 0;
-  let targetSize = 58;
-  let spawnDelay = 850;
-  let gold = false;
-  let milestoneSet = new Set();
-
-  try {
-    best = Math.max(0, Number(localStorage.getItem("targetRushBest")) || 0);
-  } catch (_) {}
-  $("best").textContent = best;
-
-  function showMessage(text, duration = 800) {
-    message.textContent = text;
-    message.animate(
-      [{opacity: 0, transform: "translateX(-50%) scale(.7)"},
-       {opacity: 1, transform: "translateX(-50%) scale(1)"},
-       {opacity: 0, offset: 1}],
-      {duration, easing: "ease-out"}
-    );
-    clearTimeout(showMessage.timeout);
-    showMessage.timeout = setTimeout(() => message.textContent = "", duration);
-  }
-
-  function updateStats() {
-    $("score").textContent = score;
-    $("combo").textContent = combo + "×";
-    $("best").textContent = best;
-    $("timer").textContent = Math.max(0, timeLeft).toFixed(1);
-  }
-
-  function stopSpawn() {
-    clearTimeout(spawnId);
-    spawnId = null;
-  }
-
-  function placeTarget() {
-    if (!running) return;
-    const bounds = arena.getBoundingClientRect();
-    const margin = targetSize / 2 + 8;
-    const x = margin + Math.random() * Math.max(1, bounds.width - margin * 2);
-    const y = margin + Math.random() * Math.max(1, bounds.height - margin * 2);
-    target.style.left = x + "px";
-    target.style.top = y + "px";
-    target.style.width = targetSize + "px";
-    target.style.height = targetSize + "px";
-
-    gold = Math.random() < 0.09;
-    target.classList.toggle("gold", gold);
-    target.style.display = "block";
-  }
-
-  function scheduleSpawn() {
-    stopSpawn();
-    if (!running) return;
-    spawnId = setTimeout(() => {
-      placeTarget();
-      scheduleSpawn();
-    }, spawnDelay);
-  }
-
-  function startGame() {
-    clearInterval(countdownId);
-    clearInterval(gameEnd);
-    stopSpawn();
-    clearTimeout(comboId);
-
-    score = 0;
-    combo = 1;
-    timeLeft = 30;
-    targetSize = 58;
-    spawnDelay = 850;
-    lastHit = 0;
-    milestoneSet = new Set();
-    running = false;
-    phase = "countdown";
-    target.style.display = "none";
-    overlay.style.display = "none";
-    message.textContent = "";
-    updateStats();
-
-    let count = 3;
-    showMessage("3", 750);
-    countdownId = setInterval(() => {
-      count--;
-      if (count > 0) {
-        showMessage(String(count), 750);
-      } else if (count === 0) {
-        showMessage("GO!", 500);
-        running = true;
-        phase = "playing";
-        timeLeft = 30;
-        updateStats();
-        placeTarget();
-        scheduleSpawn();
-        const startTime = Date.now();
-        gameEnd = setInterval(() => {
-          timeLeft = Math.max(0, 30 - (Date.now() - startTime) / 1000);
-          updateStats();
-          if (timeLeft <= 0) endGame();
-        }, 50);
-      } else {
-        clearInterval(countdownId);
-      }
-    }, 1000);
-  }
-
-  function checkMilestones() {
-    const milestones = [
-      [10, "NICE!"],
-      [25, "ON FIRE!"],
-      [50, "AMAZING!"],
-      [100, "UNSTOPPABLE!"]
-    ];
-    for (const [points, text] of milestones) {
-      if (score >= points && !milestoneSet.has(points)) {
-        milestoneSet.add(points);
-        showMessage(text, 1300);
-      }
-    }
-  }
-
-  function hitTarget(event) {
-    if (!running || phase !== "playing") return;
-    event.preventDefault();
-
-    const wasGold = gold;
-    const now = Date.now();
-
-    if (lastHit && now - lastHit <= 1400) {
-      combo = Math.min(combo + 1, 20);
-    } else {
-      combo = 1;
-    }
-    lastHit = now;
-
-    clearTimeout(comboId);
-    comboId = setTimeout(() => {
-      combo = 1;
-      updateStats();
-    }, 1500);
-
-    const points = combo * (wasGold ? 2 : 1);
-    score += points;
-
-    target.style.display = "none";
-    const rect = target.getBoundingClientRect();
-    const arenaRect = arena.getBoundingClientRect();
-    const feedback = document.createElement("div");
-    feedback.id = "feedback";
-    feedback.textContent = (wasGold ? "GOLD! +" : "+") + points;
-    feedback.style.left = (rect.left - arenaRect.left + rect.width / 2) + "px";
-    feedback.style.top = (rect.top - arenaRect.top) + "px";
-    arena.appendChild(feedback);
-    setTimeout(() => feedback.remove(), 700);
-
-    if (combo >= 2) showMessage(combo + "× COMBO!", 450);
-    checkMilestones();
-
-    targetSize = Math.max(27, 58 - Math.floor(score / 5) * 2);
-    spawnDelay = Math.max(330, 850 - score * 5);
-    updateStats();
-
-    stopSpawn();
-    placeTarget();
-    scheduleSpawn();
-  }
-
-  function endGame() {
-    if (phase !== "playing") return;
-    running = false;
-    phase = "over";
-    timeLeft = 0;
-    clearInterval(gameEnd);
-    clearInterval(countdownId);
-    stopSpawn();
-    clearTimeout(comboId);
-    target.style.display = "none";
-
-    const newRecord = score > best;
-    if (newRecord) {
-      best = score;
-      try { localStorage.setItem("targetRushBest", String(best)); } catch (_) {}
-    }
-    updateStats();
-
-    overlay.style.display = "flex";
-    $("overlayTitle").textContent = "TIME'S UP!";
-    $("overlayText").innerHTML =
-      "Current Score: <strong>" + score + "</strong><br>" +
-      "Personal Best: <strong>" + best + "</strong>" +
-      (newRecord ? '<br><span style="color:#70e5a3;font-weight:900">🏆 NEW PERSONAL BEST!</span>' : "") +
-      "<br>Ready for another round?";
-    startBtn.textContent = "PLAY AGAIN";
-  }
-
-  target.addEventListener("pointerdown", hitTarget);
-  startBtn.addEventListener("click", startGame);
-
-  updateStats();
-})();
-</script>
 </body>
 </html>
