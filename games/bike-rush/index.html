@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bike Rush V3 Neon City | Luxton Arcade</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bike Rush V3.2 Stick Rider | Luxton Arcade</title>
 <style>
 :root{--cyan:#39edff;--pink:#ff3ba7;--gold:#ffd74d}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0%,#28205b,#0b0b22 75%);color:white;font-family:system-ui,Arial,sans-serif}main{width:min(1080px,96vw);margin:20px auto}header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}h1{margin:0;color:var(--cyan);letter-spacing:.12em;text-shadow:0 0 16px #14d5ff}a{color:#c2eaff;text-decoration:none}.stats,.controls,.buttons{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.stats{justify-content:flex-start;margin:14px 0}.pill{background:#181638;border:1px solid #5b548e;border-radius:12px;padding:9px 13px;font-weight:750}.pill span{color:var(--gold)}.game{position:relative;border:3px solid #6b4be7;border-radius:16px;overflow:hidden;background:#14122d;box-shadow:0 0 30px #5136a266}canvas{display:block;width:100%;height:auto;touch-action:manipulation}.overlay{position:absolute;inset:0;background:#09091ddc;display:flex;align-items:center;justify-content:center;padding:10px}.panel{background:#19153c;border:2px solid #7259db;border-radius:18px;padding:20px;width:min(520px,100%);text-align:center;max-height:96%;overflow:auto}.panel h2{font-size:1.8rem;margin:0 0 8px;color:var(--cyan)}.panel p{color:#ddd7ff;line-height:1.45}button{background:linear-gradient(110deg,#00d4f5,#6a57ff);color:white;border:0;border-radius:12px;padding:12px 18px;font:800 1rem system-ui;cursor:pointer}button:hover{filter:brightness(1.12)}button:disabled{opacity:.55;cursor:default}.secondary{background:#30265c;border:1px solid #8c73ff}.controls{margin:12px 0}.controls button{min-width:115px}.hint{font-size:.9rem;color:#bdb4e2;text-align:center}.hidden{display:none!important}.shop-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0;max-height:190px;overflow:auto}.item{border:1px solid #7564bd;border-radius:10px;padding:10px;background:#27204d}.item strong{display:block;margin:5px}.item button{font-size:.8rem;padding:7px 10px}.swatch{height:18px;width:46px;margin:auto;border-radius:10px;box-shadow:0 0 12px currentColor}footer{color:#9991c4;text-align:center;margin:18px}@media(max-width:520px){.panel{padding:12px}.panel h2{font-size:1.4rem}.shop-list{grid-template-columns:1fr}.pill{font-size:.78rem;padding:7px}}
 
@@ -17,10 +17,10 @@ button:hover{transform:translateY(-1px)}
 #shop .shop-list{max-height:210px}
 #shop h3{color:#51eaff}
 @media(min-width:760px){.shop-list{grid-template-columns:repeat(4,minmax(0,1fr))}}
-</style></head><body><main><header><h1>⚡ BIKE RUSH <small style="font-size:.45em">V3</small></h1><a href="../../">← Luxton Arcade</a></header>
+</style></head><body><main><header><h1>⚡ BIKE RUSH <small style="font-size:.45em">V3.2</small></h1><a href="../../">← Luxton Arcade</a></header>
 <div class="stats"><div class="pill">DISTANCE <span id="score">0</span></div><div class="pill">COINS <span id="coins">0</span></div><div class="pill">BEST <span id="best">0</span></div><div class="pill">WALLET <span id="wallet">0</span> 🪙</div><div class="pill">POWER <span id="power">—</span></div></div>
-<div class="game"><canvas id="game" width="960" height="460" aria-label="Bike Rush side scrolling arcade game"></canvas><div class="overlay" id="overlay"><div class="panel" id="menu"><h2>BIKE RUSH V3</h2><p>Jump spikes, crates and moving barriers, launch from ramps, collect coins and power-ups, and unlock neon bikes!</p><div class="buttons"><button id="start">▶ START RIDE</button><button class="secondary" id="shopOpen">🛒 CUSTOMIZE</button></div><p class="hint">D / → = GO · S / ← = STOP · SPACE / ↑ / W / TAP = JUMP (double jump)</p></div><div class="panel hidden" id="over"><h2>CRASH!</h2><p id="results"></p><div class="buttons"><button id="again">↻ PLAY AGAIN</button><button class="secondary" id="shopFromOver">🎨 SHOP</button><button class="secondary" id="home">MENU</button></div></div><div class="panel hidden" id="shop"><h2>🎨 CUSTOMIZATION SHOP</h2><p>Choose bike colors and rider head shapes. Everything is cheaper!</p><h3>🚲 Bike colors</h3><p>Wallet: <b id="shopWallet">0</b> 🪙</p><div class="shop-list" id="shopList"></div><h3>🙂 Rider head shapes</h3><div class="shop-list" id="headList"></div><button class="secondary" id="shopBack">← BACK</button></div></div></div>
-<div class="controls"><button id="go" class="hidden">▶ GO</button><button id="stop" class="secondary hidden">■ STOP</button><button id="jump" class="secondary hidden">⬆ JUMP</button></div><p class="hint">🛡 Shield blocks one crash · 🧲 Magnet attracts coins · ⚡ Boost increases speed temporarily. Ramps launch your bike!</p><footer>Luxton Arcade • Bike Rush V3</footer></main>
+<div class="game"><canvas id="game" width="960" height="460" aria-label="Bike Rush side scrolling arcade game"></canvas><div class="overlay" id="overlay"><div class="panel" id="menu"><h2>BIKE RUSH V3.2</h2><p>Jump spikes, crates and moving barriers, launch from ramps, collect coins and power-ups, and unlock neon bikes!</p><div class="buttons"><button id="start">▶ START RIDE</button><button class="secondary" id="shopOpen">🛒 CUSTOMIZE</button></div><p class="hint">D / → = GO · S / ← = STOP · SPACE / ↑ / W / TAP = JUMP (double jump)</p></div><div class="panel hidden" id="over"><h2>CRASH!</h2><p id="results"></p><div class="buttons"><button id="again">↻ PLAY AGAIN</button><button class="secondary" id="shopFromOver">🎨 SHOP</button><button class="secondary" id="home">MENU</button></div></div><div class="panel hidden" id="shop"><h2>🎨 CUSTOMIZATION SHOP</h2><p>Choose bike colors and rider head shapes. Everything is cheaper!</p><h3>🚲 Bike colors</h3><p>Wallet: <b id="shopWallet">0</b> 🪙</p><div class="shop-list" id="shopList"></div><h3>🙂 Rider head shapes</h3><div class="shop-list" id="headList"></div><button class="secondary" id="shopBack">← BACK</button></div></div></div>
+<div class="controls"><button id="go" class="hidden">▶ GO</button><button id="stop" class="secondary hidden">■ STOP</button><button id="jump" class="secondary hidden">⬆ JUMP</button></div><p class="hint">🛡 Shield blocks one crash · 🧲 Magnet attracts coins · ⚡ Boost increases speed temporarily. Ramps launch your bike!</p><footer>Luxton Arcade • Bike Rush V3.2</footer></main>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d'),W=960,H=460,ground=365,KEY='luxton_bike_rush_v1';
@@ -61,7 +61,43 @@ for(const c of coins){if(power.type==='magnet'){const dx=bx-c.x,dy=by-15-c.y;if(
 for(const p of powerups){const dx=p.x-(bx+5),dy=p.y-(by-15);if(dx*dx+dy*dy<43*43){p.got=true;power={type:p.type,left:p.type==='shield'?18:8};burst(p.x,p.y,'#7bffef',20)}}hud()}
 function line(x1,y1,x2,y2,w,c){ctx.strokeStyle=c;ctx.lineWidth=w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
 function wheel(x,y,r,c){ctx.save();ctx.shadowColor=c;ctx.shadowBlur=17;ctx.strokeStyle=c;ctx.lineWidth=5;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle='#a4dcff';ctx.lineWidth=1.4;for(let i=0;i<10;i++){let a=i*Math.PI/5+(moving?time*7:0);line(x,y,x+Math.cos(a)*(r-4),y+Math.sin(a)*(r-4),1.3,'#b4d6ffb0')}ctx.fillStyle='#fff4ba';ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();ctx.restore()}
-function rider(x,y,rotation=0){ctx.save();ctx.translate(x,y);ctx.rotate(rotation);line(0,-49,8,-24,6,'#f1edff');line(8,-24,29,-13,5,'#f1edff');line(8,-24,-7,-10,5,'#f1edff');line(8,-24,27,-43,5,'#f1edff');line(27,-43,33,-24,5,'#f1edff');ctx.save();ctx.translate(-2,-61);ctx.fillStyle='#f1edff';ctx.strokeStyle=color();ctx.lineWidth=3;ctx.beginPath();const shape=save.selectedHead;if(shape==='square'){ctx.rect(-12,-12,24,24)}else if(shape==='heart'){ctx.moveTo(0,11);ctx.bezierCurveTo(-25,-3,-11,-20,0,-9);ctx.bezierCurveTo(11,-20,25,-3,0,11)}else{const sides={triangle:3,diamond:4,hexagon:6,star:10}[shape];if(sides){for(let i=0;i<sides;i++){const a=-Math.PI/2+i*Math.PI*2/sides;const r=shape==='star'&&i%2?6:13;const px=Math.cos(a)*r,py=Math.sin(a)*r;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py)}ctx.closePath()}else ctx.arc(0,0,12,0,Math.PI*2)}ctx.fill();ctx.stroke();ctx.restore();ctx.restore()}
+function rider(x,y,rotation=0){
+  // Clean, recognizable stick-figure rider with bent elbows and pedaling legs.
+  ctx.save();ctx.translate(x,y);ctx.rotate(rotation);
+  const ink='#f5f8ff',outline='#111337';
+  function limb(x1,y1,x2,y2,width=5){line(x1,y1,x2,y2,width+3,outline);line(x1,y1,x2,y2,width,ink)}
+  // Rider sits above the saddle, leaning toward the handlebars.
+  const hipX=-6,hipY=-34,shoulderX=2,shoulderY=-62;
+  limb(hipX,hipY,shoulderX,shoulderY,6);
+  // Two arms: upper arm -> elbow -> handlebar grip.
+  limb(shoulderX,shoulderY,17,-48,4);
+  limb(17,-48,34,-34,4);
+  limb(shoulderX-2,shoulderY+3,12,-44,3);
+  limb(12,-44,32,-34,3);
+  // Pedal animation is subtle and stops when the bike is stopped.
+  const phase=moving&&mode==='play'?time*9:0;
+  const crankX=13,crankY=-4;
+  const pedalX=crankX+Math.cos(phase)*9,pedalY=crankY+Math.sin(phase)*9;
+  const otherX=crankX-Math.cos(phase)*9,otherY=crankY-Math.sin(phase)*9;
+  limb(hipX,hipY,5,-19,5);limb(5,-19,pedalX,pedalY,5);
+  limb(hipX+2,hipY,16,-22,4);limb(16,-22,otherX,otherY,4);
+  // Shoes and gloves make the small silhouette easier to read.
+  line(pedalX-3,pedalY,pedalX+6,pedalY,4,'#52eaff');
+  line(otherX-3,otherY,otherX+6,otherY,4,'#52eaff');
+  line(31,-34,37,-34,4,'#52eaff');
+  // Keep every purchased head shape, now attached to a clear neck.
+  limb(shoulderX,shoulderY,5,-69,4);
+  ctx.save();ctx.translate(5,-81);
+  ctx.shadowColor=color();ctx.shadowBlur=7;
+  ctx.fillStyle='#f5f8ff';ctx.strokeStyle='#121337';ctx.lineWidth=3;
+  ctx.beginPath();const shape=save.selectedHead;
+  if(shape==='square')ctx.rect(-12,-12,24,24);
+  else if(shape==='heart'){ctx.moveTo(0,11);ctx.bezierCurveTo(-25,-3,-11,-20,0,-9);ctx.bezierCurveTo(11,-20,25,-3,0,11)}
+  else{const sides={triangle:3,diamond:4,hexagon:6,star:10}[shape];
+    if(sides){for(let i=0;i<sides;i++){const ang=-Math.PI/2+i*Math.PI*2/sides;const radius=shape==='star'&&i%2?6:13;const px=Math.cos(ang)*radius,py=Math.sin(ang)*radius;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py)}ctx.closePath()}
+    else ctx.arc(0,0,12,0,Math.PI*2)}
+  ctx.fill();ctx.stroke();ctx.restore();ctx.restore();
+}
 function drawBike(x,y,angle=0,withRider=true){ctx.save();ctx.translate(x,y);ctx.rotate(angle);const c=color();wheel(-26,0,24,c);wheel(30,0,24,c);line(-26,0,0,-25,5,c);line(0,-25,13,0,5,c);line(13,0,-26,0,5,c);line(13,0,30,0,5,c);line(0,-25,23,-28,4,c);line(23,-28,30,0,4,c);line(-8,-29,10,-29,5,'#e9e6ff');line(23,-28,35,-33,4,'#e9e6ff');if(withRider)rider(-3,-4,-angle*.4);ctx.restore()}
 function drawCity(){
 const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#071342');bg.addColorStop(.35,'#382070');bg.addColorStop(.68,'#bb2e91');bg.addColorStop(1,'#271244');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
