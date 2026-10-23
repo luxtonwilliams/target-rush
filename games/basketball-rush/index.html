@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Basketball Rush V2.4 | Luxton Arcade</title>
+<title>Basketball Rush V3.1 | Luxton Arcade</title>
 <style>
 :root{color-scheme:dark;--cyan:#35e7ff;--gold:#ffd35a;--bg:#080f27}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 50% 0%,#243877,#080f27 68%);color:white}
@@ -21,7 +21,7 @@ footer{color:#8297be;text-align:center;margin-top:20px;font-size:12px}
 </style>
 </head>
 <body><main>
-<header><h1>🏀 BASKETBALL RUSH <small style="font-size:13px;color:#b5c9ed">V2.4</small></h1><a href="../../">← Luxton Arcade</a></header>
+<header><h1>🏀 BASKETBALL RUSH <small style="font-size:13px;color:#b5c9ed">V3.1</small></h1><a href="../../">← Luxton Arcade</a></header>
 <section class="stats" aria-label="Game stats">
 <div class="stat"><span>SCORE</span><strong id="score">0</strong></div>
 <div class="stat"><span>TIME</span><strong id="time">60</strong></div>
@@ -29,10 +29,10 @@ footer{color:#8297be;text-align:center;margin-top:20px;font-size:12px}
 <div class="stat"><span>BEST</span><strong id="best">0</strong></div>
 <div class="stat"><span>WALLET</span><strong id="wallet">0</strong></div>
 </section>
-<div class="arena"><canvas id="court" width="960" height="540" aria-label="Basketball court. Aim at the hoop and click or tap to shoot."></canvas>
-<div id="overlay" class="overlay"><div class="modal"><h2 id="modalTitle">🏀 BASKETBALL RUSH</h2><p id="modalText">You have 60 seconds! Swipe upward from the basketball to shoot! Swipe slightly left or right to lead the moving hoop. Longer swipes shoot farther. Score consecutive baskets to build your combo and earn coins.</p><button id="play">START GAME →</button></div></div>
+<div class="arena"><canvas id="court" width="960" height="540" aria-label="Basketball court. Swipe up to shoot at the moving hoop."></canvas>
+<div id="overlay" class="overlay"><div class="modal"><h2 id="modalTitle">🏀 BASKETBALL RUSH</h2><p id="modalText">You have 60 seconds! Swipe upward from the basketball to shoot! Swipe slightly left or right to lead the moving hoop. Swipe straight up to aim toward the moving hoop automatically. Swipe diagonally to fine-tune your shot. Keep rapid-firing! Every 20 seconds, enjoy a 10-second DOUBLE POINTS bonus round.</p><button id="play">START GAME →</button></div></div>
 </div>
-<div class="bottom"><p>🎯 Track the moving hoop · Click or tap to shoot · 🪙 Baskets earn coins · 🔥 Streaks increase your combo</p><button class="secondary" id="shopToggle">🛍️ BALL SHOP</button></div>
+<div class="bottom"><p>🏀 Swipe straight up · 🎯 Assisted aiming · ⚡ Rapid fire · 🌟 Bonus rounds · 🪙 Earn coins</p><button class="secondary" id="shopToggle">🛍️ BALL SHOP</button></div>
 <section class="shop hidden" id="shop"><div class="shop-head"><h2>🏀 Basketball Shop</h2><span>Wallet: <strong id="shopWallet">0</strong> coins</span></div><p style="color:#b5c9ed">Unlock designs with coins earned from baskets. Purchases and your personal best are saved on this device.</p><div id="shopGrid" class="shop-grid"></div></section>
 <footer>Luxton Arcade · Original browser basketball game · Saves locally</footer>
 </main>
@@ -54,13 +54,13 @@ const STORE='luxton_basketball_rush_v1';
 let saved={wallet:0,best:0,owned:['classic'],equipped:'classic'};
 try{const v=JSON.parse(localStorage.getItem(STORE)||'null');if(v&&typeof v==='object'){saved={...saved,...v};if(!Array.isArray(saved.owned))saved.owned=['classic'];if(!saved.owned.includes('classic'))saved.owned.unshift('classic');if(!skins.some(s=>s.id===saved.equipped))saved.equipped='classic';saved.wallet=Math.max(0,Number(saved.wallet)||0);saved.best=Math.max(0,Number(saved.best)||0)}}catch(e){}
 const persist=()=>{try{localStorage.setItem(STORE,JSON.stringify(saved))}catch(e){}};
-let mode='menu',score=0,time=60,combo=1,ball=null,particles=[],drag=null,feedback='',feedbackUntil=0,last=performance.now(),respawn=0,hoopClock=0;
+let mode='menu',score=0,time=60,combo=1,ball=null,balls=[],particles=[],drag=null,feedback='',feedbackUntil=0,last=performance.now(),respawn=0,hoopClock=0,shots=0,bonus=false,shotCooldown=0,shake=0;
 const skin=()=>skins.find(s=>s.id===saved.equipped)||skins[0];
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 function hud(){$('score').textContent=score;$('time').textContent=Math.ceil(time);$('combo').textContent=combo+'×';$('best').textContent=saved.best;$('wallet').textContent=saved.wallet;$('shopWallet').textContent=saved.wallet}
-function newBall(){ball={x:0,z:0,h:1.55,vx:0,vz:0,vh:0,live:false,age:0,scored:false,missed:false};respawn=0}
-function startGame(){score=0;time=60;combo=1;hoopClock=0;particles=[];feedback='';drag=null;mode='playing';newBall();$('overlay').classList.add('hidden');hud()}
-function endGame(){if(mode!=='playing')return;mode='ended';drag=null;time=0;if(score>saved.best){saved.best=score;persist()}hud();$('modalTitle').textContent='⏰ TIME’S UP!';$('modalText').innerHTML=`Final score: <b>${score}</b><br>Personal best: <b>${saved.best}</b>${score===saved.best&&score>0?'<br>🏆 PERSONAL BEST!':''}<br>Play again to beat your record.`;$('play').textContent='PLAY AGAIN →';$('overlay').classList.remove('hidden')}
+function newBall(){ball={x:0,z:0,h:1.55,live:false,age:0};respawn=0}
+function startGame(){score=0;time=60;combo=1;hoopClock=0;particles=[];balls=[];shots=0;bonus=false;shotCooldown=0;shake=0;feedback='';drag=null;mode='playing';newBall();$('overlay').classList.add('hidden');hud()}
+function endGame(){if(mode!=='playing')return;mode='ended';drag=null;balls=[];time=0;if(score>saved.best){saved.best=score;persist()}hud();$('modalTitle').textContent='⏰ TIME’S UP!';$('modalText').innerHTML=`Final score: <b>${score}</b><br>Personal best: <b>${saved.best}</b>${score===saved.best&&score>0?'<br>🏆 PERSONAL BEST!':''}<br>Play again to beat your record.`;$('play').textContent='PLAY AGAIN →';$('overlay').classList.remove('hidden')}
 function message(s){feedback=s;feedbackUntil=performance.now()+1200}
 function burst(x,y,color,n=18){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=60+Math.random()*160;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.5+Math.random()*.5,color})}}
 /* Camera: ball starts at z=0 and travels away to the hoop at z=8.5.
@@ -71,22 +71,35 @@ function project(x,z,h){
 }
 const HOOP_Z=8.5,HOOP_H=2.55,HOOP_R=.55;
 function hoopX(t=hoopClock){return 480+105*Math.sin(t*.85)}
-function madeShot(){if(ball.scored||mode!=='playing')return;ball.scored=true;const points=2*combo;score+=points;saved.wallet+=combo;message(combo>1?`🔥 ${combo}× COMBO! +${points}`:`🏀 SWISH! +${points}`);combo=Math.min(8,combo+1);burst(hoopX(),258,'#ffd35a',28);if(score>saved.best)saved.best=score;persist();hud()}
-function missShot(){if(!ball||ball.scored||ball.missed||mode!=='playing')return;ball.missed=true;combo=1;message('SO CLOSE!');hud()}
+function madeShot(b){
+ if(b.scored||mode!=='playing')return;
+ b.scored=true;const points=(bonus?4:2)*combo;
+ score+=points;saved.wallet+=bonus?2*combo:combo;
+ message(bonus?`🌟 BONUS! +${points}`:combo>1?`🔥 ${combo}× COMBO! +${points}`:`🏀 SWISH! +${points}`);
+ combo=Math.min(8,combo+1);burst(hoopX(),258,'#ffd35a',28);shake=6;
+ if(score>saved.best)saved.best=score;persist();hud();
+}
+function missShot(b){
+ if(b.scored||b.missed||mode!=='playing')return;
+ b.missed=true;combo=1;message('OFF THE RIM!');hud();
+}
 function shootSwipe(dx,up){
- if(mode!=='playing'||!ball||ball.live||up<32)return;
- // Upward swipe controls distance/height; sideways movement controls aim.
- // About 155px up is ideal. Lead the moving hoop with a diagonal swipe.
- ball.live=true;ball.age=0;ball.autoShot=true;ball.shotT=0;
- ball.shotDuration=.92;
- ball.targetX=clamp(480+dx*.95,280,680);
- ball.targetY=258+(155-clamp(up,30,290))*.48;
- ball.renderX=480;ball.renderY=445;
+ if(mode!=='playing'||up<32||shotCooldown>0)return;
+ // A quick upward swipe from the ball controls horizontal aim and height.
+ const b={live:true,age:0,shotT:0,shotDuration:.88,
+   // Aim assist: a straight upward swipe tracks the hoop's predicted position.
+   // Sideways swipes still allow intentional fine adjustment.
+   targetX:clamp(hoopX(hoopClock+.88)+dx*.48,280,680),
+   targetY:258+(145-clamp(up,30,290))*.22,
+   renderX:480,renderY:445,scored:false,missed:false,
+   state:'flight',bounceT:0,spin:Math.random()*6};
+ balls.push(b);shots++;shotCooldown=.19;
+ if(balls.length>16)balls.shift();
 }
 function getPoint(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
 canvas.addEventListener('pointerdown',e=>{
- if(mode!=='playing'||!ball||ball.live)return;
- const p=getPoint(e),b=project(ball.x,ball.z,ball.h);
+ if(mode!=='playing'||shotCooldown>0)return;
+ const p=getPoint(e),b=project(0,0,1.55);
  if(Math.hypot(p.x-b.x,p.y-b.y)>95)return;
  drag={id:e.pointerId,start:p,now:p};canvas.setPointerCapture(e.pointerId);e.preventDefault();
 });
@@ -98,28 +111,49 @@ canvas.addEventListener('pointerup',e=>{
 });
 canvas.addEventListener('pointercancel',()=>{drag=null});
 function update(dt){
- if(mode==='playing'){hoopClock+=dt;time=Math.max(0,time-dt);if(time===0){endGame();return}hud()}
- for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=250*dt;p.life-=dt}particles=particles.filter(p=>p.life>0);
- if(mode!=='playing'||!ball)return;
- if(respawn>0){respawn-=dt;if(respawn<=0)newBall();return}
- if(!ball.live)return;
- const b=ball;
- if(b.autoShot){
-   b.shotT+=dt;
-   const t=clamp(b.shotT/b.shotDuration,0,1);
-   const ease=t*t*(3-2*t);
-   // The ball rises into the shot, then drops toward the rim.
-   b.renderX=480+(b.targetX-480)*ease;
-   b.renderY=445+(b.targetY-445)*ease-165*4*t*(1-t);
-   if(t>=1){
-     const horizontalError=Math.abs(b.targetX-hoopX());
-     const verticalError=Math.abs(b.targetY-258);
-     if(horizontalError<27&&verticalError<19)madeShot();else missShot();
-     b.autoShot=false;respawn=.36;
-   }
-   return;
+ if(mode==='playing'){
+   hoopClock+=dt;shotCooldown=Math.max(0,shotCooldown-dt);
+   time=Math.max(0,time-dt);
+   // Last ten seconds of each 20-second segment are bonus time.
+   const elapsed=60-time;
+   const nextBonus=(elapsed>=10&&elapsed<20)||(elapsed>=30&&elapsed<40)||(elapsed>=50&&elapsed<60);
+   if(nextBonus&&!bonus){message('🌟 DOUBLE POINTS ROUND!');burst(480,100,'#ffdc59',30)}
+   bonus=nextBonus;
+   if(time===0){endGame();return}hud();
  }
-
+ shake=Math.max(0,shake-dt*18);
+ for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=250*dt;p.life-=dt}
+ particles=particles.filter(p=>p.life>0);
+ if(mode!=='playing')return;
+ for(const b of balls){
+   b.age+=dt;b.spin+=dt*5;
+   if(b.state==='flight'){
+     b.shotT+=dt;
+     const t=clamp(b.shotT/b.shotDuration,0,1);
+     const ease=t*t*(3-2*t);
+     b.renderX=480+(b.targetX-480)*ease;
+     b.renderY=445+(b.targetY-445)*ease-165*4*t*(1-t);
+     if(t>=1){
+       const hx=hoopX(),horizontalError=Math.abs(b.targetX-hx),verticalError=Math.abs(b.targetY-258);
+       if(horizontalError<43&&verticalError<30){
+         madeShot(b);b.state='net';b.bounceT=0;b.renderX=hx;
+       }else{
+         // Rim / backboard deflection: ball ricochets with gravity.
+         b.state='bounce';b.bounceT=0;
+         b.bounceVX=(b.targetX-hx>=0?1:-1)*(75+Math.random()*55);
+         b.bounceVY=-65-Math.random()*65;
+         if(horizontalError<92&&verticalError<50){burst(b.renderX,b.renderY,'#ff8757',12);shake=3}
+         missShot(b);
+       }
+     }
+   }else if(b.state==='bounce'){
+     b.bounceT+=dt;b.renderX+=b.bounceVX*dt;b.renderY+=b.bounceVY*dt;
+     b.bounceVY+=450*dt;
+   }else if(b.state==='net'){
+     b.bounceT+=dt;b.renderY+=190*dt;
+   }
+ }
+ balls=balls.filter(b=>b.age<2.2&&b.renderY<630&&b.renderX>-100&&b.renderX<1060);
 }
 function poly(points,fill,stroke,width=1){ctx.beginPath();ctx.moveTo(...points[0]);for(let i=1;i<points.length;i++)ctx.lineTo(...points[i]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke()}}
 function ballArt(x,y,r,s,rotation=0){
@@ -130,6 +164,7 @@ function ballArt(x,y,r,s,rotation=0){
 function drawCourt(){
  const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#111a45');sky.addColorStop(.68,'#253d7a');sky.addColorStop(1,'#151f49');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
  // Arcade cabinet walls and neon panels.
+ for(let i=0;i<18;i++){const x=25+i*54;ctx.fillStyle=i%2?'#35e7ff':'#ff65cf';ctx.globalAlpha=.22+.22*Math.sin(hoopClock*4+i);ctx.fillRect(x,16,30,6)}ctx.globalAlpha=1;
  poly([[0,0],[150,0],[295,355],[0,H]],'#111833','#385fbd',3);
  poly([[810,0],[960,0],[960,H],[665,355]],'#111833','#385fbd',3);
  for(let i=0;i<5;i++){ctx.fillStyle=i%2?'#30e5ff25':'#ff5cbd20';ctx.fillRect(24+i*22,80+i*38,12,165);ctx.fillRect(925-i*22,80+i*38,12,165)}
@@ -150,24 +185,35 @@ function drawCourt(){
  for(let j=1;j<=3;j++){ctx.beginPath();ctx.moveTo(405+j*13,263+j*17);ctx.lineTo(555-j*13,263+j*17);ctx.stroke()}
  ctx.restore();
  ctx.fillStyle='#b4edff';ctx.font='bold 17px system-ui';ctx.textAlign='center';ctx.fillText('LUXTON ARCADE',480,55);
+ if(bonus){ctx.fillStyle='#ffcf43';ctx.font='900 25px system-ui';ctx.shadowColor='#ffbf00';ctx.shadowBlur=15;ctx.fillText('🌟 DOUBLE POINTS! 🌟',480,94);ctx.shadowBlur=0}
+ // Illuminated cabinet trim and scoreboard.
+ ctx.strokeStyle='#36dfff';ctx.lineWidth=5;ctx.strokeRect(8,8,944,524);
+ ctx.fillStyle='#071026cc';ctx.fillRect(355,12,250,30);
+ ctx.fillStyle='#e3f9ff';ctx.font='bold 13px system-ui';ctx.fillText('LUXTON BASKETBALL MACHINE',480,32);
+
 }
 function draw(){
+ ctx.save();
+ if(shake>0)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
  drawCourt();
- if(ball){
-   const p=ball.autoShot?{x:ball.renderX,y:ball.renderY,scale:1-.65*clamp(ball.shotT/ball.shotDuration,0,1)}:project(ball.x,ball.z,ball.h);
-   const radius=clamp(35*p.scale,9,42);
-   ballArt(p.x,p.y,radius,skin(),ball.live?ball.age*5:0);
+ for(const b of balls){
+   const t=clamp(b.shotT/b.shotDuration,0,1);
+   const radius=clamp(35*(1-.65*t),9,42);
+   ballArt(b.renderX,b.renderY,radius,skin(),b.spin);
  }
- if(drag&&ball&&!ball.live){
+ // Ready ball is always available, allowing rapid-fire shooting.
+ if(mode==='playing')ballArt(480,445,35,skin(),0);
+ if(drag){
    const dx=drag.now.x-drag.start.x,up=drag.start.y-drag.now.y;
-   const endX=clamp(480+dx*.95,280,680),endY=258+(155-clamp(up,30,290))*.48;
+   const endX=clamp(hoopX(hoopClock+.88)+dx*.48,280,680),endY=258+(145-clamp(up,30,290))*.22;
    ctx.save();ctx.strokeStyle='#74f9ff';ctx.lineWidth=4;ctx.shadowColor='#74f9ff';ctx.shadowBlur=12;
    ctx.beginPath();ctx.moveTo(480,445);ctx.lineTo(drag.now.x,drag.now.y);ctx.stroke();
-   ctx.setLineDash([7,8]);ctx.beginPath();ctx.arc(endX,endY,17,0,Math.PI*2);ctx.stroke();ctx.restore();
+   ctx.setLineDash([7,8]);ctx.beginPath();ctx.arc(endX,endY,24,0,Math.PI*2);ctx.stroke();ctx.restore();
  }
  for(const p of particles){ctx.globalAlpha=clamp(p.life,0,1);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
- if(feedback&&performance.now()<feedbackUntil){ctx.textAlign='center';ctx.font='900 30px system-ui';ctx.fillStyle='#ffe989';ctx.shadowColor='#ffd45e';ctx.shadowBlur=16;ctx.fillText(feedback,480,90);ctx.shadowBlur=0}
- if(mode==='playing'&&ball&&!ball.live){ctx.fillStyle='#e5f3ff';ctx.font='bold 19px system-ui';ctx.textAlign='center';ctx.fillText('SWIPE UP FROM THE BALL TO SHOOT',480,470)}
+ if(feedback&&performance.now()<feedbackUntil){ctx.textAlign='center';ctx.font='900 30px system-ui';ctx.fillStyle='#ffe989';ctx.shadowColor='#ffd45e';ctx.shadowBlur=16;ctx.fillText(feedback,480,127);ctx.shadowBlur=0}
+ if(mode==='playing'&&!drag){ctx.fillStyle='#e5f3ff';ctx.font='bold 18px system-ui';ctx.textAlign='center';ctx.fillText('SWIPE STRAIGHT UP • AUTO-LEAD AIM!',480,482)}
+ ctx.restore();
 }
 function loop(now){const dt=Math.min(.035,(now-last)/1000||0);last=now;update(dt);draw();requestAnimationFrame(loop)}
 function renderShop(){hud();const grid=$('shopGrid');grid.innerHTML='';for(const s of skins){const card=document.createElement('div');card.className='item';const preview=document.createElement('canvas');preview.width=90;preview.height=90;const c=preview.getContext('2d');c.translate(45,45);c.fillStyle=s.base;c.beginPath();c.arc(0,0,29,0,Math.PI*2);c.fill();c.strokeStyle=s.stripe;c.lineWidth=4;c.beginPath();c.moveTo(-28,0);c.lineTo(28,0);c.moveTo(0,-28);c.lineTo(0,28);c.stroke();const name=document.createElement('b');name.textContent=s.name;const price=document.createElement('small');const owned=saved.owned.includes(s.id);price.textContent=owned?'Unlocked':`${s.price} coins`;const btn=document.createElement('button');btn.textContent=saved.equipped===s.id?'EQUIPPED':owned?'EQUIP':`BUY · ${s.price}`;btn.disabled=saved.equipped===s.id||(!owned&&saved.wallet<s.price);btn.onclick=()=>{if(!saved.owned.includes(s.id)){if(saved.wallet<s.price)return;saved.wallet-=s.price;saved.owned.push(s.id)}saved.equipped=s.id;persist();renderShop()};card.append(preview,name,price,btn);grid.append(card)}}
