@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Basketball Rush V1 | Luxton Arcade</title>
+<style>
+:root{color-scheme:dark;--cyan:#35e7ff;--gold:#ffd35a;--bg:#080f27}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 50% 0%,#243877,#080f27 68%);color:white}
+main{width:min(1080px,96%);margin:20px auto 36px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:clamp(24px,4vw,39px);margin:9px 0;color:var(--cyan);text-shadow:0 0 20px #28c8ff80}a{color:#c7eaff;text-decoration:none}a:hover{text-decoration:underline}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:14px 0}.stat{background:#121d43;border:1px solid #35528a;border-radius:12px;text-align:center;padding:10px 3px}.stat span{display:block;color:#9cb7e5;font-size:12px;font-weight:700}.stat strong{font-size:clamp(16px,2.8vw,25px);color:white}
+.arena{position:relative;border:2px solid #36dfff;border-radius:18px;overflow:hidden;box-shadow:0 0 35px #1dbefc3d;background:#10163b}
+canvas{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#071127bc;backdrop-filter:blur(5px);padding:15px}
+.overlay.hidden,.hidden{display:none!important}.modal{background:linear-gradient(155deg,#172650,#25194d);border:1px solid #66caff;border-radius:20px;max-width:450px;width:100%;padding:25px;text-align:center;box-shadow:0 0 45px #00cfff44}.modal h2{margin:0 0 8px;font-size:29px}.modal p{color:#c6d7f4;line-height:1.5}
+button{border:0;border-radius:11px;background:linear-gradient(120deg,#1dd9fa,#6772ff);color:#08142d;font-weight:900;font-size:15px;padding:12px 18px;cursor:pointer;box-shadow:0 6px 20px #0ac3fc40}button:hover{filter:brightness(1.15)}button:disabled{opacity:.55;cursor:not-allowed}.secondary{background:#233563;color:#eaf6ff;border:1px solid #4e83bd;box-shadow:none}
+.bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:12px;color:#b9cff2}.bottom p{margin:0;font-size:14px}
+.shop{margin-top:16px;border:1px solid #3d6ca3;border-radius:16px;background:#111b3e;padding:18px}.shop h2{margin:0 0 8px}.shop-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:12px;margin-top:14px}
+.item{border:1px solid #456393;border-radius:12px;background:#182951;text-align:center;padding:13px 8px}.item canvas{margin:auto;width:78px;height:78px}.item b{display:block;margin:5px 0}.item small{display:block;color:#b3c8ee;margin-bottom:9px}.item button{padding:8px 10px;font-size:12px;width:100%}
+footer{color:#8297be;text-align:center;margin-top:20px;font-size:12px}
+@media(max-width:580px){.stats{gap:5px}.stat{padding:7px 1px}.stat span{font-size:10px}.modal{padding:17px}.bottom{justify-content:center}}
+</style>
+</head>
+<body><main>
+<header><h1>🏀 BASKETBALL RUSH <small style="font-size:13px;color:#b5c9ed">V1</small></h1><a href="../../">← Luxton Arcade</a></header>
+<section class="stats" aria-label="Game stats">
+<div class="stat"><span>SCORE</span><strong id="score">0</strong></div>
+<div class="stat"><span>TIME</span><strong id="time">60</strong></div>
+<div class="stat"><span>COMBO</span><strong id="combo">1×</strong></div>
+<div class="stat"><span>BEST</span><strong id="best">0</strong></div>
+<div class="stat"><span>WALLET</span><strong id="wallet">0</strong></div>
+</section>
+<div class="arena"><canvas id="court" width="960" height="540" aria-label="Basketball court. Drag from the ball and release to shoot."></canvas>
+<div id="overlay" class="overlay"><div class="modal"><h2 id="modalTitle">🏀 BASKETBALL RUSH</h2><p id="modalText">You have 60 seconds! Drag from the basketball toward the hoop, then release. Score consecutive baskets to build your combo and earn coins.</p><button id="play">START GAME →</button></div></div>
+</div>
+<div class="bottom"><p>🎯 Drag from the ball and release to shoot · 🪙 Baskets earn coins · 🔥 Streaks increase your combo</p><button class="secondary" id="shopToggle">🛍️ BALL SHOP</button></div>
+<section class="shop hidden" id="shop"><div class="shop-head"><h2>🏀 Basketball Shop</h2><span>Wallet: <strong id="shopWallet">0</strong> coins</span></div><p style="color:#b5c9ed">Unlock designs with coins earned from baskets. Purchases and your personal best are saved on this device.</p><div id="shopGrid" class="shop-grid"></div></section>
+<footer>Luxton Arcade · Original browser basketball game · Saves locally</footer>
+</main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),canvas=$('court'),ctx=canvas.getContext('2d'),W=960,H=540;
+const skins=[
+{id:'classic',name:'Classic',price:0,base:'#e78232',stripe:'#42221c'},
+{id:'ocean',name:'Ocean',price:10,base:'#32caff',stripe:'#0c477a'},
+{id:'lime',name:'Lime',price:20,base:'#a5f34b',stripe:'#386b18'},
+{id:'pink',name:'Pink',price:30,base:'#ff64b3',stripe:'#7a1952'},
+{id:'gold',name:'Gold',price:45,base:'#ffdc59',stripe:'#8c5a05'},
+{id:'galaxy',name:'Galaxy',price:60,base:'#9c72ff',stripe:'#392168'},
+{id:'fire',name:'Fire',price:80,base:'#ff6142',stripe:'#6b1d16'},
+{id:'cosmic',name:'Cosmic',price:100,base:'#6affdf',stripe:'#1c5d70'}
+];
+const STORE='luxton_basketball_rush_v1';
+let saved={wallet:0,best:0,owned:['classic'],equipped:'classic'};
+try{const v=JSON.parse(localStorage.getItem(STORE)||'null');if(v&&typeof v==='object'){saved={...saved,...v};if(!Array.isArray(saved.owned))saved.owned=['classic'];if(!saved.owned.includes('classic'))saved.owned.unshift('classic');if(!skins.some(s=>s.id===saved.equipped))saved.equipped='classic';saved.wallet=Math.max(0,Number(saved.wallet)||0);saved.best=Math.max(0,Number(saved.best)||0)}}catch(e){}
+const persist=()=>{try{localStorage.setItem(STORE,JSON.stringify(saved))}catch(e){}};
+let mode='menu',score=0,time=60,combo=1,shots=0,balls=[],particles=[],drag=null,feedback='',feedbackUntil=0,last=performance.now(),timeCarry=0;
+const start={x:170,y:410},rim={x:725,y:245},rimW=96,rimY=260,ballR=17;
+let activeBall=null;
+const skin=()=>skins.find(s=>s.id===saved.equipped)||skins[0];
+function hud(){$('score').textContent=score;$('time').textContent=Math.ceil(time);$('combo').textContent=combo+'×';$('best').textContent=saved.best;$('wallet').textContent=saved.wallet;$('shopWallet').textContent=saved.wallet}
+function resetBall(){activeBall={x:start.x,y:start.y,vx:0,vy:0,r:ballR,live:false,scored:false,hitRim:false,age:0};balls=[activeBall]}
+function startGame(){score=0;time=60;combo=1;shots=0;particles=[];feedback='';drag=null;timeCarry=0;mode='playing';resetBall();$('overlay').classList.add('hidden');hud()}
+function endGame(){if(mode!=='playing')return;mode='ended';drag=null;time=0;if(score>saved.best){saved.best=score;persist()}hud();$('modalTitle').textContent='⏰ TIME’S UP!';$('modalText').innerHTML=`Final score: <b>${score}</b><br>Personal best: <b>${saved.best}</b>${score===saved.best&&score>0?'<br>🏆 PERSONAL BEST!':''}<br>Play again to beat your record.`;$('play').textContent='PLAY AGAIN →';$('overlay').classList.remove('hidden')}
+function message(s){feedback=s;feedbackUntil=performance.now()+1150}
+function burst(x,y,color,n=14){for(let i=0;i<n;i++){let a=Math.random()*Math.PI*2,s=60+Math.random()*180;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.6+Math.random()*.5,color})}}
+function basket(b){if(b.scored||mode!=='playing')return;b.scored=true;let points=2*combo;score+=points;saved.wallet+=combo;combo=Math.min(8,combo+1);message(combo>2?`🔥 ${combo-1}× STREAK! +${points}`:`SWISH! +${points}`);burst(rim.x,rimY,'#ffd45e',20);if(score>saved.best)saved.best=score;persist();hud()}
+function miss(){if(mode!=='playing')return;combo=1;message('TRY AGAIN!');hud()}
+function shoot(dx,dy){if(mode!=='playing'||!activeBall||activeBall.live)return;let length=Math.hypot(dx,dy);if(length<12)return;let power=Math.min(950,length*4.0);activeBall.vx=dx/length*power;activeBall.vy=dy/length*power;activeBall.live=true;activeBall.age=0;shots++;message('');}
+function getPoint(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+canvas.addEventListener('pointerdown',e=>{if(mode!=='playing'||!activeBall||activeBall.live)return;const p=getPoint(e);if(Math.hypot(p.x-activeBall.x,p.y-activeBall.y)>85)return;drag={start:p,now:p};canvas.setPointerCapture(e.pointerId);e.preventDefault()});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;drag.now=getPoint(e);e.preventDefault()});
+canvas.addEventListener('pointerup',e=>{if(!drag)return;const p=getPoint(e);const dx=drag.start.x-p.x,dy=drag.start.y-p.y;drag=null;shoot(dx,dy);e.preventDefault()});
+canvas.addEventListener('pointercancel',()=>{drag=null});
+function collideCircle(b,cx,cy,rr){const dx=b.x-cx,dy=b.y-cy,d=Math.hypot(dx,dy);if(d>=b.r+rr||d<.001)return;const nx=dx/d,ny=dy/d,overlap=b.r+rr-d;b.x+=nx*overlap;b.y+=ny*overlap;let v=b.vx*nx+b.vy*ny;if(v<0){b.vx-=1.5*v*nx;b.vy-=1.5*v*ny;b.vx*=.85;b.vy*=.85}b.hitRim=true}
+function update(dt){
+if(mode==='playing'){time=Math.max(0,time-dt);if(time===0){endGame();return}hud()}
+for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=290*dt;p.life-=dt}particles=particles.filter(p=>p.life>0);
+if(mode!=='playing'||!activeBall||!activeBall.live)return;
+const b=activeBall;b.age+=dt;const prevX=b.x,prevY=b.y;
+b.vy+=900*dt;b.x+=b.vx*dt;b.y+=b.vy*dt;
+if(b.x>rim.x+105&&b.x<rim.x+135&&b.y>rim.y-110&&b.y<rim.y+80&&b.vx>0){b.x=rim.x+105-b.r;b.vx*=-.58;b.vy*=.94}
+collideCircle(b,rim.x-rimW/2,rimY,7);collideCircle(b,rim.x+rimW/2,rimY,7);
+const inside=(b.x>rim.x-rimW/2+10&&b.x<rim.x+rimW/2-10);
+if(!b.scored&&b.vy>0&&prevY<rimY&&b.y>=rimY&&inside)basket(b);
+if(b.y>H-54-b.r){b.y=H-54-b.r;b.vy*=-.35;b.vx*=.78;if(Math.abs(b.vy)<55)b.vy=0}
+if(b.x<-80||b.x>W+100||b.age>4.4||(b.y>=H-54-b.r&&Math.abs(b.vx)<25&&Math.abs(b.vy)<30&&b.age>.8)){if(!b.scored)miss();resetBall()}
+}
+function drawBall(x,y,r,s,rotation=0){
+ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.shadowColor=s.base;ctx.shadowBlur=13;
+const g=ctx.createRadialGradient(-r*.4,-r*.5,1,0,0,r);g.addColorStop(0,'#fff8');g.addColorStop(.2,s.base);g.addColorStop(1,s.stripe);ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ctx.save();ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.clip();ctx.strokeStyle=s.stripe;ctx.lineWidth=Math.max(1.8,r*.13);ctx.beginPath();ctx.moveTo(-r,0);ctx.lineTo(r,0);ctx.moveTo(0,-r);ctx.lineTo(0,r);ctx.moveTo(-r*.75,-r*.8);ctx.bezierCurveTo(r*.4,-r*.3,r*.4,r*.3,-r*.75,r*.8);ctx.moveTo(r*.75,-r*.8);ctx.bezierCurveTo(-r*.4,-r*.3,-r*.4,r*.3,r*.75,r*.8);ctx.stroke();ctx.restore();ctx.strokeStyle='#ffffff55';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke();ctx.restore()}
+function draw(){
+const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#131943');bg.addColorStop(.68,'#25336a');bg.addColorStop(1,'#172347');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+ctx.fillStyle='#ffffff07';for(let i=0;i<13;i++){ctx.fillRect(i*85,0,35,H-53)}
+ctx.fillStyle='#293e73';ctx.fillRect(0,H-54,W,54);ctx.fillStyle='#ffce6850';ctx.fillRect(0,H-55,W,3);
+ctx.strokeStyle='#8caaff22';ctx.lineWidth=3;ctx.beginPath();ctx.arc(420,H-54,200,Math.PI,Math.PI*2);ctx.stroke();
+ctx.fillStyle='#ffffff13';ctx.fillRect(rim.x+104,rim.y-100,15,122);
+ctx.shadowColor='#3ad9ff';ctx.shadowBlur=12;ctx.fillStyle='#d8f8ff';ctx.fillRect(rim.x+100,rim.y-92,8,111);ctx.shadowBlur=0;
+ctx.fillStyle='#ffffffaa';ctx.fillRect(rim.x+102,rim.y-90,4,100);
+ctx.strokeStyle='#c7f4ff';ctx.lineWidth=7;ctx.strokeRect(rim.x+65,rim.y-100,110,88);
+ctx.strokeStyle='#fa6e46';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(rim.x-rimW/2,rimY);ctx.lineTo(rim.x+rimW/2,rimY);ctx.stroke();
+ctx.strokeStyle='#e3eff5a0';ctx.lineWidth=2;for(let i=0;i<=6;i++){let x=rim.x-rimW/2+i*rimW/6;ctx.beginPath();ctx.moveTo(x,rimY+3);ctx.lineTo(rim.x+(i-3)*7,rimY+53);ctx.stroke()}for(let j=1;j<=3;j++){ctx.beginPath();ctx.moveTo(rim.x-rimW/2+j*6,rimY+j*13);ctx.lineTo(rim.x+rimW/2-j*6,rimY+j*13);ctx.stroke()}
+ctx.fillStyle='#45e6ff44';ctx.beginPath();ctx.arc(start.x,start.y+ballR+18,36,0,Math.PI*2);ctx.fill();
+if(activeBall){drawBall(activeBall.x,activeBall.y,activeBall.r,skin(),activeBall.live?activeBall.age*4:0)}
+if(drag&&activeBall){const dx=drag.start.x-drag.now.x,dy=drag.start.y-drag.now.y;const len=Math.hypot(dx,dy),pow=Math.min(950,len*4);if(len>1){let vx=dx/len*pow,vy=dy/len*pow,px=start.x,py=start.y;ctx.save();ctx.setLineDash([8,10]);ctx.strokeStyle='#f9f3a8';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(px,py);for(let t=.09;t<1.55;t+=.09){let x=px+vx*t,y=py+vy*t+450*t*t;if(y>H-60)break;ctx.lineTo(x,y)}ctx.stroke();ctx.restore();ctx.strokeStyle='#55ecff';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(activeBall.x,activeBall.y);ctx.lineTo(activeBall.x+dx*.55,activeBall.y+dy*.55);ctx.stroke()}}
+for(const p of particles){ctx.globalAlpha=Math.min(1,p.life);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+if(feedback&&performance.now()<feedbackUntil){ctx.font='900 34px system-ui';ctx.textAlign='center';ctx.shadowColor='#ffd45e';ctx.shadowBlur=18;ctx.fillStyle='#fff4a2';ctx.fillText(feedback,W/2,90);ctx.shadowBlur=0}
+if(mode==='playing'&&!activeBall.live){ctx.textAlign='center';ctx.font='bold 19px system-ui';ctx.fillStyle='#d9eaff';ctx.fillText('DRAG BACK FROM THE BALL TO AIM',start.x+135,start.y-72)}
+}
+function loop(now){const dt=Math.min(.035,(now-last)/1000||0);last=now;update(dt);draw();requestAnimationFrame(loop)}
+function renderShop(){hud();const grid=$('shopGrid');grid.innerHTML='';for(const s of skins){const card=document.createElement('div');card.className='item';const preview=document.createElement('canvas');preview.width=90;preview.height=90;const c=preview.getContext('2d');const old=ctx; // preview drawn independently
+c.translate(45,45);c.fillStyle=s.base;c.beginPath();c.arc(0,0,29,0,Math.PI*2);c.fill();c.strokeStyle=s.stripe;c.lineWidth=4;c.beginPath();c.moveTo(-28,0);c.lineTo(28,0);c.moveTo(0,-28);c.lineTo(0,28);c.stroke();
+const name=document.createElement('b');name.textContent=s.name;const price=document.createElement('small');const owned=saved.owned.includes(s.id);price.textContent=owned?'Unlocked':`${s.price} coins`;const btn=document.createElement('button');btn.textContent=saved.equipped===s.id?'EQUIPPED':owned?'EQUIP':`BUY · ${s.price}`;btn.disabled=saved.equipped===s.id||(!owned&&saved.wallet<s.price);btn.onclick=()=>{if(!saved.owned.includes(s.id)){if(saved.wallet<s.price)return;saved.wallet-=s.price;saved.owned.push(s.id)}saved.equipped=s.id;persist();renderShop()};card.append(preview,name,price,btn);grid.append(card)}}
+$('play').onclick=startGame;
+$('shopToggle').onclick=()=>{$('shop').classList.toggle('hidden');renderShop()};
+hud();resetBall();renderShop();requestAnimationFrame(loop);
+})();
+</script></body></html>
