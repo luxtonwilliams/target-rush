@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101b36">
-<title>Castle Rush V1 | Luxton Arcade</title>
+<title>Castle Rush V1.1 | Luxton Arcade</title>
 <style>
 :root{
   --bg:#0c142b;
@@ -17,7 +17,7 @@
 *{box-sizing:border-box}
 body{
   margin:0;
-  background:radial-gradient(ellipse at 50% 0,#233f75,var(--bg) 70%);
+  background:radial-gradient(ellipse at top,#233f75,var(--bg) 70%);
   font-family:system-ui,Arial,sans-serif;
   color:#f5f8ff;
   overflow-x:hidden;
@@ -44,7 +44,7 @@ h1{
 }
 .stats{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:9px;
   margin:9px 0 12px;
 }
@@ -59,9 +59,8 @@ h1{
   display:block;
   color:#b5c9ed;
   font-size:11px;
-  letter-spacing:1px;
 }
-.stat strong{font-size:clamp(15px,3vw,24px)}
+.stat strong{font-size:clamp(14px,2.5vw,23px)}
 .arena{
   position:relative;
   border:3px solid #73dbff;
@@ -174,6 +173,7 @@ select{
   border:1px solid #6782ad;
   border-radius:9px;
   padding:10px;
+  min-height:44px;
 }
 .help{
   color:#aec6e8;
@@ -194,7 +194,7 @@ select{
   h1{font-size:26px}
   .stat{padding:9px 2px}
   .stat small{font-size:9px}
-  .stats{gap:6px}
+  .stats{gap:5px}
   .control-panel{
     grid-template-columns:1fr 1fr;
     gap:12px;
@@ -214,7 +214,7 @@ select{
 <body>
 <main>
 <header>
-  <h1>🏰 CASTLE RUSH <span class="version">V1</span></h1>
+  <h1>🏰 CASTLE RUSH <span class="version">V1.1</span></h1>
   <a href="../../">← Luxton Arcade</a>
 </header>
 
@@ -231,6 +231,10 @@ select{
     <small>RED CASTLE</small>
     <strong id="redHealth">20 / 20 🧱</strong>
   </div>
+  <div class="stat">
+    <small>WIND</small>
+    <strong id="windText">🍃 —</strong>
+  </div>
 </div>
 
 <p id="turnNotice" role="status" aria-live="polite">
@@ -239,17 +243,16 @@ select{
 
 <div class="arena">
   <canvas id="game" width="960" height="540"></canvas>
-
   <div id="overlay" class="overlay">
     <div class="dialog">
-      <h2 id="dialogTitle">🏰 CASTLE RUSH!</h2>
+      <h2 id="dialogTitle">🏰 CASTLE RUSH V1.1!</h2>
       <p id="dialogText">
-        Aim your cannon, choose your power, and
-        launch cartoon cannonballs! Destroy all
-        the other castle's bricks to win.
+        The battle is tougher now! 🍃 Wind affects every
+        cannonball, explosions are smaller, and the
+        dotted aim line is shorter.
         <br><br>
-        Play against the computer or challenge
-        someone beside you.
+        Choose your angle and power carefully
+        to destroy the enemy castle!
       </p>
       <button id="startBtn">⚔️ START BATTLE</button>
     </div>
@@ -284,37 +287,46 @@ select{
       <option value="two">👥 2 players</option>
     </select>
   </label>
+
+  <label for="difficulty">
+    Difficulty:
+    <select id="difficulty">
+      <option value="balanced">🎯 Balanced</option>
+      <option value="hard">🔥 Hard</option>
+    </select>
+  </label>
+
   <button id="restartBtn" class="secondary">
     ↻ NEW BATTLE
   </button>
 </div>
 
 <p class="help">
-  📱 Mobile: use the angle and power sliders,
-  then tap FIRE.
+  📱 Mobile: use the sliders, then tap FIRE.
+  💻 PC: ↑↓ angle, ←→ power, Space fires.
   <br>
-  💻 PC: ↑↓ changes angle, ←→ changes power,
-  Space fires.
+  🍃 Wind changes each turn. The dotted line
+  only shows the beginning of your shot!
 </p>
 </main>
 
 <script>
-(() => {
+(()=>{
 "use strict";
 
-const $ = id => document.getElementById(id);
-const canvas = $("game");
-const ctx = canvas.getContext("2d");
+const $=id=>document.getElementById(id);
+const canvas=$("game");
+const ctx=canvas.getContext("2d");
 
-const W = 960;
-const H = 540;
-const GROUND = 466;
-const GRAVITY = 460;
-const TOTAL = 20;
+const W=960;
+const H=540;
+const GROUND=466;
+const GRAVITY=460;
+const TOTAL=20;
 
-const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
-const sides = [
+const sides=[
   {
     name:"BLUE",
     color:"#45c7ff",
@@ -333,184 +345,204 @@ const sides = [
   }
 ];
 
-let settings = [
+const settings=[
   {angle:32,power:62},
   {angle:32,power:62}
 ];
 
-let bricks = [[],[]];
-let debris = [];
-let shot = null;
-let trail = [];
-let turn = 0;
-let phase = "menu";
-let mode = "cpu";
-let cooldown = 0;
-let session = 0;
-let shake = 0;
-let last = performance.now();
-let wins = 0;
+let bricks=[[],[]];
+let debris=[];
+let shot=null;
+let trail=[];
+let turn=0;
+let phase="menu";
+let mode="cpu";
+let difficulty="balanced";
+let wind=0;
+let cooldown=0;
+let session=0;
+let shake=0;
+let last=performance.now();
+let wins=0;
 
-try {
-  wins = Math.max(
+try{
+  wins=Math.max(
     0,
-    Number(localStorage.getItem("luxton_castle_rush_wins_v1")) || 0
+    Number(localStorage.getItem(
+      "luxton_castle_rush_wins_v1"
+    ))||0
   );
-} catch(e) {}
+}catch(e){}
 
-function build(side) {
-  const result = [];
+function build(side){
+  const out=[];
 
-  // Four rows of castle walls.
-  for(let row=0;row<4;row++) {
-    for(let col=0;col<4;col++) {
-      result.push({
+  for(let row=0;row<4;row++){
+    for(let col=0;col<4;col++){
+      out.push({
         x:sides[side].x+col*34,
         y:GROUND-(row+1)*29,
-        w:33,
-        h:28,
-        row,
-        col
+        w:33,h:28
       });
     }
   }
 
-  // Two taller castle towers.
-  for(let row=4;row<6;row++) {
-    for(const col of [0,3]) {
-      result.push({
+  for(let row=4;row<6;row++){
+    for(const col of [0,3]){
+      out.push({
         x:sides[side].x+col*34,
         y:GROUND-(row+1)*29,
-        w:33,
-        h:28,
-        row,
-        col
+        w:33,h:28
       });
     }
   }
 
-  return result;
+  return out;
 }
 
-function updateHud() {
-  $("blueHealth").textContent =
-    `${bricks[0].length} / ${TOTAL} 🧱`;
+function newWind(){
+  const range=difficulty==="hard"?115:68;
 
-  $("redHealth").textContent =
-    `${bricks[1].length} / ${TOTAL} 🧱`;
+  wind=Math.round(
+    (Math.random()*2-1)*range
+  );
 
-  $("turnText").textContent =
-    phase==="over" ? "GAME OVER" :
-    phase==="menu" ? "READY" :
-    turn===0 ? "🔵 BLUE" : "🔴 RED";
-
-  $("angle").value = settings[turn].angle;
-  $("power").value = settings[turn].power;
-
-  $("angleValue").textContent =
-    settings[turn].angle+"°";
-
-  $("powerValue").textContent =
-    settings[turn].power+"%";
-
-  const cpuThinking =
-    mode==="cpu" && turn===1;
-
-  const canControl =
-    phase==="ready" && !cpuThinking;
-
-  $("angle").disabled = !canControl;
-  $("power").disabled = !canControl;
-  $("fireBtn").disabled = !canControl;
-
-  $("mode").disabled =
-    phase==="flying" || phase==="settling";
-
-  const announcement =
-    phase==="flying" ? "💥 Cannonball flying!" :
-    phase==="settling" ? "🧱 Castle taking damage..." :
-    phase==="over" ? "Battle complete!" :
-    phase==="menu" ? "Pick a mode and start!" :
-    cpuThinking ? "🤖 Computer is aiming..." :
-    turn===0 ? "🔵 Blue castle: your shot!" :
-               "🔴 Red castle: your shot!";
-
-  $("turnNotice").textContent = announcement;
-}
-
-function startBattle() {
-  session++;
-  mode = $("mode").value;
-
-  bricks = [build(0),build(1)];
-  debris = [];
-  shot = null;
-  trail = [];
-  turn = 0;
-  phase = "ready";
-  cooldown = 0;
-  shake = 0;
-
-  $("overlay").hidden = true;
-  updateHud();
-}
-
-function showEnd(winner) {
-  phase = "over";
-  shot = null;
-
-  if(winner===0 && mode==="cpu") {
-    wins++;
-
-    try {
-      localStorage.setItem(
-        "luxton_castle_rush_wins_v1",
-        String(wins)
-      );
-    } catch(e) {}
+  if(Math.abs(wind)<12){
+    wind=wind<0?-16:16;
   }
-
-  $("dialogTitle").textContent =
-    winner===0 ?
-    "🏆 BLUE CASTLE WINS!" :
-    "🏆 RED CASTLE WINS!";
-
-  if(winner===0 && mode==="cpu") {
-    $("dialogText").innerHTML =
-      `You knocked down the enemy castle! 🎉
-       <br>Victories against the computer:
-       <b>${wins}</b>`;
-  } else {
-    $("dialogText").textContent =
-      "The opposing castle has fallen! 🏰💥";
-  }
-
-  $("startBtn").textContent = "⚔️ PLAY AGAIN";
-  $("overlay").hidden = false;
-
-  updateHud();
 }
 
-function speed(power) {
+function blastRadius(){
+  return difficulty==="hard"?30:39;
+}
+
+function speed(power){
   return 290+power*3.8;
 }
 
-function velocity(side,angle,power) {
-  const a = angle*Math.PI/180;
-  const v = speed(power);
+function velocity(side,angle,power){
+  const a=angle*Math.PI/180;
+  const v=speed(power);
 
-  return {
+  return{
     vx:Math.cos(a)*v*sides[side].dir,
     vy:-Math.sin(a)*v
   };
 }
 
-function fire(side,angle,power) {
-  if(phase!=="ready" || side!==turn) return;
+function updateHud(){
+  $("blueHealth").textContent=
+    `${bricks[0].length} / ${TOTAL} 🧱`;
 
-  const v = velocity(side,angle,power);
+  $("redHealth").textContent=
+    `${bricks[1].length} / ${TOTAL} 🧱`;
 
-  shot = {
+  $("turnText").textContent=
+    phase==="over"?"GAME OVER":
+    phase==="menu"?"READY":
+    turn===0?"🔵 BLUE":"🔴 RED";
+
+  $("windText").textContent=
+    phase==="menu"?"🍃 —":
+    `${wind<0?"←":"→"} ${Math.abs(wind)}`;
+
+  $("angle").value=settings[turn].angle;
+  $("power").value=settings[turn].power;
+
+  $("angleValue").textContent=
+    settings[turn].angle+"°";
+
+  $("powerValue").textContent=
+    settings[turn].power+"%";
+
+  const cpuThinking=
+    mode==="cpu"&&turn===1;
+
+  const canControl=
+    phase==="ready"&&!cpuThinking;
+
+  $("angle").disabled=!canControl;
+  $("power").disabled=!canControl;
+  $("fireBtn").disabled=!canControl;
+
+  $("mode").disabled=
+    phase==="flying"||phase==="settling";
+
+  $("difficulty").disabled=
+    phase==="flying"||phase==="settling";
+
+  $("turnNotice").textContent=
+    phase==="flying"?"💥 Cannonball flying!":
+    phase==="settling"?"🧱 Castle taking damage...":
+    phase==="over"?"Battle complete!":
+    phase==="menu"?"Pick a mode and start!":
+    cpuThinking?"🤖 Computer is aiming...":
+    turn===0?"🔵 Blue castle: your shot!":
+             "🔴 Red castle: your shot!";
+}
+
+function startBattle(){
+  session++;
+
+  mode=$("mode").value;
+  difficulty=$("difficulty").value;
+
+  bricks=[build(0),build(1)];
+  debris=[];
+  shot=null;
+  trail=[];
+  turn=0;
+  phase="ready";
+  cooldown=0;
+  shake=0;
+
+  newWind();
+
+  $("overlay").hidden=true;
+  updateHud();
+}
+
+function showEnd(winner){
+  phase="over";
+  shot=null;
+
+  if(winner===0&&mode==="cpu"){
+    wins++;
+
+    try{
+      localStorage.setItem(
+        "luxton_castle_rush_wins_v1",
+        String(wins)
+      );
+    }catch(e){}
+  }
+
+  $("dialogTitle").textContent=
+    winner===0?
+    "🏆 BLUE CASTLE WINS!":
+    "🏆 RED CASTLE WINS!";
+
+  if(winner===0&&mode==="cpu"){
+    $("dialogText").textContent=
+      `You knocked down the enemy castle! 🎉
+       Computer victories: ${wins}`;
+  }else{
+    $("dialogText").textContent=
+      "The opposing castle has fallen! 🏰💥";
+  }
+
+  $("startBtn").textContent="⚔️ PLAY AGAIN";
+  $("overlay").hidden=false;
+
+  updateHud();
+}
+
+function fire(side,angle,power){
+  if(phase!=="ready"||side!==turn)return;
+
+  const v=velocity(side,angle,power);
+
+  shot={
     x:sides[side].muzzleX,
     y:368,
     vx:v.vx,
@@ -518,294 +550,336 @@ function fire(side,angle,power) {
     side
   };
 
-  trail = [];
-  phase = "flying";
+  trail=[];
+  phase="flying";
   updateHud();
 }
 
-function blast(x,y,target) {
-  shake = 8;
+function burstParticles(x,y,color,count,size){
+  for(let i=0;i<count;i++){
+    const a=Math.random()*Math.PI*2;
+    const v=45+Math.random()*190;
 
-  bricks[target] = bricks[target].filter(block => {
-    const nearX = clamp(x,block.x,block.x+block.w);
-    const nearY = clamp(y,block.y,block.y+block.h);
+    debris.push({
+      x,y,
+      vx:Math.cos(a)*v,
+      vy:Math.sin(a)*v-90,
+      life:.4+Math.random()*.55,
+      color,
+      size:size*(.55+Math.random())
+    });
+  }
+}
 
-    if(Math.hypot(x-nearX,y-nearY)>51) {
+function blast(x,y,target){
+  shake=8;
+
+  const radius=blastRadius();
+
+  bricks[target]=bricks[target].filter(b=>{
+    const nx=clamp(x,b.x,b.x+b.w);
+    const ny=clamp(y,b.y,b.y+b.h);
+
+    if(Math.hypot(x-nx,y-ny)>radius){
       return true;
     }
 
-    // Break the brick into cartoon debris.
-    for(let i=0;i<6;i++) {
-      const angle = Math.random()*Math.PI*2;
-      const v = 50+Math.random()*175;
-
-      debris.push({
-        x:block.x+block.w/2,
-        y:block.y+block.h/2,
-        vx:Math.cos(angle)*v,
-        vy:Math.sin(angle)*v-100,
-        life:.55+Math.random()*.5,
-        color:sides[target].color,
-        size:3+Math.random()*6
-      });
-    }
+    burstParticles(
+      b.x+b.w/2,
+      b.y+b.h/2,
+      sides[target].color,
+      6,5
+    );
 
     return false;
   });
 
-  // Spark effects.
-  for(let i=0;i<22;i++) {
-    const angle = Math.random()*Math.PI*2;
-    const v = 45+Math.random()*140;
+  burstParticles(x,y,"#ffcc65",24,4);
 
-    debris.push({
-      x,y,
-      vx:Math.cos(angle)*v,
-      vy:Math.sin(angle)*v-60,
-      life:.35+Math.random()*.4,
-      color:i%2 ? "#ffcc65" : "#fff3bf",
-      size:2+Math.random()*5
-    });
-  }
+  shot=null;
+  trail=[];
 
-  shot = null;
-  trail = [];
-
-  if(bricks[target].length===0) {
+  if(!bricks[target].length){
     showEnd(1-target);
     return;
   }
 
-  phase = "settling";
-  cooldown = .7;
+  phase="settling";
+  cooldown=.7;
   updateHud();
 }
 
-function miss(x,y) {
-  for(let i=0;i<12;i++) {
-    const angle = Math.random()*Math.PI*2;
-    const v = 25+Math.random()*110;
+function miss(x,y){
+  burstParticles(x,y,"#d6b17a",14,4);
 
-    debris.push({
-      x,y,
-      vx:Math.cos(angle)*v,
-      vy:Math.sin(angle)*v-100,
-      life:.4+Math.random()*.4,
-      color:"#d6b17a",
-      size:2+Math.random()*4
-    });
+  shot=null;
+  trail=[];
+  phase="settling";
+  cooldown=.65;
+
+  updateHud();
+}
+
+// Calculate a shot's height at a target distance,
+// including the wind's sideways push.
+function predictedYAtX(side,angle,power,targetX){
+  const v=velocity(side,angle,power);
+
+  const distance=
+    (targetX-sides[side].muzzleX)*
+    sides[side].dir;
+
+  if(
+    distance<=0||
+    v.vx*sides[side].dir<=0
+  ){
+    return Infinity;
   }
 
-  shot = null;
-  trail = [];
-  phase = "settling";
-  cooldown = .65;
-  updateHud();
+  let t=distance/
+    (v.vx*sides[side].dir);
+
+  for(let i=0;i<5;i++){
+    const x=
+      sides[side].muzzleX+
+      v.vx*t+
+      wind*t*t*.5;
+
+    t+=(targetX-x)/(v.vx+wind*t);
+
+    if(!Number.isFinite(t)||t<=0){
+      return Infinity;
+    }
+  }
+
+  return 368+v.vy*t+
+    .5*GRAVITY*t*t;
 }
 
-function computerFire(token) {
+// A smarter computer searches for a workable shot.
+function computerFire(token){
   if(
-    session!==token ||
-    phase!=="ready" ||
-    turn!==1 ||
+    session!==token||
+    phase!=="ready"||
+    turn!==1||
     mode!=="cpu"
-  ) return;
+  )return;
 
-  const remaining = bricks[0];
-  if(!remaining.length) return;
+  const candidates=bricks[0];
 
-  const block =
-    remaining[Math.floor(Math.random()*remaining.length)];
+  if(!candidates.length)return;
 
-  const angle = 27+Math.random()*18;
-  const a = angle*Math.PI/180;
+  const chosen=
+    candidates[
+      Math.floor(Math.random()*candidates.length)
+    ];
 
-  const distance = Math.abs(
-    block.x+block.w/2-sides[1].muzzleX
-  );
+  const aimX=chosen.x+chosen.w/2;
+  const aimY=chosen.y+chosen.h/2;
 
-  const dy = block.y+block.h/2-368;
-
-  const denominator =
-    2*Math.cos(a)**2 *
-    (dy+Math.tan(a)*distance);
-
-  const requiredSpeed =
-    denominator>0 ?
-    Math.sqrt(
-      GRAVITY*distance*distance/denominator
-    ) : 480;
-
-  // A little randomness gives the computer
-  // imperfect aim instead of guaranteed hits.
-  const power = clamp(
-    Math.round(
-      (requiredSpeed-290)/3.8+
-      (Math.random()-.5)*14
-    ),
-    25,
-    100
-  );
-
-  const finalAngle = clamp(
-    Math.round(angle+(Math.random()-.5)*4),
-    12,
-    75
-  );
-
-  settings[1] = {
-    angle:finalAngle,
-    power
+  let best={
+    angle:35,
+    power:68,
+    error:Infinity
   };
 
-  fire(1,finalAngle,power);
+  for(let a=13;a<=69;a+=2){
+    for(let p=25;p<=100;p+=2){
+      const y=predictedYAtX(
+        1,a,p,aimX
+      );
+
+      const error=Math.abs(y-aimY);
+
+      if(error<best.error){
+        best={
+          angle:a,
+          power:p,
+          error
+        };
+      }
+    }
+  }
+
+  // The computer is still slightly imperfect.
+  const jitter=
+    difficulty==="hard"?1.1:2.2;
+
+  const powerJitter=
+    difficulty==="hard"?2:5;
+
+  const angle=clamp(
+    Math.round(
+      best.angle+
+      (Math.random()-.5)*jitter*2
+    ),
+    12,75
+  );
+
+  const power=clamp(
+    Math.round(
+      best.power+
+      (Math.random()-.5)*powerJitter*2
+    ),
+    25,100
+  );
+
+  settings[1]={angle,power};
+
+  fire(1,angle,power);
 }
 
-function nextTurn() {
-  if(phase!=="settling") return;
+function nextTurn(){
+  if(phase!=="settling")return;
 
-  turn = 1-turn;
-  phase = "ready";
+  turn=1-turn;
+  phase="ready";
+
+  newWind();
   updateHud();
 
-  if(turn===1 && mode==="cpu") {
-    const token = session;
+  if(turn===1&&mode==="cpu"){
+    const token=session;
 
     setTimeout(
-      () => computerFire(token),
+      ()=>computerFire(token),
       650
     );
   }
 }
 
-function update(dt) {
-  shake = Math.max(0,shake-dt*22);
+function update(dt){
+  shake=Math.max(0,shake-dt*22);
 
-  for(const p of debris) {
-    p.x += p.vx*dt;
-    p.y += p.vy*dt;
-    p.vy += 400*dt;
-    p.life -= dt;
+  for(const p of debris){
+    p.x+=p.vx*dt;
+    p.y+=p.vy*dt;
+    p.vy+=400*dt;
+    p.life-=dt;
   }
 
-  debris = debris.filter(p=>p.life>0);
+  debris=debris.filter(p=>p.life>0);
 
-  if(phase==="settling") {
-    cooldown -= dt;
+  if(phase==="settling"){
+    cooldown-=dt;
 
-    if(cooldown<=0) {
+    if(cooldown<=0){
       nextTurn();
     }
   }
 
-  if(!shot || phase!=="flying") return;
+  if(!shot||phase!=="flying")return;
 
-  // Small steps make collisions more reliable.
-  const steps = 3;
+  // Small steps keep collisions accurate.
+  for(let k=0;k<4;k++){
+    const d=dt/4;
 
-  for(let k=0;k<steps;k++) {
-    const delta = dt/steps;
+    shot.x+=shot.vx*d;
+    shot.y+=shot.vy*d;
 
-    shot.x += shot.vx*delta;
-    shot.y += shot.vy*delta;
-    shot.vy += GRAVITY*delta;
+    shot.vx+=wind*d;
+    shot.vy+=GRAVITY*d;
 
-    if(k===0) {
-      trail.push({x:shot.x,y:shot.y});
+    if(k===0){
+      trail.push({
+        x:shot.x,
+        y:shot.y
+      });
     }
 
-    if(trail.length>38) trail.shift();
+    if(trail.length>38){
+      trail.shift();
+    }
 
-    const target = 1-shot.side;
+    const target=1-shot.side;
 
-    const hit = bricks[target].some(b =>
-      shot.x+9>b.x &&
-      shot.x-9<b.x+b.w &&
-      shot.y+9>b.y &&
+    const hit=bricks[target].some(b=>
+      shot.x+9>b.x&&
+      shot.x-9<b.x+b.w&&
+      shot.y+9>b.y&&
       shot.y-9<b.y+b.h
     );
 
-    if(hit) {
+    if(hit){
       blast(shot.x,shot.y,target);
       return;
     }
 
-    if(shot.y>=GROUND-5) {
-      const nearby = bricks[target].some(b =>
+    if(shot.y>=GROUND-5){
+      const near=bricks[target].some(b=>
         Math.abs(
           shot.x-(b.x+b.w/2)
-        )<55
+        )<blastRadius()+18
       );
 
-      if(nearby) {
+      if(near){
         blast(shot.x,GROUND-5,target);
-      } else {
+      }else{
         miss(shot.x,GROUND-5);
       }
+
       return;
     }
 
     if(
-      shot.x<-35 ||
-      shot.x>W+35 ||
+      shot.x<-35||
+      shot.x>W+35||
       shot.y>H+40
-    ) {
+    ){
       miss(
         clamp(shot.x,0,W),
         clamp(shot.y,0,GROUND)
       );
+
       return;
     }
   }
 }
 
-function roundedRect(x,y,w,h,r,fill) {
+function rect(x,y,w,h,r,color){
   ctx.beginPath();
   ctx.roundRect(x,y,w,h,r);
-  ctx.fillStyle = fill;
+  ctx.fillStyle=color;
   ctx.fill();
 }
 
-function drawBackground(t) {
-  const grad = ctx.createLinearGradient(
+function drawBackground(t){
+  const g=ctx.createLinearGradient(
     0,0,0,GROUND
   );
 
-  grad.addColorStop(0,"#5e99db");
-  grad.addColorStop(.78,"#b7d6ee");
-  grad.addColorStop(1,"#ffdfb2");
+  g.addColorStop(0,"#5e99db");
+  g.addColorStop(.78,"#b7d6ee");
+  g.addColorStop(1,"#ffdfb2");
 
-  ctx.fillStyle = grad;
+  ctx.fillStyle=g;
   ctx.fillRect(0,0,W,H);
 
-  // Sun.
-  ctx.fillStyle = "#fff3bd";
+  ctx.fillStyle="#fff3bd";
   ctx.beginPath();
   ctx.arc(470,105,50,0,Math.PI*2);
   ctx.fill();
 
-  // Clouds.
-  for(let i=0;i<5;i++) {
-    const x =
+  for(let i=0;i<5;i++){
+    const x=
       (i*234+t*(i%2?5:9))%1200-120;
 
-    const y = 70+(i%3)*60;
+    const y=70+(i%3)*60;
 
-    ctx.fillStyle = "#ffffffb8";
+    ctx.fillStyle="#ffffffb8";
 
     for(const [dx,dy,r] of [
       [0,0,24],
       [23,3,28],
       [49,5,21]
-    ]) {
+    ]){
       ctx.beginPath();
       ctx.arc(x+dx,y+dy,r,0,Math.PI*2);
       ctx.fill();
     }
   }
 
-  // Mountains.
-  ctx.fillStyle = "#7cb2ae";
+  ctx.fillStyle="#7cb2ae";
   ctx.beginPath();
   ctx.moveTo(0,405);
   ctx.lineTo(180,310);
@@ -818,8 +892,7 @@ function drawBackground(t) {
   ctx.lineTo(0,GROUND);
   ctx.fill();
 
-  // Hills.
-  ctx.fillStyle = "#5d966d";
+  ctx.fillStyle="#5d966d";
   ctx.beginPath();
   ctx.moveTo(0,435);
   ctx.quadraticCurveTo(250,375,480,445);
@@ -828,63 +901,64 @@ function drawBackground(t) {
   ctx.lineTo(0,GROUND);
   ctx.fill();
 
-  // Ground.
-  ctx.fillStyle = "#45845b";
+  ctx.fillStyle="#45845b";
   ctx.fillRect(0,GROUND,W,H-GROUND);
 
-  ctx.fillStyle = "#77563c";
+  ctx.fillStyle="#77563c";
   ctx.fillRect(
-    0,GROUND+18,W,H-GROUND-18
+    0,GROUND+18,
+    W,H-GROUND-18
   );
 
-  ctx.strokeStyle = "#9fd07b";
-  ctx.lineWidth = 5;
+  ctx.strokeStyle="#9fd07b";
+  ctx.lineWidth=5;
   ctx.beginPath();
   ctx.moveTo(0,GROUND+2);
   ctx.lineTo(W,GROUND+2);
   ctx.stroke();
 }
 
-function drawCastle(side) {
-  const castle = sides[side];
+function drawCastle(side){
+  const c=sides[side];
 
-  ctx.fillStyle = "#0003";
+  ctx.fillStyle="#0003";
   ctx.beginPath();
   ctx.ellipse(
-    castle.x+69,
+    c.x+69,
     GROUND+9,
     94,15,0,0,Math.PI*2
   );
   ctx.fill();
 
-  for(const b of bricks[side]) {
-    const base =
-      side===0 ? "#469ace" : "#d96e83";
-
-    roundedRect(
+  for(const b of bricks[side]){
+    rect(
       b.x+1,b.y+1,
-      b.w-2,b.h-2,
-      2,base
+      b.w-2,b.h-2,2,
+      side===0?"#469ace":"#d96e83"
     );
 
-    ctx.fillStyle = castle.shadow;
+    ctx.fillStyle=c.shadow;
     ctx.fillRect(
       b.x+2,
       b.y+b.h-6,
-      b.w-4,
-      5
+      b.w-4,5
     );
 
-    ctx.strokeStyle = "#ffffff60";
-    ctx.lineWidth = 1;
+    ctx.strokeStyle="#ffffff60";
+    ctx.lineWidth=1;
     ctx.strokeRect(
-      b.x+2.5,b.y+2.5,
-      b.w-5,b.h-5
+      b.x+2.5,
+      b.y+2.5,
+      b.w-5,
+      b.h-5
     );
 
-    ctx.strokeStyle = "#ffffff35";
+    ctx.strokeStyle="#ffffff35";
     ctx.beginPath();
-    ctx.moveTo(b.x+b.w/2,b.y+3);
+    ctx.moveTo(
+      b.x+b.w/2,
+      b.y+3
+    );
     ctx.lineTo(
       b.x+b.w/2,
       b.y+b.h-5
@@ -892,114 +966,116 @@ function drawCastle(side) {
     ctx.stroke();
   }
 
-  // Castle flag.
-  const poleX = castle.x+68;
-  const flagY = GROUND-4*29;
+  const poleX=c.x+68;
+  const flagY=GROUND-4*29;
 
-  ctx.strokeStyle = "#f8f3db";
-  ctx.lineWidth = 4;
+  ctx.strokeStyle="#f8f3db";
+  ctx.lineWidth=4;
   ctx.beginPath();
   ctx.moveTo(poleX,flagY);
   ctx.lineTo(poleX,flagY-85);
   ctx.stroke();
 
-  ctx.fillStyle = castle.color;
+  ctx.fillStyle=c.color;
   ctx.beginPath();
   ctx.moveTo(poleX,flagY-84);
   ctx.lineTo(
-    poleX+castle.dir*49,
+    poleX+c.dir*49,
     flagY-67
   );
   ctx.lineTo(poleX,flagY-51);
   ctx.fill();
 
-  ctx.fillStyle = "#1a345d";
-  ctx.font = "bold 15px system-ui";
-  ctx.textAlign = "center";
+  ctx.fillStyle="#1a345d";
+  ctx.font="bold 15px system-ui";
+  ctx.textAlign="center";
 
   ctx.fillText(
-    side===0 ? "BLUE CASTLE" : "RED CASTLE",
-    castle.x+68,
+    side===0?"BLUE CASTLE":"RED CASTLE",
+    c.x+68,
     GROUND+44
   );
 }
 
-function drawCannon(side) {
-  const info = sides[side];
-  const angle =
+function drawCannon(side){
+  const info=sides[side];
+  const angle=
     settings[side].angle*Math.PI/180;
 
-  const x = info.muzzleX;
-  const y = 368;
+  const x=info.muzzleX;
+  const y=368;
 
   ctx.save();
   ctx.translate(x,y);
 
   ctx.rotate(
-    info.dir===1 ?
-    -angle :
+    info.dir===1?
+    -angle:
     Math.PI+angle
   );
 
-  roundedRect(
+  rect(
     -12,-12,62,24,6,
     "#384259"
   );
 
-  roundedRect(
+  rect(
     31,-11,20,22,4,
     "#23283b"
   );
 
-  ctx.fillStyle = "#a6b9ce";
+  ctx.fillStyle="#a6b9ce";
   ctx.fillRect(39,-9,4,18);
 
   ctx.restore();
 
-  // Cannon wheel.
-  ctx.fillStyle = "#34455e";
+  ctx.fillStyle="#34455e";
   ctx.beginPath();
   ctx.arc(x,y,24,0,Math.PI*2);
   ctx.fill();
 
-  ctx.strokeStyle = "#aab8c8";
-  ctx.lineWidth = 7;
+  ctx.strokeStyle="#aab8c8";
+  ctx.lineWidth=7;
   ctx.beginPath();
   ctx.arc(x,y,17,0,Math.PI*2);
   ctx.stroke();
 
-  ctx.fillStyle = info.color;
+  ctx.fillStyle=info.color;
   ctx.beginPath();
   ctx.arc(x,y,8,0,Math.PI*2);
   ctx.fill();
 }
 
-function drawPreview() {
+function drawPreview(){
   if(
-    phase!=="ready" ||
-    (mode==="cpu" && turn===1)
-  ) return;
+    phase!=="ready"||
+    (mode==="cpu"&&turn===1)
+  )return;
 
-  const {angle,power} = settings[turn];
-  const v = velocity(turn,angle,power);
-  const startX = sides[turn].muzzleX;
+  const {angle,power}=settings[turn];
+  const v=velocity(turn,angle,power);
+  const startX=sides[turn].muzzleX;
 
-  ctx.fillStyle =
-    turn===0 ?
-    "#0d477cbb" :
+  ctx.fillStyle=
+    turn===0?
+    "#0d477cbb":
     "#a63853bb";
 
-  for(let t=.14;t<2.8;t+=.105) {
-    const x = startX+v.vx*t;
-    const y =
+  // Only the beginning of the cannonball path!
+  for(let t=.10;t<=.50;t+=.08){
+    const x=
+      startX+v.vx*t+
+      .5*wind*t*t;
+
+    const y=
       368+v.vy*t+
       .5*GRAVITY*t*t;
 
     if(
-      x<15 ||
-      x>945 ||
+      x<15||
+      x>945||
       y>GROUND-7
-    ) break;
+    )break;
 
     ctx.beginPath();
     ctx.arc(x,y,3.5,0,Math.PI*2);
@@ -1007,10 +1083,10 @@ function drawPreview() {
   }
 }
 
-function draw() {
+function draw(){
   ctx.save();
 
-  if(shake) {
+  if(shake){
     ctx.translate(
       (Math.random()-.5)*shake,
       (Math.random()-.5)*shake
@@ -1024,10 +1100,9 @@ function draw() {
   drawCannon(1);
   drawPreview();
 
-  if(shot) {
-    // Cannonball trail.
-    for(let i=0;i<trail.length;i++) {
-      ctx.fillStyle =
+  if(shot){
+    for(let i=0;i<trail.length;i++){
+      ctx.fillStyle=
         `rgba(255,246,193,${i/trail.length*.65})`;
 
       ctx.beginPath();
@@ -1039,77 +1114,69 @@ function draw() {
       ctx.fill();
     }
 
-    ctx.shadowColor = "#ffdb71";
-    ctx.shadowBlur = 17;
-    ctx.fillStyle = "#252a42";
+    ctx.shadowColor="#ffdb71";
+    ctx.shadowBlur=17;
+    ctx.fillStyle="#252a42";
 
     ctx.beginPath();
     ctx.arc(
-      shot.x,
-      shot.y,
+      shot.x,shot.y,
       11,0,Math.PI*2
     );
     ctx.fill();
 
-    ctx.strokeStyle = "#fbe9bb";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle="#fbe9bb";
+    ctx.lineWidth=3;
     ctx.stroke();
-    ctx.shadowBlur = 0;
+    ctx.shadowBlur=0;
   }
 
-  // Falling brick particles.
-  for(const p of debris) {
-    ctx.globalAlpha =
+  for(const p of debris){
+    ctx.globalAlpha=
       clamp(p.life,0,1);
 
-    ctx.fillStyle = p.color;
-
+    ctx.fillStyle=p.color;
     ctx.fillRect(
       p.x,p.y,
       p.size,p.size
     );
   }
 
-  ctx.globalAlpha = 1;
+  ctx.globalAlpha=1;
   ctx.restore();
 }
 
-function frame(now) {
-  const dt = Math.min(
-    (now-last)/1000,
+function frame(now){
+  const dt=Math.min(
+    Math.max(0,(now-last)/1000),
     .032
   );
 
-  last = now;
+  last=now;
   update(dt);
   draw();
 
   requestAnimationFrame(frame);
 }
 
-function adjust() {
-  settings[turn].angle =
+function adjust(){
+  settings[turn].angle=
     Number($("angle").value);
 
-  settings[turn].power =
+  settings[turn].power=
     Number($("power").value);
 
-  $("angleValue").textContent =
+  $("angleValue").textContent=
     settings[turn].angle+"°";
 
-  $("powerValue").textContent =
+  $("powerValue").textContent=
     settings[turn].power+"%";
 }
 
-$("angle").addEventListener(
-  "input",adjust
-);
+$("angle").addEventListener("input",adjust);
+$("power").addEventListener("input",adjust);
 
-$("power").addEventListener(
-  "input",adjust
-);
-
-$("fireBtn").onclick = () => {
+$("fireBtn").onclick=()=>{
   fire(
     turn,
     settings[turn].angle,
@@ -1117,31 +1184,41 @@ $("fireBtn").onclick = () => {
   );
 };
 
-$("startBtn").onclick = startBattle;
-$("restartBtn").onclick = startBattle;
+$("startBtn").onclick=startBattle;
+$("restartBtn").onclick=startBattle;
 
 $("mode").addEventListener(
-  "change",() => {
+  "change",()=>{
     if(
-      phase==="menu" ||
+      phase==="menu"||
       phase==="over"
-    ) return;
+    )return;
 
     startBattle();
   }
 );
 
-// Desktop keyboard controls.
-window.addEventListener("keydown",e => {
+$("difficulty").addEventListener(
+  "change",()=>{
+    if(
+      phase==="menu"||
+      phase==="over"
+    )return;
+
+    startBattle();
+  }
+);
+
+window.addEventListener("keydown",e=>{
   if(
-    phase!=="ready" ||
-    (mode==="cpu" && turn===1) ||
+    phase!=="ready"||
+    (mode==="cpu"&&turn===1)||
     ["INPUT","SELECT","TEXTAREA"].includes(
       document.activeElement.tagName
     )
-  ) return;
+  )return;
 
-  if(e.code==="Space") {
+  if(e.code==="Space"){
     e.preventDefault();
 
     fire(
@@ -1153,25 +1230,17 @@ window.addEventListener("keydown",e => {
     return;
   }
 
-  const s = settings[turn];
+  const s=settings[turn];
 
-  if(e.code==="ArrowUp") {
-    s.angle = clamp(
-      s.angle+1,12,75
-    );
-  } else if(e.code==="ArrowDown") {
-    s.angle = clamp(
-      s.angle-1,12,75
-    );
-  } else if(e.code==="ArrowRight") {
-    s.power = clamp(
-      s.power+2,25,100
-    );
-  } else if(e.code==="ArrowLeft") {
-    s.power = clamp(
-      s.power-2,25,100
-    );
-  } else {
+  if(e.code==="ArrowUp"){
+    s.angle=clamp(s.angle+1,12,75);
+  }else if(e.code==="ArrowDown"){
+    s.angle=clamp(s.angle-1,12,75);
+  }else if(e.code==="ArrowRight"){
+    s.power=clamp(s.power+2,25,100);
+  }else if(e.code==="ArrowLeft"){
+    s.power=clamp(s.power-2,25,100);
+  }else{
     return;
   }
 
@@ -1179,7 +1248,7 @@ window.addEventListener("keydown",e => {
   updateHud();
 });
 
-bricks = [build(0),build(1)];
+bricks=[build(0),build(1)];
 updateHud();
 requestAnimationFrame(frame);
 
