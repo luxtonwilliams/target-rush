@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101b36">
-<title>Castle Rush V2 | Luxton Arcade</title>
+<title>Castle Rush V2.2 | Luxton Arcade</title>
 <style>
-:root{--bg:#0b142c;--panel:#18284d;--edge:#4c6da7;--cyan:#6feaff;--gold:#ffd76b}
+:root{--panel:#18284d;--edge:#4c6da7;--cyan:#6feaff;--gold:#ffd76b}
 *{box-sizing:border-box}
-body{margin:0;overflow-x:hidden;color:#f5f9ff;background:radial-gradient(ellipse at top,#244474,var(--bg) 72%);font-family:system-ui,Arial,sans-serif}
+body{margin:0;overflow-x:hidden;color:#f5f9ff;background:radial-gradient(ellipse at top,#244474,#0b142c 72%);font-family:system-ui,Arial,sans-serif}
 main{width:min(1080px,96%);margin:15px auto 40px}
 a{color:#b5e9ff;text-decoration:none}
 header,.toolbar,.panel-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
@@ -23,7 +23,7 @@ h1{margin:7px 0 12px;font-size:clamp(26px,5vw,42px);color:var(--gold);text-shado
 .arena{position:relative;border:3px solid var(--cyan);border-radius:17px;overflow:hidden;box-shadow:0 0 28px #00d2ff44;background:#78aadc}
 canvas{display:block;width:100%;height:auto;aspect-ratio:960/540;touch-action:pan-y}
 .overlay{position:absolute;inset:0;background:#08142edc;display:flex;align-items:center;justify-content:center;padding:12px}
-.overlay[hidden],[hidden]{display:none!important}
+[hidden]{display:none!important}
 .modal{text-align:center;width:min(455px,100%);background:linear-gradient(135deg,#1a3765,#34244e);border:1px solid #7ddaff;border-radius:18px;padding:22px;box-shadow:0 12px 50px #0007}
 .modal h2{font-size:clamp(22px,4vw,31px);color:#ffe083;margin:0 0 11px}
 .modal p{color:#d9eaff;line-height:1.6}
@@ -35,7 +35,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 .secondary{background:#263e68;border:1px solid #7193c3;color:white}
 .controls{display:grid;grid-template-columns:1fr 1fr 1fr 1.15fr;align-items:end;gap:13px;padding:15px;background:var(--panel);border:1px solid var(--edge);border-radius:15px;margin-top:13px}
 .controls label{display:block;font-weight:750}
-.controls .value{color:#ffdf88;font-weight:900}
+.value{color:#ffdf88;font-weight:900}
 input[type=range]{display:block;width:100%;height:32px;margin-top:9px;accent-color:#6ceaff;cursor:pointer;touch-action:pan-x}
 .controls select,.toolbar select{background:#1b3158;color:white;border:1px solid #6689b6;border-radius:9px;min-height:44px;padding:9px;width:100%}
 .fire{font-size:19px;min-height:61px;background:linear-gradient(115deg,#ffca5d,#ff785b)}
@@ -76,214 +76,525 @@ main{width:100%;padding:0 9px}
 <body>
 <main>
 <header>
-<h1>🏰 CASTLE RUSH <span class="version">V2 · CASTLE WARS</span></h1>
+<h1>🏰 CASTLE RUSH <span class="version">V2.2 · SPECIAL AMMO</span></h1>
 <a href="../../">← Luxton Arcade</a>
 </header>
+
 <div class="stats">
-<div class="stat"><small>BLUE CASTLE</small><strong id="blueHealth">20 / 20 🧱</strong></div>
-<div class="stat"><small>TURN</small><strong id="turnText">READY</strong></div>
-<div class="stat"><small>RED CASTLE</small><strong id="redHealth">20 / 20 🧱</strong></div>
-<div class="stat"><small>WIND</small><strong id="windText">🍃 —</strong></div>
+<div class="stat">
+<small>BLUE CASTLE</small>
+<strong id="blueHealth">20 / 20 🧱</strong>
 </div>
-<p class="notice" id="notice" role="status" aria-live="polite">Ready for Castle Wars?</p>
+<div class="stat">
+<small>TURN</small>
+<strong id="turnText">READY</strong>
+</div>
+<div class="stat">
+<small>RED CASTLE</small>
+<strong id="redHealth">20 / 20 🧱</strong>
+</div>
+<div class="stat">
+<small>WIND</small>
+<strong id="windText">🍃 —</strong>
+</div>
+</div>
+
+<p id="notice" class="notice" role="status" aria-live="polite">
+Ready for Castle Wars?
+</p>
+
 <div class="arena">
-<canvas id="game" width="960" height="540" aria-label="Side-view cartoon castle battle"></canvas>
+<canvas id="game" width="960" height="540"
+aria-label="Two cartoon castles firing special cannonballs"></canvas>
+
 <div id="overlay" class="overlay">
 <div class="modal">
-<h2 id="dialogTitle">🏰 CASTLE WARS!</h2>
-<p id="dialogText">Destroy the opposing castle brick by brick! Win coins, unlock special cannonballs, and reinforce your walls. The computer is smarter now—especially on Hard and Legend!</p>
+<h2 id="dialogTitle">🏰 CASTLE RUSH V2.2!</h2>
+<p id="dialogText">
+The Scatterball has been upgraded!
+Unlock Hot Shot, Frost Shot, and Piercing Shot
+in the Castle Workshop.
+Choose ammo, adjust your angle and power,
+and outsmart the other castle!
+</p>
 <button id="startBtn">⚔️ START BATTLE</button>
 </div>
 </div>
 </div>
+
 <div class="controls">
-<label for="angle">🎯 Angle: <span class="value" id="angleValue">32°</span><input id="angle" type="range" min="12" max="75" value="32"></label>
-<label for="power">⚡ Power: <span class="value" id="powerValue">62%</span><input id="power" type="range" min="25" max="100" value="62"></label>
-<label for="ammo">💣 Cannonball
+<label for="angle">
+🎯 Angle: <span class="value" id="angleValue">32°</span>
+<input id="angle" type="range" min="12" max="75" value="32">
+</label>
+
+<label for="power">
+⚡ Power: <span class="value" id="powerValue">62%</span>
+<input id="power" type="range" min="25" max="100" value="62">
+</label>
+
+<label for="ammo">
+💣 Cannonball
 <select id="ammo">
 <option value="normal">⚫ Standard · Unlimited</option>
 </select>
 </label>
+
 <button id="fireBtn" class="fire" disabled>💥 FIRE!</button>
 </div>
+
 <div class="toolbar">
-<label for="mode">Battle:
+<label for="mode">
+Battle:
 <select id="mode">
 <option value="cpu">🤖 Computer</option>
 <option value="two">👥 2 Players</option>
 </select>
 </label>
-<label for="difficulty">Difficulty:
+
+<label for="difficulty">
+Difficulty:
 <select id="difficulty">
 <option value="balanced">🎯 Balanced</option>
 <option value="hard" selected>🔥 Hard</option>
 <option value="legend">💎 Legend</option>
 </select>
 </label>
+
 <button id="shopBtn" class="secondary">🛒 UPGRADES</button>
 <button id="restartBtn" class="secondary">↻ NEW BATTLE</button>
 </div>
-<section class="shop" id="shop" hidden>
+
+<section id="shop" class="shop" hidden>
 <div class="panel-heading">
 <h2>🛒 Castle Workshop</h2>
 <span class="pill" id="coins">🪙 0 coins</span>
 </div>
-<p>Permanent unlocks! Cannonball supplies refill every battle. Defensive upgrades apply to your next battle. Win to earn coins.</p>
-<div class="shop-grid" id="shopGrid"></div>
+<p>
+Every purchase is permanent. Special ammo refills
+every battle, and walls and shields activate on the
+next battle. Your old V2 coins and unlocks carry over!
+</p>
+<div id="shopGrid" class="shop-grid"></div>
 </section>
-<p class="help">📱 Mobile: use the sliders and FIRE button. 💻 PC: ↑↓ angle, ←→ power, Space to fire.
-🍃 Wind changes each turn. Only the first part of the flight path is shown. <strong>Computer victories from V1 are kept!</strong></p>
+
+<p class="help">
+📱 Mobile: use the sliders, select ammo, and tap FIRE.
+💻 PC: ↑↓ angle, ←→ power, Space fires.
+🍃 Wind changes each turn. The aim guide shows only
+the beginning of your shot.
+</p>
 </main>
+
 <script>
 (()=>{
 "use strict";
-const $=id=>document.getElementById(id),canvas=$("game"),ctx=canvas.getContext("2d"),W=960,H=540,GROUND=466,G=460;
-const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-const STORE="luxton_castle_rush_v2",OLD_WINS="luxton_castle_rush_wins_v1";
+
+const $=id=>document.getElementById(id);
+const canvas=$("game");
+const ctx=canvas.getContext("2d");
+const W=960,H=540,GROUND=466,G=460;
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+const STORE="luxton_castle_rush_v2";
+const OLD_WINS="luxton_castle_rush_wins_v1";
+
 const sides=[
 {x:95,dir:1,muzzle:244,color:"#45c7ff",dark:"#1b6da6"},
 {x:729,dir:-1,muzzle:716,color:"#ff7c91",dark:"#a63853"}
 ];
+
 const products=[
-{id:"heavy",name:"💥 Heavy Cannonball",cost:10,desc:"Wider explosion. Two shots per battle."},
-{id:"scatter",name:"✨ Scatterball",cost:20,desc:"Three smaller explosions. One shot per battle."},
-{id:"walls",name:"🧱 Reinforced Walls",cost:30,desc:"Four extra bricks for your blue castle."},
-{id:"shield",name:"🛡️ Castle Shield",cost:40,desc:"Blocks the first enemy explosion each battle."}
+{
+id:"heavy",
+name:"💥 Heavy Cannonball",
+cost:10,
+desc:"Big explosion · 2 shots each battle."
+},
+{
+id:"scatter",
+name:"✨ Super Scatterball",
+cost:20,
+desc:"UPGRADED! Three bigger blasts · 2 shots each battle."
+},
+{
+id:"hot",
+name:"🔥 Hot Shot",
+cost:25,
+desc:"Impact plus a delayed heat burst that breaks nearby bricks · 2 shots."
+},
+{
+id:"frost",
+name:"❄️ Frost Shot",
+cost:25,
+desc:"Damages bricks and freezes the enemy cannon for one turn · 1 shot."
+},
+{
+id:"pierce",
+name:"💎 Piercing Shot",
+cost:35,
+desc:"Three narrow blasts that punch deeper through a wall · 2 shots."
+},
+{
+id:"walls",
+name:"🧱 Reinforced Walls",
+cost:30,
+desc:"Four extra castle bricks each battle."
+},
+{
+id:"shield",
+name:"🛡️ Castle Shield",
+cost:40,
+desc:"Blocks the first enemy blast each battle."
+}
 ];
+
 let save={coins:0,wins:0,owned:[]};
+
 try{
 const old=JSON.parse(localStorage.getItem(STORE)||"null");
 if(old&&typeof old==="object")save={...save,...old};
 }catch(e){}
+
 try{
-save.wins=Math.max(Number(save.wins)||0,Number(localStorage.getItem(OLD_WINS))||0);
+save.wins=Math.max(
+Number(save.wins)||0,
+Number(localStorage.getItem(OLD_WINS))||0
+);
 }catch(e){}
+
 if(!Array.isArray(save.owned))save.owned=[];
-save.owned=save.owned.filter(k=>products.some(p=>p.id===k));
+
+save.owned=save.owned.filter(id=>
+products.some(p=>p.id===id)
+);
+
 save.coins=Math.max(0,Number(save.coins)||0);
-const persist=()=>{
+
+function persist(){
 try{
 localStorage.setItem(STORE,JSON.stringify(save));
 localStorage.setItem(OLD_WINS,String(save.wins));
 }catch(e){}
-};
+}
 
-let bricks=[[],[]],totals=[20,20],settings=[{angle:32,power:62},{angle:32,power:62}],supplies=[{},{}],shields=[0,0];
-let turn=0,phase="menu",mode="cpu",difficulty="hard",wind=0,shot=null,trail=[],debris=[],shake=0,cooldown=0,session=0,selectedAmmo="normal",last=performance.now(),info="";
 const owns=id=>save.owned.includes(id);
 
-function build(s,reinforce){
+let bricks=[[],[]];
+let totals=[20,20];
+let settings=[
+{angle:32,power:62},
+{angle:32,power:62}
+];
+let supplies=[{},{}];
+let shields=[0,0];
+let frozen=[0,0];
+
+let turn=0;
+let phase="menu";
+let mode="cpu";
+let difficulty="hard";
+let wind=0;
+let shot=null;
+let trail=[];
+let debris=[];
+let heatBursts=[];
+let shake=0;
+let cooldown=0;
+let session=0;
+let selectedAmmo="normal";
+let last=performance.now();
+let info="";
+
+function build(side,reinforce){
 const list=[];
+
 for(let r=0;r<4;r++){
 for(let c=0;c<4;c++){
-list.push({x:sides[s].x+c*34,y:GROUND-(r+1)*29,w:33,h:28});
+list.push({
+x:sides[side].x+c*34,
+y:GROUND-(r+1)*29,
+w:33,
+h:28
+});
 }
 }
+
 for(let r=4;r<6;r++){
 for(const c of [0,3]){
-list.push({x:sides[s].x+c*34,y:GROUND-(r+1)*29,w:33,h:28});
+list.push({
+x:sides[side].x+c*34,
+y:GROUND-(r+1)*29,
+w:33,
+h:28
+});
 }
 }
+
 if(reinforce){
 for(let r=4;r<6;r++){
 for(const c of [1,2]){
-list.push({x:sides[s].x+c*34,y:GROUND-(r+1)*29,w:33,h:28});
+list.push({
+x:sides[side].x+c*34,
+y:GROUND-(r+1)*29,
+w:33,
+h:28
+});
 }
 }
 }
+
 return list;
 }
 
 function newWind(){
-const range=difficulty==="legend"?100:difficulty==="hard"?78:54;
+const range=
+difficulty==="legend"?100:
+difficulty==="hard"?78:54;
+
 wind=Math.round((Math.random()*2-1)*range);
-if(Math.abs(wind)<10)wind=wind<0?-14:14;
+
+if(Math.abs(wind)<10){
+wind=wind<0?-14:14;
 }
+}
+
 const speed=p=>290+p*3.8;
-function velocity(s,a,p){
-const r=a*Math.PI/180,v=speed(p);
-return{vx:Math.cos(r)*v*sides[s].dir,vy:-Math.sin(r)*v};
+
+function velocity(side,a,p){
+const rad=a*Math.PI/180;
+const v=speed(p);
+
+return{
+vx:Math.cos(rad)*v*sides[side].dir,
+vy:-Math.sin(rad)*v
+};
 }
-function ammoRadius(type){
-return type==="heavy"?56:type==="scatter"?27:37;
+
+// Different fictional ammo effects.
+function shape(type,x,y,side){
+if(type==="scatter"){
+return{
+radius:38,
+spots:[
+[x-55,y-9],
+[x,y],
+[x+55,y-9]
+]
+};
 }
-function explosionPoints(x,y,type){
-return type==="scatter"?[[x-37,y],[x,y],[x+37,y]]:[[x,y]];
+
+if(type==="pierce"){
+return{
+radius:23,
+spots:[
+[x,y],
+[x+sides[side].dir*38,y],
+[x+sides[side].dir*76,y]
+]
+};
 }
-function hitsAt(x,y,type,target){
-const points=explosionPoints(x,y,type),r=ammoRadius(type);
-return bricks[target].filter(b=>points.some(([px,py])=>Math.hypot(px-clamp(px,b.x,b.x+b.w),py-clamp(py,b.y,b.y+b.h))<=r)).length;
+
+if(type==="heavy"){
+return{radius:56,spots:[[x,y]]};
+}
+
+return{radius:37,spots:[[x,y]]};
+}
+
+function affected(b,x,y,type,side){
+const sh=shape(type,x,y,side);
+
+return sh.spots.some(([px,py])=>
+Math.hypot(
+px-clamp(px,b.x,b.x+b.w),
+py-clamp(py,b.y,b.y+b.h)
+)<=sh.radius
+);
+}
+
+function countHits(x,y,type,side){
+return bricks[1-side].filter(b=>
+affected(b,x,y,type,side)
+).length;
+}
+
+function ammoList(){
+const available=supplies[turn];
+
+const list=[
+{id:"normal",name:"⚫ Standard · Unlimited"}
+];
+
+for(const [id,name] of [
+["heavy","💥 Heavy"],
+["scatter","✨ Scatter"],
+["hot","🔥 Hot Shot"],
+["frost","❄️ Frost"],
+["pierce","💎 Piercing"]
+]){
+const unlocked=
+turn===1&&mode==="cpu"
+?["heavy","hot"].includes(id)
+:owns(id);
+
+if(unlocked){
+list.push({
+id,
+name:`${name} · ${available[id]||0} left`,
+disabled:!(available[id]>0)
+});
+}
+}
+
+return list;
 }
 
 function updateAmmo(){
-const input=$("ammo"),available=turn===0?supplies[0]:supplies[1];
-const options=[{id:"normal",name:"⚫ Standard · Unlimited"}];
-if(turn===0&&owns("heavy")||turn===1&&mode==="two"&&owns("heavy")||turn===1&&mode==="cpu"){
-options.push({id:"heavy",name:`💥 Heavy · ${available.heavy||0} left`});
-}
-if(turn===0&&owns("scatter")||turn===1&&mode==="two"&&owns("scatter")){
-options.push({id:"scatter",name:`✨ Scatter · ${available.scatter||0} left`});
-}
+const input=$("ammo");
+const items=ammoList();
+
 input.replaceChildren();
-for(const o of options){
-const el=document.createElement("option");
-el.value=o.id;
-el.textContent=o.name;
-el.disabled=o.id!=="normal"&&!available[o.id];
-input.append(el);
+
+for(const item of items){
+const opt=document.createElement("option");
+opt.value=item.id;
+opt.textContent=item.name;
+opt.disabled=!!item.disabled;
+input.append(opt);
 }
-if(!options.some(o=>o.id===selectedAmmo&&(!o.id||o.id==="normal"||available[o.id]>0))){
+
+if(!items.some(item=>
+item.id===selectedAmmo&&!item.disabled
+)){
 selectedAmmo="normal";
 }
+
 input.value=selectedAmmo;
 }
 
 function hud(){
-$("blueHealth").textContent=`${bricks[0].length} / ${totals[0]} 🧱`;
-$("redHealth").textContent=`${bricks[1].length} / ${totals[1]} 🧱`;
-$("turnText").textContent=phase==="menu"?"READY":phase==="over"?"FINISHED":turn===0?"🔵 BLUE":"🔴 RED";
-$("windText").textContent=phase==="menu"?"🍃 —":`${wind<0?"←":"→"} ${Math.abs(wind)}`;
+$("blueHealth").textContent=
+`${bricks[0].length} / ${totals[0]} 🧱`;
+
+$("redHealth").textContent=
+`${bricks[1].length} / ${totals[1]} 🧱`;
+
+$("turnText").textContent=
+phase==="menu"?"READY":
+phase==="over"?"FINISHED":
+turn===0?"🔵 BLUE":"🔴 RED";
+
+$("windText").textContent=
+phase==="menu"?"🍃 —":
+`${wind<0?"←":"→"} ${Math.abs(wind)}`;
+
 $("angle").value=settings[turn].angle;
 $("power").value=settings[turn].power;
-$("angleValue").textContent=settings[turn].angle+"°";
-$("powerValue").textContent=settings[turn].power+"%";
-const can=phase==="ready"&&!(mode==="cpu"&&turn===1);
-$("angle").disabled=$("power").disabled=$("ammo").disabled=$("fireBtn").disabled=!can;
-$("mode").disabled=$("difficulty").disabled=phase==="flying"||phase==="settling";
+
+$("angleValue").textContent=
+settings[turn].angle+"°";
+
+$("powerValue").textContent=
+settings[turn].power+"%";
+
+const can=
+phase==="ready"&&
+!(mode==="cpu"&&turn===1);
+
+$("angle").disabled=!can;
+$("power").disabled=!can;
+$("ammo").disabled=!can;
+$("fireBtn").disabled=!can;
+
+$("mode").disabled=
+phase==="flying"||phase==="settling";
+
+$("difficulty").disabled=
+phase==="flying"||phase==="settling";
+
 updateAmmo();
+
 $("notice").textContent=
-phase==="menu"?"Pick your settings and start a battle!":
-phase==="flying"?"💥 Cannonball flying...":
-phase==="settling"?info||"🧱 Castle damage!":
-phase==="over"?"🏆 Battle complete!":
-mode==="cpu"&&turn===1?"🤖 Computer is calculating its shot...":
-`${turn===0?"🔵 BLUE":"🔴 RED"}: aim and fire! ${shields[1-turn]?"🛡️ Enemy shield is active!":""}`;
+phase==="menu"
+?"Choose your settings and start!":
+phase==="flying"
+?"💥 Cannonball flying...":
+phase==="settling"
+?info||"🧱 Castle taking damage!":
+phase==="over"
+?"🏆 Battle complete!":
+turn===1&&mode==="cpu"
+?"🤖 Computer is taking aim...":
+`${turn===0?"🔵 BLUE":"🔴 RED"}: aim and fire! ${
+shields[1-turn]?"🛡️ Enemy shield is active!":""
+}`;
+
 $("coins").textContent=`🪙 ${save.coins} coins`;
 }
 
 function startBattle(){
 session++;
+
 mode=$("mode").value;
 difficulty=$("difficulty").value;
-const enemyFortified=difficulty!=="balanced"&&mode==="cpu";
-bricks=[build(0,owns("walls")),build(1,enemyFortified)];
-totals=bricks.map(b=>b.length);
-shields=[owns("shield")?1:0,mode==="cpu"&&difficulty==="legend"?1:0];
-supplies=[
-{heavy:owns("heavy")?2:0,scatter:owns("scatter")?1:0},
-{heavy:mode==="cpu"?(difficulty==="legend"?3:difficulty==="hard"?2:1):owns("heavy")?2:0,scatter:mode==="two"&&owns("scatter")?1:0}
+
+const enemyFortified=
+difficulty!=="balanced"&&mode==="cpu";
+
+bricks=[
+build(0,owns("walls")),
+build(1,enemyFortified)
 ];
-settings=[{angle:32,power:62},{angle:32,power:62}];
+
+totals=bricks.map(b=>b.length);
+
+shields=[
+owns("shield")?1:0,
+mode==="cpu"&&difficulty==="legend"?1:0
+];
+
+frozen=[0,0];
+
+supplies=[
+{
+heavy:owns("heavy")?2:0,
+scatter:owns("scatter")?2:0,
+hot:owns("hot")?2:0,
+frost:owns("frost")?1:0,
+pierce:owns("pierce")?2:0
+},
+{
+heavy:mode==="cpu"
+?(difficulty==="legend"?3:difficulty==="hard"?2:1)
+:owns("heavy")?2:0,
+scatter:mode==="two"&&owns("scatter")?2:0,
+hot:mode==="cpu"&&difficulty==="legend"
+?1:mode==="two"&&owns("hot")?2:0,
+frost:mode==="two"&&owns("frost")?1:0,
+pierce:mode==="two"&&owns("pierce")?2:0
+}
+];
+
+settings=[
+{angle:32,power:62},
+{angle:32,power:62}
+];
+
 turn=0;
 phase="ready";
 shot=null;
 trail=[];
 debris=[];
+heatBursts=[];
 shake=0;
 cooldown=0;
 info="";
 selectedAmmo="normal";
+
 newWind();
+
 $("overlay").hidden=true;
 hud();
 renderShop();
@@ -292,186 +603,439 @@ renderShop();
 function endBattle(winner){
 phase="over";
 shot=null;
+heatBursts=[];
 session++;
+
 let reward=0;
+
 if(mode==="cpu"){
 if(winner===0){
 save.wins++;
-reward=difficulty==="legend"?95:difficulty==="hard"?60:35;
-}else reward=12;
+reward=
+difficulty==="legend"?95:
+difficulty==="hard"?60:35;
+}else{
+reward=12;
+}
+
 save.coins+=reward;
 persist();
 }
-$("dialogTitle").textContent=winner===0?"🏆 BLUE CASTLE WINS!":"🏆 RED CASTLE WINS!";
-$("dialogText").innerHTML=
-(mode==="cpu"?`<b>${winner===0?"VICTORY!":"DEFEAT!"}</b><br>+${reward} workshop coins<br>Computer victories: ${save.wins}<br>`:"The opposing castle has fallen!<br>")+
-"Upgrade your castle in the workshop for the next battle.";
+
+$("dialogTitle").textContent=
+winner===0
+?"🏆 BLUE CASTLE WINS!"
+:"🏆 RED CASTLE WINS!";
+
+$("dialogText").textContent=
+mode==="cpu"
+?`${winner===0?"VICTORY!":"DEFEAT!"}
++${reward} workshop coins.
+Total computer victories: ${save.wins}.
+Upgrade your castle before the next battle!`
+:"The opposing castle has fallen! Play again for a rematch!";
+
 $("startBtn").textContent="⚔️ PLAY AGAIN";
 $("overlay").hidden=false;
+
 hud();
 renderShop();
 }
 
-function fire(s,a,p,type="normal"){
-if(phase!=="ready"||turn!==s)return;
+function fire(side,a,p,type="normal"){
+if(phase!=="ready"||turn!==side)return;
+
 if(type!=="normal"){
-if(!supplies[s][type])type="normal";
-else supplies[s][type]--;
+if(!supplies[side][type]){
+type="normal";
+}else{
+supplies[side][type]--;
 }
-const v=velocity(s,a,p);
-shot={x:sides[s].muzzle,y:368,vx:v.vx,vy:v.vy,side:s,type};
+}
+
+const v=velocity(side,a,p);
+
+shot={
+x:sides[side].muzzle,
+y:368,
+vx:v.vx,
+vy:v.vy,
+side,
+type
+};
+
 trail=[];
 phase="flying";
 hud();
 }
 
-function particle(x,y,color,count=18){
+function particles(x,y,color,count=17){
 for(let i=0;i<count;i++){
-const a=Math.random()*6.283,v=50+Math.random()*180;
+const a=Math.random()*Math.PI*2;
+const v=40+Math.random()*170;
+
 debris.push({
 x,y,
 vx:Math.cos(a)*v,
-vy:Math.sin(a)*v-90,
-life:.4+Math.random()*.55,
+vy:Math.sin(a)*v-95,
+life:.35+Math.random()*.58,
 color,
 size:3+Math.random()*5
 });
 }
 }
 
-function blast(x,y,target,type){
+function removeBlocks(target,accept){
+let removed=0;
+
+bricks[target]=bricks[target].filter(b=>{
+if(!accept(b))return true;
+
+removed++;
+particles(
+b.x+16,b.y+14,
+sides[target].color,
+5
+);
+return false;
+});
+
+return removed;
+}
+
+function blast(x,y,target,type,attacker){
 shake=9;
-const spots=explosionPoints(x,y,type),r=ammoRadius(type);
-for(const [px,py] of spots)particle(px,py,"#ffcd64",19);
+
+const sh=shape(type,x,y,attacker);
+
+for(const [px,py] of sh.spots){
+particles(
+px,py,
+type==="frost"?"#9cf5ff":
+type==="hot"?"#ff9a43":"#ffcf65",
+17
+);
+}
+
 if(shields[target]){
 shields[target]--;
-info="🛡️ Shield blocked the explosion!";
-particle(x,y,"#7ff7ff",30);
+info="🛡️ Shield blocked the blast!";
+particles(x,y,"#75f7ff",25);
 }else{
-const before=bricks[target].length;
-bricks[target]=bricks[target].filter(b=>{
-const hit=spots.some(([px,py])=>Math.hypot(px-clamp(px,b.x,b.x+b.w),py-clamp(py,b.y,b.y+b.h))<=r);
-if(hit)particle(b.x+16,b.y+14,sides[target].color,5);
-return !hit;
+const removed=removeBlocks(
+target,
+b=>affected(b,x,y,type,attacker)
+);
+
+info=`💥 ${removed} bricks destroyed!`;
+
+if(type==="hot"){
+heatBursts.push({
+target,x,y,timer:.6
 });
-info=`💥 ${before-bricks[target].length} bricks destroyed!`;
+info="🔥 Hot Shot! The heat burst is coming...";
 }
+
+if(type==="frost"){
+frozen[target]=1;
+info="❄️ Enemy cannon frozen for its next turn!";
+}
+}
+
 shot=null;
 trail=[];
+
 if(!bricks[target].length){
 endBattle(1-target);
 return;
 }
+
 phase="settling";
-cooldown=.65;
+cooldown=type==="hot"?.95:.7;
 hud();
 }
 
 function miss(x,y){
-particle(x,y,"#e6bf7f",13);
+particles(x,y,"#daba88",13);
+
 info="💨 Missed!";
 shot=null;
 trail=[];
 phase="settling";
 cooldown=.6;
+
 hud();
 }
 
-// Computer simulates gravity and wind to choose its aim.
-function predict(s,a,p,type){
-const v=velocity(s,a,p);
-const obj={x:sides[s].muzzle,y:368,vx:v.vx,vy:v.vy};
+// Arcade simulation used by the computer opponent.
+function predict(side,a,p,type){
+const v=velocity(side,a,p);
+
+const o={
+x:sides[side].muzzle,
+y:368,
+vx:v.vx,
+vy:v.vy
+};
+
 for(let i=0;i<380;i++){
-const d=.014;
-obj.x+=obj.vx*d;
-obj.y+=obj.vy*d;
-obj.vx+=wind*d;
-obj.vy+=G*d;
-const enemy=1-s;
-if(bricks[enemy].some(b=>obj.x+9>b.x&&obj.x-9<b.x+b.w&&obj.y+9>b.y&&obj.y-9<b.y+b.h)){
-return{x:obj.x,y:obj.y,count:hitsAt(obj.x,obj.y,type,enemy)};
+const dt=.014;
+
+o.x+=o.vx*dt;
+o.y+=o.vy*dt;
+o.vx+=wind*dt;
+o.vy+=G*dt;
+
+const enemy=1-side;
+
+if(bricks[enemy].some(b=>
+o.x+9>b.x&&
+o.x-9<b.x+b.w&&
+o.y+9>b.y&&
+o.y-9<b.y+b.h
+)){
+return countHits(o.x,o.y,type,side);
 }
-if(obj.y>=GROUND-5){
-return{x:obj.x,y:GROUND-5,count:hitsAt(obj.x,GROUND-5,type,enemy)};
+
+if(o.y>=GROUND-5){
+return countHits(
+o.x,GROUND-5,type,side
+);
 }
-if(obj.x<-35||obj.x>W+35||obj.y>H+40)break;
+
+if(
+o.x<-35||
+o.x>W+35||
+o.y>H+40
+)break;
 }
-return{x:obj.x,y:obj.y,count:0};
+
+return 0;
 }
 
 function computerFire(token){
-if(session!==token||phase!=="ready"||turn!==1||mode!=="cpu")return;
-const type=supplies[1].heavy>0&&((difficulty==="legend")||(difficulty==="hard"&&Math.random()<.65))?"heavy":"normal";
-let results=[];
+if(
+session!==token||
+phase!=="ready"||
+turn!==1||
+mode!=="cpu"
+)return;
+
+const type=
+supplies[1].heavy>0&&(
+difficulty==="legend"||
+difficulty==="hard"&&Math.random()<.65
+)
+?"heavy":
+supplies[1].hot>0&&difficulty==="legend"
+?"hot":"normal";
+
+const options=[];
+
 for(let a=12;a<=68;a+=3){
 for(let p=25;p<=100;p+=3){
-const r=predict(1,a,p,type);
-if(r.count>0)results.push({a,p,score:r.count+Math.random()*.7});
+const n=predict(1,a,p,type);
+
+if(n>0){
+options.push({
+a,p,
+score:n+Math.random()*.7
+});
 }
 }
-results.sort((a,b)=>b.score-a.score);
-let choice;
-if(results.length){
-const pool=difficulty==="balanced"?Math.min(22,results.length):difficulty==="hard"?Math.min(6,results.length):Math.min(2,results.length);
-choice=results[Math.floor(Math.random()*pool)];
-}else choice={a:30,p:70};
-const jitter=difficulty==="legend"?.5:difficulty==="hard"?1.3:3.1;
-const a=clamp(Math.round(choice.a+(Math.random()-.5)*jitter*2),12,75);
-const p=clamp(Math.round(choice.p+(Math.random()-.5)*jitter*3),25,100);
+}
+
+options.sort((a,b)=>b.score-a.score);
+
+let choice={a:31,p:67};
+
+if(options.length){
+const pool=
+difficulty==="balanced"?22:
+difficulty==="hard"?6:2;
+
+choice=options[
+Math.floor(
+Math.random()*Math.min(pool,options.length)
+)
+];
+}
+
+const jitter=
+difficulty==="legend"?.5:
+difficulty==="hard"?1.3:3.1;
+
+const a=clamp(
+Math.round(
+choice.a+(Math.random()-.5)*jitter*2
+),
+12,75
+);
+
+const p=clamp(
+Math.round(
+choice.p+(Math.random()-.5)*jitter*3
+),
+25,100
+);
+
 settings[1]={angle:a,power:p};
 fire(1,a,p,type);
 }
 
 function nextTurn(){
 turn=1-turn;
-phase="ready";
 selectedAmmo="normal";
+
 newWind();
+
+if(frozen[turn]>0){
+frozen[turn]--;
+
+info=`❄️ ${
+turn===0?"Blue":"Red"
+} cannon is frozen! Turn skipped.`;
+
+phase="settling";
+cooldown=1.05;
+hud();
+return;
+}
+
+phase="ready";
 info="";
 hud();
+
 if(turn===1&&mode==="cpu"){
 const token=session;
-setTimeout(()=>computerFire(token),650);
+
+setTimeout(
+()=>computerFire(token),
+650
+);
 }
 }
 
 function update(dt){
 shake=Math.max(0,shake-dt*20);
+
 for(const p of debris){
 p.x+=p.vx*dt;
 p.y+=p.vy*dt;
-p.vy+=400*dt;
+p.vy+=420*dt;
 p.life-=dt;
 }
+
 debris=debris.filter(p=>p.life>0);
+
+// Hot Shot delayed effect.
+for(const h of heatBursts){
+h.timer-=dt;
+
+if(h.timer<=0){
+const near=bricks[h.target]
+.map(b=>({
+b,
+d:Math.hypot(
+h.x-(b.x+16),
+h.y-(b.y+14)
+)
+}))
+.filter(o=>o.d<110)
+.sort((a,b)=>a.d-b.d)
+.slice(0,2);
+
+const chosen=new Set(
+near.map(o=>o.b)
+);
+
+const removed=removeBlocks(
+h.target,
+b=>chosen.has(b)
+);
+
+particles(h.x,h.y,"#ff8938",30);
+info=`🔥 Heat burst broke ${removed} more bricks!`;
+
+h.done=true;
+
+if(!bricks[h.target].length){
+endBattle(1-h.target);
+return;
+}
+
+hud();
+}
+}
+
+heatBursts=heatBursts.filter(h=>!h.done);
+
 if(phase==="settling"){
 cooldown-=dt;
-if(cooldown<=0)nextTurn();
+
+if(cooldown<=0&&heatBursts.length===0){
+nextTurn();
 }
+}
+
 if(!shot||phase!=="flying")return;
+
 for(let i=0;i<4;i++){
 const d=dt/4;
+
 shot.x+=shot.vx*d;
 shot.y+=shot.vy*d;
 shot.vx+=wind*d;
 shot.vy+=G*d;
+
 if(i===0){
-trail.push({x:shot.x,y:shot.y});
+trail.push({
+x:shot.x,
+y:shot.y
+});
+
 if(trail.length>35)trail.shift();
 }
+
 const enemy=1-shot.side;
-if(bricks[enemy].some(b=>shot.x+9>b.x&&shot.x-9<b.x+b.w&&shot.y+9>b.y&&shot.y-9<b.y+b.h)){
-blast(shot.x,shot.y,enemy,shot.type);
+
+if(bricks[enemy].some(b=>
+shot.x+9>b.x&&
+shot.x-9<b.x+b.w&&
+shot.y+9>b.y&&
+shot.y-9<b.y+b.h
+)){
+blast(
+shot.x,shot.y,
+enemy,shot.type,shot.side
+);
 return;
 }
+
 if(shot.y>=GROUND-5){
-if(hitsAt(shot.x,GROUND-5,shot.type,enemy)){
-blast(shot.x,GROUND-5,enemy,shot.type);
-}else miss(shot.x,GROUND-5);
+if(countHits(
+shot.x,GROUND-5,
+shot.type,shot.side
+)>0){
+blast(
+shot.x,GROUND-5,
+enemy,shot.type,shot.side
+);
+}else{
+miss(shot.x,GROUND-5);
+}
 return;
 }
-if(shot.x<-35||shot.x>W+35||shot.y>H+40){
-miss(clamp(shot.x,0,W),clamp(shot.y,0,GROUND));
+
+if(
+shot.x<-35||
+shot.x>W+35||
+shot.y>H+40
+){
+miss(
+clamp(shot.x,0,W),
+clamp(shot.y,0,GROUND)
+);
 return;
 }
 }
@@ -485,25 +1049,41 @@ ctx.fill();
 }
 
 function background(t){
-let g=ctx.createLinearGradient(0,0,0,GROUND);
+const g=ctx.createLinearGradient(
+0,0,0,GROUND
+);
+
 g.addColorStop(0,"#5d98d8");
 g.addColorStop(.75,"#b4d8ed");
 g.addColorStop(1,"#ffdab1");
+
 ctx.fillStyle=g;
 ctx.fillRect(0,0,W,H);
+
 ctx.fillStyle="#fff1bd";
 ctx.beginPath();
-ctx.arc(470,108,50,0,6.283);
+ctx.arc(470,108,50,0,Math.PI*2);
 ctx.fill();
+
 for(let i=0;i<5;i++){
-const x=(i*233+t*(i%2?7:11))%1200-130,y=70+(i%3)*59;
+const x=
+(i*233+t*(i%2?7:11))%1200-130;
+
+const y=70+(i%3)*59;
+
 ctx.fillStyle="#ffffffb9";
-for(const [dx,dy,r] of [[0,0,24],[24,2,28],[48,4,22]]){
+
+for(const [dx,dy,r] of [
+[0,0,24],
+[24,2,28],
+[48,4,22]
+]){
 ctx.beginPath();
-ctx.arc(x+dx,y+dy,r,0,6.283);
+ctx.arc(x+dx,y+dy,r,0,Math.PI*2);
 ctx.fill();
 }
 }
+
 ctx.fillStyle="#82b6ab";
 ctx.beginPath();
 ctx.moveTo(0,407);
@@ -516,6 +1096,7 @@ ctx.lineTo(960,403);
 ctx.lineTo(960,GROUND);
 ctx.lineTo(0,GROUND);
 ctx.fill();
+
 ctx.fillStyle="#619b72";
 ctx.beginPath();
 ctx.moveTo(0,435);
@@ -524,10 +1105,18 @@ ctx.quadraticCurveTo(780,385,960,430);
 ctx.lineTo(960,GROUND);
 ctx.lineTo(0,GROUND);
 ctx.fill();
+
 ctx.fillStyle="#44845b";
-ctx.fillRect(0,GROUND,W,H-GROUND);
+ctx.fillRect(
+0,GROUND,W,H-GROUND
+);
+
 ctx.fillStyle="#7c5941";
-ctx.fillRect(0,GROUND+19,W,H-GROUND-19);
+ctx.fillRect(
+0,GROUND+19,
+W,H-GROUND-19
+);
+
 ctx.strokeStyle="#a1d07f";
 ctx.lineWidth=5;
 ctx.beginPath();
@@ -538,204 +1127,429 @@ ctx.stroke();
 
 function castle(s){
 const c=sides[s];
+
 ctx.fillStyle="#0003";
 ctx.beginPath();
-ctx.ellipse(c.x+69,GROUND+10,95,15,0,0,6.283);
+ctx.ellipse(
+c.x+69,GROUND+10,
+95,15,0,0,Math.PI*2
+);
 ctx.fill();
+
 for(const b of bricks[s]){
-roundRect(b.x+1,b.y+1,b.w-2,b.h-2,2,s===0?"#469ace":"#d96e83");
+roundRect(
+b.x+1,b.y+1,
+b.w-2,b.h-2,
+2,
+s===0?"#469ace":"#d96e83"
+);
+
 ctx.fillStyle=c.dark;
-ctx.fillRect(b.x+2,b.y+b.h-6,b.w-4,5);
+ctx.fillRect(
+b.x+2,
+b.y+b.h-6,
+b.w-4,5
+);
+
 ctx.strokeStyle="#ffffff65";
 ctx.lineWidth=1;
-ctx.strokeRect(b.x+2,b.y+2,b.w-4,b.h-4);
+ctx.strokeRect(
+b.x+2,b.y+2,
+b.w-4,b.h-4
+);
 }
-const poleX=c.x+68,flagY=GROUND-116;
+
+const poleX=c.x+68;
+const flagY=GROUND-116;
+
 ctx.strokeStyle="#f8f4e4";
 ctx.lineWidth=4;
 ctx.beginPath();
 ctx.moveTo(poleX,flagY);
 ctx.lineTo(poleX,flagY-83);
 ctx.stroke();
+
 ctx.fillStyle=c.color;
 ctx.beginPath();
 ctx.moveTo(poleX,flagY-84);
-ctx.lineTo(poleX+c.dir*52,flagY-67);
+ctx.lineTo(
+poleX+c.dir*52,
+flagY-67
+);
 ctx.lineTo(poleX,flagY-51);
 ctx.fill();
+
 if(shields[s]){
 ctx.strokeStyle="#a1fff1";
 ctx.lineWidth=5;
 ctx.shadowColor="#66f0ff";
 ctx.shadowBlur=18;
+
 ctx.beginPath();
-ctx.ellipse(c.x+69,GROUND-85,106,110,0,0,6.283);
+ctx.ellipse(
+c.x+69,GROUND-85,
+106,110,0,0,Math.PI*2
+);
 ctx.stroke();
 ctx.shadowBlur=0;
 }
+
+if(frozen[s]){
+ctx.fillStyle="#9ae8ff77";
+ctx.fillRect(
+c.x-5,GROUND-185,
+148,190
+);
+}
+
 ctx.fillStyle="#133d68";
 ctx.font="bold 15px system-ui";
 ctx.textAlign="center";
-ctx.fillText(s===0?"BLUE CASTLE":"RED CASTLE",c.x+68,GROUND+45);
+ctx.fillText(
+s===0?"BLUE CASTLE":"RED CASTLE",
+c.x+68,
+GROUND+45
+);
 }
 
 function cannon(s){
-const c=sides[s],a=settings[s].angle*Math.PI/180,x=c.muzzle,y=368;
+const c=sides[s];
+const a=settings[s].angle*Math.PI/180;
+const x=c.muzzle;
+const y=368;
+
 ctx.save();
 ctx.translate(x,y);
-ctx.rotate(c.dir===1?-a:Math.PI+a);
-roundRect(-12,-12,63,24,5,"#36415b");
-roundRect(31,-11,20,22,4,"#252a3e");
+ctx.rotate(
+c.dir===1?-a:Math.PI+a
+);
+
+roundRect(
+-12,-12,63,24,5,
+"#36415b"
+);
+
+roundRect(
+31,-11,20,22,4,
+"#252a3e"
+);
+
 ctx.restore();
+
 ctx.fillStyle="#374862";
 ctx.beginPath();
-ctx.arc(x,y,24,0,6.283);
+ctx.arc(x,y,24,0,Math.PI*2);
 ctx.fill();
+
 ctx.strokeStyle="#aabacc";
 ctx.lineWidth=7;
 ctx.beginPath();
-ctx.arc(x,y,17,0,6.283);
+ctx.arc(x,y,17,0,Math.PI*2);
 ctx.stroke();
+
 ctx.fillStyle=c.color;
 ctx.beginPath();
-ctx.arc(x,y,8,0,6.283);
+ctx.arc(x,y,8,0,Math.PI*2);
 ctx.fill();
 }
 
 function preview(){
-if(phase!=="ready"||mode==="cpu"&&turn===1)return;
-const v=velocity(turn,settings[turn].angle,settings[turn].power);
-ctx.fillStyle=turn===0?"#0a527ecc":"#953352cc";
-const length=difficulty==="legend"?.32:difficulty==="hard"?.45:.57;
+if(
+phase!=="ready"||
+mode==="cpu"&&turn===1
+)return;
+
+const v=velocity(
+turn,
+settings[turn].angle,
+settings[turn].power
+);
+
+ctx.fillStyle=
+turn===0?"#0a527ecc":"#953352cc";
+
+const length=
+difficulty==="legend"?.32:
+difficulty==="hard"?.45:.57;
+
 for(let t=.1;t<=length;t+=.08){
-const x=sides[turn].muzzle+v.vx*t+.5*wind*t*t;
-const y=368+v.vy*t+.5*G*t*t;
-if(x<0||x>W||y>GROUND)break;
+const x=
+sides[turn].muzzle+
+v.vx*t+
+.5*wind*t*t;
+
+const y=
+368+
+v.vy*t+
+.5*G*t*t;
+
+if(
+x<0||
+x>W||
+y>GROUND
+)break;
+
 ctx.beginPath();
-ctx.arc(x,y,3.2,0,6.283);
+ctx.arc(x,y,3.2,0,Math.PI*2);
 ctx.fill();
 }
 }
 
 function draw(){
 ctx.save();
-if(shake)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
+
+if(shake){
+ctx.translate(
+(Math.random()-.5)*shake,
+(Math.random()-.5)*shake
+);
+}
+
 background(performance.now()/1000);
 castle(0);
 castle(1);
 cannon(0);
 cannon(1);
 preview();
+
 if(shot){
 for(let i=0;i<trail.length;i++){
-ctx.fillStyle=`rgba(255,242,184,${i/trail.length*.7})`;
+ctx.fillStyle=
+`rgba(255,242,184,${i/trail.length*.7})`;
+
 ctx.beginPath();
-ctx.arc(trail[i].x,trail[i].y,3,0,6.283);
+ctx.arc(
+trail[i].x,
+trail[i].y,
+3,0,Math.PI*2
+);
 ctx.fill();
 }
-ctx.shadowColor=shot.type==="heavy"?"#ff8d48":"#ffe07a";
-ctx.shadowBlur=17;
-ctx.fillStyle=shot.type==="heavy"?"#c35332":shot.type==="scatter"?"#9472e3":"#242b43";
+
+ctx.shadowColor=
+shot.type==="frost"?"#a0faff":
+shot.type==="hot"?"#ff8d35":
+"#ffe07a";
+
+ctx.shadowBlur=18;
+
+ctx.fillStyle=({
+heavy:"#c35332",
+scatter:"#9472e3",
+hot:"#ff7b26",
+frost:"#82ecff",
+pierce:"#c2a3ff",
+normal:"#242b43"
+})[shot.type];
+
 ctx.beginPath();
-ctx.arc(shot.x,shot.y,shot.type==="heavy"?14:10,0,6.283);
+ctx.arc(
+shot.x,shot.y,
+shot.type==="heavy"?14:11,
+0,Math.PI*2
+);
 ctx.fill();
-ctx.strokeStyle="#f6e8bd";
+
+ctx.strokeStyle="#fff0c9";
 ctx.lineWidth=2.5;
 ctx.stroke();
 ctx.shadowBlur=0;
 }
+
+for(const h of heatBursts){
+ctx.globalAlpha=
+.5+.4*Math.sin(
+performance.now()/70
+);
+
+ctx.fillStyle="#ff832f";
+ctx.beginPath();
+ctx.arc(
+h.x,h.y,
+27,0,Math.PI*2
+);
+ctx.fill();
+}
+
+ctx.globalAlpha=1;
+
 for(const p of debris){
 ctx.globalAlpha=clamp(p.life,0,1);
 ctx.fillStyle=p.color;
-ctx.fillRect(p.x,p.y,p.size,p.size);
+ctx.fillRect(
+p.x,p.y,
+p.size,p.size
+);
 }
+
 ctx.globalAlpha=1;
 ctx.restore();
 }
 
 function frame(now){
-const dt=Math.min(.032,Math.max(0,(now-last)/1000));
+const dt=Math.min(
+.032,
+Math.max(0,(now-last)/1000)
+);
+
 last=now;
 update(dt);
 draw();
+
 requestAnimationFrame(frame);
 }
 
 function readSliders(){
-settings[turn].angle=Number($("angle").value);
-settings[turn].power=Number($("power").value);
-$("angleValue").textContent=settings[turn].angle+"°";
-$("powerValue").textContent=settings[turn].power+"%";
+settings[turn].angle=
+Number($("angle").value);
+
+settings[turn].power=
+Number($("power").value);
+
+$("angleValue").textContent=
+settings[turn].angle+"°";
+
+$("powerValue").textContent=
+settings[turn].power+"%";
 }
 
 function renderShop(){
 const root=$("shopGrid");
 root.replaceChildren();
-$("coins").textContent=`🪙 ${save.coins} coins`;
+
+$("coins").textContent=
+`🪙 ${save.coins} coins`;
+
 for(const product of products){
 const card=document.createElement("div");
 card.className="shop-item";
-const title=document.createElement("b");
-title.textContent=product.name;
+
+const name=document.createElement("b");
+name.textContent=product.name;
+
 const desc=document.createElement("small");
 desc.textContent=product.desc;
+
 const button=document.createElement("button");
-const owned=owns(product.id);
-button.textContent=owned?"✅ UNLOCKED":`🪙 BUY · ${product.cost}`;
-button.disabled=owned||save.coins<product.cost;
+
+button.textContent=owns(product.id)
+?"✅ UNLOCKED"
+:`🪙 BUY · ${product.cost}`;
+
+button.disabled=
+owns(product.id)||
+save.coins<product.cost;
+
 button.onclick=()=>{
-if(owns(product.id)||save.coins<product.cost)return;
+if(
+owns(product.id)||
+save.coins<product.cost
+)return;
+
 save.coins-=product.cost;
 save.owned.push(product.id);
+
 persist();
 renderShop();
 hud();
 };
-card.append(title,desc,button);
+
+card.append(name,desc,button);
 root.append(card);
 }
 }
 
-$("angle").addEventListener("input",readSliders);
-$("power").addEventListener("input",readSliders);
-$("ammo").addEventListener("change",e=>{
+$("angle").addEventListener(
+"input",readSliders
+);
+
+$("power").addEventListener(
+"input",readSliders
+);
+
+$("ammo").addEventListener(
+"change",e=>{
 selectedAmmo=e.target.value;
-});
-$("fireBtn").onclick=()=>fire(turn,settings[turn].angle,settings[turn].power,selectedAmmo);
+}
+);
+
+$("fireBtn").onclick=()=>{
+fire(
+turn,
+settings[turn].angle,
+settings[turn].power,
+selectedAmmo
+);
+};
+
 $("startBtn").onclick=startBattle;
 $("restartBtn").onclick=startBattle;
+
 $("mode").onchange=()=>{
-if(phase!=="menu"&&phase!=="over")startBattle();
+if(phase!=="menu"&&phase!=="over"){
+startBattle();
+}
 };
+
 $("difficulty").onchange=()=>{
-if(phase!=="menu"&&phase!=="over")startBattle();
+if(phase!=="menu"&&phase!=="over"){
+startBattle();
+}
 };
+
 $("shopBtn").onclick=()=>{
 $("shop").hidden=!$("shop").hidden;
 renderShop();
 };
 
 window.addEventListener("keydown",e=>{
-if(phase!=="ready"||mode==="cpu"&&turn===1||["INPUT","SELECT","TEXTAREA","BUTTON"].includes(document.activeElement.tagName))return;
+if(
+phase!=="ready"||
+mode==="cpu"&&turn===1||
+["INPUT","SELECT","TEXTAREA","BUTTON"].includes(
+document.activeElement.tagName
+)
+)return;
+
 const s=settings[turn];
+
 if(e.code==="Space"){
 e.preventDefault();
-fire(turn,s.angle,s.power,selectedAmmo);
+
+fire(
+turn,
+s.angle,
+s.power,
+selectedAmmo
+);
 return;
 }
-if(e.code==="ArrowUp")s.angle=clamp(s.angle+1,12,75);
-else if(e.code==="ArrowDown")s.angle=clamp(s.angle-1,12,75);
-else if(e.code==="ArrowRight")s.power=clamp(s.power+2,25,100);
-else if(e.code==="ArrowLeft")s.power=clamp(s.power-2,25,100);
-else return;
+
+if(e.code==="ArrowUp"){
+s.angle=clamp(s.angle+1,12,75);
+}else if(e.code==="ArrowDown"){
+s.angle=clamp(s.angle-1,12,75);
+}else if(e.code==="ArrowRight"){
+s.power=clamp(s.power+2,25,100);
+}else if(e.code==="ArrowLeft"){
+s.power=clamp(s.power-2,25,100);
+}else{
+return;
+}
+
 e.preventDefault();
 hud();
 });
 
-bricks=[build(0,false),build(1,false)];
+bricks=[
+build(0,false),
+build(1,false)
+];
+
 hud();
 renderShop();
 requestAnimationFrame(frame);
+
 })();
 </script>
 </body>
