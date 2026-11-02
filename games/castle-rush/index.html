@@ -1,0 +1,1189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101b36">
+<title>Castle Rush V1 | Luxton Arcade</title>
+<style>
+:root{
+  --bg:#0c142b;
+  --panel:#17264b;
+  --edge:#42629b;
+  --cyan:#54e6ff;
+  --gold:#ffd465;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(ellipse at 50% 0,#233f75,var(--bg) 70%);
+  font-family:system-ui,Arial,sans-serif;
+  color:#f5f8ff;
+  overflow-x:hidden;
+}
+main{width:min(1080px,96%);margin:16px auto 40px}
+a{color:#b9eaff;text-decoration:none}
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+h1{
+  margin:8px 0 14px;
+  font-size:clamp(26px,5vw,42px);
+  color:var(--gold);
+  text-shadow:0 0 17px #f2b84d77;
+}
+.version{
+  font-size:12px;
+  color:#c8eaff;
+  vertical-align:middle;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin:9px 0 12px;
+}
+.stat{
+  border:1px solid var(--edge);
+  border-radius:13px;
+  background:#162448;
+  padding:12px;
+  text-align:center;
+}
+.stat small{
+  display:block;
+  color:#b5c9ed;
+  font-size:11px;
+  letter-spacing:1px;
+}
+.stat strong{font-size:clamp(15px,3vw,24px)}
+.arena{
+  position:relative;
+  border:3px solid #73dbff;
+  border-radius:17px;
+  overflow:hidden;
+  box-shadow:0 0 30px #00c7ff34;
+  background:#4479b7;
+}
+canvas{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:960/540;
+  touch-action:pan-y;
+}
+.overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#091532d9;
+  padding:14px;
+}
+.overlay[hidden]{display:none}
+.dialog{
+  width:min(440px,100%);
+  padding:24px;
+  text-align:center;
+  border:1px solid #77dbff;
+  border-radius:18px;
+  background:linear-gradient(135deg,#1a3669,#302450);
+  box-shadow:0 12px 50px #0008;
+}
+.dialog h2{
+  margin:0 0 10px;
+  color:#ffe08a;
+  font-size:clamp(22px,4vw,31px);
+}
+.dialog p{
+  line-height:1.55;
+  color:#dce9ff;
+  margin:10px 0 20px;
+}
+button,select,input{font:inherit}
+button{
+  min-height:49px;
+  padding:12px 17px;
+  border:0;
+  border-radius:12px;
+  font-weight:850;
+  color:#0c2037;
+  background:linear-gradient(110deg,#57e6ff,#7484ff);
+  cursor:pointer;
+  touch-action:manipulation;
+}
+button:hover:not(:disabled){filter:brightness(1.12)}
+button:disabled{cursor:not-allowed;opacity:.53}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible{
+  outline:3px solid #ffe58b;
+  outline-offset:3px;
+}
+.secondary{
+  background:#233961;
+  border:1px solid #6483b9;
+  color:#e6f2ff;
+}
+.control-panel{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.1fr;
+  align-items:end;
+  gap:15px;
+  margin-top:14px;
+  padding:18px;
+  background:var(--panel);
+  border:1px solid var(--edge);
+  border-radius:16px;
+}
+.control-panel label{display:block;font-weight:750}
+.value{font-weight:900;color:#ffdf7e}
+input[type="range"]{
+  display:block;
+  width:100%;
+  height:32px;
+  margin:10px 0 0;
+  accent-color:#6be8ff;
+  cursor:pointer;
+  touch-action:pan-x;
+}
+.fire{
+  min-height:64px;
+  font-size:18px;
+  background:linear-gradient(110deg,#ffbe51,#ff795c);
+}
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:12px 0 0;
+}
+.toolbar label{color:#c8ddfb;font-weight:750}
+select{
+  background:#17264b;
+  color:white;
+  border:1px solid #6782ad;
+  border-radius:9px;
+  padding:10px;
+}
+.help{
+  color:#aec6e8;
+  text-align:center;
+  line-height:1.5;
+  font-size:14px;
+  margin:16px 0;
+}
+#turnNotice{
+  margin:0 0 8px;
+  font-size:15px;
+  text-align:center;
+  color:#e7f5ff;
+  font-weight:700;
+}
+@media(max-width:620px){
+  main{width:100%;padding:0 9px}
+  h1{font-size:26px}
+  .stat{padding:9px 2px}
+  .stat small{font-size:9px}
+  .stats{gap:6px}
+  .control-panel{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    padding:12px;
+  }
+  .fire{
+    grid-column:1/-1;
+    min-height:70px;
+    font-size:19px;
+  }
+  .arena{border-width:2px}
+  .dialog{padding:17px}
+  .help{font-size:12px}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>🏰 CASTLE RUSH <span class="version">V1</span></h1>
+  <a href="../../">← Luxton Arcade</a>
+</header>
+
+<div class="stats">
+  <div class="stat">
+    <small>BLUE CASTLE</small>
+    <strong id="blueHealth">20 / 20 🧱</strong>
+  </div>
+  <div class="stat">
+    <small>TURN</small>
+    <strong id="turnText">READY</strong>
+  </div>
+  <div class="stat">
+    <small>RED CASTLE</small>
+    <strong id="redHealth">20 / 20 🧱</strong>
+  </div>
+</div>
+
+<p id="turnNotice" role="status" aria-live="polite">
+  Aim your cannon and knock down the enemy castle!
+</p>
+
+<div class="arena">
+  <canvas id="game" width="960" height="540"></canvas>
+
+  <div id="overlay" class="overlay">
+    <div class="dialog">
+      <h2 id="dialogTitle">🏰 CASTLE RUSH!</h2>
+      <p id="dialogText">
+        Aim your cannon, choose your power, and
+        launch cartoon cannonballs! Destroy all
+        the other castle's bricks to win.
+        <br><br>
+        Play against the computer or challenge
+        someone beside you.
+      </p>
+      <button id="startBtn">⚔️ START BATTLE</button>
+    </div>
+  </div>
+</div>
+
+<div class="control-panel">
+  <label for="angle">
+    🎯 Angle:
+    <span class="value" id="angleValue">32°</span>
+    <input id="angle" type="range"
+           min="12" max="75" value="32" step="1">
+  </label>
+
+  <label for="power">
+    ⚡ Power:
+    <span class="value" id="powerValue">62%</span>
+    <input id="power" type="range"
+           min="25" max="100" value="62" step="1">
+  </label>
+
+  <button id="fireBtn" class="fire" disabled>
+    💥 FIRE!
+  </button>
+</div>
+
+<div class="toolbar">
+  <label for="mode">
+    Battle mode:
+    <select id="mode">
+      <option value="cpu">🤖 Against computer</option>
+      <option value="two">👥 2 players</option>
+    </select>
+  </label>
+  <button id="restartBtn" class="secondary">
+    ↻ NEW BATTLE
+  </button>
+</div>
+
+<p class="help">
+  📱 Mobile: use the angle and power sliders,
+  then tap FIRE.
+  <br>
+  💻 PC: ↑↓ changes angle, ←→ changes power,
+  Space fires.
+</p>
+</main>
+
+<script>
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+const canvas = $("game");
+const ctx = canvas.getContext("2d");
+
+const W = 960;
+const H = 540;
+const GROUND = 466;
+const GRAVITY = 460;
+const TOTAL = 20;
+
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+
+const sides = [
+  {
+    name:"BLUE",
+    color:"#45c7ff",
+    shadow:"#1b6da6",
+    x:95,
+    dir:1,
+    muzzleX:244
+  },
+  {
+    name:"RED",
+    color:"#ff7d91",
+    shadow:"#a63853",
+    x:729,
+    dir:-1,
+    muzzleX:716
+  }
+];
+
+let settings = [
+  {angle:32,power:62},
+  {angle:32,power:62}
+];
+
+let bricks = [[],[]];
+let debris = [];
+let shot = null;
+let trail = [];
+let turn = 0;
+let phase = "menu";
+let mode = "cpu";
+let cooldown = 0;
+let session = 0;
+let shake = 0;
+let last = performance.now();
+let wins = 0;
+
+try {
+  wins = Math.max(
+    0,
+    Number(localStorage.getItem("luxton_castle_rush_wins_v1")) || 0
+  );
+} catch(e) {}
+
+function build(side) {
+  const result = [];
+
+  // Four rows of castle walls.
+  for(let row=0;row<4;row++) {
+    for(let col=0;col<4;col++) {
+      result.push({
+        x:sides[side].x+col*34,
+        y:GROUND-(row+1)*29,
+        w:33,
+        h:28,
+        row,
+        col
+      });
+    }
+  }
+
+  // Two taller castle towers.
+  for(let row=4;row<6;row++) {
+    for(const col of [0,3]) {
+      result.push({
+        x:sides[side].x+col*34,
+        y:GROUND-(row+1)*29,
+        w:33,
+        h:28,
+        row,
+        col
+      });
+    }
+  }
+
+  return result;
+}
+
+function updateHud() {
+  $("blueHealth").textContent =
+    `${bricks[0].length} / ${TOTAL} 🧱`;
+
+  $("redHealth").textContent =
+    `${bricks[1].length} / ${TOTAL} 🧱`;
+
+  $("turnText").textContent =
+    phase==="over" ? "GAME OVER" :
+    phase==="menu" ? "READY" :
+    turn===0 ? "🔵 BLUE" : "🔴 RED";
+
+  $("angle").value = settings[turn].angle;
+  $("power").value = settings[turn].power;
+
+  $("angleValue").textContent =
+    settings[turn].angle+"°";
+
+  $("powerValue").textContent =
+    settings[turn].power+"%";
+
+  const cpuThinking =
+    mode==="cpu" && turn===1;
+
+  const canControl =
+    phase==="ready" && !cpuThinking;
+
+  $("angle").disabled = !canControl;
+  $("power").disabled = !canControl;
+  $("fireBtn").disabled = !canControl;
+
+  $("mode").disabled =
+    phase==="flying" || phase==="settling";
+
+  const announcement =
+    phase==="flying" ? "💥 Cannonball flying!" :
+    phase==="settling" ? "🧱 Castle taking damage..." :
+    phase==="over" ? "Battle complete!" :
+    phase==="menu" ? "Pick a mode and start!" :
+    cpuThinking ? "🤖 Computer is aiming..." :
+    turn===0 ? "🔵 Blue castle: your shot!" :
+               "🔴 Red castle: your shot!";
+
+  $("turnNotice").textContent = announcement;
+}
+
+function startBattle() {
+  session++;
+  mode = $("mode").value;
+
+  bricks = [build(0),build(1)];
+  debris = [];
+  shot = null;
+  trail = [];
+  turn = 0;
+  phase = "ready";
+  cooldown = 0;
+  shake = 0;
+
+  $("overlay").hidden = true;
+  updateHud();
+}
+
+function showEnd(winner) {
+  phase = "over";
+  shot = null;
+
+  if(winner===0 && mode==="cpu") {
+    wins++;
+
+    try {
+      localStorage.setItem(
+        "luxton_castle_rush_wins_v1",
+        String(wins)
+      );
+    } catch(e) {}
+  }
+
+  $("dialogTitle").textContent =
+    winner===0 ?
+    "🏆 BLUE CASTLE WINS!" :
+    "🏆 RED CASTLE WINS!";
+
+  if(winner===0 && mode==="cpu") {
+    $("dialogText").innerHTML =
+      `You knocked down the enemy castle! 🎉
+       <br>Victories against the computer:
+       <b>${wins}</b>`;
+  } else {
+    $("dialogText").textContent =
+      "The opposing castle has fallen! 🏰💥";
+  }
+
+  $("startBtn").textContent = "⚔️ PLAY AGAIN";
+  $("overlay").hidden = false;
+
+  updateHud();
+}
+
+function speed(power) {
+  return 290+power*3.8;
+}
+
+function velocity(side,angle,power) {
+  const a = angle*Math.PI/180;
+  const v = speed(power);
+
+  return {
+    vx:Math.cos(a)*v*sides[side].dir,
+    vy:-Math.sin(a)*v
+  };
+}
+
+function fire(side,angle,power) {
+  if(phase!=="ready" || side!==turn) return;
+
+  const v = velocity(side,angle,power);
+
+  shot = {
+    x:sides[side].muzzleX,
+    y:368,
+    vx:v.vx,
+    vy:v.vy,
+    side
+  };
+
+  trail = [];
+  phase = "flying";
+  updateHud();
+}
+
+function blast(x,y,target) {
+  shake = 8;
+
+  bricks[target] = bricks[target].filter(block => {
+    const nearX = clamp(x,block.x,block.x+block.w);
+    const nearY = clamp(y,block.y,block.y+block.h);
+
+    if(Math.hypot(x-nearX,y-nearY)>51) {
+      return true;
+    }
+
+    // Break the brick into cartoon debris.
+    for(let i=0;i<6;i++) {
+      const angle = Math.random()*Math.PI*2;
+      const v = 50+Math.random()*175;
+
+      debris.push({
+        x:block.x+block.w/2,
+        y:block.y+block.h/2,
+        vx:Math.cos(angle)*v,
+        vy:Math.sin(angle)*v-100,
+        life:.55+Math.random()*.5,
+        color:sides[target].color,
+        size:3+Math.random()*6
+      });
+    }
+
+    return false;
+  });
+
+  // Spark effects.
+  for(let i=0;i<22;i++) {
+    const angle = Math.random()*Math.PI*2;
+    const v = 45+Math.random()*140;
+
+    debris.push({
+      x,y,
+      vx:Math.cos(angle)*v,
+      vy:Math.sin(angle)*v-60,
+      life:.35+Math.random()*.4,
+      color:i%2 ? "#ffcc65" : "#fff3bf",
+      size:2+Math.random()*5
+    });
+  }
+
+  shot = null;
+  trail = [];
+
+  if(bricks[target].length===0) {
+    showEnd(1-target);
+    return;
+  }
+
+  phase = "settling";
+  cooldown = .7;
+  updateHud();
+}
+
+function miss(x,y) {
+  for(let i=0;i<12;i++) {
+    const angle = Math.random()*Math.PI*2;
+    const v = 25+Math.random()*110;
+
+    debris.push({
+      x,y,
+      vx:Math.cos(angle)*v,
+      vy:Math.sin(angle)*v-100,
+      life:.4+Math.random()*.4,
+      color:"#d6b17a",
+      size:2+Math.random()*4
+    });
+  }
+
+  shot = null;
+  trail = [];
+  phase = "settling";
+  cooldown = .65;
+  updateHud();
+}
+
+function computerFire(token) {
+  if(
+    session!==token ||
+    phase!=="ready" ||
+    turn!==1 ||
+    mode!=="cpu"
+  ) return;
+
+  const remaining = bricks[0];
+  if(!remaining.length) return;
+
+  const block =
+    remaining[Math.floor(Math.random()*remaining.length)];
+
+  const angle = 27+Math.random()*18;
+  const a = angle*Math.PI/180;
+
+  const distance = Math.abs(
+    block.x+block.w/2-sides[1].muzzleX
+  );
+
+  const dy = block.y+block.h/2-368;
+
+  const denominator =
+    2*Math.cos(a)**2 *
+    (dy+Math.tan(a)*distance);
+
+  const requiredSpeed =
+    denominator>0 ?
+    Math.sqrt(
+      GRAVITY*distance*distance/denominator
+    ) : 480;
+
+  // A little randomness gives the computer
+  // imperfect aim instead of guaranteed hits.
+  const power = clamp(
+    Math.round(
+      (requiredSpeed-290)/3.8+
+      (Math.random()-.5)*14
+    ),
+    25,
+    100
+  );
+
+  const finalAngle = clamp(
+    Math.round(angle+(Math.random()-.5)*4),
+    12,
+    75
+  );
+
+  settings[1] = {
+    angle:finalAngle,
+    power
+  };
+
+  fire(1,finalAngle,power);
+}
+
+function nextTurn() {
+  if(phase!=="settling") return;
+
+  turn = 1-turn;
+  phase = "ready";
+  updateHud();
+
+  if(turn===1 && mode==="cpu") {
+    const token = session;
+
+    setTimeout(
+      () => computerFire(token),
+      650
+    );
+  }
+}
+
+function update(dt) {
+  shake = Math.max(0,shake-dt*22);
+
+  for(const p of debris) {
+    p.x += p.vx*dt;
+    p.y += p.vy*dt;
+    p.vy += 400*dt;
+    p.life -= dt;
+  }
+
+  debris = debris.filter(p=>p.life>0);
+
+  if(phase==="settling") {
+    cooldown -= dt;
+
+    if(cooldown<=0) {
+      nextTurn();
+    }
+  }
+
+  if(!shot || phase!=="flying") return;
+
+  // Small steps make collisions more reliable.
+  const steps = 3;
+
+  for(let k=0;k<steps;k++) {
+    const delta = dt/steps;
+
+    shot.x += shot.vx*delta;
+    shot.y += shot.vy*delta;
+    shot.vy += GRAVITY*delta;
+
+    if(k===0) {
+      trail.push({x:shot.x,y:shot.y});
+    }
+
+    if(trail.length>38) trail.shift();
+
+    const target = 1-shot.side;
+
+    const hit = bricks[target].some(b =>
+      shot.x+9>b.x &&
+      shot.x-9<b.x+b.w &&
+      shot.y+9>b.y &&
+      shot.y-9<b.y+b.h
+    );
+
+    if(hit) {
+      blast(shot.x,shot.y,target);
+      return;
+    }
+
+    if(shot.y>=GROUND-5) {
+      const nearby = bricks[target].some(b =>
+        Math.abs(
+          shot.x-(b.x+b.w/2)
+        )<55
+      );
+
+      if(nearby) {
+        blast(shot.x,GROUND-5,target);
+      } else {
+        miss(shot.x,GROUND-5);
+      }
+      return;
+    }
+
+    if(
+      shot.x<-35 ||
+      shot.x>W+35 ||
+      shot.y>H+40
+    ) {
+      miss(
+        clamp(shot.x,0,W),
+        clamp(shot.y,0,GROUND)
+      );
+      return;
+    }
+  }
+}
+
+function roundedRect(x,y,w,h,r,fill) {
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,h,r);
+  ctx.fillStyle = fill;
+  ctx.fill();
+}
+
+function drawBackground(t) {
+  const grad = ctx.createLinearGradient(
+    0,0,0,GROUND
+  );
+
+  grad.addColorStop(0,"#5e99db");
+  grad.addColorStop(.78,"#b7d6ee");
+  grad.addColorStop(1,"#ffdfb2");
+
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+
+  // Sun.
+  ctx.fillStyle = "#fff3bd";
+  ctx.beginPath();
+  ctx.arc(470,105,50,0,Math.PI*2);
+  ctx.fill();
+
+  // Clouds.
+  for(let i=0;i<5;i++) {
+    const x =
+      (i*234+t*(i%2?5:9))%1200-120;
+
+    const y = 70+(i%3)*60;
+
+    ctx.fillStyle = "#ffffffb8";
+
+    for(const [dx,dy,r] of [
+      [0,0,24],
+      [23,3,28],
+      [49,5,21]
+    ]) {
+      ctx.beginPath();
+      ctx.arc(x+dx,y+dy,r,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  // Mountains.
+  ctx.fillStyle = "#7cb2ae";
+  ctx.beginPath();
+  ctx.moveTo(0,405);
+  ctx.lineTo(180,310);
+  ctx.lineTo(310,402);
+  ctx.lineTo(490,318);
+  ctx.lineTo(690,405);
+  ctx.lineTo(810,333);
+  ctx.lineTo(960,400);
+  ctx.lineTo(960,GROUND);
+  ctx.lineTo(0,GROUND);
+  ctx.fill();
+
+  // Hills.
+  ctx.fillStyle = "#5d966d";
+  ctx.beginPath();
+  ctx.moveTo(0,435);
+  ctx.quadraticCurveTo(250,375,480,445);
+  ctx.quadraticCurveTo(780,382,960,430);
+  ctx.lineTo(960,GROUND);
+  ctx.lineTo(0,GROUND);
+  ctx.fill();
+
+  // Ground.
+  ctx.fillStyle = "#45845b";
+  ctx.fillRect(0,GROUND,W,H-GROUND);
+
+  ctx.fillStyle = "#77563c";
+  ctx.fillRect(
+    0,GROUND+18,W,H-GROUND-18
+  );
+
+  ctx.strokeStyle = "#9fd07b";
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(0,GROUND+2);
+  ctx.lineTo(W,GROUND+2);
+  ctx.stroke();
+}
+
+function drawCastle(side) {
+  const castle = sides[side];
+
+  ctx.fillStyle = "#0003";
+  ctx.beginPath();
+  ctx.ellipse(
+    castle.x+69,
+    GROUND+9,
+    94,15,0,0,Math.PI*2
+  );
+  ctx.fill();
+
+  for(const b of bricks[side]) {
+    const base =
+      side===0 ? "#469ace" : "#d96e83";
+
+    roundedRect(
+      b.x+1,b.y+1,
+      b.w-2,b.h-2,
+      2,base
+    );
+
+    ctx.fillStyle = castle.shadow;
+    ctx.fillRect(
+      b.x+2,
+      b.y+b.h-6,
+      b.w-4,
+      5
+    );
+
+    ctx.strokeStyle = "#ffffff60";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(
+      b.x+2.5,b.y+2.5,
+      b.w-5,b.h-5
+    );
+
+    ctx.strokeStyle = "#ffffff35";
+    ctx.beginPath();
+    ctx.moveTo(b.x+b.w/2,b.y+3);
+    ctx.lineTo(
+      b.x+b.w/2,
+      b.y+b.h-5
+    );
+    ctx.stroke();
+  }
+
+  // Castle flag.
+  const poleX = castle.x+68;
+  const flagY = GROUND-4*29;
+
+  ctx.strokeStyle = "#f8f3db";
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(poleX,flagY);
+  ctx.lineTo(poleX,flagY-85);
+  ctx.stroke();
+
+  ctx.fillStyle = castle.color;
+  ctx.beginPath();
+  ctx.moveTo(poleX,flagY-84);
+  ctx.lineTo(
+    poleX+castle.dir*49,
+    flagY-67
+  );
+  ctx.lineTo(poleX,flagY-51);
+  ctx.fill();
+
+  ctx.fillStyle = "#1a345d";
+  ctx.font = "bold 15px system-ui";
+  ctx.textAlign = "center";
+
+  ctx.fillText(
+    side===0 ? "BLUE CASTLE" : "RED CASTLE",
+    castle.x+68,
+    GROUND+44
+  );
+}
+
+function drawCannon(side) {
+  const info = sides[side];
+  const angle =
+    settings[side].angle*Math.PI/180;
+
+  const x = info.muzzleX;
+  const y = 368;
+
+  ctx.save();
+  ctx.translate(x,y);
+
+  ctx.rotate(
+    info.dir===1 ?
+    -angle :
+    Math.PI+angle
+  );
+
+  roundedRect(
+    -12,-12,62,24,6,
+    "#384259"
+  );
+
+  roundedRect(
+    31,-11,20,22,4,
+    "#23283b"
+  );
+
+  ctx.fillStyle = "#a6b9ce";
+  ctx.fillRect(39,-9,4,18);
+
+  ctx.restore();
+
+  // Cannon wheel.
+  ctx.fillStyle = "#34455e";
+  ctx.beginPath();
+  ctx.arc(x,y,24,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.strokeStyle = "#aab8c8";
+  ctx.lineWidth = 7;
+  ctx.beginPath();
+  ctx.arc(x,y,17,0,Math.PI*2);
+  ctx.stroke();
+
+  ctx.fillStyle = info.color;
+  ctx.beginPath();
+  ctx.arc(x,y,8,0,Math.PI*2);
+  ctx.fill();
+}
+
+function drawPreview() {
+  if(
+    phase!=="ready" ||
+    (mode==="cpu" && turn===1)
+  ) return;
+
+  const {angle,power} = settings[turn];
+  const v = velocity(turn,angle,power);
+  const startX = sides[turn].muzzleX;
+
+  ctx.fillStyle =
+    turn===0 ?
+    "#0d477cbb" :
+    "#a63853bb";
+
+  for(let t=.14;t<2.8;t+=.105) {
+    const x = startX+v.vx*t;
+    const y =
+      368+v.vy*t+
+      .5*GRAVITY*t*t;
+
+    if(
+      x<15 ||
+      x>945 ||
+      y>GROUND-7
+    ) break;
+
+    ctx.beginPath();
+    ctx.arc(x,y,3.5,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function draw() {
+  ctx.save();
+
+  if(shake) {
+    ctx.translate(
+      (Math.random()-.5)*shake,
+      (Math.random()-.5)*shake
+    );
+  }
+
+  drawBackground(performance.now()/1000);
+  drawCastle(0);
+  drawCastle(1);
+  drawCannon(0);
+  drawCannon(1);
+  drawPreview();
+
+  if(shot) {
+    // Cannonball trail.
+    for(let i=0;i<trail.length;i++) {
+      ctx.fillStyle =
+        `rgba(255,246,193,${i/trail.length*.65})`;
+
+      ctx.beginPath();
+      ctx.arc(
+        trail[i].x,
+        trail[i].y,
+        3.5,0,Math.PI*2
+      );
+      ctx.fill();
+    }
+
+    ctx.shadowColor = "#ffdb71";
+    ctx.shadowBlur = 17;
+    ctx.fillStyle = "#252a42";
+
+    ctx.beginPath();
+    ctx.arc(
+      shot.x,
+      shot.y,
+      11,0,Math.PI*2
+    );
+    ctx.fill();
+
+    ctx.strokeStyle = "#fbe9bb";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  // Falling brick particles.
+  for(const p of debris) {
+    ctx.globalAlpha =
+      clamp(p.life,0,1);
+
+    ctx.fillStyle = p.color;
+
+    ctx.fillRect(
+      p.x,p.y,
+      p.size,p.size
+    );
+  }
+
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function frame(now) {
+  const dt = Math.min(
+    (now-last)/1000,
+    .032
+  );
+
+  last = now;
+  update(dt);
+  draw();
+
+  requestAnimationFrame(frame);
+}
+
+function adjust() {
+  settings[turn].angle =
+    Number($("angle").value);
+
+  settings[turn].power =
+    Number($("power").value);
+
+  $("angleValue").textContent =
+    settings[turn].angle+"°";
+
+  $("powerValue").textContent =
+    settings[turn].power+"%";
+}
+
+$("angle").addEventListener(
+  "input",adjust
+);
+
+$("power").addEventListener(
+  "input",adjust
+);
+
+$("fireBtn").onclick = () => {
+  fire(
+    turn,
+    settings[turn].angle,
+    settings[turn].power
+  );
+};
+
+$("startBtn").onclick = startBattle;
+$("restartBtn").onclick = startBattle;
+
+$("mode").addEventListener(
+  "change",() => {
+    if(
+      phase==="menu" ||
+      phase==="over"
+    ) return;
+
+    startBattle();
+  }
+);
+
+// Desktop keyboard controls.
+window.addEventListener("keydown",e => {
+  if(
+    phase!=="ready" ||
+    (mode==="cpu" && turn===1) ||
+    ["INPUT","SELECT","TEXTAREA"].includes(
+      document.activeElement.tagName
+    )
+  ) return;
+
+  if(e.code==="Space") {
+    e.preventDefault();
+
+    fire(
+      turn,
+      settings[turn].angle,
+      settings[turn].power
+    );
+
+    return;
+  }
+
+  const s = settings[turn];
+
+  if(e.code==="ArrowUp") {
+    s.angle = clamp(
+      s.angle+1,12,75
+    );
+  } else if(e.code==="ArrowDown") {
+    s.angle = clamp(
+      s.angle-1,12,75
+    );
+  } else if(e.code==="ArrowRight") {
+    s.power = clamp(
+      s.power+2,25,100
+    );
+  } else if(e.code==="ArrowLeft") {
+    s.power = clamp(
+      s.power-2,25,100
+    );
+  } else {
+    return;
+  }
+
+  e.preventDefault();
+  updateHud();
+});
+
+bricks = [build(0),build(1)];
+updateHud();
+requestAnimationFrame(frame);
+
+})();
+</script>
+</body>
+</html>
