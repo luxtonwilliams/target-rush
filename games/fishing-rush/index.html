@@ -4,47 +4,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10263e">
-<title>Fishing Rush V3.2 | Luxton Arcade</title>
+<meta name="theme-color" content="#102b45">
+<title>Fishing Rush V3.3 | Luxton Arcade</title>
 <style>
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-margin:0;
-background:radial-gradient(ellipse at top,#315a72,#0a1b30 75%);
-color:#f0fdff;
-font-family:system-ui,Arial,sans-serif;
-overflow-x:hidden
+margin:0;overflow-x:hidden;
+background:radial-gradient(ellipse at top,#315a73,#0a1a2d 75%);
+color:#f2fdff;font-family:system-ui,Arial,sans-serif
 }
-main{width:min(1100px,96%);margin:16px auto 35px}
-header,.flex{
-display:flex;justify-content:space-between;
-align-items:center;gap:12px;flex-wrap:wrap
+main{width:min(1100px,96%);margin:15px auto 35px}
+header,.head{
+display:flex;align-items:center;justify-content:space-between;
+gap:10px;flex-wrap:wrap
 }
-h1{
-color:#9af5e3;margin:4px 0;
-font-size:clamp(26px,5vw,42px)
-}
-h1 small{font-size:12px;color:#ffe4a6}
-a{color:#b4f4ff;text-decoration:none}
-p{color:#bfdce8;line-height:1.5}
+h1{margin:4px 0;color:#99f7e9;font-size:clamp(26px,5vw,42px)}
+h1 small{font-size:12px;color:#ffe3a2}
+a{color:#b7f0ff;text-decoration:none}
+p{color:#c3dde7;line-height:1.5}
 .stats{
-display:grid;
-grid-template-columns:repeat(5,minmax(0,1fr));
+display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
 gap:7px;margin:13px 0
 }
 .stat,.panel,.controls{
-background:#142d47;
-border:1px solid #527d91;
+background:#142d47;border:1px solid #4e7d90;
 border-radius:14px;padding:12px
 }
 .stat{text-align:center}
-.stat small{display:block;color:#c1deeb;font-size:10px}
+.stat small{display:block;color:#c2dfea;font-size:10px}
 .stat b{display:block;font-size:clamp(13px,2.4vw,23px)}
 .scene{
-position:relative;border:3px solid #7bdbdc;
-border-radius:17px;overflow:hidden;
-box-shadow:0 15px 40px #0006
+position:relative;overflow:hidden;
+border:3px solid #8be4de;border-radius:18px;
+box-shadow:0 15px 42px #0007
 }
 canvas{display:block;width:100%;height:auto}
 #lake{
@@ -52,106 +45,104 @@ aspect-ratio:1100/610;cursor:pointer;
 touch-action:manipulation
 }
 .placeTag{
-position:absolute;top:12px;left:12px;
-padding:8px 13px;background:#112940c9;
-border-radius:20px;font-size:13px;
+position:absolute;top:11px;left:11px;
+padding:8px 13px;border-radius:20px;
+font-size:12px;background:#122d48d9;
 pointer-events:none
 }
 .controls{text-align:center;margin-top:13px}
 .status{
-font-weight:750;min-height:45px;
+font-weight:750;min-height:46px;
 display:grid;place-items:center
 }
 .buttons{
-display:grid;
-grid-template-columns:1.5fr repeat(4,1fr);
+display:grid;grid-template-columns:1.45fr repeat(4,1fr);
 gap:8px;margin-top:10px
 }
 button{
 border:0;border-radius:10px;
-padding:12px 9px;min-height:48px;
-background:linear-gradient(120deg,#a0f6dc,#8acbff);
-color:#103c48;font-weight:850;cursor:pointer;
-touch-action:manipulation
+padding:11px 9px;min-height:49px;
+background:linear-gradient(120deg,#9bf8df,#88caff);
+color:#123b49;font:inherit;font-weight:850;
+cursor:pointer;touch-action:manipulation
 }
-button.secondary{
-background:#28516b;color:#fff;
-border:1px solid #6691a8
+.secondary{
+background:#28516a;color:#fff;
+border:1px solid #6b96a9
 }
 button:disabled{opacity:.48;cursor:default}
 button:focus-visible,a:focus-visible{
-outline:3px solid #ffe19c;outline-offset:3px
+outline:3px solid #ffe29b;outline-offset:3px
 }
 .reel{
-background:#092137;border:1px solid #5991a1;
+background:#092339;border:1px solid #6495a4;
 max-width:760px;margin:12px auto;
 padding:12px;border-radius:13px
 }
 .reel p{font-size:13px;margin:4px}
 .meter{
-height:53px;background:#1e3a53;
-border:2px solid #bde8e1;
-border-radius:10px;position:relative;
-overflow:hidden;cursor:pointer
+height:54px;background:#203a53;
+border:2px solid #bde8e1;border-radius:10px;
+position:relative;overflow:hidden;
+cursor:pointer;touch-action:manipulation;margin:10px 0
 }
 .zone{
 position:absolute;top:4px;bottom:4px;
-background:#55dc9e;border-radius:8px
+background:linear-gradient(#9cf5b5,#37bf91);
+border-radius:8px;box-shadow:0 0 13px #5dfab3
 }
 .needle{
 position:absolute;top:0;bottom:0;width:8px;
-background:#ffe28b;box-shadow:0 0 14px #ffe28b;
+background:#ffe28b;box-shadow:0 0 15px #ffe28b;
 transform:translateX(-50%)
 }
 .grid{
 display:grid;grid-template-columns:1fr 1fr;
 gap:13px;margin:14px 0
 }
-.panel h2{font-size:21px;margin:0 0 9px}
+.panel h2{font-size:21px;margin:0 0 10px}
 .card{
-background:#20445b;border:1px solid #518599;
-border-radius:11px;padding:10px;margin:8px 0;
-display:flex;justify-content:space-between;
-align-items:center;gap:10px
+display:flex;align-items:center;justify-content:space-between;
+gap:10px;flex-wrap:wrap;background:#20445c;
+border:1px solid #568599;border-radius:11px;
+padding:10px;margin:8px 0
 }
-.card small{
-display:block;color:#c7dee7;font-size:12px
-}
-.card button{font-size:12px;white-space:nowrap}
-.card .actions{
-display:flex;gap:5px;flex-wrap:wrap;
-justify-content:end
-}
+.card small{display:block;color:#c6dfe8;font-size:12px}
+.card button{font-size:12px}
+.cardActions{display:flex;flex-wrap:wrap;gap:5px}
 .journal{
 display:grid;
 grid-template-columns:repeat(2,minmax(0,1fr));
 gap:9px
 }
 .fishcard{
-border:1px solid #4f8291;border-radius:10px;
-padding:10px;text-align:center;background:#1c425c
+border:1px solid #528898;border-radius:11px;
+padding:9px;text-align:center;background:#1e425b
 }
-.fishcard span{display:block;font-size:28px}
+.fishcard canvas{
+height:78px;width:100%;object-fit:contain
+}
 .fishcard b{display:block;font-size:13px}
-.fishcard small{font-size:11px;color:#bed7e1}
+.fishcard small{font-size:11px;color:#c0dbe5}
+.fishcard.locked{opacity:.6}
 .tag{
-background:#205a6c;border-radius:20px;
+background:#205e6f;border-radius:20px;
 padding:5px 10px;font-size:12px
 }
 .tank{
-border:4px solid #96e4e6;border-radius:13px;
-overflow:hidden
+overflow:hidden;border:4px solid #a0e2e7;
+border-radius:14px;background:#135575
 }
 .tank canvas{aspect-ratio:1000/350}
 footer{
-color:#a5cad6;text-align:center;
+text-align:center;color:#aacbd8;
 font-size:13px;padding:18px
 }
 [hidden]{display:none!important}
 @media(max-width:800px){
 .buttons{grid-template-columns:1fr 1fr}
 .buttons #action{
-grid-column:1/-1;min-height:62px;font-size:18px
+grid-column:1/-1;min-height:64px;font-size:18px
 }
 .grid{grid-template-columns:1fr}
 .stat{padding:9px 2px}
@@ -162,67 +153,57 @@ grid-column:1/-1;min-height:62px;font-size:18px
 main{width:100%;padding:8px}
 .scene{border-width:2px}
 .placeTag{font-size:10px;padding:6px}
-.card{padding:8px;flex-wrap:wrap}
-.card .actions{width:100%}
 .stat small{font-size:8px}
-.journal{gap:5px}
 .panel,.controls{padding:10px}
+.journal{gap:6px}
+.card{padding:9px}
 }
 </style>
 </head>
 <body>
 <main>
+
 <header>
 <div>
 <h1>🎣 FISHING RUSH
-<small>V3.2 · BETTER FISHERMAN</small></h1>
+<small>V3.3 · BETTER FISH!</small></h1>
 <p style="margin:0">
-Relax, explore, and keep your favorite fish. 🌅
+Beautiful fish, peaceful waters, your own aquarium. 🌅
 </p>
 </div>
 <a href="../../">← Luxton Arcade</a>
 </header>
 
 <div class="stats">
-<div class="stat">
-<small>🪙 COINS</small><b id="coins">0</b>
-</div>
-<div class="stat">
-<small>🐟 CAUGHT</small><b id="caught">0</b>
-</div>
-<div class="stat">
-<small>📏 BIGGEST</small><b id="biggest">—</b>
-</div>
-<div class="stat">
-<small>✨ GOLDEN</small><b id="golden">0</b>
-</div>
-<div class="stat">
-<small>🎣 ROD</small><b id="rod">Starter</b>
-</div>
+<div class="stat"><small>🪙 COINS</small><b id="coins">0</b></div>
+<div class="stat"><small>🐟 CAUGHT</small><b id="caught">0</b></div>
+<div class="stat"><small>📏 BIGGEST</small><b id="biggest">—</b></div>
+<div class="stat"><small>✨ GOLDEN</small><b id="golden">0</b></div>
+<div class="stat"><small>🎣 ROD</small><b id="rod">Starter</b></div>
 </div>
 
 <div class="scene">
 <canvas id="lake" width="1100" height="610"
-aria-label="Fisherman sitting on a dock above a scenic lake">
-</canvas>
+aria-label="Scenic fishing lake with fish swimming"></canvas>
 <div class="placeTag" id="placeTag">
-📍 Whispering Lake · No timer
+📍 Whispering Lake
 </div>
 </div>
 
 <section class="controls">
-<div class="status" id="status" role="status" aria-live="polite">
+<div id="status" class="status"
+role="status" aria-live="polite">
 Welcome to the lake! Cast a line whenever you're ready. 🌿
 </div>
 
 <div class="reel" id="reel" hidden>
-<b>🐟 Fish on the line! Stop the marker inside the GREEN zone!</b>
-<div class="meter" id="meter" role="button" tabindex="0"
-aria-label="Reel in fish">
+<b>🐟 Fish on the line! Stop the marker in the GREEN zone!</b>
+<div class="meter" id="meter" role="button"
+tabindex="0" aria-label="Stop the reeling marker">
 <div class="zone" id="zone"></div>
 <div class="needle" id="needle"></div>
 </div>
-<p>Tap the meter, REEL IN, or press Space.</p>
+<p>Tap the meter, tap REEL IN, or press Space.</p>
 </div>
 
 <div class="buttons">
@@ -237,7 +218,9 @@ aria-label="Reel in fish">
 <div class="grid">
 <section class="panel" id="locationsPanel" hidden>
 <h2>🗺️ Fishing Locations</h2>
-<p>Unlock a location once and visit whenever you're not fishing.</p>
+<p>
+Unlock a location once and visit it whenever you're not fishing.
+</p>
 <div id="locations"></div>
 </section>
 
@@ -245,7 +228,7 @@ aria-label="Reel in fish">
 <h2>📖 Fish Journal
 <span class="tag" id="found">0 / 7</span></h2>
 <div class="journal" id="journal"></div>
-<h2 style="margin-top:17px">🧺 Your Basket</h2>
+<h2 style="margin-top:17px">🧺 Fish Basket</h2>
 <button id="sellAll">🪙 SELL ALL</button>
 <div id="basket"></div>
 </section>
@@ -253,33 +236,33 @@ aria-label="Reel in fish">
 <section class="panel" id="shopPanel" hidden>
 <h2>🛒 Fishing Shop
 <span class="tag" id="shopCoins">0 coins</span></h2>
-<p>All upgrades are permanent and affordable.</p>
+<p>Affordable permanent upgrades.</p>
 <div id="shop"></div>
 </section>
 </div>
 
 <section class="panel" id="aquariumPanel" hidden>
-<div class="flex">
+<div class="head">
 <h2>🐠 Your Aquarium</h2>
 <span class="tag" id="tankCount">0 / 8</span>
 </div>
 <p>
-Keep up to eight favorite fish. Tap DISPLAY in your
-journal's basket, or RETURN to put one back.
+Display up to eight favorite fish. Choose DISPLAY from
+the Fish Basket, or RETURN to take a fish back.
 </p>
 <div class="tank">
 <canvas id="aquarium" width="1000" height="350"
-aria-label="Aquarium with saved fish swimming"></canvas>
+aria-label="Animated aquarium with collected fish"></canvas>
 </div>
 <div id="tankList"></div>
 </section>
 
 <footer>
-🌿 No countdown · 📱 Mobile and 💻 PC controls ·
-💾 Progress saves in this browser
+🌿 No timer · 📱 Mobile + 💻 PC ·
+💾 Progress saved on this browser
 </footer>
-</main>
 
+</main>
 <script>
 (()=>{
 "use strict";
@@ -292,56 +275,56 @@ const K="luxton_fishing_rush_v1";
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
-// THE SEVEN FISH
+// ALL SEVEN FISH SPECIES
 const fish=[
 {id:"bluegill",name:"Bluegill",emoji:"🐟",
-rarity:"Common",value:5,min:13,max:24,color:"#79cee0"},
+rarity:"Common",value:5,min:13,max:24,color:"#61b8d4"},
 {id:"bass",name:"Bass",emoji:"🐠",
-rarity:"Uncommon",value:15,min:25,max:52,color:"#89b983"},
+rarity:"Uncommon",value:15,min:25,max:52,color:"#87aa60"},
 {id:"trout",name:"Rainbow Trout",emoji:"🌈",
-rarity:"Rare",value:35,min:26,max:58,color:"#f1a3ad"},
+rarity:"Rare",value:35,min:26,max:58,color:"#ed9ca5"},
 {id:"gold",name:"Golden Fish",emoji:"✨",
-rarity:"Legendary",value:100,min:18,max:44,color:"#ffe18a"},
+rarity:"Legendary",value:100,min:18,max:44,color:"#fbd669"},
 {id:"perch",name:"River Perch",emoji:"🐟",
-rarity:"Uncommon",value:22,min:20,max:42,color:"#efbe64"},
+rarity:"Uncommon",value:22,min:20,max:42,color:"#e8bf61"},
 {id:"salmon",name:"Silver Salmon",emoji:"🐠",
-rarity:"Rare",value:48,min:35,max:75,color:"#cbd8e8"},
+rarity:"Rare",value:48,min:35,max:75,color:"#becfda"},
 {id:"moon",name:"Moonlight Koi",emoji:"🌙",
-rarity:"Legendary",value:80,min:24,max:53,color:"#baa7ff"}
+rarity:"Legendary",value:80,min:24,max:53,color:"#b4a0f5"}
 ];
 
-// AFFORDABLE SHOP
+// FISHING SHOP
 const gear=[
 {id:"rod",name:"🎣 Better Rod",price:20,
 desc:"Wider green catch zone"},
 {id:"bait",name:"🪱 Lucky Bait",price:30,
 desc:"More rare fish"},
 {id:"reel",name:"⚡ Faster Reel",price:40,
-desc:"Quicker bites, slower marker"},
+desc:"Quicker bites, slower meter"},
 {id:"golden",name:"✨ Golden Rod",price:75,
-desc:"Extra catch space and legendary luck"}
+desc:"Extra catch room and better legendary luck"}
 ];
 
-// FOUR SCENIC LOCATIONS
+// FOUR FISHING LOCATIONS
 const spots=[
 {
 id:"lake",name:"Whispering Lake",cost:0,
-sky:["#78b0c9","#f8dbb0"],
-water:["#86cfc1","#185a7b"],
-hill:"#7ba494",tree:"#41796b",sun:"#ffebad",
+sky:["#78b0c9","#f8dab0"],
+water:["#85d0c0","#175a7b"],
+hill:"#7da395",tree:"#41796b",sun:"#ffe9ac",
 weights:[56,28,13,3,0,0,0]
 },
 {
 id:"river",name:"Pinewood River",cost:35,
-sky:["#7db9c4","#e1efdf"],
-water:["#7dd2bb","#176a7e"],
-hill:"#68a093",tree:"#356f5c",sun:"#f8edc5",
+sky:["#7db9c4","#e1efdd"],
+water:["#7ed2bd","#176a7e"],
+hill:"#69a094",tree:"#356f5e",sun:"#f8edc5",
 weights:[16,24,22,4,28,6,0]
 },
 {
 id:"bay",name:"Sunset Bay",cost:75,
-sky:["#806aa5","#ffbc93"],
-water:["#e3aa9e","#2e6088"],
+sky:["#806aa4","#ffbc94"],
+water:["#e3aaa0","#2e6088"],
 hill:"#ad829a",tree:"#657c91",sun:"#ffe0a2",
 weights:[8,16,26,7,9,32,2]
 },
@@ -354,7 +337,7 @@ weights:[5,10,14,14,8,19,30]
 }
 ];
 
-// SAVED PROGRESS
+// PRESERVE SAVED PROGRESS FROM V1, V2, AND V3
 let d={
 coins:0,total:0,biggest:0,golden:0,
 owned:[],discovered:[],inventory:[],
@@ -367,7 +350,9 @@ const old=JSON.parse(localStorage.getItem(K)||"null");
 if(old&&typeof old==="object")d={...d,...old};
 }catch(e){}
 
-for(const n of ["coins","total","biggest","golden","bestCatch"]){
+for(const n of [
+"coins","total","biggest","golden","bestCatch"
+]){
 d[n]=Math.max(0,Number(d[n])||0);
 }
 
@@ -381,17 +366,17 @@ d.inventory=validItems(d.inventory).slice(-500);
 d.aquarium=validItems(d.aquarium).slice(0,8);
 
 d.owned=Array.isArray(d.owned)
-?[...new Set(d.owned.filter(id=>gear.some(g=>g.id===id)))]
+?[...new Set(d.owned.filter(x=>gear.some(g=>g.id===x)))]
 :[];
 
 d.discovered=Array.isArray(d.discovered)
-?[...new Set(d.discovered.filter(id=>fish.some(f=>f.id===id)))]
+?[...new Set(d.discovered.filter(x=>fish.some(f=>f.id===x)))]
 :[];
 
 d.unlockedPlaces=Array.isArray(d.unlockedPlaces)
 ?[...new Set([
 "lake",
-...d.unlockedPlaces.filter(id=>spots.some(p=>p.id===id))
+...d.unlockedPlaces.filter(x=>spots.some(p=>p.id===x))
 ])]
 :["lake"];
 
@@ -399,7 +384,9 @@ if(!d.unlockedPlaces.includes(d.currentPlace)){
 d.currentPlace="lake";
 }
 
-if(!d.sizes||typeof d.sizes!=="object")d.sizes={};
+if(!d.sizes||typeof d.sizes!=="object"){
+d.sizes={};
+}
 
 for(const f of fish){
 d.sizes[f.id]=Math.max(0,Number(d.sizes[f.id])||0);
@@ -409,34 +396,36 @@ const own=id=>d.owned.includes(id);
 const place=()=>spots.find(p=>p.id===d.currentPlace)||spots[0];
 
 function save(){
-try{localStorage.setItem(K,JSON.stringify(d));}
-catch(e){}
+try{
+localStorage.setItem(K,JSON.stringify(d));
+}catch(e){}
 }
 
-const s={
+let s={
 phase:"idle",
 fish:null,
 biteAt:0,
-x:660,
+x:650,
 marker:0,
 center:.5,
 width:.27,
 time:0,
+meterTime:0,
 particles:[],
 catchPop:null
 };
 
 const msg=t=>$("status").textContent=t;
 
-const action=(text,disabled=false)=>{
-$("action").textContent=text;
+function action(t,disabled=false){
+$("action").textContent=t;
 $("action").disabled=disabled;
-};
+}
 
-// FISHING GAMEPLAY
+// CHOOSE FISH
 function chooseFish(){
-let weights=place().weights.map((v,i)=>
-v*
+const weights=place().weights.map((n,i)=>
+n*
 (own("bait")
 ?(fish[i].rarity==="Legendary"?1.9:
 fish[i].rarity==="Rare"?1.5:1)
@@ -453,21 +442,24 @@ if((n-=weights[i])<=0)return fish[i];
 return fish[0];
 }
 
+// CAST
 function cast(){
 if(s.phase!=="idle")return;
 
 s.phase="waiting";
 s.fish=chooseFish();
 s.x=rnd(560,835);
+
 s.biteAt=performance.now()+rnd(1600,4100)*
 (own("reel")?.7:1);
 
 action("🌊 WAITING FOR A BITE...",true);
 $("reel").hidden=true;
 
-msg("Your line is in the water. Enjoy the view! 🌿");
+msg("Your line is in the water. Enjoy the scenery! 🌿");
 }
 
+// FISH BITES
 function bite(){
 if(s.phase!=="waiting")return;
 
@@ -483,29 +475,34 @@ s.width=clamp(
 );
 
 s.marker=0;
+s.meterTime=0;
 
 $("zone").style.left=
 (s.center-s.width/2)*100+"%";
 
-$("zone").style.width=s.width*100+"%";
+$("zone").style.width=
+s.width*100+"%";
+
 $("reel").hidden=false;
 
 action("🐟 REEL IN!");
-msg("A fish is biting! Stop in the green zone!");
+msg("A fish is biting! Stop the marker in the green zone!");
 }
 
-function spark(x,y,color){
-for(let i=0;i<25;i++){
+// FISH CATCH SPARKLES
+function sparkle(x,y,color){
+for(let i=0;i<27;i++){
 s.particles.push({
 x,y,
-vx:rnd(-95,95),
-vy:rnd(-140,-20),
-life:rnd(.5,1.2),
+vx:rnd(-100,100),
+vy:rnd(-155,-25),
+life:rnd(.5,1.3),
 color
 });
 }
 }
 
+// REEL IN
 function reel(){
 if(s.phase!=="bite")return;
 
@@ -534,7 +531,7 @@ if(f.id==="gold")d.golden++;
 if(first)d.discovered.push(f.id);
 
 s.catchPop={f,x:s.x,age:0};
-spark(s.x,WATER+12,f.color);
+sparkle(s.x,WATER+10,f.color);
 
 msg(
 `🐟 Caught ${f.name} (${size} cm)! Worth ${f.value} coins.`+
@@ -543,13 +540,13 @@ msg(
 
 save();
 }else{
-msg(`💦 ${f.name} slipped away. Try another cast!`);
+msg(`💦 ${f.name} slipped away. Try again!`);
 }
 
 render();
 }
 
-// SELL FISH
+// SELL
 function sell(id){
 let earned=0;
 
@@ -583,7 +580,7 @@ d.aquarium.push(d.inventory.splice(i,1)[0]);
 
 save();
 render();
-msg("🐠 Your fish is swimming in the aquarium!");
+msg("🐠 Fish added to your aquarium!");
 }
 
 function returnFish(i){
@@ -596,7 +593,7 @@ render();
 msg("Fish returned to your basket.");
 }
 
-// SHOP
+// BUY UPGRADES
 function buy(id){
 const g=gear.find(x=>x.id===id);
 
@@ -610,7 +607,7 @@ render();
 msg(`✅ Unlocked ${g.name}!`);
 }
 
-// LOCATIONS
+// CHANGE LOCATIONS
 function travel(id){
 if(s.phase!=="idle"){
 return msg("Finish fishing before traveling.");
@@ -633,7 +630,7 @@ render();
 msg(`📍 Welcome to ${p.name}!`);
 }
 
-// UI HELPERS
+// HTML HELPERS
 function node(tag,text,cl){
 const el=document.createElement(tag);
 el.textContent=text;
@@ -646,7 +643,10 @@ const el=node("div","","card");
 const info=node("div","");
 const btn=node("button",label);
 
-info.append(node("b",title),node("small",desc));
+info.append(
+node("b",title),
+node("small",desc)
+);
 
 btn.disabled=!!disabled;
 btn.onclick=click;
@@ -655,7 +655,7 @@ el.append(info,btn);
 return el;
 }
 
-// UPDATE ALL PANELS
+// UPDATE THE GAME UI
 function render(){
 $("coins").textContent=d.coins;
 $("caught").textContent=d.total;
@@ -700,33 +700,73 @@ own(g.id)||d.coins<g.price
 ))
 );
 
-$("journal").replaceChildren(
-...fish.map(f=>{
+// NEW: ILLUSTRATED FISH JOURNAL
+const journal=[];
+
+for(const f of fish){
 const seen=d.discovered.includes(f.id);
+
 const el=node("div","","fishcard");
+const thumb=document.createElement("canvas");
+
+thumb.width=170;
+thumb.height=86;
+thumb.setAttribute(
+"aria-label",
+seen?f.name:"Unknown fish"
+);
+
+const tg=thumb.getContext("2d");
+
+if(seen){
+const gg=tg.createLinearGradient(0,0,0,86);
+gg.addColorStop(0,"#22617a");
+gg.addColorStop(1,"#133a59");
+
+tg.fillStyle=gg;
+tg.fillRect(0,0,170,86);
+
+paintFish(tg,84,45,.92,f.id,1,0,1);
+}else{
+tg.fillStyle="#15384d";
+tg.fillRect(0,0,170,86);
+
+tg.font="bold 42px system-ui";
+tg.textAlign="center";
+tg.fillStyle="#9cb9c7";
+tg.fillText("?",85,58);
+}
 
 el.append(
-node("span",seen?f.emoji:"❔"),
-node("b",seen?f.name:"Unknown"),
-node("small",
+thumb,
+node("b",seen?f.name:"Undiscovered"),
+node(
+"small",
 seen
-?f.rarity+" · Best "+(d.sizes[f.id]||0).toFixed(1)+" cm"
-:"Not discovered yet"
+?`${f.rarity} · Best ${(d.sizes[f.id]||0).toFixed(1)} cm`
+:"Keep fishing to discover"
 )
 );
 
-return el;
-})
-);
+if(!seen)el.classList.add("locked");
 
+journal.push(el);
+}
+
+$("journal").replaceChildren(...journal);
+
+// FISH BASKET
 const basket=fish
 .filter(f=>d.inventory.some(i=>i.id===f.id))
 .map(f=>{
 const count=d.inventory.filter(i=>i.id===f.id).length;
 
 const el=node("div","","card");
-const info=node("div",f.emoji+" "+f.name+" × "+count);
-const buttons=node("div","","actions");
+const info=node(
+"div",
+`${f.emoji} ${f.name} × ${count}`
+);
+const buttons=node("div","","cardActions");
 
 const a=node("button","🐠 DISPLAY");
 const b=node("button","SELL +"+count*f.value);
@@ -749,6 +789,7 @@ $("basket").replaceChildren(
 
 $("sellAll").disabled=!d.inventory.length;
 
+// AQUARIUM LIST
 $("tankList").replaceChildren(
 ...(d.aquarium.length
 ?d.aquarium.map((item,i)=>{
@@ -762,66 +803,41 @@ item.size.toFixed(1)+" cm · "+f.rarity,
 false
 );
 })
-:[node("p",
-"Your aquarium is empty. Catch a fish and tap DISPLAY in your journal!"
-)]
-)
+:[node(
+"p",
+"Your aquarium is empty. Catch fish and choose DISPLAY in your journal!"
+)])
 );
 }
 
-// GRAPHICS HELPERS
-function circle(c,x,y,r,col){
-c.fillStyle=col;
-c.beginPath();
-c.arc(x,y,r,0,Math.PI*2);
-c.fill();
+// CANVAS HELPERS
+function circle(g,x,y,r,color){
+g.fillStyle=color;
+g.beginPath();
+g.arc(x,y,r,0,Math.PI*2);
+g.fill();
 }
 
-function oval(c,x,y,rx,ry,col){
-c.fillStyle=col;
-c.beginPath();
-c.ellipse(x,y,rx,ry,0,0,Math.PI*2);
-c.fill();
+function oval(g,x,y,rx,ry,color){
+g.fillStyle=color;
+g.beginPath();
+g.ellipse(x,y,rx,ry,0,0,Math.PI*2);
+g.fill();
 }
 
-function stroke(c,x,y,xx,yy,col,width){
-c.strokeStyle=col;
-c.lineWidth=width;
-c.beginPath();
-c.moveTo(x,y);
-c.lineTo(xx,yy);
-c.stroke();
-}
-
-function fishArt(c,x,y,scale,col,dir=1){
-c.save();
-c.translate(x,y);
-c.scale(scale*dir,scale);
-
-oval(c,0,0,30,16,col);
-
-c.fillStyle=col;
-c.beginPath();
-c.moveTo(-25,0);
-c.lineTo(-48,-18);
-c.lineTo(-48,18);
-c.fill();
-
-c.beginPath();
-c.moveTo(-10,-14);
-c.lineTo(4,-26);
-c.lineTo(14,-14);
-c.fill();
-
-circle(c,20,-4,3,"#183744");
-circle(c,21,-5,1,"#fff");
-
-c.restore();
+function stroke(g,x,y,xx,yy,color,w){
+g.strokeStyle=color;
+g.lineWidth=w;
+g.beginPath();
+g.moveTo(x,y);
+g.lineTo(xx,yy);
+g.stroke();
 }
 
 function tree(x,y,k,col){
-ctx.fillStyle="#5f5b4e";
+ctx.fillStyle="#605a4e";
 ctx.fillRect(x-4*k,y,8*k,30*k);
+
 ctx.fillStyle=col;
 
 for(let i=0;i<3;i++){
@@ -833,154 +849,410 @@ ctx.fill();
 }
 }
 
-// FISHING RUSH V3.2 — REDESIGNED FISHERMAN
+// V3.3 — BRAND NEW FISH GRAPHICS
+// The same detailed renderer is used in:
+// lake, catch animation, journal, and aquarium.
+function paintFish(g,x,y,scale,id,dir=1,t=0,alpha=1){
+const f=fish.find(q=>q.id===id)||fish[0];
+
+const deep=
+id==="bluegill"||
+id==="perch"||
+id==="gold";
+
+const long=
+id==="trout"||
+id==="salmon";
+
+const rx=long?37:deep?29:35;
+
+const ry=
+id==="bluegill"?21:
+id==="gold"?19:
+long?12:16;
+
+const tail=Math.sin(t*7+x*.018)*.2;
+
+g.save();
+g.translate(x,y+Math.sin(t*2.3+x*.01)*1.7);
+g.scale(scale*dir,scale);
+g.globalAlpha*=alpha;
+
+// GLOWING LEGENDARY FISH
+if(id==="gold"||id==="moon"){
+g.shadowColor=id==="gold"?"#fff0a4":"#e6bbff";
+g.shadowBlur=14;
+}
+
+// SWIMMING TAIL
+g.save();
+g.translate(-rx+1,0);
+g.rotate(tail);
+g.fillStyle=f.color;
+
+g.beginPath();
+g.moveTo(3,-6);
+g.quadraticCurveTo(-17,-24,-29,-21);
+g.quadraticCurveTo(-22,-1,-30,0);
+g.quadraticCurveTo(-22,2,-29,21);
+g.quadraticCurveTo(-16,23,3,6);
+g.closePath();
+g.fill();
+
+g.strokeStyle="#ffffff8c";
+g.lineWidth=1.5;
+g.beginPath();
+g.moveTo(0,0);
+g.lineTo(-24,-16);
+g.moveTo(0,0);
+g.lineTo(-25,16);
+g.stroke();
+g.restore();
+
+// SHADED FISH BODY
+const body=g.createLinearGradient(0,-ry,0,ry);
+
+body.addColorStop(
+0,
+id==="moon"?"#e8e4ff":
+id==="gold"?"#fff4af":"#d1e9d8"
+);
+
+body.addColorStop(.32,f.color);
+body.addColorStop(.76,f.color);
+
+body.addColorStop(
+1,
+id==="bass"?"#c3d79e":
+id==="salmon"?"#e6f0f3":"#e3e4c8"
+);
+
+g.fillStyle=body;
+g.beginPath();
+g.moveTo(-rx,0);
+
+g.bezierCurveTo(
+-rx+6,-ry*.9,
+rx*.42,-ry*1.18,
+rx*.83,-ry*.53
+);
+
+g.quadraticCurveTo(rx+10,0,rx*.83,ry*.53);
+
+g.bezierCurveTo(
+rx*.35,ry*1.22,
+-rx+10,ry*.9,
+-rx,0
+);
+g.fill();
+
+g.shadowBlur=0;
+
+// CLIP MARKINGS TO BODY
+g.save();
+g.beginPath();
+g.ellipse(0,0,rx,ry,0,0,Math.PI*2);
+g.clip();
+
+// BLUEGILL AND PERCH BARS
+if(id==="bluegill"||id==="perch"){
+for(let i=-2;i<=2;i++){
+g.strokeStyle=
+id==="perch"?"#615b3880":"#24546b75";
+
+g.lineWidth=id==="perch"?6:3.5;
+g.beginPath();
+g.moveTo(i*12-2,-ry-2);
+g.quadraticCurveTo(i*12+5,0,i*12,ry+2);
+g.stroke();
+}
+}
+
+// BASS SIDE STRIPE
+if(id==="bass"){
+g.strokeStyle="#3b6148bd";
+g.lineWidth=5;
+g.beginPath();
+g.moveTo(-30,-1);
+g.quadraticCurveTo(0,3,36,-3);
+g.stroke();
+}
+
+// RAINBOW TROUT PINK STRIPE
+if(id==="trout"){
+g.strokeStyle="#ef668dcb";
+g.lineWidth=9;
+g.beginPath();
+g.moveTo(-33,2);
+g.quadraticCurveTo(0,-1,34,2);
+g.stroke();
+}
+
+// SALMON SILVER STRIPE
+if(id==="salmon"){
+g.strokeStyle="#8396b1aa";
+g.lineWidth=4;
+g.beginPath();
+g.moveTo(-34,-1);
+g.lineTo(32,2);
+g.stroke();
+}
+
+// MOONLIGHT KOI PATCHES
+if(id==="moon"){
+for(const [mx,my,mr] of [
+[-18,-5,8],
+[10,9,7],
+[5,-9,4]
+]){
+circle(g,mx,my,mr,"#7a71b8af");
+}
+}
+
+// GOLDEN SCALES
+if(id==="gold"){
+for(let i=0;i<4;i++){
+g.strokeStyle="#fff6b6aa";
+g.strokeRect(-24+i*12,-9+(i%2)*5,7,6);
+}
+}
+
+// SPOTS ON TROUT, SALMON, AND BASS
+if(["trout","salmon","bass"].includes(id)){
+for(let i=0;i<15;i++){
+const px=((i*19)%58)-29;
+const py=((i*13)%15)-12;
+
+circle(
+g,px,py,1.3,
+id==="trout"?"#654e67":
+id==="salmon"?"#45586a":"#436c3f"
+);
+}
+}
+
+// PEARLESCENT SCALES
+for(let i=0;i<3;i++){
+for(let j=0;j<2;j++){
+g.strokeStyle="#ffffff37";
+g.lineWidth=1;
+
+g.beginPath();
+g.arc(-17+i*11,-5+j*10,4,-.8,.8);
+g.stroke();
+}
+}
+
+g.restore();
+
+// DORSAL FIN
+g.fillStyle=
+id==="perch"?"#ca994b":f.color;
+
+g.beginPath();
+g.moveTo(-22,-ry*.76);
+g.lineTo(-17,-ry-10);
+g.lineTo(-6,-ry-12);
+g.lineTo(7,-ry-9);
+g.lineTo(16,-ry*.64);
+g.closePath();
+g.fill();
+
+// FIN RAYS
+g.strokeStyle="#ffffffe0";
+g.lineWidth=1.3;
+g.beginPath();
+g.moveTo(-17,-ry-9);
+g.lineTo(-15,-ry*.7);
+g.moveTo(-6,-ry-11);
+g.lineTo(-4,-ry*.8);
+g.stroke();
+
+// BOTTOM FIN
+g.fillStyle=
+id==="perch"?"#ec8f44":f.color;
+
+g.beginPath();
+g.moveTo(-7,ry*.75);
+g.lineTo(-14,ry+12);
+g.lineTo(6,ry*.78);
+g.fill();
+
+// SIDE FIN
+g.fillStyle="#ffffff77";
+g.beginPath();
+g.moveTo(0,3);
+g.quadraticCurveTo(-18,7,-12,ry+5);
+g.quadraticCurveTo(0,ry+1,7,5);
+g.fill();
+
+// GILLS
+g.strokeStyle="#274b5a77";
+g.lineWidth=1.5;
+g.beginPath();
+g.ellipse(rx*.4,0,8,ry*.68,0,-1.4,1.3);
+g.stroke();
+
+// BASS HAS A BIGGER MOUTH
+if(id==="bass"){
+g.strokeStyle="#244b3f";
+g.lineWidth=2.6;
+g.beginPath();
+g.moveTo(rx*.78,1);
+g.quadraticCurveTo(rx+8,8,rx+9,1);
+g.stroke();
+}else{
+g.strokeStyle="#43565c";
+g.lineWidth=1.6;
+g.beginPath();
+g.moveTo(rx*.81,4);
+g.lineTo(rx+3,3);
+g.stroke();
+}
+
+// GLOSSY EYE
+circle(g,rx*.59,-ry*.25,4.3,"#f7f9e8");
+circle(g,rx*.75,-ry*.26,2.7,"#172a38");
+circle(g,rx*.79,-ry*.4,1.25,"#fff");
+
+// RAINBOW AND KOI SHIMMER
+if(id==="trout"||id==="moon"){
+g.strokeStyle="#f4e1ff9c";
+g.lineWidth=1.8;
+g.beginPath();
+g.moveTo(-20,ry*.35);
+g.quadraticCurveTo(0,ry*.5,20,ry*.22);
+g.stroke();
+}
+
+g.restore();
+}
+
+// V3.2 FISHERMAN — PRESERVED
 function fisherman(t){
-const move=Math.sin(t*1.5)*1.2;
-const bite=s.phase==="bite";
-
-const lift=bite
-?6+Math.sin(t*7)*3
-:0;
-
-const tipY=bite
-?145+Math.sin(t*6)*8
-:169+Math.sin(t*1.2)*3;
+const lift=
+s.phase==="bite"?6+Math.sin(t*7)*3:0;
 
 ctx.save();
-ctx.translate(0,move);
+ctx.translate(0,Math.sin(t*1.5)*1.2);
 ctx.lineCap="round";
 ctx.lineJoin="round";
 
-// FAR LEG — NATURALLY BENT
-ctx.fillStyle="#29435a";
+// FAR BENT LEG
+ctx.fillStyle="#2b435a";
 ctx.beginPath();
 ctx.moveTo(207,315);
-ctx.bezierCurveTo(230,309,259,332,265,348);
+ctx.bezierCurveTo(230,309,259,330,265,348);
 ctx.lineTo(262,386);
-ctx.quadraticCurveTo(255,398,246,390);
+ctx.quadraticCurveTo(254,398,245,391);
 ctx.lineTo(245,356);
-ctx.quadraticCurveTo(229,341,207,341);
+ctx.quadraticCurveTo(227,342,207,342);
 ctx.fill();
 
 // FAR BOOT
-ctx.fillStyle="#192b39";
+ctx.fillStyle="#192c3a";
 ctx.beginPath();
-ctx.moveTo(245,382);
-ctx.lineTo(263,384);
-ctx.lineTo(269,394);
-ctx.quadraticCurveTo(283,399,280,409);
+ctx.moveTo(245,381);
+ctx.lineTo(264,384);
+ctx.lineTo(269,395);
+ctx.quadraticCurveTo(282,397,280,410);
 ctx.lineTo(240,410);
-ctx.quadraticCurveTo(236,399,245,382);
+ctx.closePath();
 ctx.fill();
 
-ctx.fillStyle="#b6c6ce";
-ctx.fillRect(241,407,39,3);
+ctx.fillStyle="#d1e1e1";
+ctx.fillRect(241,407,38,3);
 
-// FRONT LEG — BENT KNEE AND SHADING
-const pants=ctx.createLinearGradient(222,318,310,399);
-
-pants.addColorStop(0,"#42677f");
-pants.addColorStop(1,"#20394f");
+// FRONT LEG
+const pants=ctx.createLinearGradient(220,318,310,398);
+pants.addColorStop(0,"#476d85");
+pants.addColorStop(1,"#1f364c");
 
 ctx.fillStyle=pants;
 ctx.beginPath();
-ctx.moveTo(219,315);
-ctx.bezierCurveTo(243,313,287,332,300,346);
-ctx.quadraticCurveTo(309,352,306,362);
-ctx.lineTo(312,389);
-ctx.quadraticCurveTo(304,403,291,393);
+ctx.moveTo(218,314);
+ctx.bezierCurveTo(243,314,287,332,300,346);
+ctx.quadraticCurveTo(308,352,306,362);
+ctx.lineTo(311,391);
+ctx.quadraticCurveTo(303,403,291,393);
 ctx.lineTo(282,362);
-ctx.quadraticCurveTo(259,349,237,351);
-ctx.quadraticCurveTo(217,348,214,332);
+ctx.quadraticCurveTo(255,346,236,351);
+ctx.quadraticCurveTo(218,347,214,332);
 ctx.fill();
 
-// NATURAL PANTS WRINKLES
-ctx.strokeStyle="#7396a8";
-ctx.lineWidth=2.4;
+// PANTS FOLDS
+ctx.strokeStyle="#82a2b4";
+ctx.lineWidth=2.2;
 ctx.beginPath();
-ctx.moveTo(240,333);
-ctx.quadraticCurveTo(264,334,275,345);
-ctx.moveTo(279,352);
-ctx.lineTo(297,358);
-ctx.moveTo(294,365);
-ctx.lineTo(300,384);
+ctx.moveTo(239,333);
+ctx.lineTo(271,345);
+ctx.moveTo(281,354);
+ctx.lineTo(295,360);
+ctx.moveTo(292,369);
+ctx.lineTo(298,386);
 ctx.stroke();
 
-// FRONT HANGING BOOT
-ctx.fillStyle="#172a38";
+// FRONT BOOT
+ctx.fillStyle="#142838";
 ctx.beginPath();
-ctx.moveTo(292,388);
-ctx.lineTo(311,388);
-ctx.quadraticCurveTo(315,397,327,399);
-ctx.quadraticCurveTo(343,399,343,411);
+ctx.moveTo(292,389);
+ctx.lineTo(312,388);
+ctx.quadraticCurveTo(317,399,331,400);
+ctx.quadraticCurveTo(346,402,343,413);
 ctx.lineTo(288,416);
-ctx.quadraticCurveTo(286,400,292,388);
+ctx.closePath();
 ctx.fill();
 
-ctx.fillStyle="#d6dfdf";
+ctx.fillStyle="#d2dddf";
 ctx.fillRect(291,413,51,3);
 
-// BOOT LACES
-ctx.strokeStyle="#94a9b0";
-ctx.lineWidth=1.8;
-ctx.beginPath();
-
-for(let i=0;i<3;i++){
-ctx.moveTo(301+i*8,398);
-ctx.lineTo(306+i*8,402);
-}
-
-ctx.stroke();
-
 // BACKPACK
-ctx.fillStyle="#c39061";
+ctx.fillStyle="#b98759";
 ctx.beginPath();
-ctx.roundRect(185,286,30,46,6);
+ctx.roundRect(185,286,30,46,7);
 ctx.fill();
 
 // JACKET
 const jacket=ctx.createLinearGradient(200,282,263,336);
-
-jacket.addColorStop(0,"#72b6b4");
+jacket.addColorStop(0,"#70b6b7");
 jacket.addColorStop(1,"#23596f");
 
 ctx.fillStyle=jacket;
 ctx.beginPath();
 ctx.moveTo(202,281);
-ctx.quadraticCurveTo(226,275,241,282);
+ctx.quadraticCurveTo(225,275,241,282);
 ctx.quadraticCurveTo(255,290,257,308);
 ctx.lineTo(262,332);
-ctx.quadraticCurveTo(235,343,204,333);
+ctx.quadraticCurveTo(237,341,204,333);
 ctx.quadraticCurveTo(196,303,202,281);
 ctx.fill();
 
-// JACKET ZIPPER
-ctx.strokeStyle="#c2e6df";
+// ZIPPER AND POCKET
+ctx.strokeStyle="#bedfdc";
 ctx.lineWidth=2;
 ctx.beginPath();
 ctx.moveTo(224,291);
-ctx.lineTo(233,330);
+ctx.lineTo(233,331);
 ctx.stroke();
 
-// POCKET
-ctx.fillStyle="#244d61";
+ctx.fillStyle="#254d61";
 ctx.beginPath();
 ctx.roundRect(209,315,16,10,3);
 ctx.fill();
 
-// NECK AND FACE
-ctx.fillStyle="#b9815a";
-ctx.fillRect(215,272,18,18);
+// FACE
+ctx.fillStyle="#bd8863";
+ctx.fillRect(215,271,17,19);
 
-oval(ctx,224,258,23,26,"#d7a075");
-oval(ctx,233,260,13,19,"#efb989");
+oval(ctx,224,258,23,26,"#d9a278");
+oval(ctx,233,261,13,19,"#f0bd8d");
 oval(ctx,206,259,5,8,"#b47b59");
 
-ctx.fillStyle="#493a31";
-ctx.fillRect(204,244,6,16);
+ctx.fillStyle="#4d3b32";
+ctx.fillRect(204,245,6,15);
 
 // BLINKING EYE
-ctx.fillStyle="#29383c";
+ctx.fillStyle="#2b3c40";
 
 if(Math.sin(t*.9)>.997){
 ctx.fillRect(234,257,5,1.5);
@@ -989,16 +1261,16 @@ oval(ctx,236,258,2,3,"#29383c");
 }
 
 // SMILE
-ctx.strokeStyle="#9f6a4e";
+ctx.strokeStyle="#9d694e";
 ctx.lineWidth=1.6;
 ctx.beginPath();
 ctx.arc(234,270,6,.15,1.4);
 ctx.stroke();
 
-// FISHING HAT
+// HAT
 oval(ctx,224,242,34,8,"#795f42");
 
-ctx.fillStyle="#e4bd74";
+ctx.fillStyle="#e5bc75";
 ctx.beginPath();
 ctx.moveTo(201,241);
 ctx.lineTo(207,223);
@@ -1006,43 +1278,46 @@ ctx.quadraticCurveTo(223,212,242,225);
 ctx.lineTo(244,240);
 ctx.fill();
 
-ctx.fillStyle="#756848";
+ctx.fillStyle="#756847";
 ctx.fillRect(205,236,38,6);
+oval(ctx,230,245,37,6,"#dbb16d");
 
-oval(ctx,230,245,37,6,"#d9ae68");
-
-// SLEEVE AND HAND
-ctx.strokeStyle="#367083";
+// ARMS
+ctx.strokeStyle="#367185";
 ctx.lineWidth=17;
 ctx.beginPath();
 ctx.moveTo(242,298);
 ctx.lineTo(267,314+lift);
 ctx.stroke();
 
-ctx.strokeStyle="#e5b287";
+ctx.strokeStyle="#e6b88d";
 ctx.lineWidth=10;
 ctx.beginPath();
 ctx.moveTo(267,314+lift);
 ctx.lineTo(297,306+lift);
 ctx.stroke();
 
-circle(ctx,297,306+lift,6,"#e5b287");
+circle(ctx,297,306+lift,6,"#e6b88d");
 
-// FLEXIBLE FISHING ROD
-ctx.strokeStyle="#253b48";
+// FISHING ROD
+const tipY=s.phase==="bite"
+?145+Math.sin(t*6)*8
+:169+Math.sin(t*1.2)*3;
+
+ctx.strokeStyle="#273b49";
 ctx.lineWidth=5;
 ctx.beginPath();
 ctx.moveTo(291,307+lift);
 ctx.quadraticCurveTo(375,218+lift,470,tipY);
 ctx.stroke();
 
-// ROD REEL
-circle(ctx,318,288+lift,10,"#d5c4a7");
+// REEL
+circle(ctx,318,288+lift,10,"#d5c4a8");
 circle(ctx,318,288+lift,5,"#38596c");
 
 // FISHING LINE
-ctx.strokeStyle="#f0ffff";
-ctx.lineWidth=1.5;
+ctx.strokeStyle="#f1ffff";
+ctx.lineWidth=1.4;
 ctx.beginPath();
 ctx.moveTo(470,tipY);
 
@@ -1059,20 +1334,19 @@ ctx.stroke();
 ctx.restore();
 }
 
-// DRAW THE FOUR LANDSCAPES
+// DRAW THE SCENERY
 function scenery(t){
 const p=place();
 const night=p.id==="lagoon";
 
 const sky=ctx.createLinearGradient(0,0,0,WATER);
-
 sky.addColorStop(0,p.sky[0]);
 sky.addColorStop(1,p.sky[1]);
 
 ctx.fillStyle=sky;
 ctx.fillRect(0,0,W,H);
 
-// STARS
+// NIGHT STARS
 if(night){
 for(let i=0;i<85;i++){
 circle(
@@ -1108,8 +1382,14 @@ ctx.beginPath();
 ctx.moveTo(0,330);
 
 for(const [x,y] of [
-[135,238],[270,310],[406,175],[545,311],
-[702,221],[843,301],[1015,234],[1100,303]
+[135,238],
+[270,310],
+[406,175],
+[545,311],
+[702,221],
+[843,301],
+[1015,234],
+[1100,303]
 ]){
 ctx.lineTo(x,y);
 }
@@ -1130,7 +1410,6 @@ p.tree
 
 // LAKE WATER
 const lake=ctx.createLinearGradient(0,WATER,0,H);
-
 lake.addColorStop(0,p.water[0]);
 lake.addColorStop(1,p.water[1]);
 
@@ -1146,30 +1425,46 @@ const x=(
 )%1250-55;
 
 stroke(
-ctx,x,y,x+24+i%5*11,y,
+ctx,x,y,
+x+24+i%5*11,y,
 "#e1ffff63",
 i%3?1.3:2.3
 );
 }
 
-// FISH SWIMMING
-for(let i=0;i<13;i++){
+// NEW DETAILED FISH SWIMMING IN THE LAKE
+ctx.save();
+ctx.beginPath();
+ctx.rect(0,WATER,W,H-WATER);
+ctx.clip();
+
+const selection=place().weights
+.map((w,i)=>({w,i}))
+.filter(q=>q.w>0)
+.map(q=>q.i);
+
+for(let i=0;i<14;i++){
 const x=(
-(i*199+(i%2?1:-1)*t*16)%1270+1270
+(i*199+(i%2?1:-1)*t*(12+i%5*3))%1270+1270
 )%1270-70;
 
-fishArt(
-ctx,
-x,
-405+(i*29)%160,
-.35+(i%4)*.12,
-"#76c9cf99",
-i%2?1:-1
+const y=400+(i*31)%167;
+const id=fish[selection[i%selection.length]].id;
+
+paintFish(
+ctx,x,y,
+.42+(i%3)*.12,
+id,
+i%2?1:-1,
+t+i,
+.65
 );
 }
 
+ctx.restore();
+
 // SHORE
-ctx.fillStyle="#97a57c";
+ctx.fillStyle="#96a57c";
 ctx.beginPath();
 ctx.moveTo(0,389);
 ctx.quadraticCurveTo(110,365,192,462);
@@ -1184,7 +1479,7 @@ ctx.fillRect(x,355,21,154);
 }
 
 // WOODEN DOCK
-ctx.fillStyle="#9b754e";
+ctx.fillStyle="#9e754e";
 ctx.fillRect(49,349,351,28);
 
 for(let i=0;i<13;i++){
@@ -1208,7 +1503,7 @@ ctx.fillRect(185,318,79,10);
 ctx.fillRect(195,326,9,42);
 ctx.fillRect(250,326,9,42);
 
-// THE NEW V3.2 FISHERMAN
+// FISHERMAN
 fisherman(t);
 
 // FLOATING BOBBER
@@ -1219,11 +1514,13 @@ circle(
 ctx,
 s.x,
 WATER+9+Math.sin(t*3)*2,
-10,"#f6fff8"
+10,
+"#f6fff8"
 );
 
 ctx.fillStyle="#e87969";
 ctx.beginPath();
+
 ctx.arc(
 s.x,
 WATER+9+Math.sin(t*3)*2,
@@ -1238,16 +1535,20 @@ ctx.fillText("!",s.x-5,WATER-22);
 }
 }
 
-// CAUGHT FISH ANIMATION
+// BEAUTIFUL FISH CATCH ANIMATION
 if(s.catchPop){
 const k=clamp(s.catchPop.age/1.3,0,1);
 const pop=s.catchPop;
 
-fishArt(
+paintFish(
 ctx,
 pop.x+(430-pop.x)*k,
 WATER-150*Math.sin(Math.PI*k)-100*k,
-1.6,pop.f.color
+1.7,
+pop.f.id,
+1,
+t,
+1
 );
 }
 
@@ -1256,12 +1557,14 @@ for(const a of s.particles){
 ctx.globalAlpha=clamp(a.life,0,1);
 circle(ctx,a.x,a.y,4,a.color);
 }
+
 ctx.globalAlpha=1;
 }
 
-// DRAW ANIMATED AQUARIUM
+// ANIMATED AQUARIUM WITH DETAILED FISH
 function drawTank(t){
 const g=aq.createLinearGradient(0,0,0,350);
+
 g.addColorStop(0,"#277c98");
 g.addColorStop(1,"#093958");
 
@@ -1311,10 +1614,8 @@ aq.arc(x,y,2+i%3,0,Math.PI*2);
 aq.stroke();
 }
 
-// THE PLAYER'S SAVED FISH
+// PLAYER'S FISH SWIM WITH UNIQUE DESIGNS
 d.aquarium.forEach((it,i)=>{
-const f=fish.find(x=>x.id===it.id);
-
 const x=
 144+i%4*235+
 Math.sin(t*(.55+i*.06)+i*1.7)*70;
@@ -1323,11 +1624,16 @@ const y=
 102+Math.floor(i/4)*117+
 Math.cos(t+i)*20;
 
-fishArt(
+const dir=
+Math.cos(t*(.55+i*.06)+i*1.7)>0?1:-1;
+
+paintFish(
 aq,x,y,
-1.1+it.size/100,
-f.color,
-Math.cos(t*(.55+i*.06)+i*1.7)>0?1:-1
+.95+it.size/120,
+it.id,
+dir,
+t+i,
+1
 );
 });
 
@@ -1335,6 +1641,7 @@ if(!d.aquarium.length){
 aq.fillStyle="#e3faff";
 aq.textAlign="center";
 aq.font="bold 24px system-ui";
+
 aq.fillText(
 "Your underwater sanctuary awaits! 🐠",
 500,160
@@ -1342,7 +1649,7 @@ aq.fillText(
 }
 }
 
-// ANIMATION LOOP
+// MAIN ANIMATION LOOP
 let last=performance.now();
 
 function frame(now){
@@ -1359,8 +1666,10 @@ bite();
 }
 
 if(s.phase==="bite"){
+s.meterTime+=dt;
+
 const speed=own("reel")?.68:1.04;
-const p=s.time*speed%2;
+const p=s.meterTime*speed%2;
 
 s.marker=p<=1?p:2-p;
 
@@ -1428,8 +1737,10 @@ if(s.phase==="idle")cast();
 else if(s.phase==="bite")reel();
 });
 
-// BUTTONS FOR ALL PANELS
-for(const id of ["locations","journal","shop","aquarium"]){
+// PANEL BUTTONS
+for(const id of [
+"locations","journal","shop","aquarium"
+]){
 $(id+"Btn").onclick=()=>{
 const p=$(id+"Panel");
 p.hidden=!p.hidden;
