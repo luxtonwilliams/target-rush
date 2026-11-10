@@ -4,2181 +4,299 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b162b">
-<title>Mining Rush V1.1 | Luxton Arcade</title>
+<meta name="theme-color" content="#101d36">
+<title>Mining Rush V1.2 | Luxton Arcade</title>
 <style>
-:root{
-  --panel:#142440;
-  --edge:#476385;
-  --ink:#eff8ff;
-  --muted:#afc9e6;
-  --gold:#ffdb79;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:radial-gradient(
-    ellipse at 50% -20%,
-    #354c76 0%,#101c38 43%,#080e1e 100%
-  );
-  color:var(--ink);
-  font-family:system-ui,Arial,sans-serif;
-}
-main{width:min(1080px,96%);margin:16px auto 36px}
-header,.flex{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
-h1{
-  margin:4px 0;
-  font-size:clamp(28px,4.8vw,44px);
-  letter-spacing:-1px;
-  background:linear-gradient(
-    95deg,#ffe7a2,#ffbf71,#f7e1be
-  );
-  color:transparent;
-  background-clip:text;
-  -webkit-background-clip:text;
-}
-.version{
-  font-size:12px;
-  color:#b9e4fd;
-  letter-spacing:0;
-}
-a{color:#bce7ff;text-decoration:none}
-.back{
-  background:#20395d;
-  border:1px solid #57749e;
-  border-radius:11px;
-  padding:11px 15px;
-  font-weight:750;
-}
-p{color:var(--muted);line-height:1.5}
-.stats{
-  display:grid;
-  grid-template-columns:repeat(6,minmax(0,1fr));
-  gap:8px;
-  margin:14px 0;
-}
-.stat{
-  min-width:0;
-  border:1px solid var(--edge);
-  background:linear-gradient(140deg,#203d65,#111f38);
-  border-radius:12px;
-  text-align:center;
-  padding:10px 4px;
-  box-shadow:inset 0 1px #ffffff14,0 5px 14px #0002;
-}
-.stat small{
-  display:block;
-  font-size:10px;
-  color:#aac6e6;
-  font-weight:800;
-}
-.stat strong{
-  display:block;
-  font-size:clamp(14px,2.4vw,22px);
-  margin-top:3px;
-  white-space:nowrap;
-}
-.viewport{
-  position:relative;
-  border:3px solid #8be7ed;
-  border-radius:17px;
-  overflow:hidden;
-  box-shadow:0 12px 48px #0009,0 0 36px #55d9ff28;
-  background:#182a46;
-}
-#game{
-  width:100%;
-  height:auto;
-  aspect-ratio:960/576;
-  display:block;
-  touch-action:manipulation;
-  cursor:crosshair;
-}
-.hint-pill{
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:#08162bc9;
-  border:1px solid #ffffff30;
-  border-radius:20px;
-  padding:7px 12px;
-  font-size:12px;
-  pointer-events:none;
-}
-.message{
-  min-height:55px;
-  display:grid;
-  place-items:center;
-  text-align:center;
-  padding:10px;
-  font-weight:750;
-  color:#f9e6ab;
-}
-.controls,.panel{
-  background:linear-gradient(145deg,#172b4a,#101e37);
-  border:1px solid var(--edge);
-  border-radius:15px;
-  padding:13px;
-  box-shadow:inset 0 1px #ffffff12;
-}
-.controls{margin-top:12px}
-.actions{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:9px;
-  margin-bottom:12px;
-}
-button{
-  font:inherit;
-  border:0;
-  border-radius:11px;
-  min-height:47px;
-  padding:11px 13px;
-  color:#10213a;
-  font-weight:850;
-  background:linear-gradient(115deg,#75e4ff,#7c95ff);
-  cursor:pointer;
-  touch-action:none;
-}
-button:hover:not(:disabled){filter:brightness(1.1)}
-button:disabled{opacity:.43;cursor:not-allowed}
-button:focus-visible,a:focus-visible{
-  outline:3px solid #ffde80;
-  outline-offset:3px;
-}
-button.secondary{
-  color:#ecf7ff;
-  background:#284164;
-  border:1px solid #5478a4;
-}
-.move-wrap{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:19px;
-  flex-wrap:wrap;
-}
-.dpad{
-  display:grid;
-  grid-template-columns:repeat(3,62px);
-  grid-template-rows:repeat(2,52px);
-  gap:6px;
-  touch-action:none;
-}
-.dpad button{
-  padding:0;
-  min-height:50px;
-  font-size:23px;
-  user-select:none;
-}
-.dpad .up{grid-column:2;grid-row:1}
-.dpad .left{grid-column:1;grid-row:2}
-.dpad .down{grid-column:2;grid-row:2}
-.dpad .right{grid-column:3;grid-row:2}
-.dpad button:active{background:#ffda82}
-.mine-btn{
-  min-height:98px;
-  background:linear-gradient(120deg,#ffdf8d,#ffa96d);
-  font-size:18px;
-  min-width:133px;
-}
-.legend{
-  font-size:12px;
-  color:#b4cde8;
-  line-height:1.6;
-  max-width:330px;
-}
-.panels{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:13px;
-}
-.panel{padding:16px;min-width:0}
-.panel h2{font-size:21px;margin:0 0 7px}
-.panel p{font-size:13px;margin:6px 0 12px}
-.items{display:grid;gap:8px}
-.item{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  background:#203658;
-  border:1px solid #486a93;
-  border-radius:11px;
-  padding:10px;
-}
-.item b{font-size:14px;display:block}
-.item small{
-  color:#bbd1ea;
-  font-size:12px;
-  display:block;
-  margin-top:3px;
-}
-.item button{
-  min-height:39px;
-  font-size:12px;
-  white-space:nowrap;
-  padding:8px 12px;
-}
-.empty{color:#a9c0dc;font-size:13px}
-.badge-line{
-  color:#ffdf89;
-  font-size:13px;
-  font-weight:700;
-}
-.ore-guide{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:7px;
-}
-.ore-pill{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  min-width:0;
-  padding:9px 8px;
-  border:1px solid #526c94;
-  background:#203755;
-  border-radius:10px;
-  font-size:12px;
-  font-weight:750;
-}
-.ore-pill.unknown{opacity:.62}
-.ore-pill small{
-  color:#c8d9ee;
-  margin-left:auto;
-  font-size:10px;
-  white-space:nowrap;
-}
-.gem-dot{
-  flex:0 0 12px;
-  width:12px;
-  height:12px;
-  border-radius:4px;
-  transform:rotate(45deg);
-  border:1px solid #ffffff88;
-}
-footer{
-  text-align:center;
-  color:#a0bdda;
-  font-size:12px;
-  line-height:1.7;
-  padding:20px;
-}
-[hidden]{display:none!important}
-@media(max-width:790px){
-  .panels{grid-template-columns:1fr}
-  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .actions{grid-template-columns:1fr 1fr}
-  .actions button:first-child{grid-column:1/-1}
-  .hint-pill{font-size:10px;top:5px;left:5px}
-}
-@media(max-width:720px){
-  .ore-guide{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-@media(max-width:480px){
-  main{width:100%;padding:8px;margin:0 auto}
-  .viewport{border-width:2px;border-radius:10px}
-  .stat{padding:8px 2px}
-  .stat small{font-size:9px}
-  .stat strong{font-size:13px}
-  .dpad{
-    grid-template-columns:repeat(3,56px);
-    grid-template-rows:repeat(2,50px);
-    gap:4px;
-  }
-  .move-wrap{gap:12px}
-  .legend{max-width:100%;text-align:center}
-  .panel{padding:12px}
-  .actions button{padding:9px 4px;font-size:12px}
-  .mine-btn{min-width:105px}
-}
-@media(max-width:420px){
-  .ore-guide{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
+:root{--panel:#142846;--edge:#526f94;--cream:#ffe4a1;--muted:#bad0e8}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at top,#314971,#0a1428 70%);color:#f1f8ff;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+main{max-width:1100px;width:calc(100% - 24px);margin:16px auto 36px}header,.flex{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{color:var(--cream);margin:4px 0;font-size:clamp(27px,4.5vw,44px)}h1 small{font-size:13px;color:#b5e8fc}a{color:#bceeff;text-decoration:none}.back{padding:11px 15px;border:1px solid #6284a8;border-radius:12px;background:#263d60;font-weight:800}p{color:var(--muted);line-height:1.5;margin:7px 0 12px}
+.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:14px 0}.stat,.panel,.controls{background:linear-gradient(135deg,#192f52,#10203a);border:1px solid var(--edge);border-radius:13px;padding:12px}.stat{text-align:center;padding:9px 3px;min-width:0}.stat small{color:#aac9e8;display:block;font-size:10px;font-weight:850}.stat strong{display:block;font-size:clamp(13px,2.1vw,22px);margin-top:4px;white-space:nowrap}
+.viewport{border:3px solid #8ce3ed;border-radius:18px;overflow:hidden;position:relative;background:#15243c;box-shadow:0 12px 38px #0009}#game{display:block;width:100%;aspect-ratio:960/576;height:auto;touch-action:manipulation;cursor:crosshair}.pill{position:absolute;left:11px;top:11px;padding:8px 12px;border-radius:25px;background:#07172ccf;border:1px solid #ffffff33;font-weight:800;font-size:12px;pointer-events:none}.countdown{position:absolute;right:11px;top:11px;padding:7px 11px;border-radius:25px;background:#173652d9;font-size:12px;color:#ffedae;pointer-events:none}
+.controls{margin-top:12px}.message{min-height:43px;display:grid;place-items:center;text-align:center;color:#fff0ad;font-weight:800}.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:11px 0}button{font:inherit;font-weight:850;background:linear-gradient(125deg,#75ebf2,#829eff);color:#0e2841;border:0;border-radius:11px;cursor:pointer;padding:11px;min-height:49px;touch-action:manipulation}button.secondary{background:#2d466b;color:#f1f8ff;border:1px solid #678cb5}button:disabled{opacity:.43;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #ffe19c;outline-offset:3px}.move-wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:17px}.dpad{display:grid;grid-template-columns:repeat(3,62px);grid-template-rows:repeat(2,53px);gap:5px;touch-action:none}.dpad button{user-select:none;touch-action:none;padding:0;font-size:23px}.dpad .up{grid-column:2;grid-row:1}.dpad .left{grid-column:1;grid-row:2}.dpad .down{grid-column:2;grid-row:2}.dpad .right{grid-column:3;grid-row:2}.mine{background:linear-gradient(135deg,#ffe28b,#ffb16b);font-size:17px;min-height:103px;min-width:140px}.instructions{font-size:12px;max-width:370px;color:#bfd1e9;line-height:1.7}.scanner{font-size:12px;text-align:center;color:#b7f7e3;min-height:20px;margin:8px 0}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}.panel{padding:16px;min-width:0}.panel h2{font-size:21px;margin:0 0 8px}.panel p{font-size:13px}.items{display:grid;gap:8px}.item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#203b5d;border:1px solid #4d7198;border-radius:11px;padding:10px}.item b{font-size:14px}.item small{font-size:12px;color:#c1d8ef;display:block;margin-top:3px}.item button{font-size:12px;min-height:40px;white-space:nowrap;padding:8px 11px}.group{color:#ffe2a0;font-size:15px;margin:12px 0 5px}.ore-guide{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}.ore{background:#203c5d;border:1px solid #496b91;border-radius:9px;padding:10px 8px;font-size:12px;display:flex;align-items:center;gap:5px}.ore.fog{opacity:.65}.ore span{width:13px;height:13px;border:1px solid #ffffff80;border-radius:4px;transform:rotate(45deg);flex-shrink:0}.ore small{font-size:10px;color:#cee0f0;margin-left:auto}.empty{font-size:13px;color:#b6d0e7}footer{text-align:center;font-size:12px;color:#a5c0e1;padding:16px;line-height:1.7}
+[hidden]{display:none!important}@media(max-width:840px){.stats{grid-template-columns:repeat(4,1fr)}.panels{grid-template-columns:1fr}.actions{grid-template-columns:1fr 1fr}.actions button:first-child{grid-column:1/-1}.ore-guide{grid-template-columns:repeat(3,1fr)}}@media(max-width:500px){main{width:100%;padding:8px;margin:0}.stats{grid-template-columns:repeat(4,1fr);gap:5px}.stat{padding:8px 2px}.stat small{font-size:8px}.stat strong{font-size:13px}.viewport{border-width:2px;border-radius:9px}.pill,.countdown{font-size:9px;padding:5px}.dpad{grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,50px)}.mine{min-width:110px}.panel{padding:12px}.ore-guide{grid-template-columns:repeat(2,1fr)}.instructions{text-align:center}.item{flex-wrap:wrap}}
 </style>
 </head>
 <body>
 <main>
-
-<header>
-<div>
-<h1>
-⛏️ MINING RUSH
-<small class="version">V1.1 · GEMSTONE UPDATE</small>
-</h1>
-<p style="margin:0">
-12 minerals, beautiful caves, and glowing gemstones!
-</p>
-</div>
-<a class="back" href="../../">← Luxton Arcade</a>
-</header>
-
+<header><div><h1>⛏️ MINING RUSH <small>V1.2 · FRESH CAVES</small></h1><p>Mine 12 minerals, collect upgrades, and explore brand-new caves every five minutes!</p></div><a class="back" href="../../">← Luxton Arcade</a></header>
 <div class="stats">
-<div class="stat">
-<small>🪙 COINS</small>
-<strong id="coins">0</strong>
+ <div class="stat"><small>🪙 COINS</small><strong id="coins">0</strong></div>
+ <div class="stat"><small>📍 DEPTH</small><strong id="depth">0 m</strong></div>
+ <div class="stat"><small>🏆 BEST</small><strong id="best">0 m</strong></div>
+ <div class="stat"><small>🎒 BAG</small><strong id="bag">0 / 12</strong></div>
+ <div class="stat"><small>🧱 MINED</small><strong id="blocks">0</strong></div>
+ <div class="stat"><small>⛏️ POWER</small><strong id="power">1</strong></div>
+ <div class="stat"><small>🔄 REFRESH</small><strong id="timer">05:00</strong></div>
 </div>
-<div class="stat">
-<small>📍 DEPTH</small>
-<strong id="depth">0 m</strong>
-</div>
-<div class="stat">
-<small>🏆 BEST</small>
-<strong id="best">0 m</strong>
-</div>
-<div class="stat">
-<small>🎒 BACKPACK</small>
-<strong id="bag">0 / 12</strong>
-</div>
-<div class="stat">
-<small>🧱 MINED</small>
-<strong id="blocks">0</strong>
-</div>
-<div class="stat">
-<small>⛏️ POWER</small>
-<strong id="power">1</strong>
-</div>
-</div>
-
-<div class="viewport">
-<canvas id="game" width="960" height="576"
-aria-label="Block by block underground mining game">
-</canvas>
-<div class="hint-pill" id="layer">
-🌿 Surface · Shop &amp; Sell
-</div>
-</div>
-
-<section class="controls">
-<div class="message" id="message" role="status">
-Welcome to Mining Rush! Press ↓ to start digging!
-</div>
-
-<div class="actions">
-<button id="lift">⬆ ELEVATOR TO SURFACE</button>
-<button id="resume" class="secondary">⬇ RESUME MINING</button>
-<button id="sell" class="secondary">🪙 SELL MINERALS</button>
-</div>
-
-<div class="move-wrap">
-<div class="dpad">
-<button class="up" data-dir="up">▲</button>
-<button class="left" data-dir="left">◀</button>
-<button class="down" data-dir="down">▼</button>
-<button class="right" data-dir="right">▶</button>
-</div>
-
-<button id="mine" class="mine-btn">
-⛏️ MINE FORWARD
-</button>
-
-<div class="legend">
-💻 <b>PC:</b> WASD or arrow keys to move and dig.
-Space mines forward.
-<br>
-📱 <b>Mobile:</b> Hold the arrow buttons,
-tap nearby blocks, or use MINE.
-</div>
-</div>
-</section>
-
+<div class="viewport"><canvas id="game" width="960" height="576" aria-label="Grid-based mining game. Click a block beside the miner to break it."></canvas><div class="pill" id="layer">🌿 Surface</div><div class="countdown" id="roundLabel">Cave #1</div></div>
+<section class="controls"><div id="message" class="message" role="status" aria-live="polite">Welcome! Dig down to find minerals and treasures!</div><div class="actions"><button id="lift">⬆ ELEVATOR TO SURFACE</button><button id="resume" class="secondary">⬇ RESUME MINING</button><button id="sell" class="secondary">🪙 SELL MINERALS</button></div>
+<div class="move-wrap"><div class="dpad"><button data-dir="up" class="up" aria-label="Move up">▲</button><button data-dir="left" class="left" aria-label="Move left">◀</button><button data-dir="down" class="down" aria-label="Move down">▼</button><button data-dir="right" class="right" aria-label="Move right">▶</button></div><button id="mine" class="mine">⛏️ MINE
+FORWARD</button><div class="instructions">💻 <b>PC:</b> WASD / arrow keys to dig or move; Space mines ahead.
+📱 <b>Mobile:</b> hold arrows or tap a neighboring block.
+🔄 A new cave appears every five minutes. Your items and coins stay!</div></div>
+<div class="scanner" id="scanner" aria-live="polite"></div></section>
 <div class="panels">
-<section class="panel">
-<div class="flex">
-<h2>🎒 Your Backpack</h2>
-<span class="badge-line" id="bagWorth">
-0 coins in minerals
-</span>
+ <section class="panel"><div class="flex"><h2>🎒 Backpack</h2><b id="bagWorth">0 🪙</b></div><p>Fill your bag and return to the surface to sell. Mining progress is saved.</p><div id="inventory" class="items"></div></section>
+ <section class="panel"><div class="flex"><h2>🛒 Mega Mining Shop</h2><button id="shopToggle" class="secondary">SHOW SHOP</button></div><p>14 permanent upgrades! Buy at the surface—your gear survives cave refreshes.</p><div id="shop" class="items" hidden></div></section>
 </div>
-<p>
-Collect 12 minerals. Return to the surface
-to sell your discoveries!
-</p>
-<div class="items" id="inventory"></div>
-</section>
-
-<section class="panel">
-<div class="flex">
-<h2>🛒 Mining Shop</h2>
-<button id="shopToggle" class="secondary">
-SHOW SHOP
-</button>
-</div>
-<p>
-Permanent upgrades with inexpensive prices.
-Visit the surface to buy them.
-</p>
-<div class="items" id="shop" hidden></div>
-</section>
-</div>
-
-<section class="panel" style="margin-top:13px">
-<h2>🌍 Mining Discoveries</h2>
-<p>
-🟫 Dirt: 1–20 m ·
-🪨 Stone: 21–50 m ·
-💜 Crystal Caves: 51–100 m
-</p>
-<p id="discoveries" class="badge-line">
-Keep digging to discover new depths!
-</p>
-
-<div class="flex" style="margin:14px 0 10px">
-<h2 style="font-size:19px;margin:0">
-💎 Mineral Collection
-</h2>
-<span id="foundCount" class="badge-line">
-0 / 12 found
-</span>
-</div>
-<div class="ore-guide" id="oreGuide"></div>
-</section>
-
-<footer>
-💾 Autosaves your coins, upgrades, mined tunnels,
-and depth record on this browser.
-<br>
-🎮 Game #6 · Luxton Arcade
-</footer>
-
+<section class="panel" style="margin-top:13px"><h2>💎 Mineral Collection</h2><p>Find Coal, Copper, Iron, Silver, Gold, Amethyst, Emerald, Sapphire, Ruby, Topaz, Diamond, and Opal.</p><strong id="foundCount">0 / 12 discovered</strong><div class="ore-guide" id="oreGuide"></div><p id="discoveries"></p></section>
+<footer>🌿 Dirt: 1–20 m · 🪨 Stone: 21–50 m · 💜 Crystal caves: 51–100 m.
+💾 Coins, upgrades, mineral collection, and deepest depth save automatically in your browser. 🎮 Luxton Arcade · Game #6</footer>
 </main>
-
 <script>
 (()=>{
 "use strict";
-
-const $=id=>document.getElementById(id);
-const canvas=$("game");
-const g=canvas.getContext("2d");
-
-const TILE=48;
-const COLS=26;
-const ROWS=104;
-const START_X=13;
-const SURFACE=3;
-const KEY="luxton_mining_rush_v1";
-
+const $=id=>document.getElementById(id),canvas=$("game"),g=canvas.getContext("2d");
+const TILE=48,COLS=26,ROWS=104,START_X=13,SURFACE=3,PERIOD=300000,KEY="luxton_mining_rush_v1";
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),nowMs=()=>Date.now();
 const minerals={
- coal:{
-  label:"⚫ Coal",value:2,
-  color:"#333943",from:1
- },
- copper:{
-  label:"🟠 Copper",value:4,
-  color:"#d9844e",from:1
- },
- iron:{
-  label:"⚙️ Iron",value:7,
-  color:"#b8cbd4",from:1
- },
- silver:{
-  label:"🥈 Silver",value:10,
-  color:"#f0e9e4",from:7
- },
- gold:{
-  label:"🟡 Gold",value:13,
-  color:"#ffcf4f",from:21
- },
- amethyst:{
-  label:"💜 Amethyst",value:17,
-  color:"#b884fa",from:12
- },
- emerald:{
-  label:"💚 Emerald",value:22,
-  color:"#3bf2a4",from:16
- },
- sapphire:{
-  label:"🔷 Sapphire",value:29,
-  color:"#5caaff",from:21
- },
- ruby:{
-  label:"❤️ Ruby",value:35,
-  color:"#ff5683",from:21
- },
- topaz:{
-  label:"🟠 Topaz",value:40,
-  color:"#ffac5a",from:21
- },
- diamond:{
-  label:"💎 Diamond",value:60,
-  color:"#9cf7ff",from:51
- },
- opal:{
-  label:"🌈 Opal",value:90,
-  color:"#f8aaff",from:51
- }
+ coal:{label:"⚫ Coal",value:2,color:"#333943",from:1},
+ copper:{label:"🟠 Copper",value:4,color:"#d9844e",from:1},
+ iron:{label:"⚙️ Iron",value:7,color:"#b8cbd4",from:1},
+ silver:{label:"🥈 Silver",value:10,color:"#f0e9e4",from:7},
+ gold:{label:"🟡 Gold",value:13,color:"#ffcf4f",from:21},
+ amethyst:{label:"💜 Amethyst",value:17,color:"#b884fa",from:12},
+ emerald:{label:"💚 Emerald",value:22,color:"#3bf2a4",from:16},
+ sapphire:{label:"🔷 Sapphire",value:29,color:"#5caaff",from:21},
+ ruby:{label:"❤️ Ruby",value:35,color:"#ff5683",from:21},
+ topaz:{label:"🟠 Topaz",value:40,color:"#ffac5a",from:21},
+ diamond:{label:"💎 Diamond",value:60,color:"#9cf7ff",from:51},
+ opal:{label:"🌈 Opal",value:90,color:"#f8aaff",from:51}
 };
-
 const upgrades=[
- {
-  id:"pickaxe",
-  name:"⛏️ Stronger Pickaxe",
-  price:15,
-  desc:"+1 mining power."
- },
- {
-  id:"backpack",
-  name:"🎒 Bigger Backpack",
-  price:20,
-  desc:"Carry 26 minerals instead of 12."
- },
- {
-  id:"boots",
-  name:"👢 Speed Boots",
-  price:25,
-  desc:"Move and mine faster."
- },
- {
-  id:"lantern",
-  name:"🏮 Cave Lantern",
-  price:30,
-  desc:"Light up more of the caves."
- },
- {
-  id:"magnet",
-  name:"🧲 Ore Magnet",
-  price:40,
-  desc:"30% chance of a bonus mineral."
- },
- {
-  id:"drill",
-  name:"⚡ Super Drill",
-  price:60,
-  desc:"+2 mining power."
- }
+ {id:"pickaxe",name:"⛏️ Stronger Pickaxe",price:15,desc:"+1 mining power",group:"Original Gear"},
+ {id:"backpack",name:"🎒 Bigger Backpack",price:20,desc:"Carry 26 minerals",group:"Original Gear"},
+ {id:"boots",name:"👢 Speed Boots",price:25,desc:"Move and mine faster",group:"Original Gear"},
+ {id:"lantern",name:"🏮 Cave Lantern",price:30,desc:"See farther underground",group:"Original Gear"},
+ {id:"magnet",name:"🧲 Ore Magnet",price:40,desc:"30% chance of extra mineral",group:"Original Gear"},
+ {id:"drill",name:"⚡ Super Drill",price:60,desc:"+2 mining power",group:"Original Gear"},
+ {id:"reinforced",name:"🔨 Reinforced Pickaxe",price:18,desc:"+1 more mining power",group:"New V1.2 Upgrades"},
+ {id:"scanner",name:"🔍 Gem Scanner",price:22,desc:"Highlights nearby rare gemstones",group:"New V1.2 Upgrades"},
+ {id:"bright",name:"💡 Deep Lantern",price:24,desc:"Extra-bright cave visibility",group:"New V1.2 Upgrades"},
+ {id:"compass",name:"🧭 Treasure Compass",price:28,desc:"Points toward the nearest chest",group:"New V1.2 Upgrades"},
+ {id:"jumbo",name:"🧳 Jumbo Backpack",price:30,desc:"Carry up to 45 minerals",group:"New V1.2 Upgrades"},
+ {id:"fortune",name:"🍀 Fortune Charm",price:34,desc:"25% chance of a bonus mineral",group:"New V1.2 Upgrades"},
+ {id:"gemBreaker",name:"💎 Gem Breaker",price:42,desc:"+2 extra power on gemstones",group:"New V1.2 Upgrades"},
+ {id:"seller",name:"🪙 Coin Bonus Pass",price:50,desc:"25% more coins when selling",group:"New V1.2 Upgrades"}
 ];
-
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-
-function fresh(){
- return {
-  seed:Math.floor(Math.random()*1000000000),
-  player:{x:START_X,y:SURFACE},
-  lastMine:null,
-  coins:0,
-  bag:{},
-  owned:[],
-  cleared:[],
-  damage:{},
-  best:0,
-  blocks:0,
-  chests:0,
-  achievements:[],
-  discovered:[]
- };
-}
-
-let data=fresh();
-
-try{
- const found=JSON.parse(
-  localStorage.getItem(KEY)||"null"
- );
- if(found&&typeof found==="object"){
-  data={...data,...found};
- }
-}catch(e){}
-
-if(!Number.isFinite(data.seed)){
- data.seed=1234567;
-}
-
-for(const k of ["coins","best","blocks","chests"]){
- data[k]=Math.max(0,Number(data[k])||0);
-}
-
-if(!data.bag||typeof data.bag!=="object"){
- data.bag={};
-}
-
-for(const type of Object.keys(minerals)){
- data.bag[type]=Math.max(
-  0,Math.floor(Number(data.bag[type])||0)
- );
-}
-
-if(!Array.isArray(data.owned)){
- data.owned=[];
-}
-
-data.owned=[...new Set(
- data.owned.filter(id=>
-  upgrades.some(u=>u.id===id)
- )
-)];
-
-if(!Array.isArray(data.cleared)){
- data.cleared=[];
-}
-
-if(!data.damage||typeof data.damage!=="object"){
- data.damage={};
-}
-
-if(!Array.isArray(data.achievements)){
- data.achievements=[];
-}
-
-if(!Array.isArray(data.discovered)){
- data.discovered=[];
-}
-
-data.discovered=[...new Set(
- data.discovered.filter(id=>minerals[id])
-)];
-
-for(const id of Object.keys(minerals)){
- if(
-  data.bag[id]>0 &&
-  !data.discovered.includes(id)
- ){
-  data.discovered.push(id);
- }
-}
-
-const own=id=>data.owned.includes(id);
-
-const power=()=>
- 1+
- (own("pickaxe")?1:0)+
- (own("drill")?2:0);
-
-const capacity=()=>own("backpack")?26:12;
-
-const countBag=()=>
- Object.values(data.bag).reduce((a,b)=>a+b,0);
-
-const worth=()=>
- Object.entries(minerals).reduce(
-  (sum,[id,m])=>sum+m.value*data.bag[id],0
- );
-
-const index=(x,y)=>y*COLS+x;
-
-const inside=(x,y)=>
- x>=0&&x<COLS&&y>=SURFACE&&y<ROWS;
-
-const depth=y=>Math.max(0,y-SURFACE);
-
-const layer=y=>
- depth(y)<=20?"dirt":
- depth(y)<=50?"stone":"crystal";
-
-// DETERMINISTIC WORLD GENERATION
-function noise(x,y,salt=0){
- let n=
- Math.imul(x+37,374761393)^
- Math.imul(y+29,668265263)^
- (data.seed|0)^
- Math.imul(salt+1,103891);
-
- n=Math.imul(n^(n>>>13),1274126177);
-
- return ((n^(n>>>16))>>>0)/4294967296;
-}
-
-// ALL 12 ORES APPEAR AT DIFFERENT DEPTHS
+const gemTypes=new Set(["amethyst","emerald","sapphire","ruby","topaz","diamond","opal"]);
+const fresh=()=>({seed:Math.floor(Math.random()*1e9),player:{x:START_X,y:SURFACE},lastMine:null,coins:0,bag:{},owned:[],cleared:[],damage:{},best:0,blocks:0,chests:0,achievements:[],discovered:[],nextRefreshAt:nowMs()+PERIOD,refreshCount:0});
+let d=fresh();
+try{const old=JSON.parse(localStorage.getItem(KEY)||"null");if(old&&typeof old==="object")d={...d,...old};}catch(e){}
+for(const k of ["coins","best","blocks","chests","refreshCount"])d[k]=Math.max(0,Math.floor(Number(d[k])||0));
+if(!Number.isFinite(d.seed))d.seed=1234567;
+if(!d.bag||typeof d.bag!=="object")d.bag={};
+for(const id in minerals)d.bag[id]=Math.max(0,Math.floor(Number(d.bag[id])||0));
+for(const field of ["owned","cleared","achievements","discovered"])if(!Array.isArray(d[field]))d[field]=[];
+d.owned=[...new Set(d.owned.filter(id=>upgrades.some(u=>u.id===id)))];
+d.discovered=[...new Set(d.discovered.filter(id=>minerals[id]))];
+for(const id in minerals)if(d.bag[id]>0&&!d.discovered.includes(id))d.discovered.push(id);
+if(!d.damage||typeof d.damage!=="object")d.damage={};
+if(!Number.isFinite(Number(d.nextRefreshAt))||Number(d.nextRefreshAt)<=0)d.nextRefreshAt=nowMs()+PERIOD;
+const own=id=>d.owned.includes(id),power=()=>1+(own("pickaxe")?1:0)+(own("drill")?2:0)+(own("reinforced")?1:0);
+const capacity=()=>own("jumbo")?45:own("backpack")?26:12;
+const countBag=()=>Object.keys(minerals).reduce((a,id)=>a+d.bag[id],0);
+const worth=()=>Object.entries(minerals).reduce((a,[id,m])=>a+m.value*d.bag[id],0);
+const idx=(x,y)=>y*COLS+x,depth=y=>Math.max(0,y-SURFACE),inside=(x,y)=>x>=0&&x<COLS&&y>=SURFACE&&y<ROWS;
+const layer=y=>depth(y)<=20?"dirt":depth(y)<=50?"stone":"crystal";
+function noise(x,y,salt=0){let n=Math.imul(x+37,374761393)^Math.imul(y+29,668265263)^(d.seed|0)^Math.imul(salt+1,103891);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967296;}
 function makeTile(x,y){
  if(y<=SURFACE)return null;
-
- const d=depth(y);
- const v=noise(x,y,0);
- const base=layer(y);
-
- if(
-  d>6&&
-  noise(x,y,5)<(d>50?.059:.035)
- ){
-  return null;
- }
-
- if(d>5&&noise(x,y,9)<.010){
-  return {type:"chest",hp:1,maxHp:1,base};
- }
-
+ const dep=depth(y),v=noise(x,y),base=layer(y);
+ if(dep>6&&noise(x,y,5)<(dep>50?.059:.035))return null;
+ if(dep>5&&noise(x,y,9)<.010)return {type:"chest",hp:1,maxHp:1,base};
  let type=base;
-
- if(d<=20){
-  if(v<.16)type="coal";
-  else if(v<.28)type="copper";
-  else if(v<.34)type="iron";
-  else if(d>=7&&v<.37)type="silver";
-  else if(d>=12&&v<.385)type="amethyst";
-  else if(d>=16&&v<.392)type="emerald";
- }else if(d<=50){
-  if(v<.07)type="coal";
-  else if(v<.17)type="copper";
-  else if(v<.29)type="iron";
-  else if(v<.36)type="silver";
-  else if(v<.43)type="gold";
-  else if(v<.49)type="amethyst";
-  else if(v<.535)type="emerald";
-  else if(v<.57)type="sapphire";
-  else if(v<.59)type="ruby";
-  else if(v<.605)type="topaz";
- }else{
-  if(v<.04)type="coal";
-  else if(v<.09)type="copper";
-  else if(v<.17)type="iron";
-  else if(v<.235)type="silver";
-  else if(v<.32)type="gold";
-  else if(v<.43)type="amethyst";
-  else if(v<.52)type="emerald";
-  else if(v<.61)type="sapphire";
-  else if(v<.69)type="ruby";
-  else if(v<.74)type="topaz";
-  else if(v<.81)type="diamond";
-  else if(v<.85)type="opal";
- }
-
- let hp=
- base==="dirt"?1:
- base==="stone"?2:3;
-
- if([
-  "gold","ruby","emerald",
-  "sapphire","topaz","diamond","opal"
- ].includes(type)){
-  hp++;
- }
-
- return {type,hp,maxHp:hp,base};
+ if(dep<=20){if(v<.16)type="coal";else if(v<.28)type="copper";else if(v<.34)type="iron";else if(dep>=7&&v<.37)type="silver";else if(dep>=12&&v<.385)type="amethyst";else if(dep>=16&&v<.392)type="emerald";}
+ else if(dep<=50){if(v<.07)type="coal";else if(v<.17)type="copper";else if(v<.29)type="iron";else if(v<.36)type="silver";else if(v<.43)type="gold";else if(v<.49)type="amethyst";else if(v<.535)type="emerald";else if(v<.57)type="sapphire";else if(v<.59)type="ruby";else if(v<.605)type="topaz";}
+ else{if(v<.04)type="coal";else if(v<.09)type="copper";else if(v<.17)type="iron";else if(v<.235)type="silver";else if(v<.32)type="gold";else if(v<.43)type="amethyst";else if(v<.52)type="emerald";else if(v<.61)type="sapphire";else if(v<.69)type="ruby";else if(v<.74)type="topaz";else if(v<.81)type="diamond";else if(v<.85)type="opal";}
+ let hp=base==="dirt"?1:base==="stone"?2:3;if(["gold","ruby","emerald","sapphire","topaz","diamond","opal"].includes(type))hp++;
+ return {type,base,hp,maxHp:hp};
 }
-
-const world=Array.from(
- {length:ROWS},
- (_,y)=>Array.from(
-  {length:COLS},(_,x)=>makeTile(x,y)
- )
-);
-
-// RESTORE EXISTING MINED TUNNELS
-const cleared=new Set(
- data.cleared.filter(k=>
-  Number.isInteger(k)&&
-  k>=0&&k<COLS*ROWS
- )
-);
-
-for(const k of cleared){
- world[Math.floor(k/COLS)][k%COLS]=null;
-}
-
-for(const [k,v] of Object.entries(data.damage)){
- const n=Number(k);
- const y=Math.floor(n/COLS);
- const x=n%COLS;
-
- if(world[y]?.[x]){
-  world[y][x].hp=clamp(
-   world[y][x].hp-
-   Math.max(0,Number(v)||0),
-   1,
-   world[y][x].maxHp
-  );
+let world=[];let cleared=new Set();
+function buildWorld(restore=true){
+ world=Array.from({length:ROWS},(_,y)=>Array.from({length:COLS},(_,x)=>makeTile(x,y)));
+ cleared=new Set(restore?d.cleared.filter(k=>Number.isInteger(k)&&k>=0&&k<COLS*ROWS):[]);
+ for(const k of cleared)world[Math.floor(k/COLS)][k%COLS]=null;
+ if(restore)for(const [key,v] of Object.entries(d.damage)){
+  const n=Number(key),y=Math.floor(n/COLS),x=n%COLS;
+  if(world[y]?.[x])world[y][x].hp=clamp(world[y][x].hp-Math.max(0,Number(v)||0),1,world[y][x].maxHp);
  }
 }
-
-if(
- !data.player||
- !inside(data.player.x,data.player.y)||
- world[data.player.y][data.player.x]
-){
- data.player={x:START_X,y:SURFACE};
+function save(){try{d.cleared=[...cleared];localStorage.setItem(KEY,JSON.stringify(d));}catch(e){message("⚠️ Unable to save; check browser storage.");}}
+function message(text){$("message").textContent=text;}
+function regenerate(announce=true){
+ d.seed=Math.floor(Math.random()*1e9);d.cleared=[];d.damage={};
+ d.player={x:START_X,y:SURFACE};d.lastMine=null;
+ d.nextRefreshAt=nowMs()+PERIOD;d.refreshCount++;
+ buildWorld(false);save();
+ if(announce){message("🔄 NEW CAVE! Ores and treasure respawned. All your coins, gear and backpack items are safe!");render();}
 }
-
-if(
- data.lastMine&&
- (
-  !inside(data.lastMine.x,data.lastMine.y)||
-  world[data.lastMine.y][data.lastMine.x]
- )
-){
- data.lastMine=null;
+if(nowMs()>=Number(d.nextRefreshAt))regenerate(false);else buildWorld(true);
+if(!d.player||!inside(d.player.x,d.player.y)||world[d.player.y]?.[d.player.x])d.player={x:START_X,y:SURFACE};
+if(d.lastMine&&(!inside(d.lastMine.x,d.lastMine.y)||world[d.lastMine.y]?.[d.lastMine.x]))d.lastMine=null;
+let camX=0,camY=0,moveAt=0,attackAt=-1000,heldTouch=null,lastClockUpdate=0,warned=false;
+const keys=new Set(),particles=[];let dir={x:0,y:1};
+function award(id,text){if(!d.achievements.includes(id)){d.achievements.push(id);message("🏆 "+text);}}
+function updateClock(){
+ const secs=Math.max(0,Math.ceil((d.nextRefreshAt-nowMs())/1000));
+ $("timer").textContent=String(Math.floor(secs/60)).padStart(2,"0")+":"+String(secs%60).padStart(2,"0");
+ $("roundLabel").textContent="Cave #"+(d.refreshCount+1);
+ if(secs<=30&&!warned){warned=true;message("🔄 New cave in 30 seconds! Finish exploring or take the elevator. Your items will stay.");}
 }
-
-let camX=0;
-let camY=0;
-let dir={x:0,y:1};
-let attackAt=-1000;
-let moveAt=0;
-let heldTouch=null;
-
-const keys=new Set();
-const particles=[];
-
-function message(text){
- $("message").textContent=text;
+function itemRow(title,sub,buttonText,fn,disabled){
+ const row=document.createElement("div"),info=document.createElement("div"),b=document.createElement("b"),sm=document.createElement("small"),button=document.createElement("button");
+ row.className="item";b.textContent=title;sm.textContent=sub;button.textContent=buttonText;button.disabled=!!disabled;button.onclick=fn;info.append(b,sm);row.append(info,button);return row;
 }
-
-function save(){
- try{
-  data.cleared=[...cleared];
-  localStorage.setItem(KEY,JSON.stringify(data));
- }catch(e){
-  message("Storage unavailable. Progress may not save.");
- }
-}
-
-function rewardAchievement(id,text){
- if(data.achievements.includes(id))return;
- data.achievements.push(id);
- message("🏆 DISCOVERY: "+text);
-}
-
-// GAME STATS AND MINERAL COLLECTION
-function refresh(){
- $("coins").textContent=data.coins;
- $("depth").textContent=depth(data.player.y)+" m";
- $("best").textContent=data.best+" m";
- $("bag").textContent=
-  countBag()+" / "+capacity();
- $("blocks").textContent=data.blocks;
- $("power").textContent=power();
- $("bagWorth").textContent=
-  worth()+" coins in minerals";
-
- const d=depth(data.player.y);
-
- $("layer").textContent=
- d===0?"🌿 Surface · Shop & Sell":
- d<=20?"🟫 Dirt Layer · "+d+" m":
- d<=50?"🪨 Stone Layer · "+d+" m":
- "💜 Crystal Caves · "+d+" m";
-
- $("resume").disabled=!data.lastMine||d!==0;
- $("lift").disabled=d===0;
- $("sell").disabled=d!==0||countBag()===0;
-
- $("discoveries").textContent=
- "🎁 Chests: "+data.chests+" · "+
- (
-  data.achievements.length
-  ?data.achievements.join(" · ")
-  :"Keep digging!"
- );
-
- const guide=$("oreGuide");
- guide.replaceChildren();
-
- $("foundCount").textContent=
-  data.discovered.length+
-  " / "+
-  Object.keys(minerals).length+
-  " found";
-
- for(const [id,m] of Object.entries(minerals)){
-  const found=data.discovered.includes(id);
-
-  const pill=document.createElement("div");
-  pill.className=
-   "ore-pill"+(found?"":" unknown");
-
-  const gem=document.createElement("span");
-  gem.className="gem-dot";
-  gem.style.background=
-   found?m.color:"#68778d";
-  gem.style.boxShadow=
-   found?"0 0 13px "+m.color+"77":"none";
-
-  const name=document.createElement("span");
-
-  name.textContent=
-   found
-   ?m.label.replace(/^\S+\s/,"")
-   :"???";
-
-  const value=document.createElement("small");
-  value.textContent=
-   found?m.value+" 🪙":"from "+m.from+"m";
-
-  pill.append(gem,name,value);
-  guide.append(pill);
- }
-
- const inventory=$("inventory");
- inventory.replaceChildren();
-
- for(const [id,m] of Object.entries(minerals)){
-  if(!data.bag[id])continue;
-
-  const row=document.createElement("div");
-  row.className="item";
-
-  const a=document.createElement("span");
-  const b=document.createElement("strong");
-
-  a.textContent=m.label+" × "+data.bag[id];
-  b.textContent=
-   data.bag[id]*m.value+" 🪙";
-
-  row.append(a,b);
-  inventory.append(row);
- }
-
- if(!inventory.childElementCount){
-  const p=document.createElement("p");
-  p.className="empty";
-  p.textContent=
-   "Your backpack is empty. Mine a glowing ore block!";
-
-  inventory.append(p);
- }
-
- renderShop();
-}
-
 function renderShop(){
- const root=$("shop");
- root.replaceChildren();
-
+ const root=$("shop");root.replaceChildren();let group="";
  for(const u of upgrades){
-  const row=document.createElement("div");
-  row.className="item";
-
-  const label=document.createElement("div");
-  const name=document.createElement("b");
-  const sub=document.createElement("small");
-  const btn=document.createElement("button");
-
-  name.textContent=u.name;
-  sub.textContent=u.desc;
-
-  label.append(name,sub);
-
-  btn.textContent=
-   own(u.id)?"✓ OWNED":"BUY "+u.price;
-
-  btn.disabled=
-   own(u.id)||
-   data.coins<u.price||
-   depth(data.player.y)!==0;
-
-  btn.onclick=()=>{
-   if(
-    own(u.id)||
-    data.coins<u.price||
-    depth(data.player.y)!==0
-   )return;
-
-   data.coins-=u.price;
-   data.owned.push(u.id);
-
-   save();
-   refresh();
-
-   message(
-    "✅ "+u.name+" purchased! Permanent upgrade!"
-   );
-  };
-
-  row.append(label,btn);
-  root.append(row);
+  if(group!==u.group){group=u.group;const h=document.createElement("h3");h.className="group";h.textContent=group;root.append(h);}
+  root.append(itemRow(u.name,u.desc,own(u.id)?"✓ OWNED":"BUY "+u.price,()=>{
+   if(own(u.id)||d.coins<u.price||depth(d.player.y)!==0)return;
+   d.coins-=u.price;d.owned.push(u.id);save();render();message("✅ "+u.name+" unlocked! Permanent upgrade.");
+  },own(u.id)||d.coins<u.price||depth(d.player.y)!==0));
  }
 }
-
-// FIND COINS OR MINERALS
+function scanNearby(){
+ const x=d.player.x,y=d.player.y;
+ if(own("scanner")){
+  let gems=0;for(let yy=Math.max(SURFACE+1,y-5);yy<=Math.min(ROWS-1,y+5);yy++)for(let xx=Math.max(0,x-5);xx<=Math.min(COLS-1,x+5);xx++)if(gemTypes.has(world[yy][xx]?.type)&&Math.hypot(xx-x,yy-y)<=5)gems++;
+  $("scanner").textContent="🔍 Scanner: "+gems+" gemstone block"+(gems===1?"":"s")+" nearby";
+ }else{$("scanner").textContent="";}
+ if(own("compass")){
+  let closest=null,best=Infinity;
+  for(let yy=SURFACE+1;yy<ROWS;yy++)for(let xx=0;xx<COLS;xx++)if(world[yy][xx]?.type==="chest"){
+   const dist=Math.hypot(xx-x,yy-y);if(dist<best){best=dist;closest={x:xx,y:yy};}
+  }
+  if(closest){const dx=closest.x-x,dy=closest.y-y;const pointer=Math.abs(dx)>Math.abs(dy)?(dx>0?"➡️":"⬅️"):(dy>0?"⬇️":"⬆️");
+   $("scanner").textContent+=(own("scanner")?" · ":"")+"🧭 Nearest chest: "+pointer+" "+Math.round(best)+" blocks";
+  }
+ }
+}
+function render(){
+ $("coins").textContent=d.coins;$("depth").textContent=depth(d.player.y)+" m";$("best").textContent=d.best+" m";$("bag").textContent=countBag()+" / "+capacity();$("blocks").textContent=d.blocks;$("power").textContent=power();$("bagWorth").textContent=worth()+" 🪙";
+ const dep=depth(d.player.y);$("layer").textContent=dep===0?"🌿 Surface · Shop & Sell":dep<=20?"🟫 Dirt Layer · "+dep+" m":dep<=50?"🪨 Stone Layer · "+dep+" m":"💜 Crystal Caves · "+dep+" m";
+ $("lift").disabled=dep===0;$("resume").disabled=dep!==0||!d.lastMine;$("sell").disabled=dep!==0||!countBag();
+ $("foundCount").textContent=d.discovered.length+" / 12 discovered";
+ $("discoveries").textContent="🎁 Chests found: "+d.chests+" · 🏆 "+(d.achievements.length?d.achievements.join(" · "):"Reach 20, 50 and 100 meters!");
+ const inv=$("inventory");inv.replaceChildren();
+ for(const [id,m] of Object.entries(minerals))if(d.bag[id]){const row=document.createElement("div");row.className="item";const a=document.createElement("span"),b=document.createElement("strong");a.textContent=m.label+" × "+d.bag[id];b.textContent=(d.bag[id]*m.value)+" 🪙";row.append(a,b);inv.append(row);}
+ if(!inv.childElementCount){const e=document.createElement("p");e.className="empty";e.textContent="Nothing yet—mine some ore!";inv.append(e);}
+ const guide=$("oreGuide");guide.replaceChildren();
+ for(const [id,m] of Object.entries(minerals)){
+  const seen=d.discovered.includes(id),div=document.createElement("div"),dot=document.createElement("span"),name=document.createElement("b"),price=document.createElement("small");div.className="ore"+(seen?"":" fog");dot.style.background=seen?m.color:"#687387";dot.style.boxShadow=seen?"0 0 10px "+m.color:"none";name.textContent=seen?m.label.replace(/^\S+\s/,""):"???";price.textContent=seen?m.value+"🪙":"≥"+m.from+"m";div.append(dot,name,price);guide.append(div);
+ }
+ renderShop();updateClock();scanNearby();
+}
 function loot(type,x,y){
- if(type==="chest"){
-  const coins=
-   12+
-   Math.floor(noise(x,y,72)*34)+
-   Math.floor(depth(y)*.3);
-
-  data.coins+=coins;
-  data.chests++;
-
-  rewardAchievement(
-   "Chest hunter","Treasure chest found!"
-  );
-
-  message(
-   "🎁 TREASURE CHEST! +"+coins+" coins!"
-  );
-
-  return;
- }
-
+ if(type==="chest"){const amount=12+Math.floor(noise(x,y,72)*34)+Math.floor(depth(y)*.3);d.coins+=amount;d.chests++;award("Chest hunter","Treasure chest found!");message("🎁 Treasure chest! +"+amount+" coins!");return;}
  if(!minerals[type])return;
-
- data.bag[type]++;
-
- if(!data.discovered.includes(type)){
-  data.discovered.push(type);
-  message(
-   "✨ NEW MINERAL FOUND! "+minerals[type].label
-  );
- }
-
- if(
-  own("magnet")&&
-  Math.random()<.30&&
-  countBag()<capacity()
- ){
-  data.bag[type]++;
- }
-
- if(type==="diamond"){
-  rewardAchievement(
-   "Diamond discovered","Your first diamond!"
-  );
- }else if(type==="opal"){
-  rewardAchievement(
-   "Opal discovered","You found a rainbow opal!"
-  );
- }else if(
-  !data.achievements.includes("First ore")
- ){
-  rewardAchievement(
-   "First ore","You mined your first mineral!"
-  );
- }else{
-  message(
-   "💎 Collected "+minerals[type].label+
-   "! Worth "+minerals[type].value+" coins."
-  );
- }
+ d.bag[type]++;if(own("magnet")&&Math.random()<.30&&countBag()<capacity())d.bag[type]++;
+ if(own("fortune")&&Math.random()<.25&&countBag()<capacity())d.bag[type]++;
+ if(!d.discovered.includes(type)){d.discovered.push(type);message("✨ NEW DISCOVERY: "+minerals[type].label+"!");}
+ else message("💎 Collected "+minerals[type].label+" ("+minerals[type].value+" coins)");
+ if(type==="diamond")award("Diamond discovered","First diamond!");if(type==="opal")award("Opal discovered","Rainbow opal found!");
 }
-
-function particlesAt(x,y,color){
- for(let i=0;i<10;i++){
-  particles.push({
-   x:(x+.5)*TILE,
-   y:(y+.5)*TILE,
-   vx:(Math.random()-.5)*125,
-   vy:(Math.random()-.8)*130,
-   life:.6,
-   color
-  });
- }
-}
-
-// BLOCK-BY-BLOCK MOVEMENT
+function hitEffect(x,y,color){for(let i=0;i<11;i++)particles.push({x:(x+.5)*TILE,y:(y+.5)*TILE,vx:(Math.random()-.5)*140,vy:(Math.random()-.85)*125,life:.6,color});if(particles.length>160)particles.splice(0,25);}
+function movePlayer(x,y){d.player={x,y};if(y>SURFACE){d.lastMine={x,y};const dep=depth(y);if(dep>d.best){d.best=dep;if(dep>=100)award("100m deep","Reached 100 meters!");else if(dep>=50)award("50m deep","Crystal Caves discovered!");else if(dep>=20)award("20m deep","Stone Layer discovered!");}}}
 function digOrMove(dx,dy){
- const x=data.player.x+dx;
- const y=data.player.y+dy;
-
- dir={x:dx,y:dy};
-
- if(!inside(x,y)){
-  if(y<SURFACE){
-   message("Dig DOWN to reach the mine!");
-  }
-  return;
- }
-
+ const x=d.player.x+dx,y=d.player.y+dy;dir={x:dx,y:dy};if(!inside(x,y)){if(y<SURFACE)message("The sky is above. Dig down!");return;}
  const tile=world[y][x];
-
  if(tile){
-  if(
-   minerals[tile.type]&&
-   countBag()>=capacity()
-  ){
-   message(
-    "🎒 Backpack full! Take the elevator and sell!"
-   );
-   return;
-  }
-
-  attackAt=performance.now();
-  tile.hp-=power();
-
-  if(tile.hp>0){
-   data.damage[index(x,y)]=
-    tile.maxHp-tile.hp;
-
-   particlesAt(x,y,"#c7b3a3");
-
-   message(
-    "⛏️ Cracked "+tile.type+
-    "! "+tile.hp+" more power needed."
-   );
-  }else{
-   delete data.damage[index(x,y)];
-
-   world[y][x]=null;
-   cleared.add(index(x,y));
-   data.blocks++;
-
-   particlesAt(
-    x,y,
-    minerals[tile.type]?.color||"#c7ad91"
-   );
-
-   loot(tile.type,x,y);
-   movePlayer(x,y);
-
-   if(
-    !minerals[tile.type]&&
-    tile.type!=="chest"
-   ){
-    message("⛏️ Block cleared. Keep digging!");
-   }
-  }
- }else{
-  movePlayer(x,y);
- }
-
- save();
- refresh();
+  if(minerals[tile.type]&&countBag()>=capacity()){message("🎒 Backpack full! Take the elevator and sell your minerals.");return;}
+  attackAt=performance.now();tile.hp-=power()+(own("gemBreaker")&&gemTypes.has(tile.type)?2:0);
+  if(tile.hp>0){d.damage[idx(x,y)]=tile.maxHp-tile.hp;hitEffect(x,y,"#c0af9a");message("⛏️ Cracked "+tile.type+"! "+tile.hp+" more power needed.");}
+  else{delete d.damage[idx(x,y)];world[y][x]=null;cleared.add(idx(x,y));d.blocks++;hitEffect(x,y,minerals[tile.type]?.color||"#b89a7c");loot(tile.type,x,y);movePlayer(x,y);if(!minerals[tile.type]&&tile.type!=="chest")message("⛏️ Cleared a block. Keep digging!");}
+ }else movePlayer(x,y);
+ save();render();
 }
-
-function movePlayer(x,y){
- data.player={x,y};
-
- if(y>SURFACE){
-  data.lastMine={x,y};
-
-  const d=depth(y);
-
-  if(d>data.best){
-   data.best=d;
-
-   if(d>=100){
-    rewardAchievement(
-     "100m deep","You reached the bottom!"
-    );
-   }else if(d>=50){
-    rewardAchievement(
-     "50m deep","Welcome to the Crystal Caves!"
-    );
-   }else if(d>=20){
-    rewardAchievement(
-     "20m deep","You reached the Stone Layer!"
-    );
-   }
-  }
- }
+function elevator(){if(depth(d.player.y)===0)return;d.lastMine={...d.player};d.player={x:START_X,y:SURFACE};save();render();message("⬆ Surface! Sell your minerals, buy upgrades, or resume mining.");}
+function resume(){if(depth(d.player.y)!==0||!d.lastMine)return;d.player={...d.lastMine};save();render();message("⬇ Back in your cave! Keep exploring.");}
+function sell(){if(depth(d.player.y)!==0)return message("Take the elevator to sell.");const base=worth();if(!base)return message("Your backpack is empty!");const total=own("seller")?Math.ceil(base*1.25):base;d.coins+=total;for(const id in minerals)d.bag[id]=0;save();render();message("🪙 Sold your minerals for "+total+" coins"+(own("seller")?" including your 25% bonus!":"!"));}
+$("lift").onclick=elevator;$("resume").onclick=resume;$("sell").onclick=sell;$("mine").onclick=()=>digOrMove(dir.x,dir.y);
+$("shopToggle").onclick=()=>{if(depth(d.player.y)!==0){message("🛒 Visit the surface to open the shop!");return;}$("shop").hidden=!$("shop").hidden;$("shopToggle").textContent=$("shop").hidden?"SHOW SHOP":"HIDE SHOP";};
+const directions={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+for(const btn of document.querySelectorAll("[data-dir]")){
+ btn.addEventListener("pointerdown",e=>{e.preventDefault();btn.setPointerCapture(e.pointerId);heldTouch=directions[btn.dataset.dir];digOrMove(...heldTouch);moveAt=performance.now()+180;});
+ for(const event of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(event,()=>heldTouch=null);
 }
-
-// ELEVATOR AND MINERAL SELLING
-function elevator(){
- if(depth(data.player.y)===0)return;
-
- data.lastMine={...data.player};
- data.player={x:START_X,y:SURFACE};
-
- save();
- refresh();
-
- message(
-  "⬆ Back at the surface! Sell minerals, buy upgrades, or resume."
- );
-}
-
-function resume(){
- if(
-  depth(data.player.y)!==0||
-  !data.lastMine
- )return;
-
- data.player={...data.lastMine};
-
- save();
- refresh();
-
- message(
-  "⬇ Returned to your tunnel! Your progress is intact."
- );
-}
-
-function sell(){
- if(depth(data.player.y)!==0){
-  message("Return to the surface to sell.");
-  return;
- }
-
- const total=worth();
-
- if(!total){
-  message("Your backpack is empty!");
-  return;
- }
-
- data.coins+=total;
-
- for(const id in minerals){
-  data.bag[id]=0;
- }
-
- save();
- refresh();
-
- message(
-  "🪙 Sold minerals for "+
-  total+" coins! Shop time!"
- );
-}
-
-$("lift").onclick=elevator;
-$("resume").onclick=resume;
-$("sell").onclick=sell;
-
-$("mine").onclick=()=>{
- digOrMove(dir.x,dir.y);
-};
-
-$("shopToggle").onclick=()=>{
- if(depth(data.player.y)!==0){
-  message("🛒 Take the elevator to visit the shop!");
-  return;
- }
-
- $("shop").hidden=!$("shop").hidden;
-
- $("shopToggle").textContent=
-  $("shop").hidden?"SHOW SHOP":"HIDE SHOP";
-};
-
-// MOBILE CONTROLS
-const directions={
- up:[0,-1],
- down:[0,1],
- left:[-1,0],
- right:[1,0]
-};
-
-for(
- const btn of document.querySelectorAll("[data-dir]")
-){
- btn.addEventListener("pointerdown",e=>{
-  e.preventDefault();
-  btn.setPointerCapture(e.pointerId);
-
-  const [dx,dy]=directions[btn.dataset.dir];
-
-  heldTouch=[dx,dy];
-  digOrMove(dx,dy);
-  moveAt=performance.now()+180;
- });
-
- btn.addEventListener("pointerup",()=>{
-  heldTouch=null;
- });
-
- btn.addEventListener("pointercancel",()=>{
-  heldTouch=null;
- });
-
- btn.addEventListener("lostpointercapture",()=>{
-  heldTouch=null;
- });
-}
-
-// KEYBOARD CONTROLS
-const keyDirs={
- ArrowUp:[0,-1],
- ArrowDown:[0,1],
- ArrowLeft:[-1,0],
- ArrowRight:[1,0],
- w:[0,-1],
- s:[0,1],
- a:[-1,0],
- d:[1,0]
-};
-
-window.addEventListener("keydown",e=>{
- const key=e.key.length===1
-  ?e.key.toLowerCase()
-  :e.key;
-
- if(key in keyDirs){
-  if([
-   "INPUT","SELECT","TEXTAREA"
-  ].includes(document.activeElement.tagName)){
-   return;
-  }
-
-  e.preventDefault();
-
-  if(!keys.has(key)){
-   keys.add(key);
-
-   if(!heldTouch){
-    digOrMove(...keyDirs[key]);
-    moveAt=performance.now()+180;
-   }
-  }
- }else if(e.code==="Space"&&!e.repeat){
-  if(
-   document.activeElement.tagName==="BUTTON"
-  )return;
-
-  e.preventDefault();
-  digOrMove(dir.x,dir.y);
- }
-});
-
-window.addEventListener("keyup",e=>{
- keys.delete(
-  e.key.length===1
-  ?e.key.toLowerCase()
-  :e.key
- );
-});
-
-window.addEventListener("blur",()=>{
- keys.clear();
- heldTouch=null;
-});
-
-// TAP ADJACENT BLOCKS
-canvas.addEventListener("pointerdown",e=>{
- const r=canvas.getBoundingClientRect();
-
- const x=
-  (e.clientX-r.left)*canvas.width/r.width+camX;
-
- const y=
-  (e.clientY-r.top)*canvas.height/r.height+camY;
-
- const col=Math.floor(x/TILE);
- const row=Math.floor(y/TILE);
-
- const dx=col-data.player.x;
- const dy=row-data.player.y;
-
- if(Math.abs(dx)+Math.abs(dy)===1){
-  digOrMove(dx,dy);
- }else{
-  message(
-   "👆 Tap a neighboring block or use the arrows!"
-  );
- }
-});
-
-// ARTWORK HELPERS
-function fill(x,y,w,h,color){
- g.fillStyle=color;
- g.fillRect(x,y,w,h);
-}
-
-function circle(x,y,r,color){
- g.fillStyle=color;
- g.beginPath();
- g.arc(x,y,r,0,Math.PI*2);
- g.fill();
-}
-
-function rounded(x,y,w,h,r,color){
- g.fillStyle=color;
- g.beginPath();
- g.roundRect(x,y,w,h,r);
- g.fill();
-}
-
-// SHINY ORES AND FACETED GEMSTONES
-function oreSymbol(type,x,y,t){
- const info=minerals[type];
- if(!info)return;
-
- g.save();
- g.translate(x,y);
-
- const metal=[
-  "copper","iron","silver","gold"
- ].includes(type);
-
- const coal=type==="coal";
-
- const premium=[
-  "diamond","opal","emerald","sapphire",
-  "ruby","topaz","amethyst"
- ].includes(type);
-
- if(premium){
-  g.shadowColor=info.color;
-  g.shadowBlur=8+Math.sin(t*3+x)*3;
- }
-
- if(coal){
-  for(const [dx,dy,r] of [
-   [-9,2,8],[3,-7,9],[10,7,7]
-  ]){
-   g.fillStyle="#171d2b";
-   g.beginPath();
-   g.moveTo(dx-r,dy-2);
-   g.lineTo(dx-2,dy-r);
-   g.lineTo(dx+r*.8,dy-r*.4);
-   g.lineTo(dx+r,dy+r*.4);
-   g.lineTo(dx-r*.4,dy+r);
-   g.closePath();
-   g.fill();
-  }
-
-  g.strokeStyle="#79838b";
-  g.lineWidth=2;
-  g.beginPath();
-  g.moveTo(-12,-1);
-  g.lineTo(-6,-8);
-  g.moveTo(2,-10);
-  g.lineTo(9,-5);
-  g.stroke();
-
+const keyDirs={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]};
+window.addEventListener("keydown",e=>{const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyDirs[key]){if(["INPUT","SELECT","TEXTAREA"].includes(document.activeElement.tagName))return;e.preventDefault();if(!keys.has(key)){keys.add(key);if(!heldTouch){digOrMove(...keyDirs[key]);moveAt=performance.now()+180;}}}else if(e.code==="Space"&&!e.repeat){if(["BUTTON","INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;e.preventDefault();digOrMove(dir.x,dir.y);}});
+window.addEventListener("keyup",e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));window.addEventListener("blur",()=>{keys.clear();heldTouch=null;});
+canvas.addEventListener("pointerdown",e=>{const r=canvas.getBoundingClientRect();const col=Math.floor(((e.clientX-r.left)*canvas.width/r.width+camX)/TILE),row=Math.floor(((e.clientY-r.top)*canvas.height/r.height+camY)/TILE);const dx=col-d.player.x,dy=row-d.player.y;if(Math.abs(dx)+Math.abs(dy)===1)digOrMove(dx,dy);else message("👆 Tap a directly neighboring block or use the arrow controls.");});
+// ----- GRAPHICS -----
+function rect(x,y,w,h,c){g.fillStyle=c;g.fillRect(x,y,w,h);}function disk(x,y,r,c){g.fillStyle=c;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill();}function round(x,y,w,h,r,c){g.fillStyle=c;g.beginPath();g.roundRect(x,y,w,h,r);g.fill();}
+function oreArt(type,x,y,t){
+ const info=minerals[type];if(!info)return;g.save();g.translate(x,y);
+ const metal=["copper","iron","silver","gold"].includes(type),gem=gemTypes.has(type);
+ if(gem){g.shadowColor=info.color;g.shadowBlur=8+3*Math.sin(t*3+x);}
+ if(type==="coal"){
+  for(const [dx,dy,size] of [[-10,3,9],[4,-7,9],[10,8,8]]){g.fillStyle="#1d2837";g.beginPath();g.moveTo(dx-size,dy);g.lineTo(dx,dy-size);g.lineTo(dx+size,dy-size*.3);g.lineTo(dx+size,dy+size);g.lineTo(dx-size*.5,dy+size*.6);g.fill();}g.strokeStyle="#a0adb2";g.lineWidth=1.7;g.beginPath();g.moveTo(-16,-1);g.lineTo(-8,-7);g.stroke();
  }else if(metal){
-  for(const [dx,dy,r] of [
-   [-9,2,9],[3,-8,8],[12,6,8]
-  ]){
-   g.fillStyle=info.color;
-   g.beginPath();
-   g.moveTo(dx-r,dy);
-   g.lineTo(dx-r*.2,dy-r);
-   g.lineTo(dx+r*.8,dy-r*.7);
-   g.lineTo(dx+r,dy+r*.5);
-   g.lineTo(dx-r*.3,dy+r);
-   g.closePath();
-   g.fill();
-
-   g.fillStyle="#ffffff83";
-   g.beginPath();
-   g.moveTo(dx-r,dy);
-   g.lineTo(dx-r*.2,dy-r);
-   g.lineTo(dx+r*.15,dy-r*.4);
-   g.closePath();
-   g.fill();
-  }
+  for(const [dx,dy,size] of [[-10,3,10],[3,-8,9],[11,7,8]]){g.fillStyle=info.color;g.beginPath();g.moveTo(dx-size,dy);g.lineTo(dx-size*.2,dy-size);g.lineTo(dx+size*.8,dy-size*.6);g.lineTo(dx+size,dy+size*.6);g.lineTo(dx-size*.2,dy+size);g.fill();g.fillStyle="#ffffff8c";g.beginPath();g.moveTo(dx-size,dy);g.lineTo(dx-size*.2,dy-size);g.lineTo(dx,dy-size*.3);g.fill();}
  }else{
-  for(const [dx,dy,size] of [
-   [-10,6,13],[10,4,12],[0,-5,19]
-  ]){
-   g.fillStyle=info.color;
-   g.beginPath();
-
-   g.moveTo(dx,dy-size);
-   g.lineTo(dx+size*.63,dy-size*.32);
-   g.lineTo(dx+size*.56,dy+size*.72);
-   g.lineTo(dx,dy+size);
-   g.lineTo(dx-size*.65,dy+size*.65);
-   g.lineTo(dx-size*.66,dy-size*.35);
-
-   g.closePath();
-   g.fill();
-
-   g.fillStyle="#ffffff9c";
-   g.beginPath();
-   g.moveTo(dx,dy-size);
-   g.lineTo(dx,dy+size);
-   g.lineTo(dx-size*.65,dy+size*.65);
-   g.lineTo(dx-size*.66,dy-size*.35);
-   g.closePath();
-   g.fill();
-
-   g.fillStyle="#1a2c6560";
-   g.beginPath();
-   g.moveTo(dx,dy-size);
-   g.lineTo(dx+size*.63,dy-size*.32);
-   g.lineTo(dx+size*.56,dy+size*.72);
-   g.lineTo(dx,dy+size);
-   g.closePath();
-   g.fill();
-  }
+  for(const [dx,dy,size] of [[-11,6,13],[11,6,12],[0,-4,18]]){g.fillStyle=info.color;g.beginPath();g.moveTo(dx,dy-size);g.lineTo(dx+size*.7,dy-size*.3);g.lineTo(dx+size*.55,dy+size*.75);g.lineTo(dx,dy+size);g.lineTo(dx-size*.7,dy+size*.6);g.lineTo(dx-size*.65,dy-size*.35);g.closePath();g.fill();g.fillStyle="#ffffff99";g.beginPath();g.moveTo(dx,dy-size);g.lineTo(dx,dy+size);g.lineTo(dx-size*.7,dy+size*.6);g.lineTo(dx-size*.65,dy-size*.35);g.fill();}
  }
-
- g.shadowBlur=0;
-
- if(premium){
-  const a=Math.sin(t*3+x*.03)*.5+.5;
-
-  g.globalAlpha=.35+a*.65;
-  g.strokeStyle="#fff";
-  g.lineWidth=1.7;
-
-  g.beginPath();
-  g.moveTo(20,-20);
-  g.lineTo(20,-11);
-  g.moveTo(16,-16);
-  g.lineTo(24,-16);
-  g.stroke();
- }
-
- g.restore();
+ g.shadowBlur=0;if(gem){g.globalAlpha=.45+.35*Math.sin(t*3+x);g.strokeStyle="#fff";g.lineWidth=2;g.beginPath();g.moveTo(19,-20);g.lineTo(19,-11);g.moveTo(15,-16);g.lineTo(23,-16);g.stroke();}g.restore();
 }
-
-// TREASURE CHESTS
-function chest(x,y){
- g.save();
- g.shadowColor="#ffcb64";
- g.shadowBlur=11;
-
- rounded(x-17,y-10,34,25,4,"#613a2f");
- rounded(x-17,y-15,34,11,4,"#ae6e33");
-
- fill(x-15,y-5,30,4,"#f4d072");
- rounded(x-3,y-12,6,24,2,"#ffe08a");
-
- circle(x,y+2,3,"#5d4323");
- g.restore();
-}
-
-// SURFACE BUILDINGS
+function chestArt(x,y){g.save();g.shadowBlur=12;g.shadowColor="#ffd367";round(x-17,y-9,34,24,3,"#6b462c");round(x-17,y-15,34,11,3,"#d19843");rect(x-14,y-6,28,3,"#ffe290");round(x-3,y-11,6,22,2,"#ffe084");g.restore();}
 function drawSurface(t){
- const sky=g.createLinearGradient(
-  0,0,0,4*TILE
- );
-
- sky.addColorStop(0,"#6eb7de");
- sky.addColorStop(1,"#d9eac3");
-
- fill(0,0,COLS*TILE,4*TILE,sky);
- circle(990,50,30,"#fff0a8");
-
- for(let i=0;i<5;i++){
-  const x=
-   (i*280+t*(i%2?4:6))%
-   (COLS*TILE+200)-90;
-
-  const y=40+i%3*22;
-
-  g.globalAlpha=.6;
-  circle(x,y,21,"#fff");
-  circle(x+22,y-10,26,"#fff");
-  circle(x+48,y,19,"#fff");
- }
-
- g.globalAlpha=1;
-
- g.fillStyle="#729eaa";
- g.beginPath();
- g.moveTo(0,153);
-
- for(const [x,y] of [
-  [130,87],[250,149],[440,74],
-  [615,160],[810,97],[1000,149],[1248,97]
- ]){
-  g.lineTo(x,y);
- }
-
- g.lineTo(1248,192);
- g.lineTo(0,192);
- g.fill();
-
- fill(0,186,COLS*TILE,7,"#5eaf6b");
-
- // WORKSHOP
- rounded(95,112,177,73,5,"#765044");
-
- g.fillStyle="#bf7755";
- g.beginPath();
- g.moveTo(81,112);
- g.lineTo(184,60);
- g.lineTo(286,112);
- g.fill();
-
- rounded(115,125,136,29,4,"#1b3150");
-
- g.fillStyle="#ffe08a";
- g.font="bold 15px system-ui";
- g.textAlign="center";
- g.fillText("SHOP + SELL",183,145);
-
- rounded(170,158,28,27,3,"#39384c");
- fill(168,175,32,4,"#ccb47a");
-
- // ELEVATOR
- rounded(382,106,110,78,5,"#60758c");
- rounded(397,122,79,62,3,"#253850");
-
- for(let i=0;i<5;i++){
-  fill(404+i*13,124,4,56,"#506f8c");
- }
-
- rounded(375,89,126,27,5,"#203854");
-
- g.fillStyle="#ffeea8";
- g.font="bold 14px system-ui";
- g.fillText("ELEVATOR",438,107);
- g.textAlign="left";
+ const sky=g.createLinearGradient(0,0,0,192);sky.addColorStop(0,"#69afda");sky.addColorStop(1,"#d6f0cf");rect(0,0,COLS*TILE,192,sky);disk(980,48,33,"#fff1b0");
+ for(let i=0;i<5;i++){const x=(i*270+t*(i%2?4:6))%(COLS*TILE+180)-80,y=41+i%3*20;g.globalAlpha=.7;disk(x,y,18,"#fff");disk(x+23,y-11,26,"#fff");disk(x+50,y,18,"#fff");}g.globalAlpha=1;
+ g.fillStyle="#80a4b0";g.beginPath();g.moveTo(0,160);for(const [x,y] of [[130,84],[250,147],[440,76],[615,157],[810,95],[1000,147],[1248,99]])g.lineTo(x,y);g.lineTo(1248,192);g.lineTo(0,192);g.fill();rect(0,185,COLS*TILE,7,"#55ad72");
+ round(95,111,177,74,6,"#765143");g.fillStyle="#b67b59";g.beginPath();g.moveTo(82,113);g.lineTo(184,58);g.lineTo(284,113);g.fill();round(113,124,138,31,5,"#1b3150");g.textAlign="center";g.font="bold 15px system-ui";g.fillStyle="#ffe49f";g.fillText("SHOP + SELL",183,144);round(170,159,29,26,4,"#4b3949");
+ round(382,105,111,81,5,"#72899f");round(397,122,79,63,4,"#263f5d");for(let i=0;i<5;i++)rect(403+i*13,126,4,54,"#567d9b");round(375,87,125,29,5,"#203854");g.fillText("ELEVATOR",438,107);g.textAlign="left";
 }
-
-// DETAILED TEXTURED BLOCKS
-function drawTile(tile,x,y,c,r,t){
- const base=tile.base||layer(r);
-
- const pal=base==="dirt"
- ?["#9e6946","#70452f","#c18755","#563626"]
- :base==="stone"
- ?["#778398","#444f65","#9ca9b8","#343e53"]
- :["#65568d","#332a5c","#8e7ac3","#282044"];
-
- g.save();
-
- const face=g.createLinearGradient(
-  x,y,x+TILE,y+TILE
- );
-
- face.addColorStop(0,pal[0]);
- face.addColorStop(.58,pal[1]);
- face.addColorStop(1,pal[3]);
-
- rounded(
-  x+.5,y+.5,TILE-1,TILE-1,3,face
- );
-
- fill(x+2,y+2,TILE-4,4,pal[2]+"cc");
- fill(x+2,y+5,3,TILE-8,pal[2]+"67");
- fill(x+2,y+TILE-6,TILE-4,4,pal[3]+"e0");
- fill(x+TILE-6,y+4,4,TILE-8,pal[3]+"d0");
-
- // ROCK TEXTURE
- for(let i=0;i<8;i++){
-  const dx=6+noise(c+i*3,r,21)*33;
-  const dy=8+noise(c,r+i*3,22)*31;
-
-  rounded(
-   x+dx,y+dy,
-   i%3===0?6:3,
-   i%2?2:4,
-   1,
-   i%2?pal[2]+"68":pal[3]+"a8"
-  );
- }
-
- // DIRT ROOTS
- if(
-  base==="dirt"&&
-  noise(c,r,40)>.77
- ){
-  g.strokeStyle="#56392ca8";
-  g.lineWidth=1.8;
-  g.beginPath();
-  g.moveTo(x+8,y+4);
-  g.bezierCurveTo(
-   x+10,y+14,
-   x+26,y+16,
-   x+23,y+31
-  );
-  g.stroke();
- }
-
- // STONE VEINS
- if(
-  base==="stone"&&
-  noise(c,r,42)>.70
- ){
-  g.strokeStyle="#c4d8ee55";
-  g.lineWidth=1.5;
-  g.beginPath();
-  g.moveTo(x+5,y+40);
-  g.lineTo(x+22,y+24);
-  g.lineTo(x+34,y+29);
-  g.stroke();
- }
-
- // CRYSTAL CRACKS
- if(base==="crystal"){
-  g.strokeStyle="#c4b2ff6d";
-  g.lineWidth=1.4;
-  g.beginPath();
-  g.moveTo(x+6,y+39);
-  g.lineTo(x+20,y+19);
-  g.lineTo(x+39,y+27);
-  g.stroke();
-
-  if(noise(c,r,47)>.79){
-   g.fillStyle="#a895ed96";
-   g.beginPath();
-   g.moveTo(x+7,y+38);
-   g.lineTo(x+11,y+21);
-   g.lineTo(x+19,y+13);
-   g.lineTo(x+20,y+38);
-   g.fill();
-  }
- }
-
- if(minerals[tile.type]){
-  oreSymbol(
-   tile.type,
-   x+TILE/2,
-   y+TILE/2,
-   t
-  );
- }
-
- if(tile.type==="chest"){
-  chest(x+24,y+24);
- }
-
- // MINING CRACKS
- if(tile.hp<tile.maxHp){
-  g.strokeStyle="#101622da";
-  g.lineWidth=3;
-  g.beginPath();
-  g.moveTo(x+12,y+5);
-  g.lineTo(x+23,y+19);
-  g.lineTo(x+16,y+36);
-  g.moveTo(x+23,y+19);
-  g.lineTo(x+37,y+25);
-  g.stroke();
-
-  g.strokeStyle="#ffffff65";
-  g.lineWidth=1;
-  g.beginPath();
-  g.moveTo(x+14,y+5);
-  g.lineTo(x+25,y+19);
-  g.stroke();
- }
-
- g.restore();
+function drawTile(tile,x,y,col,row,t){
+ const base=tile.base||layer(row),pal=base==="dirt"?["#a4774f","#694b38","#c69b63","#493526"]:base==="stone"?["#8793a3","#515b70","#a4b0c2","#353c53"]:["#8570a1","#3b3061","#aa90d1","#282044"];
+ const bg=g.createLinearGradient(x,y,x+TILE,y+TILE);bg.addColorStop(0,pal[0]);bg.addColorStop(.6,pal[1]);bg.addColorStop(1,pal[3]);round(x+.6,y+.6,TILE-1.2,TILE-1.2,3,bg);rect(x+2,y+2,44,4,pal[2]+"aa");rect(x+2,y+42,44,4,pal[3]+"cc");
+ for(let k=0;k<7;k++){const dx=5+noise(col+k*3,row,21)*33,dy=8+noise(col,row+k*3,22)*30;round(x+dx,y+dy,k%2?4:3,k%2?2:3,1,k%2?pal[2]+"66":pal[3]+"95");}
+ if(base==="crystal"&&noise(col,row,47)>.6){g.strokeStyle="#d1abff66";g.lineWidth=1.5;g.beginPath();g.moveTo(x+5,y+43);g.lineTo(x+19,y+20);g.lineTo(x+40,y+31);g.stroke();}
+ if(minerals[tile.type])oreArt(tile.type,x+24,y+24,t);else if(tile.type==="chest")chestArt(x+24,y+24);
+ if(tile.hp<tile.maxHp){g.strokeStyle="#142034d2";g.lineWidth=3;g.beginPath();g.moveTo(x+10,y+8);g.lineTo(x+22,y+20);g.lineTo(x+15,y+36);g.moveTo(x+22,y+20);g.lineTo(x+38,y+27);g.stroke();}
 }
-
-// BETTER MINER GRAPHICS
 function miner(t){
- const x=(data.player.x+.5)*TILE;
- const y=(data.player.y+.5)*TILE;
-
- const recent=Math.max(
-  0,1-(performance.now()-attackAt)/270
- );
-
- const moving=keys.size||heldTouch;
-
- const bounce=moving
-  ?Math.sin(t*15)*1.4
-  :Math.sin(t*2)*.7;
-
- g.save();
- g.translate(x,y+bounce);
- g.lineJoin="round";
- g.lineCap="round";
-
- // SHADOW
- g.fillStyle="#080e2066";
- g.beginPath();
- g.ellipse(
-  0,22,17,5,0,0,Math.PI*2
- );
- g.fill();
-
- // ANIMATED LEGS AND BOOTS
- for(const side of [-1,1]){
-  const legLift=moving
-   ?Math.sin(t*15+side*1.57)*3
-   :0;
-
-  rounded(
-   side<0?-10:2,
-   8+legLift,9,13,2,
-   "#283d60"
-  );
-
-  rounded(
-   side<0?-12:1,
-   17+legLift,13,6,2,
-   "#172638"
-  );
-
-  fill(
-   side<0?-12:1,
-   21+legLift,13,2,
-   "#cedce2"
-  );
- }
-
- // BACKPACK
- rounded(-17,-12,13,24,4,"#765038");
- rounded(-15,-9,8,17,2,"#b98751");
- fill(-13,-3,4,3,"#ffe3a2");
-
- // JACKET
- const jacket=g.createLinearGradient(
-  -12,-12,14,17
- );
-
- jacket.addColorStop(0,"#59bed0");
- jacket.addColorStop(1,"#18546e");
-
- rounded(-11,-10,25,26,6,jacket);
- fill(-2,-8,3,21,"#b5ebdd");
- rounded(3,0,8,7,2,"#143b56");
-
- // FACE
- circle(2,-18,12,"#d49864");
- circle(6,-18,9,"#f1ba84");
- circle(-9,-17,3,"#c38a5e");
- circle(8,-19,1.5,"#29394a");
-
- g.strokeStyle="#9f6947";
- g.lineWidth=1.2;
- g.beginPath();
- g.arc(8,-13,3,.2,1.2);
- g.stroke();
-
- // HELMET
- rounded(-14,-30,28,11,5,"#e9b442");
- rounded(-14,-30,28,4,3,"#ffeb99");
- rounded(-16,-23,34,5,2,"#b87c36");
-
- // HEADLAMP BEAM
- g.save();
- g.globalAlpha=.18;
- g.fillStyle="#fff7b2";
- g.beginPath();
- g.moveTo(11,-26);
- g.lineTo(30,-47);
- g.lineTo(40,-9);
- g.closePath();
- g.fill();
- g.restore();
-
- circle(11,-26,6,"#6b7d8c");
- circle(11,-26,4.3,"#fff8b4");
- circle(12,-27,1.9,"#fff");
-
- // ARM HOLDING PICKAXE
- g.strokeStyle="#29809a";
- g.lineWidth=8;
- g.beginPath();
- g.moveTo(8,-4);
- g.lineTo(17,-2);
- g.stroke();
-
- circle(17,-2,3.5,"#edb487");
-
- const angle=
-  dir.x<0?3.2:
-  dir.y<0?-1.7:
-  dir.y>0?.75:-.38;
-
- g.save();
- g.translate(17,-3);
-
- g.rotate(
-  angle+
-  Math.sin((1-recent)*Math.PI*2)*
-  recent*.75
- );
-
- g.strokeStyle="#80573d";
- g.lineWidth=4;
- g.beginPath();
- g.moveTo(0,15);
- g.lineTo(0,-20);
- g.stroke();
-
- g.strokeStyle="#dceaf4";
- g.lineWidth=5;
- g.beginPath();
- g.moveTo(-16,-16);
- g.quadraticCurveTo(0,-26,17,-14);
- g.stroke();
-
- g.strokeStyle="#ffffff99";
- g.lineWidth=1.3;
- g.beginPath();
- g.moveTo(-13,-17);
- g.lineTo(12,-17);
- g.stroke();
-
- g.restore();
- g.restore();
+ const x=(d.player.x+.5)*TILE,y=(d.player.y+.5)*TILE,walking=keys.size||heldTouch;
+ const bounce=walking?Math.sin(t*15)*1.2:Math.sin(t*2)*.65;
+ g.save();g.translate(x,y+bounce);g.lineJoin="round";g.lineCap="round";g.fillStyle="#0006";g.beginPath();g.ellipse(0,22,17,4,0,0,Math.PI*2);g.fill();
+ for(const side of [-1,1]){const lift=walking?Math.sin(t*15+side*1.5)*3:0;round(side<0?-10:2,9+lift,9,13,2,"#324b67");round(side<0?-12:1,18+lift,13,6,2,"#1a2c43");rect(side<0?-12:1,22+lift,13,2,"#bacbd6");}
+ round(-17,-12,13,25,4,"#a8743e");round(-13,-9,8,20,2,"#d5ab69");const jacket=g.createLinearGradient(-13,-12,13,17);jacket.addColorStop(0,"#62c1d3");jacket.addColorStop(1,"#176079");round(-12,-11,26,26,6,jacket);rect(-3,-8,3,20,"#cbf4ea");round(4,0,8,8,2,"#18415e");
+ disk(1,-17,12,"#c98d61");disk(6,-18,9,"#f2c18c");disk(-9,-17,3,"#c68b5f");disk(9,-19,1.7,"#253748");g.strokeStyle="#9b644a";g.lineWidth=1.2;g.beginPath();g.arc(8,-14,3,.2,1.2);g.stroke();
+ round(-14,-31,29,12,5,"#f3c452");round(-14,-31,28,4,2,"#fff0a0");round(-16,-23,34,5,2,"#b37c3e");disk(11,-26,6,"#58718b");disk(11,-26,4.1,"#fff5aa");disk(12,-27,1.6,"#fff");
+ g.strokeStyle="#2e7691";g.lineWidth=8;g.beginPath();g.moveTo(9,-4);g.lineTo(18,-2);g.stroke();disk(18,-2,3.5,"#e9b281");
+ const age=Math.max(0,1-(performance.now()-attackAt)/275),angle=dir.x<0?3.2:dir.y<0?-1.7:dir.y>0?.75:-.38;g.save();g.translate(18,-3);g.rotate(angle+Math.sin((1-age)*Math.PI*2)*age*.75);g.strokeStyle=own("drill")?"#daac66":"#805c42";g.lineWidth=4;g.beginPath();g.moveTo(0,16);g.lineTo(0,-20);g.stroke();g.strokeStyle=own("reinforced")?"#baf5ff":"#dceaf4";g.lineWidth=5;g.beginPath();g.moveTo(-17,-16);g.quadraticCurveTo(0,-26,17,-14);g.stroke();g.restore();g.restore();
 }
-
-// DRAW UNDERGROUND WORLD
 function draw(t){
- const p=data.player;
-
- const targetX=clamp(
-  (p.x+.5)*TILE-canvas.width/2,
-  0,
-  COLS*TILE-canvas.width
- );
-
- const targetY=clamp(
-  (p.y+.5)*TILE-canvas.height*.48,
-  0,
-  ROWS*TILE-canvas.height
- );
-
- camX+=(targetX-camX)*.18;
- camY+=(targetY-camY)*.18;
-
- fill(
-  0,0,
-  canvas.width,canvas.height,
-  "#12162d"
- );
-
- g.save();
- g.translate(-camX,-camY);
-
- const top=Math.max(
-  SURFACE,
-  Math.floor(camY/TILE)-1
- );
-
- const bottom=Math.min(
-  ROWS-1,
-  Math.ceil(
-   (camY+canvas.height)/TILE
-  )+1
- );
-
- // UNDERGROUND BIOMES
- for(const [y1,y2,color] of [
-  [4,24,"#513a32"],
-  [24,54,"#343e54"],
-  [54,ROWS,"#252042"]
- ]){
-  fill(
-   0,y1*TILE,COLS*TILE,
-   (y2-y1)*TILE,
-   color
-  );
+ const p=d.player,targetX=clamp((p.x+.5)*TILE-canvas.width/2,0,COLS*TILE-canvas.width),targetY=clamp((p.y+.5)*TILE-canvas.height*.48,0,ROWS*TILE-canvas.height);
+ camX+=(targetX-camX)*.18;camY+=(targetY-camY)*.18;rect(0,0,canvas.width,canvas.height,"#10172c");g.save();g.translate(-camX,-camY);
+ for(const [start,end,color] of [[4,24,"#4b3934"],[24,54,"#313c52"],[54,ROWS,"#251d43"]])rect(0,start*TILE,COLS*TILE,(end-start)*TILE,color);
+ if(camY<4*TILE)drawSurface(t);
+ const top=Math.max(SURFACE,Math.floor(camY/TILE)-1),bottom=Math.min(ROWS-1,Math.ceil((camY+canvas.height)/TILE)+1),left=Math.max(0,Math.floor(camX/TILE)-1),right=Math.min(COLS-1,Math.ceil((camX+canvas.width)/TILE)+1);
+ for(let row=top;row<=bottom;row++)for(let col=left;col<=right;col++){
+  const tile=world[row][col],x=col*TILE,y=row*TILE;
+  if(tile)drawTile(tile,x,y,col,row,t);
+  else if(row>SURFACE){rect(x+1,y+1,TILE-2,TILE-2,depth(row)>50?"#14142b":depth(row)>20?"#192339":"#312727");if(noise(col,row,19)>.9){g.fillStyle=depth(row)>50?"#ac9dff9e":"#78b8d48a";g.beginPath();g.moveTo(x+5,y+44);g.lineTo(x+12,y+25);g.lineTo(x+21,y+44);g.fill();}}
+  if(own("scanner")&&gemTypes.has(tile?.type)&&Math.hypot(col-p.x,row-p.y)<=5){g.strokeStyle="#79ffe5";g.lineWidth=3;g.strokeRect(x+4,y+4,40,40);}
  }
-
- if(camY<4*TILE){
-  drawSurface(t);
- }
-
- // ATMOSPHERIC CAVE PARTICLES
- if(camY>=3*TILE){
-  g.save();
-
-  for(let k=0;k<75;k++){
-   const xx=
-    (k*193+Math.sin(t*.32+k)*11)%
-    (COLS*TILE);
-
-   const h=(ROWS-4)*TILE;
-
-   const yy=
-    ((k*307+data.seed)%h+h)%h+
-    4*TILE;
-
-   if(
-    yy<camY-60||
-    yy>camY+canvas.height+70||
-    xx<camX-60||
-    xx>camX+canvas.width+60
-   )continue;
-
-   const deep=
-    depth(Math.floor(yy/TILE))>50;
-
-   g.globalAlpha=
-    .18+
-    .15*Math.abs(Math.sin(t*1.5+k));
-
-   circle(
-    xx,yy,
-    deep?2.1:1.3,
-    deep?"#c5a2ff":"#c4d9ff"
-   );
-  }
-
-  g.globalAlpha=1;
-  g.restore();
- }
-
- const left=Math.max(
-  0,Math.floor(camX/TILE)-1
- );
-
- const right=Math.min(
-  COLS-1,
-  Math.ceil(
-   (camX+canvas.width)/TILE
-  )+1
- );
-
- // DRAW VISIBLE BLOCKS
- for(let y=top;y<=bottom;y++){
-  for(let x=left;x<=right;x++){
-   const tile=world[y][x];
-
-   if(tile){
-    drawTile(
-     tile,
-     x*TILE,y*TILE,
-     x,y,t
-    );
-   }else if(y>SURFACE){
-    fill(
-     x*TILE+1,y*TILE+1,
-     TILE-2,TILE-2,
-     depth(y)>50?"#151433":
-     depth(y)>20?"#172638":
-     "#312827"
-    );
-
-    // CRYSTALS IN EXPOSED TUNNELS
-    if(
-     y>3&&
-     noise(x,y,19)>.90
-    ){
-     const col=
-      depth(y)>50?"#a58cff89":
-      depth(y)>20?"#71a7ca6e":
-      "#ce9a6a75";
-
-     g.fillStyle=col;
-     g.beginPath();
-
-     g.moveTo(
-      x*TILE+5,
-      y*TILE+TILE-4
-     );
-
-     g.lineTo(
-      x*TILE+12,
-      y*TILE+TILE-26
-     );
-
-     g.lineTo(
-      x*TILE+20,
-      y*TILE+TILE-4
-     );
-
-     g.fill();
-    }
-
-    if(noise(x,y,6)>.78){
-     circle(
-      x*TILE+10,
-      y*TILE+14,
-      1.8,
-      "#4c6180"
-     );
-    }
-   }
-  }
- }
-
- // DARKNESS AROUND THE MINER
- if(depth(p.y)>=7){
-  for(let y=Math.max(top,4);y<=bottom;y++){
-   for(let x=left;x<=right;x++){
-    const distance=Math.hypot(
-     x-p.x,y-p.y
-    );
-
-    const radius=own("lantern")
-     ?5.2:2.9;
-
-    const alpha=clamp(
-     (distance-radius)/6,
-     0,.73
-    );
-
-    if(alpha>0){
-     fill(
-      x*TILE,y*TILE,
-      TILE,TILE,
-      `rgba(5,7,20,${alpha})`
-     );
-    }
-   }
-  }
- }
-
- // MINING SPARKLES
- for(const part of particles){
-  g.globalAlpha=clamp(
-   part.life/.6,0,1
-  );
-
-  circle(
-   part.x,part.y,3,
-   part.color
-  );
- }
-
- g.globalAlpha=1;
-
- miner(t);
-
- // WARM HELMET/LANTERN LIGHT
- if(depth(p.y)>3){
-  const px=(p.x+.5)*TILE;
-  const py=(p.y+.5)*TILE;
-
-  const rad=
-   (own("lantern")?4.8:3.1)*TILE;
-
-  const halo=g.createRadialGradient(
-   px,py,6,
-   px,py,rad
-  );
-
-  halo.addColorStop(0,"#ffeb9b30");
-  halo.addColorStop(1,"#ffe6a900");
-
-  g.fillStyle=halo;
-  g.fillRect(
-   px-rad,py-rad,
-   rad*2,rad*2
-  );
- }
-
- g.restore();
-
- // HIGHLIGHT CURRENT TARGET
- g.strokeStyle="#ffe19744";
- g.lineWidth=2;
-
- g.strokeRect(
-  (p.x+dir.x)*TILE-camX+2,
-  (p.y+dir.y)*TILE-camY+2,
-  TILE-4,TILE-4
- );
+ // Darken distant caves; owned lamps reveal more.
+ if(depth(p.y)>=7){const radius=own("bright")?8:own("lantern")?5.2:2.9;for(let row=Math.max(top,4);row<=bottom;row++)for(let col=left;col<=right;col++){
+  const dist=Math.hypot(col-p.x,row-p.y),alpha=clamp((dist-radius)/6,0,.75);if(alpha>0)rect(col*TILE,row*TILE,TILE,TILE,`rgba(3,6,19,${alpha})`);
+ }}
+ for(const part of particles){g.globalAlpha=clamp(part.life/.6,0,1);disk(part.x,part.y,3,part.color);}g.globalAlpha=1;
+ miner(t);g.restore();
+ g.strokeStyle="#ffe0987d";g.lineWidth=2;g.strokeRect((p.x+dir.x)*TILE-camX+2,(p.y+dir.y)*TILE-camY+2,TILE-4,TILE-4);
 }
-
-// MAIN GAME LOOP
-let last=performance.now();
-
-function frame(now){
- const dt=Math.min(
-  .05,
-  (now-last)/1000
- );
-
- last=now;
-
- if(now>=moveAt){
-  const k=[...keys].at(-1);
-
-  const v=
-   heldTouch||
-   (keyDirs[k]||null);
-
-  if(v){
-   digOrMove(...v);
-
-   moveAt=now+
-    (own("boots")?95:160);
-  }
- }
-
- for(const p of particles){
-  p.x+=p.vx*dt;
-  p.y+=p.vy*dt;
-  p.vy+=170*dt;
-  p.life-=dt;
- }
-
- for(let i=particles.length-1;i>=0;i--){
-  if(particles[i].life<=0){
-   particles.splice(i,1);
-  }
- }
-
- draw(now/1000);
- requestAnimationFrame(frame);
+let last=performance.now();function frame(now){
+ const delta=Math.min(.05,Math.max(0,(now-last)/1000));last=now;
+ if(nowMs()>=d.nextRefreshAt){regenerate();warned=false;moveAt=now+220;}
+ if(now-lastClockUpdate>250){lastClockUpdate=now;updateClock();}
+ if(now>=moveAt){const k=[...keys].at(-1),v=heldTouch||keyDirs[k];if(v){digOrMove(...v);moveAt=now+(own("boots")?95:160);}}
+ for(const p of particles){p.x+=p.vx*delta;p.y+=p.vy*delta;p.vy+=160*delta;p.life-=delta;}
+ for(let i=particles.length-1;i>=0;i--)if(particles[i].life<=0)particles.splice(i,1);
+ draw(now/1000);requestAnimationFrame(frame);
 }
-
-// START MINING RUSH V1.1
-refresh();
-requestAnimationFrame(frame);
-
+render();requestAnimationFrame(frame);
 })();
 </script>
 </body>
