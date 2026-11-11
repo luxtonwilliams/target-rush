@@ -4,299 +4,1856 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101d36">
-<title>Mining Rush V1.2 | Luxton Arcade</title>
+<meta name="theme-color" content="#111c35">
+<title>Mining Rush V1.3 | Luxton Arcade</title>
 <style>
-:root{--panel:#142846;--edge:#526f94;--cream:#ffe4a1;--muted:#bad0e8}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at top,#314971,#0a1428 70%);color:#f1f8ff;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}
-main{max-width:1100px;width:calc(100% - 24px);margin:16px auto 36px}header,.flex{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{color:var(--cream);margin:4px 0;font-size:clamp(27px,4.5vw,44px)}h1 small{font-size:13px;color:#b5e8fc}a{color:#bceeff;text-decoration:none}.back{padding:11px 15px;border:1px solid #6284a8;border-radius:12px;background:#263d60;font-weight:800}p{color:var(--muted);line-height:1.5;margin:7px 0 12px}
-.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:14px 0}.stat,.panel,.controls{background:linear-gradient(135deg,#192f52,#10203a);border:1px solid var(--edge);border-radius:13px;padding:12px}.stat{text-align:center;padding:9px 3px;min-width:0}.stat small{color:#aac9e8;display:block;font-size:10px;font-weight:850}.stat strong{display:block;font-size:clamp(13px,2.1vw,22px);margin-top:4px;white-space:nowrap}
-.viewport{border:3px solid #8ce3ed;border-radius:18px;overflow:hidden;position:relative;background:#15243c;box-shadow:0 12px 38px #0009}#game{display:block;width:100%;aspect-ratio:960/576;height:auto;touch-action:manipulation;cursor:crosshair}.pill{position:absolute;left:11px;top:11px;padding:8px 12px;border-radius:25px;background:#07172ccf;border:1px solid #ffffff33;font-weight:800;font-size:12px;pointer-events:none}.countdown{position:absolute;right:11px;top:11px;padding:7px 11px;border-radius:25px;background:#173652d9;font-size:12px;color:#ffedae;pointer-events:none}
-.controls{margin-top:12px}.message{min-height:43px;display:grid;place-items:center;text-align:center;color:#fff0ad;font-weight:800}.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:11px 0}button{font:inherit;font-weight:850;background:linear-gradient(125deg,#75ebf2,#829eff);color:#0e2841;border:0;border-radius:11px;cursor:pointer;padding:11px;min-height:49px;touch-action:manipulation}button.secondary{background:#2d466b;color:#f1f8ff;border:1px solid #678cb5}button:disabled{opacity:.43;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #ffe19c;outline-offset:3px}.move-wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:17px}.dpad{display:grid;grid-template-columns:repeat(3,62px);grid-template-rows:repeat(2,53px);gap:5px;touch-action:none}.dpad button{user-select:none;touch-action:none;padding:0;font-size:23px}.dpad .up{grid-column:2;grid-row:1}.dpad .left{grid-column:1;grid-row:2}.dpad .down{grid-column:2;grid-row:2}.dpad .right{grid-column:3;grid-row:2}.mine{background:linear-gradient(135deg,#ffe28b,#ffb16b);font-size:17px;min-height:103px;min-width:140px}.instructions{font-size:12px;max-width:370px;color:#bfd1e9;line-height:1.7}.scanner{font-size:12px;text-align:center;color:#b7f7e3;min-height:20px;margin:8px 0}
-.panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}.panel{padding:16px;min-width:0}.panel h2{font-size:21px;margin:0 0 8px}.panel p{font-size:13px}.items{display:grid;gap:8px}.item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#203b5d;border:1px solid #4d7198;border-radius:11px;padding:10px}.item b{font-size:14px}.item small{font-size:12px;color:#c1d8ef;display:block;margin-top:3px}.item button{font-size:12px;min-height:40px;white-space:nowrap;padding:8px 11px}.group{color:#ffe2a0;font-size:15px;margin:12px 0 5px}.ore-guide{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}.ore{background:#203c5d;border:1px solid #496b91;border-radius:9px;padding:10px 8px;font-size:12px;display:flex;align-items:center;gap:5px}.ore.fog{opacity:.65}.ore span{width:13px;height:13px;border:1px solid #ffffff80;border-radius:4px;transform:rotate(45deg);flex-shrink:0}.ore small{font-size:10px;color:#cee0f0;margin-left:auto}.empty{font-size:13px;color:#b6d0e7}footer{text-align:center;font-size:12px;color:#a5c0e1;padding:16px;line-height:1.7}
-[hidden]{display:none!important}@media(max-width:840px){.stats{grid-template-columns:repeat(4,1fr)}.panels{grid-template-columns:1fr}.actions{grid-template-columns:1fr 1fr}.actions button:first-child{grid-column:1/-1}.ore-guide{grid-template-columns:repeat(3,1fr)}}@media(max-width:500px){main{width:100%;padding:8px;margin:0}.stats{grid-template-columns:repeat(4,1fr);gap:5px}.stat{padding:8px 2px}.stat small{font-size:8px}.stat strong{font-size:13px}.viewport{border-width:2px;border-radius:9px}.pill,.countdown{font-size:9px;padding:5px}.dpad{grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,50px)}.mine{min-width:110px}.panel{padding:12px}.ore-guide{grid-template-columns:repeat(2,1fr)}.instructions{text-align:center}.item{flex-wrap:wrap}}
+:root{--bg:#0b162c;--panel:#182e4b;--edge:#496d96;--gold:#ffe29d;--txt:#f0f8ff;--sub:#b9d0e8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at top,#314c73,var(--bg) 70%);color:var(--txt);font-family:system-ui,Arial,sans-serif}
+main{width:min(1100px,calc(100% - 20px));margin:16px auto 32px}
+header,.flex{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+h1{margin:0;color:var(--gold);font-size:clamp(26px,4.8vw,44px)}
+h1 small{font-size:12px;color:#b6edff}
+p{color:var(--sub);line-height:1.5}
+a{color:#b7eeff;text-decoration:none}
+.back{padding:11px 14px;background:#233d60;border:1px solid #6186ad;border-radius:10px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:13px 0}
+.stat,.panel,.controls{background:linear-gradient(145deg,#1d3656,#111e36);border:1px solid var(--edge);border-radius:13px;padding:11px}
+.stat{text-align:center;min-width:0;padding:9px 3px}
+.stat small{display:block;color:#b1cee5;font-size:9px;font-weight:800}
+.stat b{display:block;font-size:clamp(12px,2vw,22px);white-space:nowrap;margin-top:4px}
+.viewport{position:relative;border:3px solid #7bddeb;border-radius:17px;overflow:hidden;box-shadow:0 12px 38px #0008}
+canvas#game{display:block;width:100%;height:auto;aspect-ratio:960/576;touch-action:manipulation;cursor:crosshair}
+.pill{position:absolute;background:#081a30d8;border:1px solid #ffffff38;border-radius:22px;padding:8px 11px;font-size:12px;font-weight:800;pointer-events:none}
+.pill.left{left:10px;top:10px}
+.pill.right{right:10px;top:10px;color:#ffe39a}
+.controls{margin-top:11px}
+.message{min-height:44px;display:grid;place-items:center;text-align:center;font-weight:800;color:#ffe6a0}
+.actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:9px 0 13px}
+button{font:inherit;font-weight:800;min-height:47px;background:linear-gradient(115deg,#8be9eb,#8fa9ff);color:#11283e;border:0;border-radius:10px;padding:10px;cursor:pointer;touch-action:manipulation}
+button.secondary{background:#2d496b;border:1px solid #5d82ab;color:#f4f9ff}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,a:focus-visible{outline:3px solid #ffe38c;outline-offset:3px}
+.move{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:15px}
+.dpad{display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(2,51px);gap:5px;touch-action:none}
+.dpad button{padding:0;font-size:23px;touch-action:none;user-select:none}
+.up{grid-column:2;grid-row:1}
+.left{grid-column:1;grid-row:2}
+.down{grid-column:2;grid-row:2}
+.right{grid-column:3;grid-row:2}
+.mine{background:linear-gradient(115deg,#ffeb9f,#ffb36e);min-height:103px;min-width:125px}
+.help{font-size:12px;max-width:375px;color:#c7d8ec;line-height:1.7}
+.scanner{min-height:22px;text-align:center;color:#9cffe0;font-size:12px;margin-top:7px}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.panel h2{margin:0 0 9px;font-size:20px}
+.panel p{font-size:13px;margin:6px 0 12px}
+.items{display:grid;gap:7px}
+.item{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#253e5f;border:1px solid #526f96;border-radius:10px;padding:9px}
+.item b{font-size:13px}
+.item small{display:block;color:#c4daed;font-size:12px;margin-top:3px}
+.item button{min-height:39px;font-size:12px}
+.group{font-size:14px;color:#ffe29d;margin:13px 0 5px}
+.ore-guide{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.ore{display:flex;align-items:center;gap:7px;background:#223958;border:1px solid #55779b;border-radius:9px;padding:8px 7px;font-size:11px}
+.ore.off{opacity:.6}
+.gem{width:12px;height:12px;flex-shrink:0;border:1px solid #fff8;border-radius:3px;transform:rotate(45deg)}
+.ore small{margin-left:auto;color:#d9e8f8;font-size:10px}
+.empty{color:#b6cde4;font-size:13px}
+footer{font-size:12px;color:#a9bfd9;text-align:center;line-height:1.7;padding:17px}
+[hidden]{display:none!important}
+@media(max-width:800px){
+.stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.actions{grid-template-columns:repeat(2,1fr)}
+.panels{grid-template-columns:1fr}
+.ore-guide{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:480px){
+main{width:100%;padding:8px;margin:0}
+.stat{padding:8px 1px}
+.stat small{font-size:8px}
+.stat b{font-size:12px}
+.viewport{border-width:2px;border-radius:9px}
+.pill{font-size:9px;padding:5px}
+.dpad{grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,49px)}
+.mine{min-width:108px}
+.help{text-align:center}
+.ore-guide{grid-template-columns:repeat(2,1fr)}
+.item{padding:8px}
+.actions button{font-size:12px}
+}
 </style>
 </head>
 <body>
 <main>
-<header><div><h1>⛏️ MINING RUSH <small>V1.2 · FRESH CAVES</small></h1><p>Mine 12 minerals, collect upgrades, and explore brand-new caves every five minutes!</p></div><a class="back" href="../../">← Luxton Arcade</a></header>
+<header>
+<div>
+<h1>⛏️ MINING RUSH <small>V1.3 · DEEP CAVE EXPEDITION</small></h1>
+<p style="margin:3px 0">Explore 200 meters, collect 18 minerals, and ride a minecart!</p>
+</div>
+<a href="../../" class="back">← Luxton Arcade</a>
+</header>
+
 <div class="stats">
- <div class="stat"><small>🪙 COINS</small><strong id="coins">0</strong></div>
- <div class="stat"><small>📍 DEPTH</small><strong id="depth">0 m</strong></div>
- <div class="stat"><small>🏆 BEST</small><strong id="best">0 m</strong></div>
- <div class="stat"><small>🎒 BAG</small><strong id="bag">0 / 12</strong></div>
- <div class="stat"><small>🧱 MINED</small><strong id="blocks">0</strong></div>
- <div class="stat"><small>⛏️ POWER</small><strong id="power">1</strong></div>
- <div class="stat"><small>🔄 REFRESH</small><strong id="timer">05:00</strong></div>
+<div class="stat"><small>🪙 COINS</small><b id="coins">0</b></div>
+<div class="stat"><small>📍 DEPTH</small><b id="depth">0 m</b></div>
+<div class="stat"><small>🏆 BEST</small><b id="best">0 m</b></div>
+<div class="stat"><small>🎒 BAG</small><b id="bag">0/12</b></div>
+<div class="stat"><small>⛏️ POWER</small><b id="power">1</b></div>
+<div class="stat"><small>🧱 MINED</small><b id="blocks">0</b></div>
+<div class="stat"><small>🔄 REFRESH</small><b id="clock">05:00</b></div>
 </div>
-<div class="viewport"><canvas id="game" width="960" height="576" aria-label="Grid-based mining game. Click a block beside the miner to break it."></canvas><div class="pill" id="layer">🌿 Surface</div><div class="countdown" id="roundLabel">Cave #1</div></div>
-<section class="controls"><div id="message" class="message" role="status" aria-live="polite">Welcome! Dig down to find minerals and treasures!</div><div class="actions"><button id="lift">⬆ ELEVATOR TO SURFACE</button><button id="resume" class="secondary">⬇ RESUME MINING</button><button id="sell" class="secondary">🪙 SELL MINERALS</button></div>
-<div class="move-wrap"><div class="dpad"><button data-dir="up" class="up" aria-label="Move up">▲</button><button data-dir="left" class="left" aria-label="Move left">◀</button><button data-dir="down" class="down" aria-label="Move down">▼</button><button data-dir="right" class="right" aria-label="Move right">▶</button></div><button id="mine" class="mine">⛏️ MINE
-FORWARD</button><div class="instructions">💻 <b>PC:</b> WASD / arrow keys to dig or move; Space mines ahead.
-📱 <b>Mobile:</b> hold arrows or tap a neighboring block.
-🔄 A new cave appears every five minutes. Your items and coins stay!</div></div>
-<div class="scanner" id="scanner" aria-live="polite"></div></section>
+
+<div class="viewport">
+<canvas id="game" width="960" height="576" aria-label="Side-view block mining game"></canvas>
+<div class="pill left" id="layer">🌿 Surface</div>
+<div class="pill right" id="cave">Cave #1</div>
+</div>
+
+<section class="controls">
+<div class="message" id="message" role="status" aria-live="polite">
+Welcome! Use ↓ to dig into the first cave!
+</div>
+<div class="actions">
+<button id="lift">⬆ ELEVATOR</button>
+<button id="resume" class="secondary">⬇ RESUME</button>
+<button id="sell" class="secondary">🪙 SELL ORE</button>
+<button id="cart" class="secondary">🛒 MINECART 🔒</button>
+</div>
+<div class="move">
+<div class="dpad">
+<button data-dir="up" class="up" aria-label="Move up">▲</button>
+<button data-dir="left" class="left" aria-label="Move left">◀</button>
+<button data-dir="down" class="down" aria-label="Move down">▼</button>
+<button data-dir="right" class="right" aria-label="Move right">▶</button>
+</div>
+<button class="mine" id="mine">⛏️ MINE FORWARD</button>
+<div class="help">
+💻 PC: WASD / arrows to move or mine, Space to swing, M to board or leave the minecart.
+📱 Mobile: hold the arrows or tap a neighboring block. Board your cart to speed through open tunnels; dismount to dig!
+</div>
+</div>
+<div class="scanner" id="scanner"></div>
+</section>
+
 <div class="panels">
- <section class="panel"><div class="flex"><h2>🎒 Backpack</h2><b id="bagWorth">0 🪙</b></div><p>Fill your bag and return to the surface to sell. Mining progress is saved.</p><div id="inventory" class="items"></div></section>
- <section class="panel"><div class="flex"><h2>🛒 Mega Mining Shop</h2><button id="shopToggle" class="secondary">SHOW SHOP</button></div><p>14 permanent upgrades! Buy at the surface—your gear survives cave refreshes.</p><div id="shop" class="items" hidden></div></section>
+<section class="panel">
+<div class="flex"><h2>🎒 Backpack</h2><b id="worth">0 🪙</b></div>
+<p>Keep your minerals when the cave refreshes. Sell them at the surface!</p>
+<div id="inventory" class="items"></div>
+</section>
+<section class="panel">
+<div class="flex">
+<h2>🛒 Mega Mining Shop</h2>
+<button id="shopToggle" class="secondary">SHOW SHOP</button>
 </div>
-<section class="panel" style="margin-top:13px"><h2>💎 Mineral Collection</h2><p>Find Coal, Copper, Iron, Silver, Gold, Amethyst, Emerald, Sapphire, Ruby, Topaz, Diamond, and Opal.</p><strong id="foundCount">0 / 12 discovered</strong><div class="ore-guide" id="oreGuide"></div><p id="discoveries"></p></section>
-<footer>🌿 Dirt: 1–20 m · 🪨 Stone: 21–50 m · 💜 Crystal caves: 51–100 m.
-💾 Coins, upgrades, mineral collection, and deepest depth save automatically in your browser. 🎮 Luxton Arcade · Game #6</footer>
+<p>22 permanent upgrades with affordable prices. Buy at the surface.</p>
+<div id="shop" class="items" hidden></div>
+</section>
+</div>
+
+<section class="panel" style="margin-top:12px">
+<div class="flex">
+<h2>💎 Mineral Collection</h2>
+<b id="found">0/18</b>
+</div>
+<p>Five layers: Dirt (1–20 m), Stone (21–50 m), Crystal (51–100 m), Lava (101–150 m), Ancient (151–200 m).</p>
+<div class="ore-guide" id="guide"></div>
+<p id="achievements"></p>
+</section>
+
+<footer>
+🔄 A new cave every 5 minutes. Get a 30-second warning and up to 12 extra seconds to finish a cracked block. Your coins, upgrades, bag, discoveries and best depth are kept. 💾 Autosaved locally.
+</footer>
 </main>
+
 <script>
 (()=>{
 "use strict";
-const $=id=>document.getElementById(id),canvas=$("game"),g=canvas.getContext("2d");
-const TILE=48,COLS=26,ROWS=104,START_X=13,SURFACE=3,PERIOD=300000,KEY="luxton_mining_rush_v1";
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),nowMs=()=>Date.now();
-const minerals={
- coal:{label:"⚫ Coal",value:2,color:"#333943",from:1},
- copper:{label:"🟠 Copper",value:4,color:"#d9844e",from:1},
- iron:{label:"⚙️ Iron",value:7,color:"#b8cbd4",from:1},
- silver:{label:"🥈 Silver",value:10,color:"#f0e9e4",from:7},
- gold:{label:"🟡 Gold",value:13,color:"#ffcf4f",from:21},
- amethyst:{label:"💜 Amethyst",value:17,color:"#b884fa",from:12},
- emerald:{label:"💚 Emerald",value:22,color:"#3bf2a4",from:16},
- sapphire:{label:"🔷 Sapphire",value:29,color:"#5caaff",from:21},
- ruby:{label:"❤️ Ruby",value:35,color:"#ff5683",from:21},
- topaz:{label:"🟠 Topaz",value:40,color:"#ffac5a",from:21},
- diamond:{label:"💎 Diamond",value:60,color:"#9cf7ff",from:51},
- opal:{label:"🌈 Opal",value:90,color:"#f8aaff",from:51}
+
+const $=id=>document.getElementById(id);
+const cv=$("game"),g=cv.getContext("2d");
+
+const T=48,COLS=26,ROWS=204,SURFACE=3,START_X=13;
+const PERIOD=300000,KEY="luxton_mining_rush_v1";
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const now=()=>Date.now();
+const index=(x,y)=>y*COLS+x;
+
+// 18 MINERALS
+const O={
+coal:["⚫ Coal",2,"#313946",1],
+copper:["🟠 Copper",4,"#d98b54",1],
+iron:["⚙️ Iron",7,"#b5c8d5",1],
+silver:["🥈 Silver",10,"#f0e6e0",7],
+gold:["🟡 Gold",13,"#ffd364",21],
+amethyst:["💜 Amethyst",17,"#bd91ff",12],
+emerald:["💚 Emerald",22,"#55ecaa",16],
+sapphire:["🔷 Sapphire",29,"#6eaaff",21],
+ruby:["❤️ Ruby",35,"#ff668d",21],
+topaz:["🟠 Topaz",40,"#ffb765",21],
+diamond:["💎 Diamond",60,"#9af7ff",51],
+opal:["🌈 Opal",90,"#f5a6f4",51],
+obsidian:["🖤 Obsidian",45,"#5a426e",101],
+jade:["🟢 Jade",52,"#74e5a2",101],
+platinum:["⚪ Platinum",70,"#e5eaf5",110],
+meteorite:["☄️ Meteorite",95,"#f48c75",140],
+fireCrystal:["🔥 Fire Crystal",110,"#ff854a",101],
+ancientDiamond:["💠 Ancient Diamond",160,"#a4faff",165]
 };
-const upgrades=[
- {id:"pickaxe",name:"⛏️ Stronger Pickaxe",price:15,desc:"+1 mining power",group:"Original Gear"},
- {id:"backpack",name:"🎒 Bigger Backpack",price:20,desc:"Carry 26 minerals",group:"Original Gear"},
- {id:"boots",name:"👢 Speed Boots",price:25,desc:"Move and mine faster",group:"Original Gear"},
- {id:"lantern",name:"🏮 Cave Lantern",price:30,desc:"See farther underground",group:"Original Gear"},
- {id:"magnet",name:"🧲 Ore Magnet",price:40,desc:"30% chance of extra mineral",group:"Original Gear"},
- {id:"drill",name:"⚡ Super Drill",price:60,desc:"+2 mining power",group:"Original Gear"},
- {id:"reinforced",name:"🔨 Reinforced Pickaxe",price:18,desc:"+1 more mining power",group:"New V1.2 Upgrades"},
- {id:"scanner",name:"🔍 Gem Scanner",price:22,desc:"Highlights nearby rare gemstones",group:"New V1.2 Upgrades"},
- {id:"bright",name:"💡 Deep Lantern",price:24,desc:"Extra-bright cave visibility",group:"New V1.2 Upgrades"},
- {id:"compass",name:"🧭 Treasure Compass",price:28,desc:"Points toward the nearest chest",group:"New V1.2 Upgrades"},
- {id:"jumbo",name:"🧳 Jumbo Backpack",price:30,desc:"Carry up to 45 minerals",group:"New V1.2 Upgrades"},
- {id:"fortune",name:"🍀 Fortune Charm",price:34,desc:"25% chance of a bonus mineral",group:"New V1.2 Upgrades"},
- {id:"gemBreaker",name:"💎 Gem Breaker",price:42,desc:"+2 extra power on gemstones",group:"New V1.2 Upgrades"},
- {id:"seller",name:"🪙 Coin Bonus Pass",price:50,desc:"25% more coins when selling",group:"New V1.2 Upgrades"}
+
+const gems=new Set([
+"amethyst","emerald","sapphire","ruby","topaz",
+"diamond","opal","jade","fireCrystal","ancientDiamond"
+]);
+
+const metals=new Set([
+"copper","iron","silver","gold","platinum"
+]);
+
+// 22 AFFORDABLE SHOP UPGRADES
+const U=[
+["pickaxe","⛏️ Stronger Pickaxe",15,"+1 mining power","Original Gear"],
+["backpack","🎒 Bigger Backpack",20,"Hold 26 minerals","Original Gear"],
+["boots","👢 Speed Boots",25,"Move and mine faster","Original Gear"],
+["lantern","🏮 Cave Lantern",30,"See farther underground","Original Gear"],
+["magnet","🧲 Ore Magnet",40,"30% chance of extra ore","Original Gear"],
+["drill","⚡ Super Drill",60,"+2 mining power","Original Gear"],
+
+["reinforced","🔨 Reinforced Pickaxe",18,"+1 mining power","V1.2 Gear"],
+["scanner","🔍 Gem Scanner",22,"Highlights gems nearby","V1.2 Gear"],
+["bright","💡 Deep Lantern",24,"Extra-large light radius","V1.2 Gear"],
+["compass","🧭 Treasure Compass",28,"Points to the closest chest","V1.2 Gear"],
+["jumbo","🧳 Jumbo Backpack",30,"Hold 45 minerals","V1.2 Gear"],
+["fortune","🍀 Fortune Charm",34,"25% chance of extra ore","V1.2 Gear"],
+["gemBreaker","💎 Gem Breaker",42,"+2 power on gemstones","V1.2 Gear"],
+["seller","🪙 Coin Bonus Pass",50,"+25% coins when selling","V1.2 Gear"],
+
+["minecart","🚂 Minecart",38,"Ride three blocks per step through tunnels","V1.3 Gear"],
+["wheels","⚙️ Turbo Wheels",22,"Ride five blocks per step","V1.3 Gear"],
+["diamondPick","💎 Diamond Pickaxe",35,"+2 mining power","V1.3 Gear"],
+["megaDrill","⚡ Mega Drill",60,"+3 mining power","V1.3 Gear"],
+["titanBag","🎒 Giant Backpack",45,"Hold 75 minerals","V1.3 Gear"],
+["radar","📡 Deep Radar",25,"Shows distance to the closest gem","V1.3 Gear"],
+["heatShield","🛡️ Heat Shield",24,"+1 mining power in lava caves","V1.3 Gear"],
+["ancientCharm","✨ Ancient Charm",50,"30% extra ore in ancient caves","V1.3 Gear"]
 ];
-const gemTypes=new Set(["amethyst","emerald","sapphire","ruby","topaz","diamond","opal"]);
-const fresh=()=>({seed:Math.floor(Math.random()*1e9),player:{x:START_X,y:SURFACE},lastMine:null,coins:0,bag:{},owned:[],cleared:[],damage:{},best:0,blocks:0,chests:0,achievements:[],discovered:[],nextRefreshAt:nowMs()+PERIOD,refreshCount:0});
+
+// SAVE DATA
+const fresh=()=>({
+seed:Math.floor(Math.random()*1e9),
+player:{x:START_X,y:SURFACE},
+lastMine:null,coins:0,bag:{},owned:[],
+cleared:[],damage:{},best:0,blocks:0,chests:0,
+achievements:[],discovered:[],
+nextRefreshAt:now()+PERIOD,refreshCount:0
+});
+
 let d=fresh();
-try{const old=JSON.parse(localStorage.getItem(KEY)||"null");if(old&&typeof old==="object")d={...d,...old};}catch(e){}
-for(const k of ["coins","best","blocks","chests","refreshCount"])d[k]=Math.max(0,Math.floor(Number(d[k])||0));
-if(!Number.isFinite(d.seed))d.seed=1234567;
+
+try{
+const old=JSON.parse(localStorage.getItem(KEY)||"null");
+if(old&&typeof old==="object")d={...d,...old};
+}catch(e){}
+
+for(const k of ["coins","best","blocks","chests","refreshCount"]){
+d[k]=Math.max(0,Math.floor(Number(d[k])||0));
+}
+
+if(!Number.isFinite(d.seed))d.seed=2356789;
 if(!d.bag||typeof d.bag!=="object")d.bag={};
-for(const id in minerals)d.bag[id]=Math.max(0,Math.floor(Number(d.bag[id])||0));
-for(const field of ["owned","cleared","achievements","discovered"])if(!Array.isArray(d[field]))d[field]=[];
-d.owned=[...new Set(d.owned.filter(id=>upgrades.some(u=>u.id===id)))];
-d.discovered=[...new Set(d.discovered.filter(id=>minerals[id]))];
-for(const id in minerals)if(d.bag[id]>0&&!d.discovered.includes(id))d.discovered.push(id);
+
+for(const k in O){
+d.bag[k]=Math.max(0,Math.floor(Number(d.bag[k])||0));
+}
+
+for(const k of ["owned","cleared","discovered","achievements"]){
+if(!Array.isArray(d[k]))d[k]=[];
+}
+
+d.owned=[...new Set(
+d.owned.filter(id=>U.some(u=>u[0]===id))
+)];
+
+d.discovered=[...new Set(
+d.discovered.filter(k=>O[k])
+)];
+
+for(const k in O){
+if(d.bag[k]&&!d.discovered.includes(k)){
+d.discovered.push(k);
+}
+}
+
 if(!d.damage||typeof d.damage!=="object")d.damage={};
-if(!Number.isFinite(Number(d.nextRefreshAt))||Number(d.nextRefreshAt)<=0)d.nextRefreshAt=nowMs()+PERIOD;
-const own=id=>d.owned.includes(id),power=()=>1+(own("pickaxe")?1:0)+(own("drill")?2:0)+(own("reinforced")?1:0);
-const capacity=()=>own("jumbo")?45:own("backpack")?26:12;
-const countBag=()=>Object.keys(minerals).reduce((a,id)=>a+d.bag[id],0);
-const worth=()=>Object.entries(minerals).reduce((a,[id,m])=>a+m.value*d.bag[id],0);
-const idx=(x,y)=>y*COLS+x,depth=y=>Math.max(0,y-SURFACE),inside=(x,y)=>x>=0&&x<COLS&&y>=SURFACE&&y<ROWS;
-const layer=y=>depth(y)<=20?"dirt":depth(y)<=50?"stone":"crystal";
-function noise(x,y,salt=0){let n=Math.imul(x+37,374761393)^Math.imul(y+29,668265263)^(d.seed|0)^Math.imul(salt+1,103891);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967296;}
+
+if(
+!Number.isFinite(Number(d.nextRefreshAt))||
+Number(d.nextRefreshAt)<=0
+){
+d.nextRefreshAt=now()+PERIOD;
+}
+
+// UPGRADE EFFECTS
+const own=k=>d.owned.includes(k);
+const depth=y=>Math.max(0,y-SURFACE);
+
+const inside=(x,y)=>
+Number.isInteger(x)&&Number.isInteger(y)&&
+x>=0&&x<COLS&&y>=SURFACE&&y<ROWS;
+
+const layer=y=>
+depth(y)<=20?"dirt":
+depth(y)<=50?"stone":
+depth(y)<=100?"crystal":
+depth(y)<=150?"lava":"ancient";
+
+const power=()=>1+
+(own("pickaxe")?1:0)+
+(own("reinforced")?1:0)+
+(own("drill")?2:0)+
+(own("diamondPick")?2:0)+
+(own("megaDrill")?3:0);
+
+const cap=()=>
+own("titanBag")?75:
+own("jumbo")?45:
+own("backpack")?26:12;
+
+const bagCount=()=>Object.keys(O).reduce(
+(a,k)=>a+d.bag[k],0
+);
+
+const bagWorth=()=>Object.keys(O).reduce(
+(a,k)=>a+O[k][1]*d.bag[k],0
+);
+
+// WORLD GENERATION
+function noise(x,y,s=0){
+let n=
+Math.imul(x+37,374761393)^
+Math.imul(y+29,668265263)^
+(d.seed|0)^
+Math.imul(s+1,103891);
+
+n=Math.imul(n^(n>>>13),1274126177);
+return ((n^(n>>>16))>>>0)/4294967296;
+}
+
 function makeTile(x,y){
- if(y<=SURFACE)return null;
- const dep=depth(y),v=noise(x,y),base=layer(y);
- if(dep>6&&noise(x,y,5)<(dep>50?.059:.035))return null;
- if(dep>5&&noise(x,y,9)<.010)return {type:"chest",hp:1,maxHp:1,base};
- let type=base;
- if(dep<=20){if(v<.16)type="coal";else if(v<.28)type="copper";else if(v<.34)type="iron";else if(dep>=7&&v<.37)type="silver";else if(dep>=12&&v<.385)type="amethyst";else if(dep>=16&&v<.392)type="emerald";}
- else if(dep<=50){if(v<.07)type="coal";else if(v<.17)type="copper";else if(v<.29)type="iron";else if(v<.36)type="silver";else if(v<.43)type="gold";else if(v<.49)type="amethyst";else if(v<.535)type="emerald";else if(v<.57)type="sapphire";else if(v<.59)type="ruby";else if(v<.605)type="topaz";}
- else{if(v<.04)type="coal";else if(v<.09)type="copper";else if(v<.17)type="iron";else if(v<.235)type="silver";else if(v<.32)type="gold";else if(v<.43)type="amethyst";else if(v<.52)type="emerald";else if(v<.61)type="sapphire";else if(v<.69)type="ruby";else if(v<.74)type="topaz";else if(v<.81)type="diamond";else if(v<.85)type="opal";}
- let hp=base==="dirt"?1:base==="stone"?2:3;if(["gold","ruby","emerald","sapphire","topaz","diamond","opal"].includes(type))hp++;
- return {type,base,hp,maxHp:hp};
+if(y<=SURFACE)return null;
+
+const z=depth(y),r=noise(x,y),base=layer(y);
+
+if(z>6&&noise(x,y,5)<(z>100?.075:z>50?.059:.035)){
+return null;
 }
-let world=[];let cleared=new Set();
-function buildWorld(restore=true){
- world=Array.from({length:ROWS},(_,y)=>Array.from({length:COLS},(_,x)=>makeTile(x,y)));
- cleared=new Set(restore?d.cleared.filter(k=>Number.isInteger(k)&&k>=0&&k<COLS*ROWS):[]);
- for(const k of cleared)world[Math.floor(k/COLS)][k%COLS]=null;
- if(restore)for(const [key,v] of Object.entries(d.damage)){
-  const n=Number(key),y=Math.floor(n/COLS),x=n%COLS;
-  if(world[y]?.[x])world[y][x].hp=clamp(world[y][x].hp-Math.max(0,Number(v)||0),1,world[y][x].maxHp);
- }
+
+if(z>5&&noise(x,y,9)<.010){
+return {type:"chest",base,hp:1,maxHp:1};
 }
-function save(){try{d.cleared=[...cleared];localStorage.setItem(KEY,JSON.stringify(d));}catch(e){message("⚠️ Unable to save; check browser storage.");}}
-function message(text){$("message").textContent=text;}
-function regenerate(announce=true){
- d.seed=Math.floor(Math.random()*1e9);d.cleared=[];d.damage={};
- d.player={x:START_X,y:SURFACE};d.lastMine=null;
- d.nextRefreshAt=nowMs()+PERIOD;d.refreshCount++;
- buildWorld(false);save();
- if(announce){message("🔄 NEW CAVE! Ores and treasure respawned. All your coins, gear and backpack items are safe!");render();}
+
+let type=base;
+
+// Preserve the V1.2 ore layout for the first 100 meters.
+if(z<=20){
+if(r<.16)type="coal";
+else if(r<.28)type="copper";
+else if(r<.34)type="iron";
+else if(z>=7&&r<.37)type="silver";
+else if(z>=12&&r<.385)type="amethyst";
+else if(z>=16&&r<.392)type="emerald";
+
+}else if(z<=50){
+if(r<.07)type="coal";
+else if(r<.17)type="copper";
+else if(r<.29)type="iron";
+else if(r<.36)type="silver";
+else if(r<.43)type="gold";
+else if(r<.49)type="amethyst";
+else if(r<.535)type="emerald";
+else if(r<.57)type="sapphire";
+else if(r<.59)type="ruby";
+else if(r<.605)type="topaz";
+
+}else if(z<=100){
+if(r<.04)type="coal";
+else if(r<.09)type="copper";
+else if(r<.17)type="iron";
+else if(r<.235)type="silver";
+else if(r<.32)type="gold";
+else if(r<.43)type="amethyst";
+else if(r<.52)type="emerald";
+else if(r<.61)type="sapphire";
+else if(r<.69)type="ruby";
+else if(r<.74)type="topaz";
+else if(r<.81)type="diamond";
+else if(r<.85)type="opal";
+
+}else if(z<=150){
+if(r<.05)type="obsidian";
+else if(r<.14)type="gold";
+else if(r<.23)type="platinum";
+else if(r<.31)type="jade";
+else if(r<.40)type="ruby";
+else if(r<.52)type="fireCrystal";
+else if(r<.60)type="diamond";
+else if(r<.68)type="opal";
+else if(z>=140&&r<.73)type="meteorite";
+
+}else{
+if(r<.06)type="obsidian";
+else if(r<.15)type="jade";
+else if(r<.26)type="platinum";
+else if(r<.36)type="meteorite";
+else if(r<.49)type="fireCrystal";
+else if(r<.59)type="diamond";
+else if(r<.68)type="opal";
+else if(z>=165&&r<.78)type="ancientDiamond";
 }
-if(nowMs()>=Number(d.nextRefreshAt))regenerate(false);else buildWorld(true);
-if(!d.player||!inside(d.player.x,d.player.y)||world[d.player.y]?.[d.player.x])d.player={x:START_X,y:SURFACE};
-if(d.lastMine&&(!inside(d.lastMine.x,d.lastMine.y)||world[d.lastMine.y]?.[d.lastMine.x]))d.lastMine=null;
-let camX=0,camY=0,moveAt=0,attackAt=-1000,heldTouch=null,lastClockUpdate=0,warned=false;
-const keys=new Set(),particles=[];let dir={x:0,y:1};
-function award(id,text){if(!d.achievements.includes(id)){d.achievements.push(id);message("🏆 "+text);}}
+
+let hp=
+base==="dirt"?1:
+base==="stone"?2:
+base==="crystal"?3:
+base==="lava"?4:5;
+
+if(gems.has(type)||["gold","platinum","meteorite"].includes(type)){
+hp++;
+}
+
+return {type,base,hp,maxHp:hp};
+}
+
+let world=[],cleared=new Set();
+
+function buildWorld(restore){
+world=Array.from(
+{length:ROWS},
+(_,y)=>Array.from(
+{length:COLS},
+(_,x)=>makeTile(x,y)
+)
+);
+
+cleared=new Set(
+restore
+?d.cleared.filter(k=>Number.isInteger(k)&&k>=0&&k<COLS*ROWS)
+:[]
+);
+
+for(const k of cleared){
+world[Math.floor(k/COLS)][k%COLS]=null;
+}
+
+if(restore){
+for(const [k,v] of Object.entries(d.damage)){
+const n=Number(k);
+const y=Math.floor(n/COLS);
+const x=n%COLS;
+
+if(world[y]?.[x]){
+world[y][x].hp=clamp(
+world[y][x].maxHp-Math.max(0,Number(v)||0),
+1,
+world[y][x].maxHp
+);
+}
+}
+}
+}
+
+function msg(t){
+$("message").textContent=t;
+}
+
+function save(){
+try{
+d.cleared=[...cleared];
+localStorage.setItem(KEY,JSON.stringify(d));
+}catch(e){
+msg("⚠️ Browser storage full or unavailable. Progress may not save.");
+}
+}
+
+// GAME STATE
+let riding=false;
+let camX=0,camY=0;
+let attackAt=-1000,moveAt=0;
+let dir={x:0,y:1},held=null;
+let graceUntil=0,finishIndex=null;
+let lastCrackAt=0,lastCrackIndex=null;
+let warned=false,lastClock=0;
+
+const keys=new Set();
+const particles=[];
+
+// FIVE-MINUTE CAVE RESET
+function refreshCave(announce=true){
+d.seed=Math.floor(Math.random()*1e9);
+d.cleared=[];
+d.damage={};
+d.player={x:START_X,y:SURFACE};
+d.lastMine=null;
+d.nextRefreshAt=now()+PERIOD;
+d.refreshCount++;
+
+cleared.clear();
+buildWorld(false);
+
+riding=false;
+graceUntil=0;
+finishIndex=null;
+lastCrackIndex=null;
+warned=false;
+
+save();
+
+if(announce){
+render();
+msg(
+"🔄 NEW CAVE! Back on the surface. Your backpack, money, gear, discoveries and best depth are safe!"
+);
+}
+}
+
+if(now()>=d.nextRefreshAt){
+refreshCave(false);
+}else{
+buildWorld(true);
+}
+
+if(
+!d.player||
+!inside(d.player.x,d.player.y)||
+world[d.player.y]?.[d.player.x]
+){
+d.player={x:START_X,y:SURFACE};
+}
+
+if(
+d.lastMine&&
+(
+!inside(d.lastMine.x,d.lastMine.y)||
+world[d.lastMine.y]?.[d.lastMine.x]
+)
+){
+d.lastMine=null;
+}
+
+function award(text){
+if(!d.achievements.includes(text)){
+d.achievements.push(text);
+msg("🏆 "+text);
+}
+}
+
 function updateClock(){
- const secs=Math.max(0,Math.ceil((d.nextRefreshAt-nowMs())/1000));
- $("timer").textContent=String(Math.floor(secs/60)).padStart(2,"0")+":"+String(secs%60).padStart(2,"0");
- $("roundLabel").textContent="Cave #"+(d.refreshCount+1);
- if(secs<=30&&!warned){warned=true;message("🔄 New cave in 30 seconds! Finish exploring or take the elevator. Your items will stay.");}
+const t=now();
+
+if(t>=d.nextRefreshAt){
+
+if(graceUntil){
+if(t>=graceUntil){
+refreshCave();
+return;
+}else{
+$("clock").textContent=
+"+"+Math.ceil((graceUntil-t)/1000)+"s";
 }
-function itemRow(title,sub,buttonText,fn,disabled){
- const row=document.createElement("div"),info=document.createElement("div"),b=document.createElement("b"),sm=document.createElement("small"),button=document.createElement("button");
- row.className="item";b.textContent=title;sm.textContent=sub;button.textContent=buttonText;button.disabled=!!disabled;button.onclick=fn;info.append(b,sm);row.append(info,button);return row;
+return;
 }
-function renderShop(){
- const root=$("shop");root.replaceChildren();let group="";
- for(const u of upgrades){
-  if(group!==u.group){group=u.group;const h=document.createElement("h3");h.className="group";h.textContent=group;root.append(h);}
-  root.append(itemRow(u.name,u.desc,own(u.id)?"✓ OWNED":"BUY "+u.price,()=>{
-   if(own(u.id)||d.coins<u.price||depth(d.player.y)!==0)return;
-   d.coins-=u.price;d.owned.push(u.id);save();render();message("✅ "+u.name+" unlocked! Permanent upgrade.");
-  },own(u.id)||d.coins<u.price||depth(d.player.y)!==0));
- }
+
+const k=lastCrackIndex;
+const y=Math.floor(k/COLS);
+const x=k%COLS;
+
+const tile=lastCrackIndex!==null
+?world[y]?.[x]
+:null;
+
+if(
+tile&&
+tile.hp<tile.maxHp&&
+t-lastCrackAt<3000
+){
+graceUntil=t+12000;
+finishIndex=k;
+riding=false;
+
+msg(
+"⏳ Time! Finish the cracked block within 12 seconds, then a new cave begins."
+);
+
+}else{
+refreshCave();
 }
-function scanNearby(){
- const x=d.player.x,y=d.player.y;
- if(own("scanner")){
-  let gems=0;for(let yy=Math.max(SURFACE+1,y-5);yy<=Math.min(ROWS-1,y+5);yy++)for(let xx=Math.max(0,x-5);xx<=Math.min(COLS-1,x+5);xx++)if(gemTypes.has(world[yy][xx]?.type)&&Math.hypot(xx-x,yy-y)<=5)gems++;
-  $("scanner").textContent="🔍 Scanner: "+gems+" gemstone block"+(gems===1?"":"s")+" nearby";
- }else{$("scanner").textContent="";}
- if(own("compass")){
-  let closest=null,best=Infinity;
-  for(let yy=SURFACE+1;yy<ROWS;yy++)for(let xx=0;xx<COLS;xx++)if(world[yy][xx]?.type==="chest"){
-   const dist=Math.hypot(xx-x,yy-y);if(dist<best){best=dist;closest={x:xx,y:yy};}
-  }
-  if(closest){const dx=closest.x-x,dy=closest.y-y;const pointer=Math.abs(dx)>Math.abs(dy)?(dx>0?"➡️":"⬅️"):(dy>0?"⬇️":"⬆️");
-   $("scanner").textContent+=(own("scanner")?" · ":"")+"🧭 Nearest chest: "+pointer+" "+Math.round(best)+" blocks";
-  }
- }
+return;
 }
+
+const sec=Math.ceil((d.nextRefreshAt-t)/1000);
+
+$("clock").textContent=
+String(Math.floor(sec/60)).padStart(2,"0")+
+":"+
+String(sec%60).padStart(2,"0");
+
+if(sec<=30&&!warned){
+warned=true;
+msg(
+"🔄 30 seconds until the new cave! Your coins, backpack and gear will stay."
+);
+}
+}
+
+// UI HELPERS
+function row(title,sub,label,click,disabled){
+const el=document.createElement("div");
+const info=document.createElement("div");
+const a=document.createElement("b");
+const b=document.createElement("small");
+const btn=document.createElement("button");
+
+el.className="item";
+a.textContent=title;
+b.textContent=sub;
+info.append(a,b);
+
+btn.textContent=label;
+btn.disabled=!!disabled;
+btn.onclick=click;
+
+el.append(info,btn);
+return el;
+}
+
+// UPDATE HUD, SHOP, INVENTORY, COLLECTION
 function render(){
- $("coins").textContent=d.coins;$("depth").textContent=depth(d.player.y)+" m";$("best").textContent=d.best+" m";$("bag").textContent=countBag()+" / "+capacity();$("blocks").textContent=d.blocks;$("power").textContent=power();$("bagWorth").textContent=worth()+" 🪙";
- const dep=depth(d.player.y);$("layer").textContent=dep===0?"🌿 Surface · Shop & Sell":dep<=20?"🟫 Dirt Layer · "+dep+" m":dep<=50?"🪨 Stone Layer · "+dep+" m":"💜 Crystal Caves · "+dep+" m";
- $("lift").disabled=dep===0;$("resume").disabled=dep!==0||!d.lastMine;$("sell").disabled=dep!==0||!countBag();
- $("foundCount").textContent=d.discovered.length+" / 12 discovered";
- $("discoveries").textContent="🎁 Chests found: "+d.chests+" · 🏆 "+(d.achievements.length?d.achievements.join(" · "):"Reach 20, 50 and 100 meters!");
- const inv=$("inventory");inv.replaceChildren();
- for(const [id,m] of Object.entries(minerals))if(d.bag[id]){const row=document.createElement("div");row.className="item";const a=document.createElement("span"),b=document.createElement("strong");a.textContent=m.label+" × "+d.bag[id];b.textContent=(d.bag[id]*m.value)+" 🪙";row.append(a,b);inv.append(row);}
- if(!inv.childElementCount){const e=document.createElement("p");e.className="empty";e.textContent="Nothing yet—mine some ore!";inv.append(e);}
- const guide=$("oreGuide");guide.replaceChildren();
- for(const [id,m] of Object.entries(minerals)){
-  const seen=d.discovered.includes(id),div=document.createElement("div"),dot=document.createElement("span"),name=document.createElement("b"),price=document.createElement("small");div.className="ore"+(seen?"":" fog");dot.style.background=seen?m.color:"#687387";dot.style.boxShadow=seen?"0 0 10px "+m.color:"none";name.textContent=seen?m.label.replace(/^\S+\s/,""):"???";price.textContent=seen?m.value+"🪙":"≥"+m.from+"m";div.append(dot,name,price);guide.append(div);
- }
- renderShop();updateClock();scanNearby();
+const z=depth(d.player.y);
+
+$("coins").textContent=d.coins;
+$("depth").textContent=z+" m";
+$("best").textContent=d.best+" m";
+$("bag").textContent=bagCount()+"/"+cap();
+$("power").textContent=power();
+$("blocks").textContent=d.blocks;
+$("worth").textContent=bagWorth()+" 🪙";
+$("cave").textContent="Cave #"+(d.refreshCount+1);
+
+$("layer").textContent=
+z===0?"🌿 Surface":
+z<=20?"🟫 Dirt · "+z+"m":
+z<=50?"🪨 Stone · "+z+"m":
+z<=100?"💜 Crystal · "+z+"m":
+z<=150?"🌋 Lava · "+z+"m":
+"🏛️ Ancient · "+z+"m";
+
+$("lift").disabled=z===0||!!graceUntil;
+$("resume").disabled=z!==0||!d.lastMine||!!graceUntil;
+$("sell").disabled=z!==0||!bagCount()||!!graceUntil;
+$("cart").disabled=!own("minecart")||!!graceUntil;
+
+$("cart").textContent=
+!own("minecart")?"🚂 MINECART 🔒":
+riding?"🚶 DISMOUNT":"🚂 BOARD CART";
+
+$("mine").disabled=riding;
+
+// INVENTORY
+const inv=$("inventory");
+inv.replaceChildren();
+
+for(const [k,m] of Object.entries(O)){
+if(!d.bag[k])continue;
+
+const el=document.createElement("div");
+el.className="item";
+
+const n=document.createElement("b");
+const v=document.createElement("strong");
+
+n.textContent=m[0]+" × "+d.bag[k];
+v.textContent=d.bag[k]*m[1]+" 🪙";
+
+el.append(n,v);
+inv.append(el);
 }
+
+if(!inv.childElementCount){
+const e=document.createElement("p");
+e.className="empty";
+e.textContent="Your backpack is empty. Dig up some glowing ore!";
+inv.append(e);
+}
+
+// SHOP
+const shop=$("shop");
+shop.replaceChildren();
+let group="";
+
+for(const u of U){
+
+if(u[4]!==group){
+group=u[4];
+const h=document.createElement("h3");
+h.className="group";
+h.textContent=group;
+shop.append(h);
+}
+
+shop.append(row(
+u[1],
+u[3],
+own(u[0])?"✓ OWNED":"BUY "+u[2],
+()=>{
+if(own(u[0])||z!==0||d.coins<u[2])return;
+
+d.coins-=u[2];
+d.owned.push(u[0]);
+
+save();
+render();
+msg("✅ Bought "+u[1]+"! Permanent upgrade unlocked.");
+},
+own(u[0])||z!==0||d.coins<u[2]
+));
+}
+
+// MINERAL COLLECTION
+$("found").textContent=d.discovered.length+"/18 found";
+
+$("achievements").textContent=
+"🎁 Chests: "+d.chests+" · "+
+(
+d.achievements.join(" · ")||
+"Reach the new layers to earn depth records!"
+);
+
+const guide=$("guide");
+guide.replaceChildren();
+
+for(const [k,m] of Object.entries(O)){
+const seen=d.discovered.includes(k);
+
+const el=document.createElement("div");
+const dot=document.createElement("span");
+const name=document.createElement("b");
+const value=document.createElement("small");
+
+el.className="ore"+(seen?"":" off");
+dot.className="gem";
+dot.style.background=seen?m[2]:"#6a7d92";
+
+name.textContent=seen
+?m[0].replace(/^\S+\s/,"")
+:"???";
+
+value.textContent=seen
+?m[1]+"🪙"
+:"≥"+m[3]+"m";
+
+el.append(dot,name,value);
+guide.append(el);
+}
+
+// SCANNER AND RADAR
+let near=0,closest=null,dist=Infinity;
+
+for(
+let y=Math.max(SURFACE+1,d.player.y-7);
+y<=Math.min(ROWS-1,d.player.y+7);
+y++
+){
+for(
+let x=Math.max(0,d.player.x-7);
+x<=Math.min(COLS-1,d.player.x+7);
+x++
+){
+const tile=world[y][x];
+const r=Math.hypot(x-d.player.x,y-d.player.y);
+
+if(gems.has(tile?.type)&&r<=5)near++;
+
+if(gems.has(tile?.type)&&r<dist){
+closest={x,y};
+dist=r;
+}
+}
+}
+
+let scan=own("scanner")
+?"🔍 "+near+" gems nearby"
+:"";
+
+if(own("radar")){
+scan+=(scan?" · ":"")+
+(
+closest
+?"📡 Closest gem: "+Math.round(dist)+" blocks away"
+:"📡 No gems in scanning range"
+);
+}
+
+if(own("compass")){
+let chest=null,range=Infinity;
+
+for(let y=SURFACE+1;y<ROWS;y++){
+for(let x=0;x<COLS;x++){
+if(world[y][x]?.type!=="chest")continue;
+
+const dis=Math.hypot(x-d.player.x,y-d.player.y);
+
+if(dis<range){
+range=dis;
+chest={x,y};
+}
+}
+}
+
+scan+=(scan?" · ":"")+
+(
+chest
+?"🧭 Chest: "+
+(
+Math.abs(chest.x-d.player.x)>
+Math.abs(chest.y-d.player.y)
+?(chest.x>d.player.x?"➡️":"⬅️")
+:(chest.y>d.player.y?"⬇️":"⬆️")
+)+
+" "+Math.round(range)+" blocks"
+:"No chests left"
+);
+}
+
+$("scanner").textContent=scan;
+updateClock();
+}
+
+// ORE AND TREASURE REWARDS
 function loot(type,x,y){
- if(type==="chest"){const amount=12+Math.floor(noise(x,y,72)*34)+Math.floor(depth(y)*.3);d.coins+=amount;d.chests++;award("Chest hunter","Treasure chest found!");message("🎁 Treasure chest! +"+amount+" coins!");return;}
- if(!minerals[type])return;
- d.bag[type]++;if(own("magnet")&&Math.random()<.30&&countBag()<capacity())d.bag[type]++;
- if(own("fortune")&&Math.random()<.25&&countBag()<capacity())d.bag[type]++;
- if(!d.discovered.includes(type)){d.discovered.push(type);message("✨ NEW DISCOVERY: "+minerals[type].label+"!");}
- else message("💎 Collected "+minerals[type].label+" ("+minerals[type].value+" coins)");
- if(type==="diamond")award("Diamond discovered","First diamond!");if(type==="opal")award("Opal discovered","Rainbow opal found!");
+if(type==="chest"){
+const coins=
+14+
+Math.floor(noise(x,y,72)*42)+
+Math.floor(depth(y)*.35);
+
+d.coins+=coins;
+d.chests++;
+
+award("Treasure chest discovered!");
+msg("🎁 Chest opened: +"+coins+" coins!");
+return;
 }
-function hitEffect(x,y,color){for(let i=0;i<11;i++)particles.push({x:(x+.5)*TILE,y:(y+.5)*TILE,vx:(Math.random()-.5)*140,vy:(Math.random()-.85)*125,life:.6,color});if(particles.length>160)particles.splice(0,25);}
-function movePlayer(x,y){d.player={x,y};if(y>SURFACE){d.lastMine={x,y};const dep=depth(y);if(dep>d.best){d.best=dep;if(dep>=100)award("100m deep","Reached 100 meters!");else if(dep>=50)award("50m deep","Crystal Caves discovered!");else if(dep>=20)award("20m deep","Stone Layer discovered!");}}}
+
+if(!O[type])return;
+
+d.bag[type]++;
+
+if(own("magnet")&&Math.random()<.3&&bagCount()<cap()){
+d.bag[type]++;
+}
+
+if(own("fortune")&&Math.random()<.25&&bagCount()<cap()){
+d.bag[type]++;
+}
+
+if(
+own("ancientCharm")&&
+depth(y)>150&&
+Math.random()<.3&&
+bagCount()<cap()
+){
+d.bag[type]++;
+}
+
+if(!d.discovered.includes(type)){
+d.discovered.push(type);
+msg("✨ NEW MINERAL! "+O[type][0]);
+}else{
+msg(
+"💎 Collected "+O[type][0]+
+" — worth "+O[type][1]+" coins."
+);
+}
+}
+
+function burst(x,y,color){
+for(let i=0;i<12;i++){
+particles.push({
+x:(x+.5)*T,
+y:(y+.5)*T,
+vx:(Math.random()-.5)*140,
+vy:(Math.random()-.85)*140,
+life:.7,color
+});
+}
+
+if(particles.length>160){
+particles.splice(0,30);
+}
+}
+
+function movePlayer(x,y){
+d.player={x,y};
+
+if(y>SURFACE){
+d.lastMine={x,y};
+
+if(depth(y)>d.best){
+d.best=depth(y);
+
+for(const [level,name] of [
+[200,"200m Ancient Depths!"],
+[150,"150m Ancient Caves!"],
+[100,"100m Lava Caves!"],
+[50,"50m Crystal Caves!"],
+[20,"20m Stone Layer!"]
+]){
+if(d.best>=level&&!d.achievements.includes(name)){
+award(name);
+}
+}
+}
+}
+}
+
+// MINING AND MINECART MOVEMENT
 function digOrMove(dx,dy){
- const x=d.player.x+dx,y=d.player.y+dy;dir={x:dx,y:dy};if(!inside(x,y)){if(y<SURFACE)message("The sky is above. Dig down!");return;}
- const tile=world[y][x];
- if(tile){
-  if(minerals[tile.type]&&countBag()>=capacity()){message("🎒 Backpack full! Take the elevator and sell your minerals.");return;}
-  attackAt=performance.now();tile.hp-=power()+(own("gemBreaker")&&gemTypes.has(tile.type)?2:0);
-  if(tile.hp>0){d.damage[idx(x,y)]=tile.maxHp-tile.hp;hitEffect(x,y,"#c0af9a");message("⛏️ Cracked "+tile.type+"! "+tile.hp+" more power needed.");}
-  else{delete d.damage[idx(x,y)];world[y][x]=null;cleared.add(idx(x,y));d.blocks++;hitEffect(x,y,minerals[tile.type]?.color||"#b89a7c");loot(tile.type,x,y);movePlayer(x,y);if(!minerals[tile.type]&&tile.type!=="chest")message("⛏️ Cleared a block. Keep digging!");}
- }else movePlayer(x,y);
- save();render();
+const x=d.player.x+dx;
+const y=d.player.y+dy;
+
+dir={x:dx,y:dy};
+
+if(!inside(x,y)){
+if(y<SURFACE)msg("Dig down to enter the cave!");
+return;
 }
-function elevator(){if(depth(d.player.y)===0)return;d.lastMine={...d.player};d.player={x:START_X,y:SURFACE};save();render();message("⬆ Surface! Sell your minerals, buy upgrades, or resume mining.");}
-function resume(){if(depth(d.player.y)!==0||!d.lastMine)return;d.player={...d.lastMine};save();render();message("⬇ Back in your cave! Keep exploring.");}
-function sell(){if(depth(d.player.y)!==0)return message("Take the elevator to sell.");const base=worth();if(!base)return message("Your backpack is empty!");const total=own("seller")?Math.ceil(base*1.25):base;d.coins+=total;for(const id in minerals)d.bag[id]=0;save();render();message("🪙 Sold your minerals for "+total+" coins"+(own("seller")?" including your 25% bonus!":"!"));}
-$("lift").onclick=elevator;$("resume").onclick=resume;$("sell").onclick=sell;$("mine").onclick=()=>digOrMove(dir.x,dir.y);
-$("shopToggle").onclick=()=>{if(depth(d.player.y)!==0){message("🛒 Visit the surface to open the shop!");return;}$("shop").hidden=!$("shop").hidden;$("shopToggle").textContent=$("shop").hidden?"SHOW SHOP":"HIDE SHOP";};
-const directions={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+
+// MINECART RIDES THROUGH OPEN TUNNELS
+if(riding){
+let n=0;
+const steps=own("wheels")?5:3;
+
+let cx=d.player.x;
+let cy=d.player.y;
+
+while(
+n<steps&&
+inside(cx+dx,cy+dy)&&
+!world[cy+dy][cx+dx]
+){
+cx+=dx;
+cy+=dy;
+n++;
+}
+
+if(n){
+movePlayer(cx,cy);
+msg(
+"🚂 Minecart rolling! Dismount when you reach unmined rock."
+);
+save();
+render();
+}else{
+msg("🚂 Blocked! DISMOUNT to mine that rock.");
+}
+return;
+}
+
+// SPECIAL FINISH-BLOCK GRACE PERIOD
+if(graceUntil&&index(x,y)!==finishIndex){
+msg(
+"⏳ Finish the highlighted cracked block before the cave refreshes!"
+);
+return;
+}
+
+const tile=world[y][x];
+
+if(tile){
+
+if(O[tile.type]&&bagCount()>=cap()){
+msg(
+"🎒 Backpack full! ELEVATOR up and SELL ORE first."
+);
+return;
+}
+
+attackAt=performance.now();
+
+tile.hp-=power()+
+(own("gemBreaker")&&gems.has(tile.type)?2:0)+
+(own("heatShield")&&layer(y)==="lava"?1:0);
+
+if(tile.hp>0){
+d.damage[index(x,y)]=tile.maxHp-tile.hp;
+lastCrackIndex=index(x,y);
+lastCrackAt=now();
+
+burst(x,y,"#b7a18e");
+
+msg(
+"⛏️ Cracked "+tile.type+
+"! "+tile.hp+" more power needed."
+);
+
+}else{
+delete d.damage[index(x,y)];
+
+world[y][x]=null;
+cleared.add(index(x,y));
+d.blocks++;
+
+burst(
+x,y,
+O[tile.type]?.[2]||"#bba68f"
+);
+
+loot(tile.type,x,y);
+movePlayer(x,y);
+
+if(!O[tile.type]&&tile.type!=="chest"){
+msg("⛏️ Block broken!");
+}
+
+lastCrackIndex=null;
+
+// Preserve the reward, then refresh the cave.
+if(graceUntil){
+save();
+refreshCave();
+return;
+}
+}
+
+}else{
+movePlayer(x,y);
+}
+
+save();
+render();
+}
+
+// ELEVATOR AND SELLING
+function elevator(){
+if(depth(d.player.y)===0)return;
+
+d.lastMine={...d.player};
+d.player={x:START_X,y:SURFACE};
+riding=false;
+
+save();
+render();
+msg(
+"⬆ At the surface! Sell your minerals and buy upgrades."
+);
+}
+
+function resume(){
+if(depth(d.player.y)!==0||!d.lastMine)return;
+
+d.player={...d.lastMine};
+riding=false;
+
+save();
+render();
+msg("⬇ Back to the cave! Your tunnel is unchanged.");
+}
+
+function sell(){
+if(depth(d.player.y)!==0){
+return msg("Use ELEVATOR to reach the surface first.");
+}
+
+const value=bagWorth();
+
+if(!value){
+return msg("No minerals to sell yet!");
+}
+
+const pay=own("seller")
+?Math.ceil(value*1.25)
+:value;
+
+d.coins+=pay;
+
+for(const k in O)d.bag[k]=0;
+
+save();
+render();
+
+msg("🪙 Sold minerals for "+pay+" coins!");
+}
+
+function toggleCart(){
+if(!own("minecart")||graceUntil)return;
+
+riding=!riding;
+render();
+
+msg(
+riding
+?"🚂 All aboard! Ride through already-mined tunnels, then dismount to dig."
+:"🚶 Dismounted. You can mine again!"
+);
+}
+
+// BUTTONS
+$("lift").onclick=elevator;
+$("resume").onclick=resume;
+$("sell").onclick=sell;
+$("mine").onclick=()=>digOrMove(dir.x,dir.y);
+$("cart").onclick=toggleCart;
+
+$("shopToggle").onclick=()=>{
+if(depth(d.player.y)!==0){
+msg("🛒 The shop is on the surface. Use ELEVATOR!");
+return;
+}
+
+$("shop").hidden=!$("shop").hidden;
+
+$("shopToggle").textContent=
+$("shop").hidden?"SHOW SHOP":"HIDE SHOP";
+};
+
+// PC AND MOBILE CONTROLS
+const directions={
+up:[0,-1],
+down:[0,1],
+left:[-1,0],
+right:[1,0]
+};
+
+const keyDirs={
+ArrowUp:[0,-1],
+ArrowDown:[0,1],
+ArrowLeft:[-1,0],
+ArrowRight:[1,0],
+w:[0,-1],
+s:[0,1],
+a:[-1,0],
+d:[1,0]
+};
+
 for(const btn of document.querySelectorAll("[data-dir]")){
- btn.addEventListener("pointerdown",e=>{e.preventDefault();btn.setPointerCapture(e.pointerId);heldTouch=directions[btn.dataset.dir];digOrMove(...heldTouch);moveAt=performance.now()+180;});
- for(const event of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(event,()=>heldTouch=null);
+btn.addEventListener("pointerdown",e=>{
+e.preventDefault();
+btn.setPointerCapture(e.pointerId);
+
+held=directions[btn.dataset.dir];
+digOrMove(...held);
+moveAt=performance.now()+180;
+});
+
+for(const event of [
+"pointerup","pointercancel","lostpointercapture"
+]){
+btn.addEventListener(event,()=>held=null);
 }
-const keyDirs={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]};
-window.addEventListener("keydown",e=>{const key=e.key.length===1?e.key.toLowerCase():e.key;if(keyDirs[key]){if(["INPUT","SELECT","TEXTAREA"].includes(document.activeElement.tagName))return;e.preventDefault();if(!keys.has(key)){keys.add(key);if(!heldTouch){digOrMove(...keyDirs[key]);moveAt=performance.now()+180;}}}else if(e.code==="Space"&&!e.repeat){if(["BUTTON","INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;e.preventDefault();digOrMove(dir.x,dir.y);}});
-window.addEventListener("keyup",e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));window.addEventListener("blur",()=>{keys.clear();heldTouch=null;});
-canvas.addEventListener("pointerdown",e=>{const r=canvas.getBoundingClientRect();const col=Math.floor(((e.clientX-r.left)*canvas.width/r.width+camX)/TILE),row=Math.floor(((e.clientY-r.top)*canvas.height/r.height+camY)/TILE);const dx=col-d.player.x,dy=row-d.player.y;if(Math.abs(dx)+Math.abs(dy)===1)digOrMove(dx,dy);else message("👆 Tap a directly neighboring block or use the arrow controls.");});
-// ----- GRAPHICS -----
-function rect(x,y,w,h,c){g.fillStyle=c;g.fillRect(x,y,w,h);}function disk(x,y,r,c){g.fillStyle=c;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill();}function round(x,y,w,h,r,c){g.fillStyle=c;g.beginPath();g.roundRect(x,y,w,h,r);g.fill();}
-function oreArt(type,x,y,t){
- const info=minerals[type];if(!info)return;g.save();g.translate(x,y);
- const metal=["copper","iron","silver","gold"].includes(type),gem=gemTypes.has(type);
- if(gem){g.shadowColor=info.color;g.shadowBlur=8+3*Math.sin(t*3+x);}
- if(type==="coal"){
-  for(const [dx,dy,size] of [[-10,3,9],[4,-7,9],[10,8,8]]){g.fillStyle="#1d2837";g.beginPath();g.moveTo(dx-size,dy);g.lineTo(dx,dy-size);g.lineTo(dx+size,dy-size*.3);g.lineTo(dx+size,dy+size);g.lineTo(dx-size*.5,dy+size*.6);g.fill();}g.strokeStyle="#a0adb2";g.lineWidth=1.7;g.beginPath();g.moveTo(-16,-1);g.lineTo(-8,-7);g.stroke();
- }else if(metal){
-  for(const [dx,dy,size] of [[-10,3,10],[3,-8,9],[11,7,8]]){g.fillStyle=info.color;g.beginPath();g.moveTo(dx-size,dy);g.lineTo(dx-size*.2,dy-size);g.lineTo(dx+size*.8,dy-size*.6);g.lineTo(dx+size,dy+size*.6);g.lineTo(dx-size*.2,dy+size);g.fill();g.fillStyle="#ffffff8c";g.beginPath();g.moveTo(dx-size,dy);g.lineTo(dx-size*.2,dy-size);g.lineTo(dx,dy-size*.3);g.fill();}
- }else{
-  for(const [dx,dy,size] of [[-11,6,13],[11,6,12],[0,-4,18]]){g.fillStyle=info.color;g.beginPath();g.moveTo(dx,dy-size);g.lineTo(dx+size*.7,dy-size*.3);g.lineTo(dx+size*.55,dy+size*.75);g.lineTo(dx,dy+size);g.lineTo(dx-size*.7,dy+size*.6);g.lineTo(dx-size*.65,dy-size*.35);g.closePath();g.fill();g.fillStyle="#ffffff99";g.beginPath();g.moveTo(dx,dy-size);g.lineTo(dx,dy+size);g.lineTo(dx-size*.7,dy+size*.6);g.lineTo(dx-size*.65,dy-size*.35);g.fill();}
- }
- g.shadowBlur=0;if(gem){g.globalAlpha=.45+.35*Math.sin(t*3+x);g.strokeStyle="#fff";g.lineWidth=2;g.beginPath();g.moveTo(19,-20);g.lineTo(19,-11);g.moveTo(15,-16);g.lineTo(23,-16);g.stroke();}g.restore();
 }
-function chestArt(x,y){g.save();g.shadowBlur=12;g.shadowColor="#ffd367";round(x-17,y-9,34,24,3,"#6b462c");round(x-17,y-15,34,11,3,"#d19843");rect(x-14,y-6,28,3,"#ffe290");round(x-3,y-11,6,22,2,"#ffe084");g.restore();}
-function drawSurface(t){
- const sky=g.createLinearGradient(0,0,0,192);sky.addColorStop(0,"#69afda");sky.addColorStop(1,"#d6f0cf");rect(0,0,COLS*TILE,192,sky);disk(980,48,33,"#fff1b0");
- for(let i=0;i<5;i++){const x=(i*270+t*(i%2?4:6))%(COLS*TILE+180)-80,y=41+i%3*20;g.globalAlpha=.7;disk(x,y,18,"#fff");disk(x+23,y-11,26,"#fff");disk(x+50,y,18,"#fff");}g.globalAlpha=1;
- g.fillStyle="#80a4b0";g.beginPath();g.moveTo(0,160);for(const [x,y] of [[130,84],[250,147],[440,76],[615,157],[810,95],[1000,147],[1248,99]])g.lineTo(x,y);g.lineTo(1248,192);g.lineTo(0,192);g.fill();rect(0,185,COLS*TILE,7,"#55ad72");
- round(95,111,177,74,6,"#765143");g.fillStyle="#b67b59";g.beginPath();g.moveTo(82,113);g.lineTo(184,58);g.lineTo(284,113);g.fill();round(113,124,138,31,5,"#1b3150");g.textAlign="center";g.font="bold 15px system-ui";g.fillStyle="#ffe49f";g.fillText("SHOP + SELL",183,144);round(170,159,29,26,4,"#4b3949");
- round(382,105,111,81,5,"#72899f");round(397,122,79,63,4,"#263f5d");for(let i=0;i<5;i++)rect(403+i*13,126,4,54,"#567d9b");round(375,87,125,29,5,"#203854");g.fillText("ELEVATOR",438,107);g.textAlign="left";
+
+window.addEventListener("keydown",e=>{
+const k=e.key.length===1
+?e.key.toLowerCase()
+:e.key;
+
+if(keyDirs[k]){
+if([
+"INPUT","TEXTAREA","SELECT"
+].includes(document.activeElement.tagName))return;
+
+e.preventDefault();
+
+if(!keys.has(k)){
+keys.add(k);
+
+if(!held){
+digOrMove(...keyDirs[k]);
+moveAt=performance.now()+180;
 }
-function drawTile(tile,x,y,col,row,t){
- const base=tile.base||layer(row),pal=base==="dirt"?["#a4774f","#694b38","#c69b63","#493526"]:base==="stone"?["#8793a3","#515b70","#a4b0c2","#353c53"]:["#8570a1","#3b3061","#aa90d1","#282044"];
- const bg=g.createLinearGradient(x,y,x+TILE,y+TILE);bg.addColorStop(0,pal[0]);bg.addColorStop(.6,pal[1]);bg.addColorStop(1,pal[3]);round(x+.6,y+.6,TILE-1.2,TILE-1.2,3,bg);rect(x+2,y+2,44,4,pal[2]+"aa");rect(x+2,y+42,44,4,pal[3]+"cc");
- for(let k=0;k<7;k++){const dx=5+noise(col+k*3,row,21)*33,dy=8+noise(col,row+k*3,22)*30;round(x+dx,y+dy,k%2?4:3,k%2?2:3,1,k%2?pal[2]+"66":pal[3]+"95");}
- if(base==="crystal"&&noise(col,row,47)>.6){g.strokeStyle="#d1abff66";g.lineWidth=1.5;g.beginPath();g.moveTo(x+5,y+43);g.lineTo(x+19,y+20);g.lineTo(x+40,y+31);g.stroke();}
- if(minerals[tile.type])oreArt(tile.type,x+24,y+24,t);else if(tile.type==="chest")chestArt(x+24,y+24);
- if(tile.hp<tile.maxHp){g.strokeStyle="#142034d2";g.lineWidth=3;g.beginPath();g.moveTo(x+10,y+8);g.lineTo(x+22,y+20);g.lineTo(x+15,y+36);g.moveTo(x+22,y+20);g.lineTo(x+38,y+27);g.stroke();}
 }
-function miner(t){
- const x=(d.player.x+.5)*TILE,y=(d.player.y+.5)*TILE,walking=keys.size||heldTouch;
- const bounce=walking?Math.sin(t*15)*1.2:Math.sin(t*2)*.65;
- g.save();g.translate(x,y+bounce);g.lineJoin="round";g.lineCap="round";g.fillStyle="#0006";g.beginPath();g.ellipse(0,22,17,4,0,0,Math.PI*2);g.fill();
- for(const side of [-1,1]){const lift=walking?Math.sin(t*15+side*1.5)*3:0;round(side<0?-10:2,9+lift,9,13,2,"#324b67");round(side<0?-12:1,18+lift,13,6,2,"#1a2c43");rect(side<0?-12:1,22+lift,13,2,"#bacbd6");}
- round(-17,-12,13,25,4,"#a8743e");round(-13,-9,8,20,2,"#d5ab69");const jacket=g.createLinearGradient(-13,-12,13,17);jacket.addColorStop(0,"#62c1d3");jacket.addColorStop(1,"#176079");round(-12,-11,26,26,6,jacket);rect(-3,-8,3,20,"#cbf4ea");round(4,0,8,8,2,"#18415e");
- disk(1,-17,12,"#c98d61");disk(6,-18,9,"#f2c18c");disk(-9,-17,3,"#c68b5f");disk(9,-19,1.7,"#253748");g.strokeStyle="#9b644a";g.lineWidth=1.2;g.beginPath();g.arc(8,-14,3,.2,1.2);g.stroke();
- round(-14,-31,29,12,5,"#f3c452");round(-14,-31,28,4,2,"#fff0a0");round(-16,-23,34,5,2,"#b37c3e");disk(11,-26,6,"#58718b");disk(11,-26,4.1,"#fff5aa");disk(12,-27,1.6,"#fff");
- g.strokeStyle="#2e7691";g.lineWidth=8;g.beginPath();g.moveTo(9,-4);g.lineTo(18,-2);g.stroke();disk(18,-2,3.5,"#e9b281");
- const age=Math.max(0,1-(performance.now()-attackAt)/275),angle=dir.x<0?3.2:dir.y<0?-1.7:dir.y>0?.75:-.38;g.save();g.translate(18,-3);g.rotate(angle+Math.sin((1-age)*Math.PI*2)*age*.75);g.strokeStyle=own("drill")?"#daac66":"#805c42";g.lineWidth=4;g.beginPath();g.moveTo(0,16);g.lineTo(0,-20);g.stroke();g.strokeStyle=own("reinforced")?"#baf5ff":"#dceaf4";g.lineWidth=5;g.beginPath();g.moveTo(-17,-16);g.quadraticCurveTo(0,-26,17,-14);g.stroke();g.restore();g.restore();
+
+}else if(k==="m"&&!e.repeat){
+toggleCart();
+
+}else if(e.code==="Space"&&!e.repeat){
+if([
+"BUTTON","INPUT","TEXTAREA"
+].includes(document.activeElement.tagName))return;
+
+e.preventDefault();
+digOrMove(dir.x,dir.y);
 }
+});
+
+window.addEventListener("keyup",e=>{
+keys.delete(
+e.key.length===1
+?e.key.toLowerCase()
+:e.key
+);
+});
+
+window.addEventListener("blur",()=>{
+keys.clear();
+held=null;
+});
+
+cv.addEventListener("pointerdown",e=>{
+const r=cv.getBoundingClientRect();
+
+const x=Math.floor(
+((e.clientX-r.left)*cv.width/r.width+camX)/T
+);
+
+const y=Math.floor(
+((e.clientY-r.top)*cv.height/r.height+camY)/T
+);
+
+const dx=x-d.player.x;
+const dy=y-d.player.y;
+
+if(Math.abs(dx)+Math.abs(dy)===1){
+digOrMove(dx,dy);
+}else{
+msg(
+"👆 Tap a directly neighboring block or use the arrow controls!"
+);
+}
+});
+
+// CANVAS HELPERS
+function rect(x,y,w,h,color){
+g.fillStyle=color;
+g.fillRect(x,y,w,h);
+}
+
+function circ(x,y,r,color){
+g.fillStyle=color;
+g.beginPath();
+g.arc(x,y,r,0,Math.PI*2);
+g.fill();
+}
+
+function rounded(x,y,w,h,r,color){
+g.fillStyle=color;
+g.beginPath();
+g.roundRect(x,y,w,h,r);
+g.fill();
+}
+
+// METALS AND GEMSTONE DRAWINGS
+function mineralArt(k,x,y,t){
+const m=O[k];
+if(!m)return;
+
+g.save();
+g.translate(x,y);
+
+if(gems.has(k)){
+g.shadowColor=m[2];
+g.shadowBlur=9+3*Math.sin(t*3+x);
+}
+
+if(
+k==="coal"||
+k==="obsidian"||
+k==="meteorite"
+){
+const color=
+k==="coal"?"#1b2532":
+k==="obsidian"?"#312543":"#6c4a52";
+
+for(const [dx,dy] of [
+[-10,4],[3,-8],[10,8]
+]){
+g.fillStyle=color;
+g.beginPath();
+
+g.moveTo(dx-10,dy);
+g.lineTo(dx-3,dy-11);
+g.lineTo(dx+9,dy-6);
+g.lineTo(dx+11,dy+8);
+g.lineTo(dx-6,dy+9);
+g.fill();
+}
+
+g.strokeStyle=k==="meteorite"
+?"#ffbd6c":"#af99d0";
+
+g.lineWidth=1.5;
+g.beginPath();
+g.moveTo(-11,-4);
+g.lineTo(-2,-9);
+g.stroke();
+
+}else if(metals.has(k)){
+for(const [dx,dy,s] of [
+[-10,5,10],[3,-8,10],[11,8,8]
+]){
+g.fillStyle=m[2];
+g.beginPath();
+
+g.moveTo(dx-s,dy);
+g.lineTo(dx-2,dy-s);
+g.lineTo(dx+s,dy-5);
+g.lineTo(dx+s,dy+s*.6);
+g.lineTo(dx-4,dy+s);
+g.fill();
+
+g.fillStyle="#ffffff93";
+g.beginPath();
+g.moveTo(dx-s,dy);
+g.lineTo(dx-2,dy-s);
+g.lineTo(dx+1,dy);
+g.fill();
+}
+
+}else{
+for(const [dx,dy,s] of [
+[-10,7,12],[11,5,11],[0,-5,18]
+]){
+g.fillStyle=m[2];
+g.beginPath();
+
+g.moveTo(dx,dy-s);
+g.lineTo(dx+s*.67,dy-s*.3);
+g.lineTo(dx+s*.5,dy+s*.7);
+g.lineTo(dx,dy+s);
+g.lineTo(dx-s*.65,dy+s*.6);
+g.lineTo(dx-s*.65,dy-s*.35);
+g.closePath();
+g.fill();
+
+g.fillStyle="#ffffff88";
+g.beginPath();
+g.moveTo(dx,dy-s);
+g.lineTo(dx,dy+s);
+g.lineTo(dx-s*.65,dy+s*.6);
+g.lineTo(dx-s*.65,dy-s*.35);
+g.fill();
+}
+}
+
+g.shadowBlur=0;
+
+if(gems.has(k)){
+g.strokeStyle="#fff";
+g.globalAlpha=.65+.3*Math.sin(t*3+x);
+g.lineWidth=1.6;
+g.beginPath();
+
+g.moveTo(20,-20);
+g.lineTo(20,-11);
+g.moveTo(16,-15);
+g.lineTo(24,-15);
+g.stroke();
+}
+
+g.restore();
+}
+
+// TREASURE CHESTS
+function chestArt(x,y){
+g.save();
+g.shadowColor="#ffdc81";
+g.shadowBlur=14;
+
+rounded(x-17,y-9,34,24,3,"#784524");
+rounded(x-17,y-15,34,11,4,"#ba853f");
+
+rect(x-14,y-4,28,4,"#ffe39b");
+rounded(x-3,y-12,6,25,2,"#f5cc6a");
+
+g.restore();
+}
+
+// SURFACE ART
+function surface(t){
+const sky=g.createLinearGradient(0,0,0,192);
+
+sky.addColorStop(0,"#75b8df");
+sky.addColorStop(1,"#d5ebbc");
+
+rect(0,0,COLS*T,192,sky);
+circ(980,45,32,"#fff0aa");
+
+for(let i=0;i<6;i++){
+const x=(i*267+t*5)%(COLS*T+180)-100;
+const y=43+i%3*22;
+
+g.globalAlpha=.68;
+
+circ(x,y,18,"#fff");
+circ(x+23,y-10,26,"#fff");
+circ(x+49,y,18,"#fff");
+}
+
+g.globalAlpha=1;
+
+// Mountains
+g.fillStyle="#7fa2ae";
+g.beginPath();
+g.moveTo(0,163);
+
+for(const [x,y] of [
+[135,87],[254,150],[440,71],
+[622,149],[818,88],[1005,154],[1248,104]
+]){
+g.lineTo(x,y);
+}
+
+g.lineTo(1248,192);
+g.lineTo(0,192);
+g.fill();
+
+rect(0,184,COLS*T,9,"#69aa67");
+
+// Shop building
+rounded(93,110,178,74,5,"#865a44");
+
+g.fillStyle="#bf8158";
+g.beginPath();
+g.moveTo(81,111);
+g.lineTo(182,57);
+g.lineTo(282,111);
+g.fill();
+
+rounded(110,122,143,33,5,"#1e3854");
+
+g.fillStyle="#ffe3a1";
+g.font="bold 15px system-ui";
+g.textAlign="center";
+g.fillText("SHOP + SELL",183,144);
+
+rounded(169,154,29,30,3,"#3b4055");
+
+// Elevator building
+rounded(380,105,112,80,4,"#697f97");
+rounded(395,122,80,62,3,"#293b5c");
+
+for(let i=0;i<5;i++){
+rect(403+i*13,123,4,59,"#5b7796");
+}
+
+rounded(374,87,127,29,5,"#203953");
+g.fillText("ELEVATOR",437,107);
+g.textAlign="left";
+}
+
+// FIVE DIFFERENT BLOCK TEXTURES
+function tileArt(tile,x,y,col,row,t){
+const pal={
+dirt:["#a97751","#6b4938","#d1a270","#4d352a"],
+stone:["#83919d","#48576a","#adbac6","#2d3c54"],
+crystal:["#8370b2","#3b3065","#c1a1f3","#2b2252"],
+lava:["#a64c38","#4e2937","#ffa064","#352032"],
+ancient:["#6a8193","#29394e","#abcae0","#18293b"]
+}[tile.base]||[
+"#a97751","#6b4938","#d1a270","#4d352a"
+];
+
+const gr=g.createLinearGradient(x,y,x+T,y+T);
+gr.addColorStop(0,pal[0]);
+gr.addColorStop(.6,pal[1]);
+gr.addColorStop(1,pal[3]);
+
+rounded(x+.6,y+.6,T-1.2,T-1.2,3,gr);
+
+rect(x+2,y+2,44,4,pal[2]+"99");
+rect(x+2,y+43,44,3,pal[3]+"cc");
+
+for(let i=0;i<7;i++){
+const dx=6+noise(col+i*3,row,20)*33;
+const dy=9+noise(col,row+i*4,22)*30;
+
+rounded(
+x+dx,y+dy,
+3+i%2,2+i%3,1,
+i%2?pal[2]+"77":pal[3]+"aa"
+);
+}
+
+// Lava cracks
+if(tile.base==="lava"&&noise(col,row,47)>.40){
+g.strokeStyle="#ff6e4288";
+g.lineWidth=2;
+g.beginPath();
+g.moveTo(x+6,y+40);
+g.lineTo(x+20,y+16);
+g.lineTo(x+36,y+25);
+g.stroke();
+}
+
+// Ancient markings
+if(tile.base==="ancient"&&noise(col,row,45)>.62){
+g.strokeStyle="#7fe2cc77";
+g.lineWidth=2;
+g.strokeRect(x+12,y+11,23,26);
+}
+
+// Minerals and treasure
+if(O[tile.type]){
+mineralArt(tile.type,x+24,y+24,t);
+}
+
+if(tile.type==="chest"){
+chestArt(x+24,y+24);
+}
+
+// Cracked block graphic
+if(tile.hp<tile.maxHp){
+g.strokeStyle="#101b29ca";
+g.lineWidth=3;
+g.beginPath();
+
+g.moveTo(x+10,y+8);
+g.lineTo(x+22,y+21);
+g.lineTo(x+14,y+37);
+
+g.moveTo(x+22,y+21);
+g.lineTo(x+38,y+27);
+g.stroke();
+}
+}
+
+// MINER AND MINECART ART
+function playerArt(t){
+const x=(d.player.x+.5)*T;
+const y=(d.player.y+.5)*T;
+
+const bob=keys.size||held
+?Math.sin(t*14)*1.3
+:Math.sin(t*2)*.6;
+
+g.save();
+g.translate(x,y+bob);
+g.lineJoin="round";
+g.lineCap="round";
+
+// Shadow
+g.fillStyle="#0007";
+g.beginPath();
+g.ellipse(0,22,20,5,0,0,7);
+g.fill();
+
+// Minecart or legs
+if(riding){
+rounded(-28,1,56,20,5,"#4e6479");
+rounded(-30,-1,60,8,3,"#9cb5c4");
+
+circ(-17,24,7,"#1e2936");
+circ(17,24,7,"#1e2936");
+
+circ(-17,24,3,"#d1e3e8");
+circ(17,24,3,"#d1e3e8");
+
+}else{
+for(const side of [-1,1]){
+const step=keys.size||held
+?Math.sin(t*15+side*1.5)*3
+:0;
+
+rounded(
+side<0?-11:2,
+10+step,10,12,2,
+"#324b65"
+);
+
+rounded(
+side<0?-12:1,
+18+step,14,6,2,
+"#1b2c41"
+);
+}
+}
+
+// Backpack
+rounded(-16,-12,12,24,4,"#bb8244");
+
+// Jacket
+const jacket=g.createLinearGradient(-12,-10,12,17);
+jacket.addColorStop(0,"#65cadd");
+jacket.addColorStop(1,"#195773");
+
+rounded(-11,-11,25,27,6,jacket);
+rect(-3,-8,3,20,"#c8f6e6");
+
+// Face
+circ(1,-17,12,"#d89c6d");
+circ(6,-18,8,"#f1c18c");
+circ(9,-19,1.5,"#283849");
+
+// Helmet
+rounded(-14,-31,28,12,5,"#f8d36d");
+rounded(-16,-23,34,5,2,"#b8893e");
+
+circ(11,-26,6,"#4f7087");
+circ(11,-26,4,"#fff7b0");
+
+// Arm
+g.strokeStyle="#4589a3";
+g.lineWidth=7;
+g.beginPath();
+g.moveTo(8,-3);
+g.lineTo(17,0);
+g.stroke();
+
+// Animated pickaxe
+if(!riding){
+const age=Math.max(
+0,1-(performance.now()-attackAt)/280
+);
+
+const angle=
+dir.x<0?3.2:
+dir.y<0?-1.7:
+dir.y>0?.8:-.35;
+
+g.save();
+g.translate(17,-3);
+g.rotate(
+angle+Math.sin((1-age)*6.28)*age*.7
+);
+
+g.strokeStyle="#936940";
+g.lineWidth=4;
+g.beginPath();
+g.moveTo(0,15);
+g.lineTo(0,-20);
+g.stroke();
+
+g.strokeStyle=own("diamondPick")
+?"#80f5ff":"#dce9ef";
+
+g.lineWidth=5;
+g.beginPath();
+g.moveTo(-17,-16);
+g.quadraticCurveTo(0,-26,17,-14);
+g.stroke();
+
+g.restore();
+}
+
+g.restore();
+}
+
+// MAIN WORLD RENDERER
 function draw(t){
- const p=d.player,targetX=clamp((p.x+.5)*TILE-canvas.width/2,0,COLS*TILE-canvas.width),targetY=clamp((p.y+.5)*TILE-canvas.height*.48,0,ROWS*TILE-canvas.height);
- camX+=(targetX-camX)*.18;camY+=(targetY-camY)*.18;rect(0,0,canvas.width,canvas.height,"#10172c");g.save();g.translate(-camX,-camY);
- for(const [start,end,color] of [[4,24,"#4b3934"],[24,54,"#313c52"],[54,ROWS,"#251d43"]])rect(0,start*TILE,COLS*TILE,(end-start)*TILE,color);
- if(camY<4*TILE)drawSurface(t);
- const top=Math.max(SURFACE,Math.floor(camY/TILE)-1),bottom=Math.min(ROWS-1,Math.ceil((camY+canvas.height)/TILE)+1),left=Math.max(0,Math.floor(camX/TILE)-1),right=Math.min(COLS-1,Math.ceil((camX+canvas.width)/TILE)+1);
- for(let row=top;row<=bottom;row++)for(let col=left;col<=right;col++){
-  const tile=world[row][col],x=col*TILE,y=row*TILE;
-  if(tile)drawTile(tile,x,y,col,row,t);
-  else if(row>SURFACE){rect(x+1,y+1,TILE-2,TILE-2,depth(row)>50?"#14142b":depth(row)>20?"#192339":"#312727");if(noise(col,row,19)>.9){g.fillStyle=depth(row)>50?"#ac9dff9e":"#78b8d48a";g.beginPath();g.moveTo(x+5,y+44);g.lineTo(x+12,y+25);g.lineTo(x+21,y+44);g.fill();}}
-  if(own("scanner")&&gemTypes.has(tile?.type)&&Math.hypot(col-p.x,row-p.y)<=5){g.strokeStyle="#79ffe5";g.lineWidth=3;g.strokeRect(x+4,y+4,40,40);}
- }
- // Darken distant caves; owned lamps reveal more.
- if(depth(p.y)>=7){const radius=own("bright")?8:own("lantern")?5.2:2.9;for(let row=Math.max(top,4);row<=bottom;row++)for(let col=left;col<=right;col++){
-  const dist=Math.hypot(col-p.x,row-p.y),alpha=clamp((dist-radius)/6,0,.75);if(alpha>0)rect(col*TILE,row*TILE,TILE,TILE,`rgba(3,6,19,${alpha})`);
- }}
- for(const part of particles){g.globalAlpha=clamp(part.life/.6,0,1);disk(part.x,part.y,3,part.color);}g.globalAlpha=1;
- miner(t);g.restore();
- g.strokeStyle="#ffe0987d";g.lineWidth=2;g.strokeRect((p.x+dir.x)*TILE-camX+2,(p.y+dir.y)*TILE-camY+2,TILE-4,TILE-4);
+const p=d.player;
+
+const tx=clamp(
+(p.x+.5)*T-cv.width/2,
+0,COLS*T-cv.width
+);
+
+const ty=clamp(
+(p.y+.5)*T-cv.height*.48,
+0,ROWS*T-cv.height
+);
+
+camX+=(tx-camX)*.22;
+camY+=(ty-camY)*.22;
+
+rect(0,0,cv.width,cv.height,"#10182d");
+
+g.save();
+g.translate(-camX,-camY);
+
+// Biome backgrounds
+for(const [a,b,color] of [
+[4,24,"#4d3931"],
+[24,54,"#303b50"],
+[54,104,"#272044"],
+[104,154,"#4e2330"],
+[154,ROWS,"#172e3c"]
+]){
+rect(0,a*T,COLS*T,(b-a)*T,color);
 }
-let last=performance.now();function frame(now){
- const delta=Math.min(.05,Math.max(0,(now-last)/1000));last=now;
- if(nowMs()>=d.nextRefreshAt){regenerate();warned=false;moveAt=now+220;}
- if(now-lastClockUpdate>250){lastClockUpdate=now;updateClock();}
- if(now>=moveAt){const k=[...keys].at(-1),v=heldTouch||keyDirs[k];if(v){digOrMove(...v);moveAt=now+(own("boots")?95:160);}}
- for(const p of particles){p.x+=p.vx*delta;p.y+=p.vy*delta;p.vy+=160*delta;p.life-=delta;}
- for(let i=particles.length-1;i>=0;i--)if(particles[i].life<=0)particles.splice(i,1);
- draw(now/1000);requestAnimationFrame(frame);
+
+if(camY<4*T)surface(t);
+
+const top=Math.max(
+SURFACE,Math.floor(camY/T)-1
+);
+
+const bottom=Math.min(
+ROWS-1,
+Math.ceil((camY+cv.height)/T)+1
+);
+
+const left=Math.max(
+0,Math.floor(camX/T)-1
+);
+
+const right=Math.min(
+COLS-1,
+Math.ceil((camX+cv.width)/T)+1
+);
+
+// Draw visible blocks
+for(let y=top;y<=bottom;y++){
+for(let x=left;x<=right;x++){
+const tile=world[y][x];
+const xx=x*T,yy=y*T;
+
+if(tile){
+tileArt(tile,xx,yy,x,y,t);
+
+}else if(y>SURFACE){
+rect(
+xx+1,yy+1,T-2,T-2,
+layer(y)==="dirt"?"#302724":
+layer(y)==="stone"?"#172335":
+layer(y)==="crystal"?"#18132e":
+layer(y)==="lava"?"#301a27":
+"#142b36"
+);
+
+// Tunnel decorations
+if(noise(x,y,16)>.92){
+g.strokeStyle=
+layer(y)==="lava"?"#ff9767":
+layer(y)==="ancient"?"#81d8be":
+"#aaa0e4";
+
+g.lineWidth=2;
+g.beginPath();
+g.moveTo(xx+9,yy+42);
+g.lineTo(xx+13,yy+26);
+g.lineTo(xx+22,yy+42);
+g.stroke();
 }
-render();requestAnimationFrame(frame);
+
+// Minecart tracks
+if(riding){
+rect(xx,yy+T*.8,T,3,"#b49c72");
+
+rect(
+xx+8,yy+T*.7,4,T*.2,
+"#65788d"
+);
+
+rect(
+xx+T-12,yy+T*.7,4,T*.2,
+"#65788d"
+);
+}
+}
+
+// Gem scanner highlights
+if(
+own("scanner")&&
+gems.has(tile?.type)&&
+Math.hypot(x-p.x,y-p.y)<=5
+){
+g.strokeStyle="#7fffe2";
+g.lineWidth=3;
+g.strokeRect(xx+4,yy+4,40,40);
+}
+}
+}
+
+// Cave darkness
+if(depth(p.y)>=7){
+const radius=
+own("bright")?8:
+own("lantern")?5.2:3;
+
+for(let y=Math.max(top,4);y<=bottom;y++){
+for(let x=left;x<=right;x++){
+const distance=Math.hypot(x-p.x,y-p.y);
+
+const alpha=clamp(
+(distance-radius)/6,
+0,.72
+);
+
+if(alpha>0){
+rect(
+x*T,y*T,T,T,
+`rgba(4,5,19,${alpha})`
+);
+}
+}
+}
+}
+
+// Mining particles
+for(const q of particles){
+g.globalAlpha=clamp(q.life/.7,0,1);
+circ(q.x,q.y,3,q.color);
+}
+
+g.globalAlpha=1;
+
+// Miner
+playerArt(t);
+g.restore();
+
+// Highlight next block
+g.strokeStyle=graceUntil
+?"#ffdd62":"#ffde8a80";
+
+g.lineWidth=graceUntil?4:2;
+
+g.strokeRect(
+(p.x+dir.x)*T-camX+2,
+(p.y+dir.y)*T-camY+2,
+T-4,T-4
+);
+}
+
+// MAIN LOOP
+let previous=performance.now();
+
+function frame(time){
+const dt=Math.min(
+.05,
+Math.max(0,(time-previous)/1000)
+);
+
+previous=time;
+
+if(time-lastClock>250){
+lastClock=time;
+updateClock();
+}
+
+// Repeated movement while holding arrows
+if(time>=moveAt){
+const k=[...keys].at(-1);
+const v=held||keyDirs[k];
+
+if(v){
+digOrMove(...v);
+moveAt=time+(own("boots")?100:170);
+}
+}
+
+// Particles
+for(const q of particles){
+q.x+=q.vx*dt;
+q.y+=q.vy*dt;
+q.vy+=170*dt;
+q.life-=dt;
+}
+
+for(let i=particles.length-1;i>=0;i--){
+if(particles[i].life<=0){
+particles.splice(i,1);
+}
+}
+
+draw(time/1000);
+requestAnimationFrame(frame);
+}
+
+// START GAME
+render();
+requestAnimationFrame(frame);
+
 })();
 </script>
 </body>
