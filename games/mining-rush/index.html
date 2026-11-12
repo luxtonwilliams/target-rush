@@ -4,94 +4,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111c35">
-<title>Mining Rush V1.3 | Luxton Arcade</title>
+<meta name="theme-color" content="#0b1630">
+<title>Mining Rush V2 | Luxton Arcade</title>
 <style>
-:root{--bg:#0b162c;--panel:#182e4b;--edge:#496d96;--gold:#ffe29d;--txt:#f0f8ff;--sub:#b9d0e8}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at top,#314c73,var(--bg) 70%);color:var(--txt);font-family:system-ui,Arial,sans-serif}
-main{width:min(1100px,calc(100% - 20px));margin:16px auto 32px}
-header,.flex{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-h1{margin:0;color:var(--gold);font-size:clamp(26px,4.8vw,44px)}
-h1 small{font-size:12px;color:#b6edff}
+:root{--panel:#172d4c;--border:#4a719b;--ink:#f0f9ff;--sub:#bad3ec;--gold:#ffe397}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at top,#344b76,#0b152c 70%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+main{width:min(1120px,calc(100% - 20px));margin:14px auto 36px}
+header,.flex{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:clamp(27px,5vw,44px);color:var(--gold);margin:0}
+h1 small{color:#9ee9ff;font-size:12px;letter-spacing:.2px}
 p{color:var(--sub);line-height:1.5}
-a{color:#b7eeff;text-decoration:none}
-.back{padding:11px 14px;background:#233d60;border:1px solid #6186ad;border-radius:10px;font-weight:800}
-.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:13px 0}
-.stat,.panel,.controls{background:linear-gradient(145deg,#1d3656,#111e36);border:1px solid var(--edge);border-radius:13px;padding:11px}
-.stat{text-align:center;min-width:0;padding:9px 3px}
-.stat small{display:block;color:#b1cee5;font-size:9px;font-weight:800}
-.stat b{display:block;font-size:clamp(12px,2vw,22px);white-space:nowrap;margin-top:4px}
-.viewport{position:relative;border:3px solid #7bddeb;border-radius:17px;overflow:hidden;box-shadow:0 12px 38px #0008}
-canvas#game{display:block;width:100%;height:auto;aspect-ratio:960/576;touch-action:manipulation;cursor:crosshair}
-.pill{position:absolute;background:#081a30d8;border:1px solid #ffffff38;border-radius:22px;padding:8px 11px;font-size:12px;font-weight:800;pointer-events:none}
-.pill.left{left:10px;top:10px}
-.pill.right{right:10px;top:10px;color:#ffe39a}
-.controls{margin-top:11px}
-.message{min-height:44px;display:grid;place-items:center;text-align:center;font-weight:800;color:#ffe6a0}
-.actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:9px 0 13px}
-button{font:inherit;font-weight:800;min-height:47px;background:linear-gradient(115deg,#8be9eb,#8fa9ff);color:#11283e;border:0;border-radius:10px;padding:10px;cursor:pointer;touch-action:manipulation}
-button.secondary{background:#2d496b;border:1px solid #5d82ab;color:#f4f9ff}
+a{color:#b9efff;text-decoration:none}
+.back{padding:10px 13px;border:1px solid #6c96bc;background:#243e61;border-radius:11px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:14px 0}
+.stat,.panel,.controls{border:1px solid var(--border);border-radius:13px;background:linear-gradient(135deg,#1d3758,#10213b);padding:12px}
+.stat{min-width:0;padding:9px 3px;text-align:center}
+.stat small{display:block;color:#b5cfe9;font-size:10px;font-weight:800}
+.stat b{display:block;white-space:nowrap;font-size:clamp(12px,2.1vw,23px);margin-top:4px}
+.viewport{border:3px solid #8fdfed;border-radius:17px;overflow:hidden;box-shadow:0 15px 42px #0007;position:relative;background:#15223d}
+#game{display:block;width:100%;height:auto;aspect-ratio:960/576;touch-action:manipulation;cursor:crosshair}
+.pill{position:absolute;top:10px;padding:7px 10px;font-size:12px;font-weight:850;background:#08182cce;border:1px solid #ffffff44;border-radius:22px;pointer-events:none}
+.pill.left{left:10px}
+.pill.right{right:10px;color:#ffe4a5}
+.controls{margin-top:12px}
+.message{min-height:48px;display:grid;place-items:center;text-align:center;font-weight:800;color:#ffe5ab}
+.actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:10px 0 13px}
+button{font:inherit;font-weight:850;min-height:45px;padding:10px;background:linear-gradient(125deg,#86e9ed,#8ba4ff);border:0;border-radius:10px;color:#112b42;cursor:pointer;touch-action:manipulation}
+button.secondary{background:#2c496c;border:1px solid #6087af;color:#f1faff}
 button:disabled{opacity:.45;cursor:default}
-button:focus-visible,a:focus-visible{outline:3px solid #ffe38c;outline-offset:3px}
-.move{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:15px}
-.dpad{display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(2,51px);gap:5px;touch-action:none}
-.dpad button{padding:0;font-size:23px;touch-action:none;user-select:none}
-.up{grid-column:2;grid-row:1}
-.left{grid-column:1;grid-row:2}
-.down{grid-column:2;grid-row:2}
-.right{grid-column:3;grid-row:2}
-.mine{background:linear-gradient(115deg,#ffeb9f,#ffb36e);min-height:103px;min-width:125px}
-.help{font-size:12px;max-width:375px;color:#c7d8ec;line-height:1.7}
-.scanner{min-height:22px;text-align:center;color:#9cffe0;font-size:12px;margin-top:7px}
-.panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.panel h2{margin:0 0 9px;font-size:20px}
-.panel p{font-size:13px;margin:6px 0 12px}
-.items{display:grid;gap:7px}
-.item{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#253e5f;border:1px solid #526f96;border-radius:10px;padding:9px}
-.item b{font-size:13px}
-.item small{display:block;color:#c4daed;font-size:12px;margin-top:3px}
-.item button{min-height:39px;font-size:12px}
-.group{font-size:14px;color:#ffe29d;margin:13px 0 5px}
-.ore-guide{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
-.ore{display:flex;align-items:center;gap:7px;background:#223958;border:1px solid #55779b;border-radius:9px;padding:8px 7px;font-size:11px}
-.ore.off{opacity:.6}
-.gem{width:12px;height:12px;flex-shrink:0;border:1px solid #fff8;border-radius:3px;transform:rotate(45deg)}
-.ore small{margin-left:auto;color:#d9e8f8;font-size:10px}
-.empty{color:#b6cde4;font-size:13px}
-footer{font-size:12px;color:#a9bfd9;text-align:center;line-height:1.7;padding:17px}
+button:hover:not(:disabled){filter:brightness(1.09)}
+button:focus-visible,a:focus-visible{outline:3px solid #ffe7a5;outline-offset:3px}
+.move{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+.dpad{display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(2,52px);gap:5px;touch-action:none}
+.dpad button{touch-action:none;user-select:none;font-size:23px;padding:0}
+.dpad .up{grid-column:2;grid-row:1}
+.dpad .left{grid-column:1;grid-row:2}
+.dpad .down{grid-column:2;grid-row:2}
+.dpad .right{grid-column:3;grid-row:2}
+.mine{background:linear-gradient(125deg,#ffe9a4,#ffb975);min-height:108px;min-width:125px;font-size:17px}
+.help{max-width:385px;font-size:12px;line-height:1.7;color:#c8d9ea}
+.scanner{margin-top:9px;min-height:21px;color:#a2ffe2;text-align:center;font-size:12px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 11px}
+.tabs button{flex:1 1 150px;background:#253f63;border:1px solid #5479a3;color:#e8f8ff}
+.tabs button.active{background:linear-gradient(115deg,#80e6e2,#93b0fc);color:#14273f}
+.panel{padding:16px;margin:10px 0}
+.panel h2{margin:0 0 8px;font-size:21px}
+.panel p{font-size:13px;margin:5px 0 13px}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panels .panel{margin:0}
+.items{display:grid;gap:8px}
+.item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border:1px solid #53749c;background:#233e60;border-radius:10px;padding:10px}
+.item b{font-size:14px}
+.item small{font-size:12px;display:block;color:#c4dcf0;margin-top:3px}
+.item button{min-height:38px;font-size:12px;white-space:nowrap}
+.group{color:#ffe4a3;font-size:15px;margin:16px 0 7px}
+.group:first-child{margin-top:0}
+.guide{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.ore{display:flex;align-items:center;gap:7px;background:#233e60;border:1px solid #526f9a;border-radius:9px;padding:8px 6px;font-size:12px}
+.ore.unknown{opacity:.58}
+.gem{width:13px;height:13px;flex-shrink:0;border-radius:3px;border:1px solid #ffffff90;transform:rotate(45deg)}
+.ore small{margin-left:auto;color:#c9dbee;font-size:10px}
+.progress{height:9px;border-radius:99px;background:#101d33;margin:8px 0;overflow:hidden}
+.progress>div{height:100%;background:linear-gradient(90deg,#60e4ba,#a8e9ff);border-radius:99px}
+.relics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.relic{background:linear-gradient(150deg,#233c63,#182d4d);border:1px solid #5276a2;border-radius:12px;padding:16px 9px;text-align:center}
+.relic .symbol{font-size:40px;display:block}
+.relic small{display:block;color:#bcd3e9;font-size:12px}
+.relic.locked{opacity:.54;filter:saturate(.6)}
+.empty{font-size:13px;color:#abc3de}
+.tag{font-size:12px;font-weight:850;color:#ffe7a9}
+footer{text-align:center;color:#acc3db;font-size:12px;line-height:1.7;padding:20px}
 [hidden]{display:none!important}
-@media(max-width:800px){
+@media(max-width:830px){
 .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
-.actions{grid-template-columns:repeat(2,1fr)}
 .panels{grid-template-columns:1fr}
-.ore-guide{grid-template-columns:repeat(3,1fr)}
+.actions{grid-template-columns:repeat(2,1fr)}
+.guide{grid-template-columns:repeat(3,1fr)}
 }
-@media(max-width:480px){
-main{width:100%;padding:8px;margin:0}
-.stat{padding:8px 1px}
+@media(max-width:510px){
+main{width:100%;margin:0;padding:8px}
+.stats{grid-template-columns:repeat(4,1fr);gap:5px}
+.stat{padding:8px 2px}
 .stat small{font-size:8px}
 .stat b{font-size:12px}
-.viewport{border-width:2px;border-radius:9px}
-.pill{font-size:9px;padding:5px}
-.dpad{grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,49px)}
-.mine{min-width:108px}
+.viewport{border-width:2px;border-radius:10px}
+.pill{top:5px;font-size:9px;padding:5px}
+.dpad{grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,50px);gap:4px}
+.mine{min-width:109px}
 .help{text-align:center}
-.ore-guide{grid-template-columns:repeat(2,1fr)}
-.item{padding:8px}
+.panel{padding:12px}
+.guide{grid-template-columns:repeat(2,1fr)}
+.relics{grid-template-columns:repeat(2,1fr)}
 .actions button{font-size:12px}
 }
 </style>
 </head>
 <body>
 <main>
+
 <header>
 <div>
-<h1>⛏️ MINING RUSH <small>V1.3 · DEEP CAVE EXPEDITION</small></h1>
-<p style="margin:3px 0">Explore 200 meters, collect 18 minerals, and ride a minecart!</p>
+<h1>⛏️ MINING RUSH
+<small>V2 · EXPEDITIONS & RELICS</small></h1>
+<p style="margin:4px 0">
+Discover ancient relics, complete missions, and forge legendary equipment!
+</p>
 </div>
-<a href="../../" class="back">← Luxton Arcade</a>
+<a class="back" href="../../">← Luxton Arcade</a>
 </header>
 
 <div class="stats">
@@ -100,71 +120,125 @@ main{width:100%;padding:8px;margin:0}
 <div class="stat"><small>🏆 BEST</small><b id="best">0 m</b></div>
 <div class="stat"><small>🎒 BAG</small><b id="bag">0/12</b></div>
 <div class="stat"><small>⛏️ POWER</small><b id="power">1</b></div>
-<div class="stat"><small>🧱 MINED</small><b id="blocks">0</b></div>
+<div class="stat"><small>🏺 RELICS</small><b id="relicCount">0/6</b></div>
 <div class="stat"><small>🔄 REFRESH</small><b id="clock">05:00</b></div>
 </div>
 
 <div class="viewport">
-<canvas id="game" width="960" height="576" aria-label="Side-view block mining game"></canvas>
+<canvas id="game" width="960" height="576"
+aria-label="Side-view mining world. Move into a block to mine it."></canvas>
 <div class="pill left" id="layer">🌿 Surface</div>
 <div class="pill right" id="cave">Cave #1</div>
 </div>
 
 <section class="controls">
-<div class="message" id="message" role="status" aria-live="polite">
-Welcome! Use ↓ to dig into the first cave!
+<div id="message" class="message" role="status" aria-live="polite">
+Welcome to V2! Find ancient relic shrines deep underground! 🏺
 </div>
+
 <div class="actions">
 <button id="lift">⬆ ELEVATOR</button>
 <button id="resume" class="secondary">⬇ RESUME</button>
 <button id="sell" class="secondary">🪙 SELL ORE</button>
-<button id="cart" class="secondary">🛒 MINECART 🔒</button>
+<button id="cart" class="secondary">🚂 MINECART 🔒</button>
 </div>
+
 <div class="move">
 <div class="dpad">
-<button data-dir="up" class="up" aria-label="Move up">▲</button>
-<button data-dir="left" class="left" aria-label="Move left">◀</button>
-<button data-dir="down" class="down" aria-label="Move down">▼</button>
-<button data-dir="right" class="right" aria-label="Move right">▶</button>
+<button class="up" data-dir="up" aria-label="Move up">▲</button>
+<button class="left" data-dir="left" aria-label="Move left">◀</button>
+<button class="down" data-dir="down" aria-label="Move down">▼</button>
+<button class="right" data-dir="right" aria-label="Move right">▶</button>
 </div>
-<button class="mine" id="mine">⛏️ MINE FORWARD</button>
+<button id="mine" class="mine">⛏️ MINE
+FORWARD</button>
 <div class="help">
-💻 PC: WASD / arrows to move or mine, Space to swing, M to board or leave the minecart.
-📱 Mobile: hold the arrows or tap a neighboring block. Board your cart to speed through open tunnels; dismount to dig!
+💻 <b>PC:</b> WASD / arrows move and dig; Space mines forward; M boards the minecart.
+📱 <b>Mobile:</b> Hold arrow buttons or tap a neighboring block. A minecart only travels through cleared tunnels!
 </div>
 </div>
+
 <div class="scanner" id="scanner"></div>
 </section>
 
-<div class="panels">
-<section class="panel">
-<div class="flex"><h2>🎒 Backpack</h2><b id="worth">0 🪙</b></div>
-<p>Keep your minerals when the cave refreshes. Sell them at the surface!</p>
-<div id="inventory" class="items"></div>
-</section>
-<section class="panel">
-<div class="flex">
-<h2>🛒 Mega Mining Shop</h2>
-<button id="shopToggle" class="secondary">SHOW SHOP</button>
-</div>
-<p>22 permanent upgrades with affordable prices. Buy at the surface.</p>
-<div id="shop" class="items" hidden></div>
-</section>
+<div class="tabs">
+<button class="active" data-tab="backpack">🎒 Backpack</button>
+<button data-tab="shop">🛒 Shop (26)</button>
+<button data-tab="contracts">📋 Expeditions</button>
+<button data-tab="forge">🔨 Forge</button>
+<button data-tab="museum">🏺 Relic Museum</button>
 </div>
 
-<section class="panel" style="margin-top:12px">
+<section class="panel" id="backpackPanel">
+<div class="flex">
+<h2>🎒 Your Backpack</h2>
+<b class="tag" id="worth">0 🪙</b>
+</div>
+<p>
+Keep your minerals when the cave resets. Take the elevator up to sell.
+</p>
+<div id="inventory" class="items"></div>
+</section>
+
+<section class="panel" id="shopPanel" hidden>
+<h2>🛒 Mega Mining Shop</h2>
+<p>
+26 affordable, permanent upgrades. Return to the surface to buy them.
+</p>
+<div id="shop" class="items"></div>
+</section>
+
+<section class="panel" id="contractsPanel" hidden>
+<h2>📋 Expedition Board</h2>
+<p>
+Complete repeatable missions and CLAIM coin rewards!
+Contract progress does not reset with the cave.
+</p>
+<div id="contracts" class="items"></div>
+</section>
+
+<section class="panel" id="forgePanel" hidden>
+<h2>🔨 Underground Forge</h2>
+<p>
+Craft four special permanent upgrades using minerals from your backpack
+and a few coins. Craft at the surface.
+</p>
+<div id="forge" class="items"></div>
+</section>
+
+<section class="panel" id="museumPanel" hidden>
+<div class="flex">
+<h2>🏺 Ancient Relic Museum</h2>
+<span class="tag" id="museumCount">0 / 6 collected</span>
+</div>
+<p>
+Dig up glowing relic shrines below 100 m and open deep treasure chests.
+Collected relics stay with you forever, even when caves refresh.
+</p>
+<div id="relics" class="relics"></div>
+</section>
+
+<section class="panel">
 <div class="flex">
 <h2>💎 Mineral Collection</h2>
-<b id="found">0/18</b>
+<b id="found" class="tag">0/18 discovered</b>
 </div>
-<p>Five layers: Dirt (1–20 m), Stone (21–50 m), Crystal (51–100 m), Lava (101–150 m), Ancient (151–200 m).</p>
-<div class="ore-guide" id="guide"></div>
+<p>
+Five layers: Dirt (1–20 m), Stone (21–50 m), Crystal (51–100 m),
+Lava (101–150 m), Ancient (151–200 m).
+</p>
+<div id="guide" class="guide"></div>
 <p id="achievements"></p>
 </section>
 
 <footer>
-🔄 A new cave every 5 minutes. Get a 30-second warning and up to 12 extra seconds to finish a cracked block. Your coins, upgrades, bag, discoveries and best depth are kept. 💾 Autosaved locally.
+🔄 Fresh cave every five minutes with a 30-second warning and up to
+12 extra seconds to finish a cracked block.
+💾 Saves automatically in this browser.
+Your V1–V1.3 coins, minerals, upgrades, tunnels, and records
+are preserved when possible.
 </footer>
+
 </main>
 
 <script>
@@ -172,1685 +246,2631 @@ Welcome! Use ↓ to dig into the first cave!
 "use strict";
 
 const $=id=>document.getElementById(id);
-const cv=$("game"),g=cv.getContext("2d");
+const cv=$("game");
+const g=cv.getContext("2d");
 
-const T=48,COLS=26,ROWS=204,SURFACE=3,START_X=13;
-const PERIOD=300000,KEY="luxton_mining_rush_v1";
+const T=48;
+const COLS=26;
+const ROWS=204;
+const SURFACE=3;
+const START_X=13;
+const PERIOD=300000;
+const KEY="luxton_mining_rush_v1";
+
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const now=()=>Date.now();
-const index=(x,y)=>y*COLS+x;
+const idx=(x,y)=>y*COLS+x;
 
-// 18 MINERALS
+// ALL 18 MINERALS
 const O={
-coal:["⚫ Coal",2,"#313946",1],
-copper:["🟠 Copper",4,"#d98b54",1],
-iron:["⚙️ Iron",7,"#b5c8d5",1],
-silver:["🥈 Silver",10,"#f0e6e0",7],
-gold:["🟡 Gold",13,"#ffd364",21],
-amethyst:["💜 Amethyst",17,"#bd91ff",12],
-emerald:["💚 Emerald",22,"#55ecaa",16],
-sapphire:["🔷 Sapphire",29,"#6eaaff",21],
-ruby:["❤️ Ruby",35,"#ff668d",21],
-topaz:["🟠 Topaz",40,"#ffb765",21],
-diamond:["💎 Diamond",60,"#9af7ff",51],
-opal:["🌈 Opal",90,"#f5a6f4",51],
-obsidian:["🖤 Obsidian",45,"#5a426e",101],
-jade:["🟢 Jade",52,"#74e5a2",101],
-platinum:["⚪ Platinum",70,"#e5eaf5",110],
-meteorite:["☄️ Meteorite",95,"#f48c75",140],
-fireCrystal:["🔥 Fire Crystal",110,"#ff854a",101],
-ancientDiamond:["💠 Ancient Diamond",160,"#a4faff",165]
+ coal:["⚫ Coal",2,"#313946",1],
+ copper:["🟠 Copper",4,"#d98b54",1],
+ iron:["⚙️ Iron",7,"#b5c8d5",1],
+ silver:["🥈 Silver",10,"#f0e6e0",7],
+ gold:["🟡 Gold",13,"#ffd364",21],
+ amethyst:["💜 Amethyst",17,"#bd91ff",12],
+ emerald:["💚 Emerald",22,"#55ecaa",16],
+ sapphire:["🔷 Sapphire",29,"#6eaaff",21],
+ ruby:["❤️ Ruby",35,"#ff668d",21],
+ topaz:["🟠 Topaz",40,"#ffb765",21],
+ diamond:["💎 Diamond",60,"#9af7ff",51],
+ opal:["🌈 Opal",90,"#f5a6f4",51],
+ obsidian:["🖤 Obsidian",45,"#5a426e",101],
+ jade:["🟢 Jade",52,"#74e5a2",101],
+ platinum:["⚪ Platinum",70,"#e5eaf5",110],
+ meteorite:["☄️ Meteorite",95,"#f48c75",140],
+ fireCrystal:["🔥 Fire Crystal",110,"#ff854a",101],
+ ancientDiamond:["💠 Ancient Diamond",160,"#a4faff",165]
 };
 
 const gems=new Set([
-"amethyst","emerald","sapphire","ruby","topaz",
-"diamond","opal","jade","fireCrystal","ancientDiamond"
+ "amethyst","emerald","sapphire","ruby","topaz",
+ "diamond","opal","jade","fireCrystal","ancientDiamond"
 ]);
 
 const metals=new Set([
-"copper","iron","silver","gold","platinum"
+ "copper","iron","silver","gold","platinum"
 ]);
 
-// 22 AFFORDABLE SHOP UPGRADES
+// ORIGINAL 22 UPGRADES + FOUR V2 ITEMS
 const U=[
-["pickaxe","⛏️ Stronger Pickaxe",15,"+1 mining power","Original Gear"],
-["backpack","🎒 Bigger Backpack",20,"Hold 26 minerals","Original Gear"],
-["boots","👢 Speed Boots",25,"Move and mine faster","Original Gear"],
-["lantern","🏮 Cave Lantern",30,"See farther underground","Original Gear"],
-["magnet","🧲 Ore Magnet",40,"30% chance of extra ore","Original Gear"],
-["drill","⚡ Super Drill",60,"+2 mining power","Original Gear"],
+ ["pickaxe","⛏️ Stronger Pickaxe",15,"+1 mining power","Original Gear"],
+ ["backpack","🎒 Bigger Backpack",20,"Hold 26 minerals","Original Gear"],
+ ["boots","👢 Speed Boots",25,"Move and mine faster","Original Gear"],
+ ["lantern","🏮 Cave Lantern",30,"See farther underground","Original Gear"],
+ ["magnet","🧲 Ore Magnet",40,"30% chance of extra ore","Original Gear"],
+ ["drill","⚡ Super Drill",60,"+2 mining power","Original Gear"],
 
-["reinforced","🔨 Reinforced Pickaxe",18,"+1 mining power","V1.2 Gear"],
-["scanner","🔍 Gem Scanner",22,"Highlights gems nearby","V1.2 Gear"],
-["bright","💡 Deep Lantern",24,"Extra-large light radius","V1.2 Gear"],
-["compass","🧭 Treasure Compass",28,"Points to the closest chest","V1.2 Gear"],
-["jumbo","🧳 Jumbo Backpack",30,"Hold 45 minerals","V1.2 Gear"],
-["fortune","🍀 Fortune Charm",34,"25% chance of extra ore","V1.2 Gear"],
-["gemBreaker","💎 Gem Breaker",42,"+2 power on gemstones","V1.2 Gear"],
-["seller","🪙 Coin Bonus Pass",50,"+25% coins when selling","V1.2 Gear"],
+ ["reinforced","🔨 Reinforced Pickaxe",18,"+1 mining power","V1.2 Gear"],
+ ["scanner","🔍 Gem Scanner",22,"Highlights gems nearby","V1.2 Gear"],
+ ["bright","💡 Deep Lantern",24,"Extra-large light radius","V1.2 Gear"],
+ ["compass","🧭 Treasure Compass",28,"Points to the closest chest","V1.2 Gear"],
+ ["jumbo","🧳 Jumbo Backpack",30,"Hold 45 minerals","V1.2 Gear"],
+ ["fortune","🍀 Fortune Charm",34,"25% chance of extra ore","V1.2 Gear"],
+ ["gemBreaker","💎 Gem Breaker",42,"+2 power on gemstones","V1.2 Gear"],
+ ["seller","🪙 Coin Bonus Pass",50,"+25% coins when selling","V1.2 Gear"],
 
-["minecart","🚂 Minecart",38,"Ride three blocks per step through tunnels","V1.3 Gear"],
-["wheels","⚙️ Turbo Wheels",22,"Ride five blocks per step","V1.3 Gear"],
-["diamondPick","💎 Diamond Pickaxe",35,"+2 mining power","V1.3 Gear"],
-["megaDrill","⚡ Mega Drill",60,"+3 mining power","V1.3 Gear"],
-["titanBag","🎒 Giant Backpack",45,"Hold 75 minerals","V1.3 Gear"],
-["radar","📡 Deep Radar",25,"Shows distance to the closest gem","V1.3 Gear"],
-["heatShield","🛡️ Heat Shield",24,"+1 mining power in lava caves","V1.3 Gear"],
-["ancientCharm","✨ Ancient Charm",50,"30% extra ore in ancient caves","V1.3 Gear"]
+ ["minecart","🚂 Minecart",38,"Ride three blocks per step through tunnels","V1.3 Gear"],
+ ["wheels","⚙️ Turbo Wheels",22,"Ride five blocks per step","V1.3 Gear"],
+ ["diamondPick","💎 Diamond Pickaxe",35,"+2 mining power","V1.3 Gear"],
+ ["megaDrill","⚡ Mega Drill",60,"+3 mining power","V1.3 Gear"],
+ ["titanBag","🎒 Giant Backpack",45,"Hold 75 minerals","V1.3 Gear"],
+ ["radar","📡 Deep Radar",25,"Shows distance to closest gem","V1.3 Gear"],
+ ["heatShield","🛡️ Heat Shield",24,"+1 power in lava caves","V1.3 Gear"],
+ ["ancientCharm","✨ Ancient Charm",50,"30% extra ore in ancient caves","V1.3 Gear"],
+
+ ["cartAxle","🚂 Alloy Axle",26,"Minecart moves 2 extra spaces","V2 Gear"],
+ ["chestBonus","🪙 Treasure Pouch",32,"20% more coins from chests","V2 Gear"],
+ ["relicLens","🔮 Relic Lens",38,"Outline nearby ancient relic shrines","V2 Gear"],
+ ["runner","🥾 Tunnel Runner",28,"Move faster through cleared tunnels","V2 Gear"]
 ];
 
-// SAVE DATA
+// SIX ANCIENT RELICS
+const relicInfo=[
+ ["stoneIdol","🗿","Stone Idol",100],
+ ["sunTablet","🌞","Sun Tablet",100],
+ ["ancientCrown","👑","Ancient Crown",120],
+ ["jadeCompass","🧭","Jade Compass",135],
+ ["dragonEgg","🥚","Dragon Egg",155],
+ ["starCore","🌠","Star Core",180]
+];
+
+// FOUR CRAFTABLE PERMANENT UPGRADES
+const recipes=[
+ [
+  "forgeLamp","🔦 Aurora Lamp",15,
+  {copper:4,silver:2},
+  "Extra cave illumination"
+ ],
+ [
+  "forgePick","🪓 Rune Pickaxe",25,
+  {gold:3,emerald:2},
+  "+2 permanent mining power"
+ ],
+ [
+  "forgeBag","🎒 Gem Satchel",30,
+  {iron:6,amethyst:2},
+  "+30 backpack capacity"
+ ],
+ [
+  "forgeCharm","✨ Relic Charm",50,
+  {ruby:1,jade:1},
+  "Better odds of relics from deep chests"
+ ]
+];
+
+// REPEATABLE EXPEDITION MISSIONS
+const contracts=[
+ {
+  id:"ore",
+  name:"💎 Mineral Haul",
+  metric:"oreMined",
+  target:8,
+  reward:25,
+  step:3,
+  bonus:9
+ },
+ {
+  id:"blocks",
+  name:"⛏️ Tunnel Maker",
+  metric:"blocks",
+  target:24,
+  reward:20,
+  step:8,
+  bonus:8
+ },
+ {
+  id:"chests",
+  name:"🎁 Treasure Hunter",
+  metric:"chests",
+  target:1,
+  reward:35,
+  step:1,
+  bonus:12
+ }
+];
+
+// SAVE DATA — SAME KEY AS V1, V1.2, AND V1.3
 const fresh=()=>({
-seed:Math.floor(Math.random()*1e9),
-player:{x:START_X,y:SURFACE},
-lastMine:null,coins:0,bag:{},owned:[],
-cleared:[],damage:{},best:0,blocks:0,chests:0,
-achievements:[],discovered:[],
-nextRefreshAt:now()+PERIOD,refreshCount:0
+ seed:Math.floor(Math.random()*1e9),
+ player:{x:START_X,y:SURFACE},
+ lastMine:null,
+ coins:0,
+ bag:{},
+ owned:[],
+ cleared:[],
+ damage:{},
+ best:0,
+ blocks:0,
+ chests:0,
+ achievements:[],
+ discovered:[],
+ nextRefreshAt:now()+PERIOD,
+ refreshCount:0,
+ oreMined:0,
+ relics:[],
+ crafted:[],
+ contracts:{}
 });
 
 let d=fresh();
 
 try{
-const old=JSON.parse(localStorage.getItem(KEY)||"null");
-if(old&&typeof old==="object")d={...d,...old};
+ const old=JSON.parse(
+  localStorage.getItem(KEY)||"null"
+ );
+ if(old&&typeof old==="object"){
+  d={...d,...old};
+ }
 }catch(e){}
 
-for(const k of ["coins","best","blocks","chests","refreshCount"]){
-d[k]=Math.max(0,Math.floor(Number(d[k])||0));
+for(const k of [
+ "coins","best","blocks","chests",
+ "refreshCount","oreMined"
+]){
+ d[k]=Math.max(
+  0,Math.floor(Number(d[k])||0)
+ );
 }
 
-if(!Number.isFinite(d.seed))d.seed=2356789;
-if(!d.bag||typeof d.bag!=="object")d.bag={};
+if(!Number.isFinite(d.seed)){
+ d.seed=2356789;
+}
+
+if(!d.bag||typeof d.bag!=="object"){
+ d.bag={};
+}
 
 for(const k in O){
-d.bag[k]=Math.max(0,Math.floor(Number(d.bag[k])||0));
+ d.bag[k]=Math.max(
+  0,Math.floor(Number(d.bag[k])||0)
+ );
 }
 
-for(const k of ["owned","cleared","discovered","achievements"]){
-if(!Array.isArray(d[k]))d[k]=[];
+for(const k of [
+ "owned","cleared","discovered",
+ "achievements","relics","crafted"
+]){
+ if(!Array.isArray(d[k]))d[k]=[];
 }
 
 d.owned=[...new Set(
-d.owned.filter(id=>U.some(u=>u[0]===id))
+ d.owned.filter(id=>U.some(u=>u[0]===id))
+)];
+
+d.relics=[...new Set(
+ d.relics.filter(id=>relicInfo.some(r=>r[0]===id))
+)];
+
+d.crafted=[...new Set(
+ d.crafted.filter(id=>recipes.some(r=>r[0]===id))
 )];
 
 d.discovered=[...new Set(
-d.discovered.filter(k=>O[k])
+ d.discovered.filter(k=>O[k])
 )];
 
 for(const k in O){
-if(d.bag[k]&&!d.discovered.includes(k)){
-d.discovered.push(k);
-}
+ if(d.bag[k]&&!d.discovered.includes(k)){
+  d.discovered.push(k);
+ }
 }
 
-if(!d.damage||typeof d.damage!=="object")d.damage={};
+if(!d.damage||typeof d.damage!=="object"){
+ d.damage={};
+}
+
+if(!d.contracts||typeof d.contracts!=="object"){
+ d.contracts={};
+}
+
+for(const c of contracts){
+ const old=d.contracts[c.id];
+
+ d.contracts[c.id]={
+  start:old&&Number.isFinite(old.start)
+   ?Math.max(0,old.start)
+   :d[c.metric],
+  tier:old&&Number.isInteger(old.tier)
+   ?Math.max(0,old.tier)
+   :0
+ };
+}
 
 if(
-!Number.isFinite(Number(d.nextRefreshAt))||
-Number(d.nextRefreshAt)<=0
+ !Number.isFinite(Number(d.nextRefreshAt))||
+ Number(d.nextRefreshAt)<=0
 ){
-d.nextRefreshAt=now()+PERIOD;
+ d.nextRefreshAt=now()+PERIOD;
 }
 
-// UPGRADE EFFECTS
+// GAME UPGRADE EFFECTS
 const own=k=>d.owned.includes(k);
+const crafted=k=>d.crafted.includes(k);
 const depth=y=>Math.max(0,y-SURFACE);
 
 const inside=(x,y)=>
-Number.isInteger(x)&&Number.isInteger(y)&&
-x>=0&&x<COLS&&y>=SURFACE&&y<ROWS;
+ Number.isInteger(x)&&
+ Number.isInteger(y)&&
+ x>=0&&x<COLS&&
+ y>=SURFACE&&y<ROWS;
 
 const layer=y=>
-depth(y)<=20?"dirt":
-depth(y)<=50?"stone":
-depth(y)<=100?"crystal":
-depth(y)<=150?"lava":"ancient";
+ depth(y)<=20?"dirt":
+ depth(y)<=50?"stone":
+ depth(y)<=100?"crystal":
+ depth(y)<=150?"lava":"ancient";
 
 const power=()=>1+
-(own("pickaxe")?1:0)+
-(own("reinforced")?1:0)+
-(own("drill")?2:0)+
-(own("diamondPick")?2:0)+
-(own("megaDrill")?3:0);
+ (own("pickaxe")?1:0)+
+ (own("reinforced")?1:0)+
+ (own("drill")?2:0)+
+ (own("diamondPick")?2:0)+
+ (own("megaDrill")?3:0)+
+ (crafted("forgePick")?2:0);
 
-const cap=()=>
-own("titanBag")?75:
-own("jumbo")?45:
-own("backpack")?26:12;
+const cap=()=>(
+ own("titanBag")?75:
+ own("jumbo")?45:
+ own("backpack")?26:12
+)+(crafted("forgeBag")?30:0);
 
-const bagCount=()=>Object.keys(O).reduce(
-(a,k)=>a+d.bag[k],0
-);
+const bagCount=()=>
+ Object.keys(O).reduce(
+  (a,k)=>a+d.bag[k],0
+ );
 
-const bagWorth=()=>Object.keys(O).reduce(
-(a,k)=>a+O[k][1]*d.bag[k],0
-);
+const bagWorth=()=>
+ Object.keys(O).reduce(
+  (a,k)=>a+O[k][1]*d.bag[k],0
+ );
 
-// WORLD GENERATION
+// DETERMINISTIC CAVE GENERATION
 function noise(x,y,s=0){
-let n=
-Math.imul(x+37,374761393)^
-Math.imul(y+29,668265263)^
-(d.seed|0)^
-Math.imul(s+1,103891);
+ let n=
+  Math.imul(x+37,374761393)^
+  Math.imul(y+29,668265263)^
+  (d.seed|0)^
+  Math.imul(s+1,103891);
 
-n=Math.imul(n^(n>>>13),1274126177);
-return ((n^(n>>>16))>>>0)/4294967296;
+ n=Math.imul(
+  n^(n>>>13),1274126177
+ );
+
+ return (
+  (n^(n>>>16))>>>0
+ )/4294967296;
 }
 
+// CREATE ALL FIVE MINING LAYERS
 function makeTile(x,y){
-if(y<=SURFACE)return null;
+ if(y<=SURFACE)return null;
 
-const z=depth(y),r=noise(x,y),base=layer(y);
+ const z=depth(y);
+ const r=noise(x,y);
+ const base=layer(y);
 
-if(z>6&&noise(x,y,5)<(z>100?.075:z>50?.059:.035)){
-return null;
+ if(
+  z>6&&noise(x,y,5)<
+  (z>100?.075:z>50?.059:.035)
+ ){
+  return null;
+ }
+
+ // RELIC SHRINES IN THE DEEP CAVES
+ if(z>100&&noise(x,y,18)<.011){
+  return {
+   type:"shrine",
+   base,
+   hp:3,
+   maxHp:3
+  };
+ }
+
+ // TREASURE CHESTS
+ if(z>5&&noise(x,y,9)<.010){
+  return {
+   type:"chest",
+   base,
+   hp:1,
+   maxHp:1
+  };
+ }
+
+ let type=base;
+
+ // DIRT
+ if(z<=20){
+  if(r<.16)type="coal";
+  else if(r<.28)type="copper";
+  else if(r<.34)type="iron";
+  else if(z>=7&&r<.37)type="silver";
+  else if(z>=12&&r<.385)type="amethyst";
+  else if(z>=16&&r<.392)type="emerald";
+
+ // STONE
+ }else if(z<=50){
+  if(r<.07)type="coal";
+  else if(r<.17)type="copper";
+  else if(r<.29)type="iron";
+  else if(r<.36)type="silver";
+  else if(r<.43)type="gold";
+  else if(r<.49)type="amethyst";
+  else if(r<.535)type="emerald";
+  else if(r<.57)type="sapphire";
+  else if(r<.59)type="ruby";
+  else if(r<.605)type="topaz";
+
+ // CRYSTAL
+ }else if(z<=100){
+  if(r<.04)type="coal";
+  else if(r<.09)type="copper";
+  else if(r<.17)type="iron";
+  else if(r<.235)type="silver";
+  else if(r<.32)type="gold";
+  else if(r<.43)type="amethyst";
+  else if(r<.52)type="emerald";
+  else if(r<.61)type="sapphire";
+  else if(r<.69)type="ruby";
+  else if(r<.74)type="topaz";
+  else if(r<.81)type="diamond";
+  else if(r<.85)type="opal";
+
+ // LAVA
+ }else if(z<=150){
+  if(r<.05)type="obsidian";
+  else if(r<.14)type="gold";
+  else if(r<.23)type="platinum";
+  else if(r<.31)type="jade";
+  else if(r<.40)type="ruby";
+  else if(r<.52)type="fireCrystal";
+  else if(r<.60)type="diamond";
+  else if(r<.68)type="opal";
+  else if(z>=140&&r<.73)type="meteorite";
+
+ // ANCIENT
+ }else{
+  if(r<.06)type="obsidian";
+  else if(r<.15)type="jade";
+  else if(r<.26)type="platinum";
+  else if(r<.36)type="meteorite";
+  else if(r<.49)type="fireCrystal";
+  else if(r<.59)type="diamond";
+  else if(r<.68)type="opal";
+  else if(z>=165&&r<.78){
+   type="ancientDiamond";
+  }
+ }
+
+ let hp=
+  base==="dirt"?1:
+  base==="stone"?2:
+  base==="crystal"?3:
+  base==="lava"?4:5;
+
+ if(
+  gems.has(type)||
+  ["gold","platinum","meteorite"].includes(type)
+ ){
+  hp++;
+ }
+
+ return {type,base,hp,maxHp:hp};
 }
 
-if(z>5&&noise(x,y,9)<.010){
-return {type:"chest",base,hp:1,maxHp:1};
+// BUILD CAVE AND RESTORE EXISTING TUNNELS
+let world=[];
+let cleared=new Set();
+
+function buildWorld(restore=true){
+ world=Array.from(
+  {length:ROWS},
+  (_,y)=>Array.from(
+   {length:COLS},
+   (_,x)=>makeTile(x,y)
+  )
+ );
+
+ cleared=new Set(
+  restore
+  ?d.cleared.filter(k=>
+   Number.isInteger(k)&&
+   k>=0&&k<COLS*ROWS
+  )
+  :[]
+ );
+
+ for(const k of cleared){
+  world[Math.floor(k/COLS)][k%COLS]=null;
+ }
+
+ if(restore){
+  for(const [key,v] of Object.entries(d.damage)){
+   const n=Number(key);
+   const y=Math.floor(n/COLS);
+   const x=n%COLS;
+
+   if(world[y]?.[x]){
+    world[y][x].hp=clamp(
+     world[y][x].maxHp-
+     Math.max(0,Number(v)||0),
+     1,
+     world[y][x].maxHp
+    );
+   }
+  }
+ }
 }
 
-let type=base;
-
-// Preserve the V1.2 ore layout for the first 100 meters.
-if(z<=20){
-if(r<.16)type="coal";
-else if(r<.28)type="copper";
-else if(r<.34)type="iron";
-else if(z>=7&&r<.37)type="silver";
-else if(z>=12&&r<.385)type="amethyst";
-else if(z>=16&&r<.392)type="emerald";
-
-}else if(z<=50){
-if(r<.07)type="coal";
-else if(r<.17)type="copper";
-else if(r<.29)type="iron";
-else if(r<.36)type="silver";
-else if(r<.43)type="gold";
-else if(r<.49)type="amethyst";
-else if(r<.535)type="emerald";
-else if(r<.57)type="sapphire";
-else if(r<.59)type="ruby";
-else if(r<.605)type="topaz";
-
-}else if(z<=100){
-if(r<.04)type="coal";
-else if(r<.09)type="copper";
-else if(r<.17)type="iron";
-else if(r<.235)type="silver";
-else if(r<.32)type="gold";
-else if(r<.43)type="amethyst";
-else if(r<.52)type="emerald";
-else if(r<.61)type="sapphire";
-else if(r<.69)type="ruby";
-else if(r<.74)type="topaz";
-else if(r<.81)type="diamond";
-else if(r<.85)type="opal";
-
-}else if(z<=150){
-if(r<.05)type="obsidian";
-else if(r<.14)type="gold";
-else if(r<.23)type="platinum";
-else if(r<.31)type="jade";
-else if(r<.40)type="ruby";
-else if(r<.52)type="fireCrystal";
-else if(r<.60)type="diamond";
-else if(r<.68)type="opal";
-else if(z>=140&&r<.73)type="meteorite";
-
-}else{
-if(r<.06)type="obsidian";
-else if(r<.15)type="jade";
-else if(r<.26)type="platinum";
-else if(r<.36)type="meteorite";
-else if(r<.49)type="fireCrystal";
-else if(r<.59)type="diamond";
-else if(r<.68)type="opal";
-else if(z>=165&&r<.78)type="ancientDiamond";
-}
-
-let hp=
-base==="dirt"?1:
-base==="stone"?2:
-base==="crystal"?3:
-base==="lava"?4:5;
-
-if(gems.has(type)||["gold","platinum","meteorite"].includes(type)){
-hp++;
-}
-
-return {type,base,hp,maxHp:hp};
-}
-
-let world=[],cleared=new Set();
-
-function buildWorld(restore){
-world=Array.from(
-{length:ROWS},
-(_,y)=>Array.from(
-{length:COLS},
-(_,x)=>makeTile(x,y)
-)
-);
-
-cleared=new Set(
-restore
-?d.cleared.filter(k=>Number.isInteger(k)&&k>=0&&k<COLS*ROWS)
-:[]
-);
-
-for(const k of cleared){
-world[Math.floor(k/COLS)][k%COLS]=null;
-}
-
-if(restore){
-for(const [k,v] of Object.entries(d.damage)){
-const n=Number(k);
-const y=Math.floor(n/COLS);
-const x=n%COLS;
-
-if(world[y]?.[x]){
-world[y][x].hp=clamp(
-world[y][x].maxHp-Math.max(0,Number(v)||0),
-1,
-world[y][x].maxHp
-);
-}
-}
-}
-}
-
-function msg(t){
-$("message").textContent=t;
+function msg(text){
+ $("message").textContent=text;
 }
 
 function save(){
-try{
-d.cleared=[...cleared];
-localStorage.setItem(KEY,JSON.stringify(d));
-}catch(e){
-msg("⚠️ Browser storage full or unavailable. Progress may not save.");
-}
+ try{
+  d.cleared=[...cleared];
+  localStorage.setItem(
+   KEY,JSON.stringify(d)
+  );
+ }catch(e){
+  msg(
+   "⚠️ Browser storage may be full. Progress might not save."
+  );
+ }
 }
 
-// GAME STATE
+// TEMPORARY GAME STATE
 let riding=false;
-let camX=0,camY=0;
-let attackAt=-1000,moveAt=0;
-let dir={x:0,y:1},held=null;
-let graceUntil=0,finishIndex=null;
-let lastCrackAt=0,lastCrackIndex=null;
-let warned=false,lastClock=0;
+let camX=0;
+let camY=0;
+let attackAt=-1000;
+let moveAt=0;
+
+let dir={x:0,y:1};
+let held=null;
+
+let graceUntil=0;
+let finishIndex=null;
+let lastCrackAt=0;
+let lastCrackIndex=null;
+
+let warned=false;
+let lastClock=0;
 
 const keys=new Set();
 const particles=[];
 
-// FIVE-MINUTE CAVE RESET
-function refreshCave(announce=true){
-d.seed=Math.floor(Math.random()*1e9);
-d.cleared=[];
-d.damage={};
-d.player={x:START_X,y:SURFACE};
-d.lastMine=null;
-d.nextRefreshAt=now()+PERIOD;
-d.refreshCount++;
-
-cleared.clear();
-buildWorld(false);
-
-riding=false;
-graceUntil=0;
-finishIndex=null;
-lastCrackIndex=null;
-warned=false;
-
-save();
-
-if(announce){
-render();
-msg(
-"🔄 NEW CAVE! Back on the surface. Your backpack, money, gear, discoveries and best depth are safe!"
-);
+function award(label){
+ if(!d.achievements.includes(label)){
+  d.achievements.push(label);
+  msg("🏆 "+label);
+ }
 }
+
+// AUTOMATIC FIVE-MINUTE CAVE REFRESH
+function refreshCave(announce=true){
+ d.seed=Math.floor(Math.random()*1e9);
+ d.cleared=[];
+ d.damage={};
+
+ d.player={x:START_X,y:SURFACE};
+ d.lastMine=null;
+
+ d.nextRefreshAt=now()+PERIOD;
+ d.refreshCount++;
+
+ buildWorld(false);
+
+ riding=false;
+ held=null;
+ keys.clear();
+
+ graceUntil=0;
+ finishIndex=null;
+ lastCrackIndex=null;
+ warned=false;
+
+ save();
+ render();
+
+ if(announce){
+  msg(
+   "🔄 NEW CAVE! Your money, upgrades, missions, minerals and museum are safe!"
+  );
+ }
 }
 
 if(now()>=d.nextRefreshAt){
-refreshCave(false);
+ refreshCave(false);
 }else{
-buildWorld(true);
+ buildWorld(true);
 }
 
 if(
-!d.player||
-!inside(d.player.x,d.player.y)||
-world[d.player.y]?.[d.player.x]
+ !d.player||
+ !inside(d.player.x,d.player.y)||
+ world[d.player.y]?.[d.player.x]
 ){
-d.player={x:START_X,y:SURFACE};
+ d.player={x:START_X,y:SURFACE};
 }
 
 if(
-d.lastMine&&
-(
-!inside(d.lastMine.x,d.lastMine.y)||
-world[d.lastMine.y]?.[d.lastMine.x]
-)
+ d.lastMine&&
+ (
+  !inside(d.lastMine.x,d.lastMine.y)||
+  world[d.lastMine.y]?.[d.lastMine.x]
+ )
 ){
-d.lastMine=null;
+ d.lastMine=null;
 }
 
-function award(text){
-if(!d.achievements.includes(text)){
-d.achievements.push(text);
-msg("🏆 "+text);
+// COUNTDOWN + FINISH-BLOCK GRACE PERIOD
+function clock(){
+ const time=now();
+
+ if(time>=d.nextRefreshAt){
+  if(graceUntil){
+   if(time>=graceUntil){
+    refreshCave();
+   }else{
+    $("clock").textContent=
+     "+"+
+     Math.ceil(
+      (graceUntil-time)/1000
+     )+
+     "s";
+   }
+   return;
+  }
+
+  const k=lastCrackIndex;
+
+  const tile=k===null
+   ?null
+   :world[Math.floor(k/COLS)]?.[k%COLS];
+
+  if(
+   tile&&
+   tile.hp<tile.maxHp&&
+   time-lastCrackAt<3000
+  ){
+   graceUntil=time+12000;
+   finishIndex=k;
+   riding=false;
+
+   $("clock").textContent="+12s";
+
+   msg(
+    "⏳ Finish your cracked block! You have 12 bonus seconds before the cave refreshes."
+   );
+  }else{
+   refreshCave();
+  }
+  return;
+ }
+
+ const sec=Math.ceil(
+  (d.nextRefreshAt-time)/1000
+ );
+
+ $("clock").textContent=
+  String(
+   Math.floor(sec/60)
+  ).padStart(2,"0")+
+  ":"+
+  String(sec%60).padStart(2,"0");
+
+ if(sec<=30&&!warned){
+  warned=true;
+
+  msg(
+   "🔄 Cave refresh in 30 seconds! Your relics and gear will stay."
+  );
+ }
 }
-}
 
-function updateClock(){
-const t=now();
-
-if(t>=d.nextRefreshAt){
-
-if(graceUntil){
-if(t>=graceUntil){
-refreshCave();
-return;
-}else{
-$("clock").textContent=
-"+"+Math.ceil((graceUntil-t)/1000)+"s";
-}
-return;
-}
-
-const k=lastCrackIndex;
-const y=Math.floor(k/COLS);
-const x=k%COLS;
-
-const tile=lastCrackIndex!==null
-?world[y]?.[x]
-:null;
-
-if(
-tile&&
-tile.hp<tile.maxHp&&
-t-lastCrackAt<3000
-){
-graceUntil=t+12000;
-finishIndex=k;
-riding=false;
-
-msg(
-"⏳ Time! Finish the cracked block within 12 seconds, then a new cave begins."
-);
-
-}else{
-refreshCave();
-}
-return;
-}
-
-const sec=Math.ceil((d.nextRefreshAt-t)/1000);
-
-$("clock").textContent=
-String(Math.floor(sec/60)).padStart(2,"0")+
-":"+
-String(sec%60).padStart(2,"0");
-
-if(sec<=30&&!warned){
-warned=true;
-msg(
-"🔄 30 seconds until the new cave! Your coins, backpack and gear will stay."
-);
-}
-}
-
-// UI HELPERS
+// UI CARD HELPER
 function row(title,sub,label,click,disabled){
-const el=document.createElement("div");
-const info=document.createElement("div");
-const a=document.createElement("b");
-const b=document.createElement("small");
-const btn=document.createElement("button");
+ const wrap=document.createElement("div");
+ const info=document.createElement("div");
+ const b=document.createElement("b");
+ const small=document.createElement("small");
+ const btn=document.createElement("button");
 
-el.className="item";
-a.textContent=title;
-b.textContent=sub;
-info.append(a,b);
+ wrap.className="item";
 
-btn.textContent=label;
-btn.disabled=!!disabled;
-btn.onclick=click;
+ b.textContent=title;
+ small.textContent=sub;
 
-el.append(info,btn);
-return el;
+ btn.textContent=label;
+ btn.disabled=!!disabled;
+ btn.onclick=click;
+
+ info.append(b,small);
+ wrap.append(info,btn);
+
+ return wrap;
 }
 
-// UPDATE HUD, SHOP, INVENTORY, COLLECTION
+function costText(cost,coins){
+ return Object.entries(cost)
+ .map(([k,v])=>O[k][0]+" × "+v)
+ .join(" · ")+
+ " · "+coins+" 🪙";
+}
+
+// UPDATE ALL GAME PANELS
 function render(){
-const z=depth(d.player.y);
+ const z=depth(d.player.y);
 
-$("coins").textContent=d.coins;
-$("depth").textContent=z+" m";
-$("best").textContent=d.best+" m";
-$("bag").textContent=bagCount()+"/"+cap();
-$("power").textContent=power();
-$("blocks").textContent=d.blocks;
-$("worth").textContent=bagWorth()+" 🪙";
-$("cave").textContent="Cave #"+(d.refreshCount+1);
+ $("coins").textContent=d.coins;
+ $("depth").textContent=z+" m";
+ $("best").textContent=d.best+" m";
+ $("bag").textContent=bagCount()+"/"+cap();
+ $("power").textContent=power();
 
-$("layer").textContent=
-z===0?"🌿 Surface":
-z<=20?"🟫 Dirt · "+z+"m":
-z<=50?"🪨 Stone · "+z+"m":
-z<=100?"💜 Crystal · "+z+"m":
-z<=150?"🌋 Lava · "+z+"m":
-"🏛️ Ancient · "+z+"m";
+ $("relicCount").textContent=
+  d.relics.length+"/6";
 
-$("lift").disabled=z===0||!!graceUntil;
-$("resume").disabled=z!==0||!d.lastMine||!!graceUntil;
-$("sell").disabled=z!==0||!bagCount()||!!graceUntil;
-$("cart").disabled=!own("minecart")||!!graceUntil;
+ $("museumCount").textContent=
+  d.relics.length+" / 6 collected";
 
-$("cart").textContent=
-!own("minecart")?"🚂 MINECART 🔒":
-riding?"🚶 DISMOUNT":"🚂 BOARD CART";
+ $("worth").textContent=
+  bagWorth()+" 🪙";
 
-$("mine").disabled=riding;
+ $("cave").textContent=
+  "Cave #"+(d.refreshCount+1);
 
-// INVENTORY
-const inv=$("inventory");
-inv.replaceChildren();
+ $("layer").textContent=
+  z===0?"🌿 Surface":
+  z<=20?"🟫 Dirt · "+z+"m":
+  z<=50?"🪨 Stone · "+z+"m":
+  z<=100?"💜 Crystal · "+z+"m":
+  z<=150?"🌋 Lava · "+z+"m":
+  "🏛️ Ancient · "+z+"m";
 
-for(const [k,m] of Object.entries(O)){
-if(!d.bag[k])continue;
+ $("lift").disabled=
+  z===0||!!graceUntil;
 
-const el=document.createElement("div");
-el.className="item";
+ $("resume").disabled=
+  z!==0||!d.lastMine||!!graceUntil;
 
-const n=document.createElement("b");
-const v=document.createElement("strong");
+ $("sell").disabled=
+  z!==0||!bagCount()||!!graceUntil;
 
-n.textContent=m[0]+" × "+d.bag[k];
-v.textContent=d.bag[k]*m[1]+" 🪙";
+ $("cart").disabled=
+  !own("minecart")||!!graceUntil;
 
-el.append(n,v);
-inv.append(el);
+ $("cart").textContent=
+  !own("minecart")
+  ?"🚂 MINECART 🔒"
+  :riding
+  ?"🚶 DISMOUNT"
+  :"🚂 BOARD CART";
+
+ $("mine").disabled=riding;
+
+ // BACKPACK
+ const inv=$("inventory");
+ inv.replaceChildren();
+
+ for(const [k,m] of Object.entries(O)){
+  if(!d.bag[k])continue;
+
+  inv.append(row(
+   m[0]+" × "+d.bag[k],
+   "Value: "+m[1]+" coins each",
+   d.bag[k]*m[1]+" 🪙",
+   ()=>{},
+   true
+  ));
+ }
+
+ if(!inv.childElementCount){
+  const p=document.createElement("p");
+  p.className="empty";
+  p.textContent=
+   "Your backpack is empty. Go find some ore!";
+  inv.append(p);
+ }
+
+ // MEGA SHOP
+ const shop=$("shop");
+ shop.replaceChildren();
+
+ let group="";
+
+ for(const u of U){
+  if(u[4]!==group){
+   group=u[4];
+   const h=document.createElement("h3");
+   h.className="group";
+   h.textContent=group;
+   shop.append(h);
+  }
+
+  shop.append(row(
+   u[1],
+   u[3],
+   own(u[0])?"✓ OWNED":"BUY "+u[2],
+   ()=>{
+    if(
+     own(u[0])||
+     depth(d.player.y)!==0||
+     d.coins<u[2]
+    )return;
+
+    d.coins-=u[2];
+    d.owned.push(u[0]);
+
+    save();
+    render();
+
+    msg(
+     "✅ Bought "+u[1]+
+     " — permanent upgrade!"
+    );
+   },
+   own(u[0])||
+   z!==0||
+   d.coins<u[2]
+  ));
+ }
+
+ // EXPEDITION CONTRACTS
+ const board=$("contracts");
+ board.replaceChildren();
+
+ for(const c of contracts){
+  const p=d.contracts[c.id];
+
+  const goal=
+   c.target+c.step*p.tier;
+
+  const reward=
+   c.reward+c.bonus*p.tier;
+
+  const progress=clamp(
+   d[c.metric]-p.start,
+   0,goal
+  );
+
+  const wrap=document.createElement("div");
+
+  const top=row(
+   c.name,
+   "Level "+(p.tier+1)+
+   " · Earn "+reward+" coins",
+   progress>=goal
+   ?"🎁 CLAIM"
+   :progress+" / "+goal,
+   ()=>{
+    if(
+     d[c.metric]-p.start<goal
+    )return;
+
+    d.coins+=reward;
+    p.start=d[c.metric];
+    p.tier++;
+
+    save();
+    render();
+
+    msg(
+     "🎉 Expedition complete! +"+
+     reward+" coins!"
+    );
+   },
+   progress<goal
+  );
+
+  wrap.append(top);
+
+  const meter=document.createElement("div");
+  const bar=document.createElement("div");
+
+  meter.className="progress";
+  bar.style.width=
+   (progress/goal*100)+"%";
+
+  meter.append(bar);
+  wrap.append(meter);
+  board.append(wrap);
+ }
+
+ // FORGE
+ const forge=$("forge");
+ forge.replaceChildren();
+
+ for(const [
+  id,name,coins,cost,desc
+ ] of recipes){
+
+  const canAfford=
+   Object.entries(cost).every(
+    ([k,v])=>d.bag[k]>=v
+   )&&d.coins>=coins;
+
+  forge.append(row(
+   name,
+   desc+" · "+costText(cost,coins),
+   crafted(id)
+   ?"✓ CRAFTED"
+   :canAfford
+   ?"🔨 CRAFT"
+   :"NEED ORE",
+   ()=>{
+    if(
+     crafted(id)||
+     depth(d.player.y)!==0||
+     !Object.entries(cost).every(
+      ([k,v])=>d.bag[k]>=v
+     )||
+     d.coins<coins
+    )return;
+
+    for(const [k,v] of Object.entries(cost)){
+     d.bag[k]-=v;
+    }
+
+    d.coins-=coins;
+    d.crafted.push(id);
+
+    save();
+    render();
+
+    msg(
+     "🔨 Crafted "+name+
+     "! Equipped permanently."
+    );
+   },
+   crafted(id)||
+   z!==0||
+   !canAfford
+  ));
+ }
+
+ // RELIC MUSEUM
+ const museum=$("relics");
+ museum.replaceChildren();
+
+ for(const [
+  id,emoji,name,minDepth
+ ] of relicInfo){
+
+  const have=d.relics.includes(id);
+  const el=document.createElement("div");
+  const sym=document.createElement("span");
+  const b=document.createElement("b");
+  const sm=document.createElement("small");
+
+  el.className=
+   "relic"+(have?"":" locked");
+
+  sym.className="symbol";
+
+  sym.textContent=have?emoji:"❔";
+  b.textContent=
+   have?name:"Mystery Relic";
+
+  sm.textContent=have
+   ?"✓ In your collection"
+   :"Found near "+minDepth+"m+";
+
+  el.append(sym,b,sm);
+  museum.append(el);
+ }
+
+ // MINERAL COLLECTION
+ $("found").textContent=
+  d.discovered.length+"/18 discovered";
+
+ $("achievements").textContent=
+  "🎁 Chests opened: "+d.chests+
+  " · 🧱 Blocks mined: "+d.blocks+
+  " · 🏆 "+
+  (
+   d.achievements.join(" · ")||
+   "Reach 200 meters to discover the Ancient Caves!"
+  );
+
+ const guide=$("guide");
+ guide.replaceChildren();
+
+ for(const [k,m] of Object.entries(O)){
+  const seen=d.discovered.includes(k);
+
+  const el=document.createElement("div");
+  const dot=document.createElement("span");
+  const b=document.createElement("b");
+  const sm=document.createElement("small");
+
+  el.className=
+   "ore"+(seen?"":" unknown");
+
+  dot.className="gem";
+  dot.style.background=
+   seen?m[2]:"#697c92";
+
+  b.textContent=seen
+   ?m[0].replace(/^\S+\s/,"")
+   :"???";
+
+  sm.textContent=seen
+   ?m[1]+" 🪙"
+   :"≥"+m[3]+"m";
+
+  el.append(dot,b,sm);
+  guide.append(el);
+ }
+
+ scan();
+ clock();
 }
 
-if(!inv.childElementCount){
-const e=document.createElement("p");
-e.className="empty";
-e.textContent="Your backpack is empty. Dig up some glowing ore!";
-inv.append(e);
+// GEM SCANNER / RADAR / RELIC LENS / COMPASS
+function scan(){
+ let near=0;
+ let gemDist=Infinity;
+ let closestChest=null;
+ let chestDist=Infinity;
+ let shrines=0;
+
+ const px=d.player.x;
+ const py=d.player.y;
+
+ for(
+  let y=Math.max(SURFACE+1,py-7);
+  y<=Math.min(ROWS-1,py+7);
+  y++
+ ){
+  for(
+   let x=Math.max(0,px-7);
+   x<=Math.min(COLS-1,px+7);
+   x++
+  ){
+   const tile=world[y][x];
+   const dist=Math.hypot(
+    x-px,y-py
+   );
+
+   if(gems.has(tile?.type)){
+    if(dist<=5)near++;
+    gemDist=Math.min(gemDist,dist);
+   }
+
+   if(
+    tile?.type==="shrine"&&
+    dist<=6
+   ){
+    shrines++;
+   }
+  }
+ }
+
+ let str=own("scanner")
+  ?"🔍 Gems nearby: "+near
+  :"";
+
+ if(own("radar")){
+  str+=(str?" · ":"")+
+   (
+    Number.isFinite(gemDist)
+    ?"📡 Closest gem: "+
+     Math.round(gemDist)+" blocks"
+    :"📡 No gems close"
+   );
+ }
+
+ if(own("relicLens")){
+  str+=(str?" · ":"")+
+   "🔮 Relic shrines within 6 blocks: "+
+   shrines;
+ }
+
+ if(own("compass")){
+  for(
+   let y=SURFACE+1;
+   y<ROWS;
+   y++
+  ){
+   for(
+    let x=0;
+    x<COLS;
+    x++
+   ){
+    if(
+     world[y][x]?.type!=="chest"
+    )continue;
+
+    const dist=Math.hypot(
+     x-px,y-py
+    );
+
+    if(dist<chestDist){
+     closestChest={x,y};
+     chestDist=dist;
+    }
+   }
+  }
+
+  str+=(str?" · ":"")+
+   (
+    closestChest
+    ?"🧭 Chest "+
+     (
+      Math.abs(closestChest.x-px)>
+      Math.abs(closestChest.y-py)
+      ?closestChest.x>px?"➡️":"⬅️"
+      :closestChest.y>py?"⬇️":"⬆️"
+     )+
+     " "+Math.round(chestDist)+" blocks"
+    :"🧭 No chests left"
+   );
+ }
+
+ $("scanner").textContent=str;
 }
 
-// SHOP
-const shop=$("shop");
-shop.replaceChildren();
-let group="";
+// COLLECT ANCIENT RELICS
+function relicDrop(z,guaranteed=false){
+ const available=relicInfo.filter(r=>
+  z>=r[3]&&
+  !d.relics.includes(r[0])
+ );
 
-for(const u of U){
+ if(!available.length){
+  const bonus=18+Math.floor(z/3);
+  d.coins+=bonus;
 
-if(u[4]!==group){
-group=u[4];
-const h=document.createElement("h3");
-h.className="group";
-h.textContent=group;
-shop.append(h);
+  msg(
+   "✨ Ancient treasure! Museum complete for this depth — +"+
+   bonus+" coins!"
+  );
+  return;
+ }
+
+ if(
+  !guaranteed&&
+  Math.random()>
+  (crafted("forgeCharm")?.56:.35)
+ )return;
+
+ const relic=available[
+  Math.floor(
+   Math.random()*available.length
+  )
+ ];
+
+ d.relics.push(relic[0]);
+
+ award(
+  "Relic discovered: "+relic[2]
+ );
+
+ msg(
+  "🏺 LEGENDARY FIND! You discovered the "+
+  relic[2]+"!"
+ );
 }
 
-shop.append(row(
-u[1],
-u[3],
-own(u[0])?"✓ OWNED":"BUY "+u[2],
-()=>{
-if(own(u[0])||z!==0||d.coins<u[2])return;
-
-d.coins-=u[2];
-d.owned.push(u[0]);
-
-save();
-render();
-msg("✅ Bought "+u[1]+"! Permanent upgrade unlocked.");
-},
-own(u[0])||z!==0||d.coins<u[2]
-));
-}
-
-// MINERAL COLLECTION
-$("found").textContent=d.discovered.length+"/18 found";
-
-$("achievements").textContent=
-"🎁 Chests: "+d.chests+" · "+
-(
-d.achievements.join(" · ")||
-"Reach the new layers to earn depth records!"
-);
-
-const guide=$("guide");
-guide.replaceChildren();
-
-for(const [k,m] of Object.entries(O)){
-const seen=d.discovered.includes(k);
-
-const el=document.createElement("div");
-const dot=document.createElement("span");
-const name=document.createElement("b");
-const value=document.createElement("small");
-
-el.className="ore"+(seen?"":" off");
-dot.className="gem";
-dot.style.background=seen?m[2]:"#6a7d92";
-
-name.textContent=seen
-?m[0].replace(/^\S+\s/,"")
-:"???";
-
-value.textContent=seen
-?m[1]+"🪙"
-:"≥"+m[3]+"m";
-
-el.append(dot,name,value);
-guide.append(el);
-}
-
-// SCANNER AND RADAR
-let near=0,closest=null,dist=Infinity;
-
-for(
-let y=Math.max(SURFACE+1,d.player.y-7);
-y<=Math.min(ROWS-1,d.player.y+7);
-y++
-){
-for(
-let x=Math.max(0,d.player.x-7);
-x<=Math.min(COLS-1,d.player.x+7);
-x++
-){
-const tile=world[y][x];
-const r=Math.hypot(x-d.player.x,y-d.player.y);
-
-if(gems.has(tile?.type)&&r<=5)near++;
-
-if(gems.has(tile?.type)&&r<dist){
-closest={x,y};
-dist=r;
-}
-}
-}
-
-let scan=own("scanner")
-?"🔍 "+near+" gems nearby"
-:"";
-
-if(own("radar")){
-scan+=(scan?" · ":"")+
-(
-closest
-?"📡 Closest gem: "+Math.round(dist)+" blocks away"
-:"📡 No gems in scanning range"
-);
-}
-
-if(own("compass")){
-let chest=null,range=Infinity;
-
-for(let y=SURFACE+1;y<ROWS;y++){
-for(let x=0;x<COLS;x++){
-if(world[y][x]?.type!=="chest")continue;
-
-const dis=Math.hypot(x-d.player.x,y-d.player.y);
-
-if(dis<range){
-range=dis;
-chest={x,y};
-}
-}
-}
-
-scan+=(scan?" · ":"")+
-(
-chest
-?"🧭 Chest: "+
-(
-Math.abs(chest.x-d.player.x)>
-Math.abs(chest.y-d.player.y)
-?(chest.x>d.player.x?"➡️":"⬅️")
-:(chest.y>d.player.y?"⬇️":"⬆️")
-)+
-" "+Math.round(range)+" blocks"
-:"No chests left"
-);
-}
-
-$("scanner").textContent=scan;
-updateClock();
-}
-
-// ORE AND TREASURE REWARDS
+// REWARDS FROM ORES, CHESTS, AND SHRINES
 function loot(type,x,y){
-if(type==="chest"){
-const coins=
-14+
-Math.floor(noise(x,y,72)*42)+
-Math.floor(depth(y)*.35);
+ const z=depth(y);
 
-d.coins+=coins;
-d.chests++;
+ if(type==="chest"){
+  const base=
+   14+
+   Math.floor(noise(x,y,72)*42)+
+   Math.floor(z*.35);
 
-award("Treasure chest discovered!");
-msg("🎁 Chest opened: +"+coins+" coins!");
-return;
+  const coins=own("chestBonus")
+   ?Math.ceil(base*1.2)
+   :base;
+
+  d.coins+=coins;
+  d.chests++;
+
+  msg(
+   "🎁 Treasure chest: +"+
+   coins+" coins!"
+  );
+
+  if(z>=100){
+   relicDrop(z);
+  }
+  return;
+ }
+
+ if(type==="shrine"){
+  relicDrop(z,true);
+  return;
+ }
+
+ if(!O[type])return;
+
+ d.bag[type]++;
+ d.oreMined++;
+
+ if(
+  own("magnet")&&
+  Math.random()<.3&&
+  bagCount()<cap()
+ ){
+  d.bag[type]++;
+ }
+
+ if(
+  own("fortune")&&
+  Math.random()<.25&&
+  bagCount()<cap()
+ ){
+  d.bag[type]++;
+ }
+
+ if(
+  own("ancientCharm")&&
+  z>150&&
+  Math.random()<.3&&
+  bagCount()<cap()
+ ){
+  d.bag[type]++;
+ }
+
+ if(!d.discovered.includes(type)){
+  d.discovered.push(type);
+
+  msg(
+   "✨ NEW MINERAL: "+
+   O[type][0]+"!"
+  );
+ }else{
+  msg(
+   "💎 Collected "+
+   O[type][0]+
+   " — worth "+
+   O[type][1]+" coins!"
+  );
+ }
 }
 
-if(!O[type])return;
-
-d.bag[type]++;
-
-if(own("magnet")&&Math.random()<.3&&bagCount()<cap()){
-d.bag[type]++;
-}
-
-if(own("fortune")&&Math.random()<.25&&bagCount()<cap()){
-d.bag[type]++;
-}
-
-if(
-own("ancientCharm")&&
-depth(y)>150&&
-Math.random()<.3&&
-bagCount()<cap()
-){
-d.bag[type]++;
-}
-
-if(!d.discovered.includes(type)){
-d.discovered.push(type);
-msg("✨ NEW MINERAL! "+O[type][0]);
-}else{
-msg(
-"💎 Collected "+O[type][0]+
-" — worth "+O[type][1]+" coins."
-);
-}
-}
-
+// MINING PARTICLES
 function burst(x,y,color){
-for(let i=0;i<12;i++){
-particles.push({
-x:(x+.5)*T,
-y:(y+.5)*T,
-vx:(Math.random()-.5)*140,
-vy:(Math.random()-.85)*140,
-life:.7,color
-});
+ for(let i=0;i<12;i++){
+  particles.push({
+   x:(x+.5)*T,
+   y:(y+.5)*T,
+   vx:(Math.random()-.5)*140,
+   vy:(Math.random()-.85)*135,
+   life:.7,
+   color
+  });
+ }
+
+ if(particles.length>180){
+  particles.splice(0,35);
+ }
 }
 
-if(particles.length>160){
-particles.splice(0,30);
-}
-}
-
+// DEPTH RECORDS
 function movePlayer(x,y){
-d.player={x,y};
+ d.player={x,y};
 
-if(y>SURFACE){
-d.lastMine={x,y};
+ if(y>SURFACE){
+  d.lastMine={x,y};
 
-if(depth(y)>d.best){
-d.best=depth(y);
+  if(depth(y)>d.best){
+   d.best=depth(y);
 
-for(const [level,name] of [
-[200,"200m Ancient Depths!"],
-[150,"150m Ancient Caves!"],
-[100,"100m Lava Caves!"],
-[50,"50m Crystal Caves!"],
-[20,"20m Stone Layer!"]
-]){
-if(d.best>=level&&!d.achievements.includes(name)){
-award(name);
-}
-}
-}
-}
+   for(const [level,label] of [
+    [200,"200m Ancient Depths!"],
+    [150,"150m Ancient Caves!"],
+    [100,"100m Lava Caves!"],
+    [50,"50m Crystal Caves!"],
+    [20,"20m Stone Layer!"]
+   ]){
+    if(
+     d.best>=level&&
+     !d.achievements.includes(label)
+    ){
+     award(label);
+    }
+   }
+  }
+ }
 }
 
-// MINING AND MINECART MOVEMENT
+// MINING + MINECART MOVEMENT
 function digOrMove(dx,dy){
-const x=d.player.x+dx;
-const y=d.player.y+dy;
+ const x=d.player.x+dx;
+ const y=d.player.y+dy;
 
-dir={x:dx,y:dy};
+ dir={x:dx,y:dy};
 
-if(!inside(x,y)){
-if(y<SURFACE)msg("Dig down to enter the cave!");
-return;
+ if(!inside(x,y)){
+  if(y<SURFACE){
+   msg(
+    "The sky is up there! Dig down."
+   );
+  }
+  return;
+ }
+
+ // RIDE THROUGH ALREADY-MINED TUNNELS
+ if(riding){
+  let steps=own("wheels")?5:3;
+
+  if(own("cartAxle")){
+   steps+=2;
+  }
+
+  let cx=d.player.x;
+  let cy=d.player.y;
+  let n=0;
+
+  while(
+   n<steps&&
+   inside(cx+dx,cy+dy)&&
+   !world[cy+dy][cx+dx]
+  ){
+   cx+=dx;
+   cy+=dy;
+   n++;
+  }
+
+  if(n){
+   movePlayer(cx,cy);
+
+   msg(
+    "🚂 Minecart rolling through cleared tunnels!"
+   );
+
+   save();
+   render();
+  }else{
+   msg(
+    "🚂 Tunnel blocked. Dismount to dig!"
+   );
+  }
+  return;
+ }
+
+ // FINISH-BLOCK GRACE PERIOD
+ if(
+  graceUntil&&
+  idx(x,y)!==finishIndex
+ ){
+  msg(
+   "⏳ Finish the cracked block before the cave refreshes!"
+  );
+  return;
+ }
+
+ const tile=world[y][x];
+
+ if(tile){
+  if(
+   O[tile.type]&&
+   bagCount()>=cap()
+  ){
+   msg(
+    "🎒 Backpack full! Use the elevator and sell your minerals."
+   );
+   return;
+  }
+
+  attackAt=performance.now();
+
+  tile.hp-=power()+
+   (
+    own("gemBreaker")&&
+    gems.has(tile.type)
+    ?2:0
+   )+
+   (
+    own("heatShield")&&
+    layer(y)==="lava"
+    ?1:0
+   );
+
+  if(tile.hp>0){
+   d.damage[idx(x,y)]=
+    tile.maxHp-tile.hp;
+
+   lastCrackIndex=idx(x,y);
+   lastCrackAt=now();
+
+   burst(x,y,"#ccb99e");
+
+   msg(
+    "⛏️ Cracked "+
+    tile.type+
+    "! "+
+    tile.hp+
+    " power remaining."
+   );
+  }else{
+   delete d.damage[idx(x,y)];
+
+   world[y][x]=null;
+   cleared.add(idx(x,y));
+   d.blocks++;
+
+   burst(
+    x,y,
+    O[tile.type]?.[2]||"#d9c0a2"
+   );
+
+   loot(tile.type,x,y);
+   movePlayer(x,y);
+
+   lastCrackIndex=null;
+
+   if(
+    !O[tile.type]&&
+    tile.type!=="chest"&&
+    tile.type!=="shrine"
+   ){
+    msg(
+     "⛏️ Rock cleared. Keep digging!"
+    );
+   }
+
+   if(graceUntil){
+    save();
+    refreshCave();
+    return;
+   }
+  }
+ }else{
+  movePlayer(x,y);
+ }
+
+ save();
+ render();
 }
 
-// MINECART RIDES THROUGH OPEN TUNNELS
-if(riding){
-let n=0;
-const steps=own("wheels")?5:3;
-
-let cx=d.player.x;
-let cy=d.player.y;
-
-while(
-n<steps&&
-inside(cx+dx,cy+dy)&&
-!world[cy+dy][cx+dx]
-){
-cx+=dx;
-cy+=dy;
-n++;
-}
-
-if(n){
-movePlayer(cx,cy);
-msg(
-"🚂 Minecart rolling! Dismount when you reach unmined rock."
-);
-save();
-render();
-}else{
-msg("🚂 Blocked! DISMOUNT to mine that rock.");
-}
-return;
-}
-
-// SPECIAL FINISH-BLOCK GRACE PERIOD
-if(graceUntil&&index(x,y)!==finishIndex){
-msg(
-"⏳ Finish the highlighted cracked block before the cave refreshes!"
-);
-return;
-}
-
-const tile=world[y][x];
-
-if(tile){
-
-if(O[tile.type]&&bagCount()>=cap()){
-msg(
-"🎒 Backpack full! ELEVATOR up and SELL ORE first."
-);
-return;
-}
-
-attackAt=performance.now();
-
-tile.hp-=power()+
-(own("gemBreaker")&&gems.has(tile.type)?2:0)+
-(own("heatShield")&&layer(y)==="lava"?1:0);
-
-if(tile.hp>0){
-d.damage[index(x,y)]=tile.maxHp-tile.hp;
-lastCrackIndex=index(x,y);
-lastCrackAt=now();
-
-burst(x,y,"#b7a18e");
-
-msg(
-"⛏️ Cracked "+tile.type+
-"! "+tile.hp+" more power needed."
-);
-
-}else{
-delete d.damage[index(x,y)];
-
-world[y][x]=null;
-cleared.add(index(x,y));
-d.blocks++;
-
-burst(
-x,y,
-O[tile.type]?.[2]||"#bba68f"
-);
-
-loot(tile.type,x,y);
-movePlayer(x,y);
-
-if(!O[tile.type]&&tile.type!=="chest"){
-msg("⛏️ Block broken!");
-}
-
-lastCrackIndex=null;
-
-// Preserve the reward, then refresh the cave.
-if(graceUntil){
-save();
-refreshCave();
-return;
-}
-}
-
-}else{
-movePlayer(x,y);
-}
-
-save();
-render();
-}
-
-// ELEVATOR AND SELLING
+// ELEVATOR
 function elevator(){
-if(depth(d.player.y)===0)return;
+ if(
+  depth(d.player.y)===0||
+  graceUntil
+ )return;
 
-d.lastMine={...d.player};
-d.player={x:START_X,y:SURFACE};
-riding=false;
+ d.lastMine={...d.player};
 
-save();
-render();
-msg(
-"⬆ At the surface! Sell your minerals and buy upgrades."
-);
+ d.player={
+  x:START_X,
+  y:SURFACE
+ };
+
+ riding=false;
+
+ save();
+ render();
+
+ msg(
+  "⬆ Back at the surface! Sell, shop, claim contracts, and forge equipment!"
+ );
 }
 
 function resume(){
-if(depth(d.player.y)!==0||!d.lastMine)return;
+ if(
+  depth(d.player.y)!==0||
+  !d.lastMine||
+  graceUntil
+ )return;
 
-d.player={...d.lastMine};
-riding=false;
+ d.player={...d.lastMine};
+ riding=false;
 
-save();
-render();
-msg("⬇ Back to the cave! Your tunnel is unchanged.");
+ save();
+ render();
+
+ msg(
+  "⬇ Back to your last mining spot!"
+ );
 }
 
+// SELL MINERALS
 function sell(){
-if(depth(d.player.y)!==0){
-return msg("Use ELEVATOR to reach the surface first.");
+ if(
+  depth(d.player.y)!==0||
+  graceUntil
+ ){
+  return msg(
+   "Return to the surface before selling!"
+  );
+ }
+
+ const base=bagWorth();
+
+ if(!base){
+  return msg(
+   "Your backpack is empty!"
+  );
+ }
+
+ const coins=own("seller")
+  ?Math.ceil(base*1.25)
+  :base;
+
+ d.coins+=coins;
+
+ for(const k in O){
+  d.bag[k]=0;
+ }
+
+ save();
+ render();
+
+ msg(
+  "🪙 Sold your minerals for "+
+  coins+" coins!"
+ );
 }
 
-const value=bagWorth();
-
-if(!value){
-return msg("No minerals to sell yet!");
-}
-
-const pay=own("seller")
-?Math.ceil(value*1.25)
-:value;
-
-d.coins+=pay;
-
-for(const k in O)d.bag[k]=0;
-
-save();
-render();
-
-msg("🪙 Sold minerals for "+pay+" coins!");
-}
-
+// MINECART EQUIP
 function toggleCart(){
-if(!own("minecart")||graceUntil)return;
+ if(
+  !own("minecart")||
+  graceUntil
+ )return;
 
-riding=!riding;
-render();
+ riding=!riding;
 
-msg(
-riding
-?"🚂 All aboard! Ride through already-mined tunnels, then dismount to dig."
-:"🚶 Dismounted. You can mine again!"
-);
+ render();
+
+ msg(
+  riding
+  ?"🚂 ALL ABOARD! Ride through cleared tunnels. Dismount to mine."
+  :"🚶 Dismounted! You can mine again."
+ );
 }
 
 // BUTTONS
 $("lift").onclick=elevator;
 $("resume").onclick=resume;
 $("sell").onclick=sell;
-$("mine").onclick=()=>digOrMove(dir.x,dir.y);
-$("cart").onclick=toggleCart;
 
-$("shopToggle").onclick=()=>{
-if(depth(d.player.y)!==0){
-msg("🛒 The shop is on the surface. Use ELEVATOR!");
-return;
-}
-
-$("shop").hidden=!$("shop").hidden;
-
-$("shopToggle").textContent=
-$("shop").hidden?"SHOW SHOP":"HIDE SHOP";
+$("mine").onclick=()=>{
+ digOrMove(dir.x,dir.y);
 };
 
-// PC AND MOBILE CONTROLS
+$("cart").onclick=toggleCart;
+
+// TAB NAVIGATION
+for(const btn of document.querySelectorAll("[data-tab]")){
+ btn.onclick=()=>{
+  for(const other of document.querySelectorAll("[data-tab]")){
+   other.classList.toggle(
+    "active",
+    other===btn
+   );
+  }
+
+  for(const id of [
+   "backpack","shop","contracts","forge","museum"
+  ]){
+   $(id+"Panel").hidden=
+    id!==btn.dataset.tab;
+  }
+ };
+}
+
+// PC + MOBILE CONTROLS
 const directions={
-up:[0,-1],
-down:[0,1],
-left:[-1,0],
-right:[1,0]
+ up:[0,-1],
+ down:[0,1],
+ left:[-1,0],
+ right:[1,0]
 };
 
 const keyDirs={
-ArrowUp:[0,-1],
-ArrowDown:[0,1],
-ArrowLeft:[-1,0],
-ArrowRight:[1,0],
-w:[0,-1],
-s:[0,1],
-a:[-1,0],
-d:[1,0]
+ ArrowUp:[0,-1],
+ ArrowDown:[0,1],
+ ArrowLeft:[-1,0],
+ ArrowRight:[1,0],
+ w:[0,-1],
+ s:[0,1],
+ a:[-1,0],
+ d:[1,0]
 };
 
+// TOUCHSCREEN BUTTONS
 for(const btn of document.querySelectorAll("[data-dir]")){
-btn.addEventListener("pointerdown",e=>{
-e.preventDefault();
-btn.setPointerCapture(e.pointerId);
+ btn.addEventListener("pointerdown",e=>{
+  e.preventDefault();
 
-held=directions[btn.dataset.dir];
-digOrMove(...held);
-moveAt=performance.now()+180;
-});
+  btn.setPointerCapture(
+   e.pointerId
+  );
 
-for(const event of [
-"pointerup","pointercancel","lostpointercapture"
-]){
-btn.addEventListener(event,()=>held=null);
+  held=directions[
+   btn.dataset.dir
+  ];
+
+  digOrMove(...held);
+  moveAt=performance.now()+180;
+ });
+
+ for(const ev of [
+  "pointerup","pointercancel","lostpointercapture"
+ ]){
+  btn.addEventListener(ev,()=>{
+   held=null;
+  });
+ }
 }
-}
 
+// KEYBOARD
 window.addEventListener("keydown",e=>{
-const k=e.key.length===1
-?e.key.toLowerCase()
-:e.key;
+ const k=e.key.length===1
+  ?e.key.toLowerCase()
+  :e.key;
 
-if(keyDirs[k]){
-if([
-"INPUT","TEXTAREA","SELECT"
-].includes(document.activeElement.tagName))return;
+ if(keyDirs[k]){
+  if([
+   "INPUT","TEXTAREA","SELECT"
+  ].includes(
+   document.activeElement.tagName
+  ))return;
 
-e.preventDefault();
+  e.preventDefault();
 
-if(!keys.has(k)){
-keys.add(k);
+  if(!keys.has(k)){
+   keys.add(k);
 
-if(!held){
-digOrMove(...keyDirs[k]);
-moveAt=performance.now()+180;
-}
-}
+   if(!held){
+    digOrMove(...keyDirs[k]);
+    moveAt=performance.now()+180;
+   }
+  }
 
-}else if(k==="m"&&!e.repeat){
-toggleCart();
+ }else if(k==="m"&&!e.repeat){
+  toggleCart();
 
-}else if(e.code==="Space"&&!e.repeat){
-if([
-"BUTTON","INPUT","TEXTAREA"
-].includes(document.activeElement.tagName))return;
+ }else if(e.code==="Space"&&!e.repeat){
+  if([
+   "BUTTON","INPUT","TEXTAREA"
+  ].includes(
+   document.activeElement.tagName
+  ))return;
 
-e.preventDefault();
-digOrMove(dir.x,dir.y);
-}
+  e.preventDefault();
+  digOrMove(dir.x,dir.y);
+ }
 });
 
 window.addEventListener("keyup",e=>{
-keys.delete(
-e.key.length===1
-?e.key.toLowerCase()
-:e.key
-);
+ keys.delete(
+  e.key.length===1
+  ?e.key.toLowerCase()
+  :e.key
+ );
 });
 
 window.addEventListener("blur",()=>{
-keys.clear();
-held=null;
+ keys.clear();
+ held=null;
 });
 
+// TAP AN ADJACENT BLOCK
 cv.addEventListener("pointerdown",e=>{
-const r=cv.getBoundingClientRect();
+ const r=cv.getBoundingClientRect();
 
-const x=Math.floor(
-((e.clientX-r.left)*cv.width/r.width+camX)/T
-);
+ const x=Math.floor(
+  (
+   (e.clientX-r.left)*
+   cv.width/r.width+
+   camX
+  )/T
+ );
 
-const y=Math.floor(
-((e.clientY-r.top)*cv.height/r.height+camY)/T
-);
+ const y=Math.floor(
+  (
+   (e.clientY-r.top)*
+   cv.height/r.height+
+   camY
+  )/T
+ );
 
-const dx=x-d.player.x;
-const dy=y-d.player.y;
+ const dx=x-d.player.x;
+ const dy=y-d.player.y;
 
-if(Math.abs(dx)+Math.abs(dy)===1){
-digOrMove(dx,dy);
-}else{
-msg(
-"👆 Tap a directly neighboring block or use the arrow controls!"
-);
-}
+ if(Math.abs(dx)+Math.abs(dy)===1){
+  digOrMove(dx,dy);
+ }else{
+  msg(
+   "👆 Tap a neighboring block or use the arrows."
+  );
+ }
 });
 
-// CANVAS HELPERS
-function rect(x,y,w,h,color){
-g.fillStyle=color;
-g.fillRect(x,y,w,h);
+// --------------------------------
+// CANVAS GRAPHICS
+// --------------------------------
+function rect(x,y,w,h,c){
+ g.fillStyle=c;
+ g.fillRect(x,y,w,h);
 }
 
-function circ(x,y,r,color){
-g.fillStyle=color;
-g.beginPath();
-g.arc(x,y,r,0,Math.PI*2);
-g.fill();
+function circ(x,y,r,c){
+ g.fillStyle=c;
+ g.beginPath();
+ g.arc(x,y,r,0,Math.PI*2);
+ g.fill();
 }
 
-function rounded(x,y,w,h,r,color){
-g.fillStyle=color;
-g.beginPath();
-g.roundRect(x,y,w,h,r);
-g.fill();
+function rounded(x,y,w,h,r,c){
+ g.fillStyle=c;
+ g.beginPath();
+ g.roundRect(x,y,w,h,r);
+ g.fill();
 }
 
-// METALS AND GEMSTONE DRAWINGS
-function mineralArt(k,x,y,t){
-const m=O[k];
-if(!m)return;
+// DRAW ALL 18 MATERIALS
+function mineralArt(k,x,y,time){
+ const m=O[k];
+ if(!m)return;
 
-g.save();
-g.translate(x,y);
+ g.save();
+ g.translate(x,y);
 
-if(gems.has(k)){
-g.shadowColor=m[2];
-g.shadowBlur=9+3*Math.sin(t*3+x);
+ if(gems.has(k)){
+  g.shadowColor=m[2];
+  g.shadowBlur=
+   9+Math.sin(time*3+x)*3;
+ }
+
+ if([
+  "coal","obsidian","meteorite"
+ ].includes(k)){
+  const c=k==="coal"
+   ?"#1b2533"
+   :k==="obsidian"
+   ?"#312543"
+   :"#7c5362";
+
+  for(const [dx,dy] of [
+   [-10,4],[3,-8],[10,8]
+  ]){
+   g.fillStyle=c;
+   g.beginPath();
+
+   g.moveTo(dx-10,dy);
+   g.lineTo(dx-3,dy-11);
+   g.lineTo(dx+9,dy-6);
+   g.lineTo(dx+11,dy+8);
+   g.lineTo(dx-6,dy+9);
+   g.fill();
+  }
+
+  g.strokeStyle=k==="meteorite"
+   ?"#ffba74"
+   :"#aaa7c6";
+
+  g.lineWidth=2;
+  g.beginPath();
+  g.moveTo(-12,-3);
+  g.lineTo(-3,-9);
+  g.stroke();
+
+ }else if(metals.has(k)){
+  for(const [dx,dy,s] of [
+   [-10,5,10],
+   [3,-8,10],
+   [11,8,8]
+  ]){
+   g.fillStyle=m[2];
+   g.beginPath();
+
+   g.moveTo(dx-s,dy);
+   g.lineTo(dx-2,dy-s);
+   g.lineTo(dx+s,dy-5);
+   g.lineTo(dx+s,dy+s*.6);
+   g.lineTo(dx-4,dy+s);
+   g.fill();
+
+   g.fillStyle="#ffffff88";
+   g.beginPath();
+   g.moveTo(dx-s,dy);
+   g.lineTo(dx-2,dy-s);
+   g.lineTo(dx+1,dy);
+   g.fill();
+  }
+
+ }else{
+  for(const [dx,dy,s] of [
+   [-10,7,12],
+   [11,5,11],
+   [0,-5,18]
+  ]){
+   g.fillStyle=m[2];
+   g.beginPath();
+
+   g.moveTo(dx,dy-s);
+   g.lineTo(dx+s*.67,dy-s*.3);
+   g.lineTo(dx+s*.5,dy+s*.7);
+   g.lineTo(dx,dy+s);
+   g.lineTo(dx-s*.65,dy+s*.6);
+   g.lineTo(dx-s*.65,dy-s*.35);
+   g.closePath();
+   g.fill();
+
+   g.fillStyle="#ffffff9a";
+   g.beginPath();
+   g.moveTo(dx,dy-s);
+   g.lineTo(dx,dy+s);
+   g.lineTo(dx-s*.65,dy+s*.6);
+   g.lineTo(dx-s*.65,dy-s*.35);
+   g.fill();
+  }
+ }
+
+ g.shadowBlur=0;
+
+ if(gems.has(k)){
+  g.strokeStyle="#fff";
+
+  g.globalAlpha=
+   .45+.4*Math.sin(time*3+x);
+
+  g.lineWidth=1.8;
+  g.beginPath();
+
+  g.moveTo(19,-20);
+  g.lineTo(19,-10);
+  g.moveTo(15,-15);
+  g.lineTo(23,-15);
+  g.stroke();
+ }
+
+ g.restore();
 }
 
-if(
-k==="coal"||
-k==="obsidian"||
-k==="meteorite"
-){
-const color=
-k==="coal"?"#1b2532":
-k==="obsidian"?"#312543":"#6c4a52";
-
-for(const [dx,dy] of [
-[-10,4],[3,-8],[10,8]
-]){
-g.fillStyle=color;
-g.beginPath();
-
-g.moveTo(dx-10,dy);
-g.lineTo(dx-3,dy-11);
-g.lineTo(dx+9,dy-6);
-g.lineTo(dx+11,dy+8);
-g.lineTo(dx-6,dy+9);
-g.fill();
-}
-
-g.strokeStyle=k==="meteorite"
-?"#ffbd6c":"#af99d0";
-
-g.lineWidth=1.5;
-g.beginPath();
-g.moveTo(-11,-4);
-g.lineTo(-2,-9);
-g.stroke();
-
-}else if(metals.has(k)){
-for(const [dx,dy,s] of [
-[-10,5,10],[3,-8,10],[11,8,8]
-]){
-g.fillStyle=m[2];
-g.beginPath();
-
-g.moveTo(dx-s,dy);
-g.lineTo(dx-2,dy-s);
-g.lineTo(dx+s,dy-5);
-g.lineTo(dx+s,dy+s*.6);
-g.lineTo(dx-4,dy+s);
-g.fill();
-
-g.fillStyle="#ffffff93";
-g.beginPath();
-g.moveTo(dx-s,dy);
-g.lineTo(dx-2,dy-s);
-g.lineTo(dx+1,dy);
-g.fill();
-}
-
-}else{
-for(const [dx,dy,s] of [
-[-10,7,12],[11,5,11],[0,-5,18]
-]){
-g.fillStyle=m[2];
-g.beginPath();
-
-g.moveTo(dx,dy-s);
-g.lineTo(dx+s*.67,dy-s*.3);
-g.lineTo(dx+s*.5,dy+s*.7);
-g.lineTo(dx,dy+s);
-g.lineTo(dx-s*.65,dy+s*.6);
-g.lineTo(dx-s*.65,dy-s*.35);
-g.closePath();
-g.fill();
-
-g.fillStyle="#ffffff88";
-g.beginPath();
-g.moveTo(dx,dy-s);
-g.lineTo(dx,dy+s);
-g.lineTo(dx-s*.65,dy+s*.6);
-g.lineTo(dx-s*.65,dy-s*.35);
-g.fill();
-}
-}
-
-g.shadowBlur=0;
-
-if(gems.has(k)){
-g.strokeStyle="#fff";
-g.globalAlpha=.65+.3*Math.sin(t*3+x);
-g.lineWidth=1.6;
-g.beginPath();
-
-g.moveTo(20,-20);
-g.lineTo(20,-11);
-g.moveTo(16,-15);
-g.lineTo(24,-15);
-g.stroke();
-}
-
-g.restore();
-}
-
-// TREASURE CHESTS
+// TREASURE CHEST ART
 function chestArt(x,y){
-g.save();
-g.shadowColor="#ffdc81";
-g.shadowBlur=14;
+ g.save();
 
-rounded(x-17,y-9,34,24,3,"#784524");
-rounded(x-17,y-15,34,11,4,"#ba853f");
+ g.shadowColor="#ffe28d";
+ g.shadowBlur=14;
 
-rect(x-14,y-4,28,4,"#ffe39b");
-rounded(x-3,y-12,6,25,2,"#f5cc6a");
+ rounded(
+  x-17,y-9,34,24,4,
+  "#754325"
+ );
 
-g.restore();
+ rounded(
+  x-17,y-15,34,11,4,
+  "#c48f4a"
+ );
+
+ rect(
+  x-14,y-4,28,4,
+  "#fff0aa"
+ );
+
+ rounded(
+  x-3,y-12,6,23,2,
+  "#f6ce78"
+ );
+
+ g.restore();
 }
 
-// SURFACE ART
-function surface(t){
-const sky=g.createLinearGradient(0,0,0,192);
+// NEW ANCIENT RELIC SHRINE ART
+function shrineArt(x,y,t){
+ g.save();
 
-sky.addColorStop(0,"#75b8df");
-sky.addColorStop(1,"#d5ebbc");
+ g.shadowColor="#7bfbea";
+ g.shadowBlur=17;
 
-rect(0,0,COLS*T,192,sky);
-circ(980,45,32,"#fff0aa");
+ rounded(
+  x-17,y-16,34,34,7,
+  "#263e60"
+ );
 
-for(let i=0;i<6;i++){
-const x=(i*267+t*5)%(COLS*T+180)-100;
-const y=43+i%3*22;
+ rounded(
+  x-13,y-13,26,27,6,
+  "#74dccd"
+ );
 
-g.globalAlpha=.68;
+ rounded(
+  x-9,y-8,18,18,5,
+  "#24345d"
+ );
 
-circ(x,y,18,"#fff");
-circ(x+23,y-10,26,"#fff");
-circ(x+49,y,18,"#fff");
+ g.rotate(
+  Math.sin(t*2+x)*.04
+ );
+
+ circ(0,0,7,"#e9b4ff");
+
+ g.strokeStyle="#fff4ca";
+ g.lineWidth=2;
+ g.beginPath();
+
+ g.moveTo(0,-12);
+ g.lineTo(0,-6);
+ g.moveTo(0,6);
+ g.lineTo(0,12);
+
+ g.stroke();
+ g.restore();
 }
 
-g.globalAlpha=1;
+// SURFACE: SHOP, FORGE, ELEVATOR, MUSEUM
+function surfaceArt(t){
+ const sky=g.createLinearGradient(
+  0,0,0,192
+ );
 
-// Mountains
-g.fillStyle="#7fa2ae";
-g.beginPath();
-g.moveTo(0,163);
+ sky.addColorStop(0,"#69add7");
+ sky.addColorStop(1,"#d9eac4");
 
-for(const [x,y] of [
-[135,87],[254,150],[440,71],
-[622,149],[818,88],[1005,154],[1248,104]
-]){
-g.lineTo(x,y);
+ rect(
+  0,0,COLS*T,192,sky
+ );
+
+ circ(980,49,31,"#fff0ac");
+
+ // CLOUDS
+ for(let i=0;i<5;i++){
+  const x=
+   (i*275+t*5)%
+   (COLS*T+200)-110;
+
+  const y=42+i%3*20;
+
+  g.globalAlpha=.7;
+
+  circ(x,y,18,"#fff");
+  circ(x+22,y-10,26,"#fff");
+  circ(x+49,y,18,"#fff");
+ }
+
+ g.globalAlpha=1;
+
+ // MOUNTAINS
+ g.fillStyle="#85a2ac";
+ g.beginPath();
+ g.moveTo(0,165);
+
+ for(const [x,y] of [
+  [130,86],
+  [255,150],
+  [440,74],
+  [615,151],
+  [814,90],
+  [1000,150],
+  [1248,96]
+ ]){
+  g.lineTo(x,y);
+ }
+
+ g.lineTo(1248,192);
+ g.lineTo(0,192);
+ g.fill();
+
+ rect(
+  0,184,COLS*T,9,
+  "#6eb273"
+ );
+
+ // SHOP AND FORGE
+ rounded(
+  93,111,178,74,5,
+  "#865843"
+ );
+
+ g.fillStyle="#bc8359";
+ g.beginPath();
+
+ g.moveTo(82,111);
+ g.lineTo(182,58);
+ g.lineTo(282,111);
+ g.fill();
+
+ rounded(
+  112,123,143,31,5,
+  "#1e3857"
+ );
+
+ g.textAlign="center";
+ g.font="bold 15px system-ui";
+ g.fillStyle="#ffe5a5";
+
+ g.fillText(
+  "SHOP + FORGE",183,144
+ );
+
+ rounded(
+  168,156,30,29,3,
+  "#3a3e56"
+ );
+
+ // ELEVATOR
+ rounded(
+  379,105,112,80,4,
+  "#74859b"
+ );
+
+ rounded(
+  395,123,81,61,3,
+  "#293b5c"
+ );
+
+ for(let i=0;i<5;i++){
+  rect(
+   403+i*13,125,4,57,
+   "#537a9a"
+  );
+ }
+
+ rounded(
+  374,87,127,30,5,
+  "#203952"
+ );
+
+ g.fillText(
+  "ELEVATOR",437,107
+ );
+
+ // NEW MUSEUM BUILDING
+ rounded(
+  574,112,164,73,5,
+  "#58688f"
+ );
+
+ g.fillStyle="#8779b3";
+ g.beginPath();
+
+ g.moveTo(564,113);
+ g.lineTo(656,67);
+ g.lineTo(748,113);
+ g.fill();
+
+ rounded(
+  588,127,136,26,5,
+  "#26365f"
+ );
+
+ g.fillStyle="#e1cffb";
+
+ g.fillText(
+  "RELIC MUSEUM",656,146
+ );
+
+ rounded(
+  647,158,20,27,3,
+  "#282c57"
+ );
+
+ g.textAlign="left";
 }
 
-g.lineTo(1248,192);
-g.lineTo(0,192);
-g.fill();
-
-rect(0,184,COLS*T,9,"#69aa67");
-
-// Shop building
-rounded(93,110,178,74,5,"#865a44");
-
-g.fillStyle="#bf8158";
-g.beginPath();
-g.moveTo(81,111);
-g.lineTo(182,57);
-g.lineTo(282,111);
-g.fill();
-
-rounded(110,122,143,33,5,"#1e3854");
-
-g.fillStyle="#ffe3a1";
-g.font="bold 15px system-ui";
-g.textAlign="center";
-g.fillText("SHOP + SELL",183,144);
-
-rounded(169,154,29,30,3,"#3b4055");
-
-// Elevator building
-rounded(380,105,112,80,4,"#697f97");
-rounded(395,122,80,62,3,"#293b5c");
-
-for(let i=0;i<5;i++){
-rect(403+i*13,123,4,59,"#5b7796");
-}
-
-rounded(374,87,127,29,5,"#203953");
-g.fillText("ELEVATOR",437,107);
-g.textAlign="left";
-}
-
-// FIVE DIFFERENT BLOCK TEXTURES
+// DRAW FIVE DIFFERENT ROCK TEXTURES
 function tileArt(tile,x,y,col,row,t){
-const pal={
-dirt:["#a97751","#6b4938","#d1a270","#4d352a"],
-stone:["#83919d","#48576a","#adbac6","#2d3c54"],
-crystal:["#8370b2","#3b3065","#c1a1f3","#2b2252"],
-lava:["#a64c38","#4e2937","#ffa064","#352032"],
-ancient:["#6a8193","#29394e","#abcae0","#18293b"]
-}[tile.base]||[
-"#a97751","#6b4938","#d1a270","#4d352a"
-];
+ const pal={
+  dirt:[
+   "#a97751","#6b4938",
+   "#d1a270","#4d352a"
+  ],
+  stone:[
+   "#83919d","#48576a",
+   "#adbac6","#2d3c54"
+  ],
+  crystal:[
+   "#8370b2","#3b3065",
+   "#c1a1f3","#2b2252"
+  ],
+  lava:[
+   "#a64c38","#4e2937",
+   "#ffa064","#352032"
+  ],
+  ancient:[
+   "#6a8193","#29394e",
+   "#abcae0","#18293b"
+  ]
+ }[tile.base]||[
+  "#a97751","#6b4938",
+  "#d1a270","#4d352a"
+ ];
 
-const gr=g.createLinearGradient(x,y,x+T,y+T);
-gr.addColorStop(0,pal[0]);
-gr.addColorStop(.6,pal[1]);
-gr.addColorStop(1,pal[3]);
+ const gr=g.createLinearGradient(
+  x,y,x+T,y+T
+ );
 
-rounded(x+.6,y+.6,T-1.2,T-1.2,3,gr);
+ gr.addColorStop(0,pal[0]);
+ gr.addColorStop(.6,pal[1]);
+ gr.addColorStop(1,pal[3]);
 
-rect(x+2,y+2,44,4,pal[2]+"99");
-rect(x+2,y+43,44,3,pal[3]+"cc");
+ rounded(
+  x+.6,y+.6,T-1.2,T-1.2,3,gr
+ );
 
-for(let i=0;i<7;i++){
-const dx=6+noise(col+i*3,row,20)*33;
-const dy=9+noise(col,row+i*4,22)*30;
+ rect(
+  x+2,y+2,44,4,
+  pal[2]+"99"
+ );
 
-rounded(
-x+dx,y+dy,
-3+i%2,2+i%3,1,
-i%2?pal[2]+"77":pal[3]+"aa"
-);
+ rect(
+  x+2,y+43,44,3,
+  pal[3]+"cc"
+ );
+
+ // ROCK DETAILS
+ for(let i=0;i<8;i++){
+  const dx=
+   5+noise(col+i*3,row,20)*33;
+
+  const dy=
+   9+noise(col,row+i*4,22)*30;
+
+  rounded(
+   x+dx,
+   y+dy,
+   3+i%2,
+   2+i%3,
+   1,
+   i%2?pal[2]+"6e":pal[3]+"a5"
+  );
+ }
+
+ // LAVA CRACKS
+ if(
+  tile.base==="lava"&&
+  noise(col,row,47)>.4
+ ){
+  g.strokeStyle="#ff874b9a";
+  g.lineWidth=2;
+  g.beginPath();
+
+  g.moveTo(x+5,y+40);
+  g.lineTo(x+20,y+15);
+  g.lineTo(x+40,y+29);
+  g.stroke();
+ }
+
+ // ANCIENT RUNES
+ if(
+  tile.base==="ancient"&&
+  noise(col,row,45)>.55
+ ){
+  g.strokeStyle="#8deedb7a";
+  g.lineWidth=2;
+
+  g.strokeRect(
+   x+13,y+11,22,25
+  );
+ }
+
+ // CRYSTAL VEINS
+ if(
+  tile.base==="crystal"&&
+  noise(col,row,48)>.6
+ ){
+  g.strokeStyle="#c4a5fa88";
+  g.lineWidth=2;
+  g.beginPath();
+
+  g.moveTo(x+8,y+40);
+  g.lineTo(x+20,y+15);
+  g.lineTo(x+38,y+30);
+  g.stroke();
+ }
+
+ // MATERIALS
+ if(O[tile.type]){
+  mineralArt(
+   tile.type,
+   x+24,y+24,t
+  );
+ }
+
+ if(tile.type==="chest"){
+  chestArt(x+24,y+24);
+ }
+
+ if(tile.type==="shrine"){
+  shrineArt(x+24,y+24,t);
+ }
+
+ // CRACKED BLOCKS
+ if(tile.hp<tile.maxHp){
+  g.strokeStyle="#101b29cb";
+  g.lineWidth=3;
+  g.beginPath();
+
+  g.moveTo(x+9,y+8);
+  g.lineTo(x+22,y+21);
+  g.lineTo(x+14,y+37);
+
+  g.moveTo(x+22,y+21);
+  g.lineTo(x+39,y+28);
+  g.stroke();
+ }
 }
 
-// Lava cracks
-if(tile.base==="lava"&&noise(col,row,47)>.40){
-g.strokeStyle="#ff6e4288";
-g.lineWidth=2;
-g.beginPath();
-g.moveTo(x+6,y+40);
-g.lineTo(x+20,y+16);
-g.lineTo(x+36,y+25);
-g.stroke();
-}
-
-// Ancient markings
-if(tile.base==="ancient"&&noise(col,row,45)>.62){
-g.strokeStyle="#7fe2cc77";
-g.lineWidth=2;
-g.strokeRect(x+12,y+11,23,26);
-}
-
-// Minerals and treasure
-if(O[tile.type]){
-mineralArt(tile.type,x+24,y+24,t);
-}
-
-if(tile.type==="chest"){
-chestArt(x+24,y+24);
-}
-
-// Cracked block graphic
-if(tile.hp<tile.maxHp){
-g.strokeStyle="#101b29ca";
-g.lineWidth=3;
-g.beginPath();
-
-g.moveTo(x+10,y+8);
-g.lineTo(x+22,y+21);
-g.lineTo(x+14,y+37);
-
-g.moveTo(x+22,y+21);
-g.lineTo(x+38,y+27);
-g.stroke();
-}
-}
-
-// MINER AND MINECART ART
+// MINER + ANIMATED PICKAXE + MINECART
 function playerArt(t){
-const x=(d.player.x+.5)*T;
-const y=(d.player.y+.5)*T;
+ const x=(d.player.x+.5)*T;
+ const y=(d.player.y+.5)*T;
 
-const bob=keys.size||held
-?Math.sin(t*14)*1.3
-:Math.sin(t*2)*.6;
+ const bob=(keys.size||held)
+  ?Math.sin(t*14)*1.4
+  :Math.sin(t*2)*.65;
 
-g.save();
-g.translate(x,y+bob);
-g.lineJoin="round";
-g.lineCap="round";
+ g.save();
+ g.translate(x,y+bob);
 
-// Shadow
-g.fillStyle="#0007";
-g.beginPath();
-g.ellipse(0,22,20,5,0,0,7);
-g.fill();
+ g.lineCap="round";
+ g.lineJoin="round";
 
-// Minecart or legs
-if(riding){
-rounded(-28,1,56,20,5,"#4e6479");
-rounded(-30,-1,60,8,3,"#9cb5c4");
+ // SHADOW
+ g.fillStyle="#0007";
+ g.beginPath();
+ g.ellipse(
+  0,23,19,5,0,0,Math.PI*2
+ );
+ g.fill();
 
-circ(-17,24,7,"#1e2936");
-circ(17,24,7,"#1e2936");
+ // MINECART
+ if(riding){
+  rounded(
+   -29,1,58,20,4,
+   "#536b7e"
+  );
 
-circ(-17,24,3,"#d1e3e8");
-circ(17,24,3,"#d1e3e8");
+  rounded(
+   -31,-1,62,8,3,
+   "#9fbecf"
+  );
 
-}else{
-for(const side of [-1,1]){
-const step=keys.size||held
-?Math.sin(t*15+side*1.5)*3
-:0;
+  circ(-18,23,7,"#172334");
+  circ(18,23,7,"#172334");
+  circ(-18,23,3,"#cfdee9");
+  circ(18,23,3,"#cfdee9");
 
-rounded(
-side<0?-11:2,
-10+step,10,12,2,
-"#324b65"
-);
+ }else{
+  // WALKING LEGS
+  for(const side of [-1,1]){
+   const foot=(keys.size||held)
+    ?Math.sin(t*15+side*1.5)*3
+    :0;
 
-rounded(
-side<0?-12:1,
-18+step,14,6,2,
-"#1b2c41"
-);
+   rounded(
+    side<0?-11:2,
+    10+foot,10,12,2,
+    "#324b65"
+   );
+
+   rounded(
+    side<0?-12:1,
+    18+foot,14,6,2,
+    "#1b2c41"
+   );
+  }
+ }
+
+ // BACKPACK
+ rounded(
+  -17,-13,13,26,4,
+  "#b88245"
+ );
+
+ // JACKET
+ const jacket=g.createLinearGradient(
+  -12,-10,12,18
+ );
+
+ jacket.addColorStop(0,"#6bcadc");
+ jacket.addColorStop(1,"#195875");
+
+ rounded(
+  -11,-11,26,27,6,jacket
+ );
+
+ rect(
+  -3,-8,3,20,
+  "#c8f6e6"
+ );
+
+ // FACE
+ circ(1,-18,12,"#d99f6f");
+ circ(6,-19,8,"#f1c18c");
+ circ(9,-20,1.5,"#283849");
+
+ // MINER HELMET
+ rounded(
+  -15,-31,30,12,5,
+  "#f8d36d"
+ );
+
+ rounded(
+  -16,-24,34,5,2,
+  "#af7d3c"
+ );
+
+ circ(11,-27,6,"#4f7087");
+ circ(11,-27,4,"#fff7ae");
+
+ // ARM
+ g.strokeStyle="#458da7";
+ g.lineWidth=7;
+ g.beginPath();
+
+ g.moveTo(8,-4);
+ g.lineTo(17,0);
+ g.stroke();
+
+ // PICKAXE
+ if(!riding){
+  const age=Math.max(
+   0,
+   1-
+   (performance.now()-attackAt)/280
+  );
+
+  const angle=
+   dir.x<0?3.2:
+   dir.y<0?-1.7:
+   dir.y>0?.8:-.35;
+
+  g.save();
+  g.translate(17,-3);
+
+  g.rotate(
+   angle+
+   Math.sin(
+    (1-age)*6.28
+   )*age*.7
+  );
+
+  // HANDLE
+  g.strokeStyle="#906a45";
+  g.lineWidth=4;
+  g.beginPath();
+
+  g.moveTo(0,15);
+  g.lineTo(0,-20);
+  g.stroke();
+
+  // SPECIAL FORGED PICKAXE COLOR
+  g.strokeStyle=crafted("forgePick")
+   ?"#dfb6ff"
+   :own("diamondPick")
+   ?"#80f5ff"
+   :"#dce9ef";
+
+  g.lineWidth=5;
+  g.beginPath();
+
+  g.moveTo(-17,-16);
+  g.quadraticCurveTo(
+   0,-26,17,-14
+  );
+
+  g.stroke();
+  g.restore();
+ }
+
+ g.restore();
 }
-}
 
-// Backpack
-rounded(-16,-12,12,24,4,"#bb8244");
-
-// Jacket
-const jacket=g.createLinearGradient(-12,-10,12,17);
-jacket.addColorStop(0,"#65cadd");
-jacket.addColorStop(1,"#195773");
-
-rounded(-11,-11,25,27,6,jacket);
-rect(-3,-8,3,20,"#c8f6e6");
-
-// Face
-circ(1,-17,12,"#d89c6d");
-circ(6,-18,8,"#f1c18c");
-circ(9,-19,1.5,"#283849");
-
-// Helmet
-rounded(-14,-31,28,12,5,"#f8d36d");
-rounded(-16,-23,34,5,2,"#b8893e");
-
-circ(11,-26,6,"#4f7087");
-circ(11,-26,4,"#fff7b0");
-
-// Arm
-g.strokeStyle="#4589a3";
-g.lineWidth=7;
-g.beginPath();
-g.moveTo(8,-3);
-g.lineTo(17,0);
-g.stroke();
-
-// Animated pickaxe
-if(!riding){
-const age=Math.max(
-0,1-(performance.now()-attackAt)/280
-);
-
-const angle=
-dir.x<0?3.2:
-dir.y<0?-1.7:
-dir.y>0?.8:-.35;
-
-g.save();
-g.translate(17,-3);
-g.rotate(
-angle+Math.sin((1-age)*6.28)*age*.7
-);
-
-g.strokeStyle="#936940";
-g.lineWidth=4;
-g.beginPath();
-g.moveTo(0,15);
-g.lineTo(0,-20);
-g.stroke();
-
-g.strokeStyle=own("diamondPick")
-?"#80f5ff":"#dce9ef";
-
-g.lineWidth=5;
-g.beginPath();
-g.moveTo(-17,-16);
-g.quadraticCurveTo(0,-26,17,-14);
-g.stroke();
-
-g.restore();
-}
-
-g.restore();
-}
-
-// MAIN WORLD RENDERER
+// MAIN CAVE DRAWING
 function draw(t){
-const p=d.player;
+ const p=d.player;
 
-const tx=clamp(
-(p.x+.5)*T-cv.width/2,
-0,COLS*T-cv.width
-);
+ const targetX=clamp(
+  (p.x+.5)*T-cv.width/2,
+  0,COLS*T-cv.width
+ );
 
-const ty=clamp(
-(p.y+.5)*T-cv.height*.48,
-0,ROWS*T-cv.height
-);
+ const targetY=clamp(
+  (p.y+.5)*T-cv.height*.48,
+  0,ROWS*T-cv.height
+ );
 
-camX+=(tx-camX)*.22;
-camY+=(ty-camY)*.22;
+ camX+=(targetX-camX)*.22;
+ camY+=(targetY-camY)*.22;
 
-rect(0,0,cv.width,cv.height,"#10182d");
+ rect(
+  0,0,cv.width,cv.height,
+  "#10182d"
+ );
 
-g.save();
-g.translate(-camX,-camY);
+ g.save();
+ g.translate(-camX,-camY);
 
-// Biome backgrounds
-for(const [a,b,color] of [
-[4,24,"#4d3931"],
-[24,54,"#303b50"],
-[54,104,"#272044"],
-[104,154,"#4e2330"],
-[154,ROWS,"#172e3c"]
-]){
-rect(0,a*T,COLS*T,(b-a)*T,color);
+ // BIOME BACKGROUNDS
+ for(const [a,b,color] of [
+  [4,24,"#4d3931"],
+  [24,54,"#303b50"],
+  [54,104,"#272044"],
+  [104,154,"#4e2330"],
+  [154,ROWS,"#172e3c"]
+ ]){
+  rect(
+   0,a*T,
+   COLS*T,
+   (b-a)*T,
+   color
+  );
+ }
+
+ if(camY<4*T){
+  surfaceArt(t);
+ }
+
+ // VISIBLE AREA
+ const top=Math.max(
+  SURFACE,
+  Math.floor(camY/T)-1
+ );
+
+ const bottom=Math.min(
+  ROWS-1,
+  Math.ceil(
+   (camY+cv.height)/T
+  )+1
+ );
+
+ const left=Math.max(
+  0,
+  Math.floor(camX/T)-1
+ );
+
+ const right=Math.min(
+  COLS-1,
+  Math.ceil(
+   (camX+cv.width)/T
+  )+1
+ );
+
+ for(let y=top;y<=bottom;y++){
+  for(let x=left;x<=right;x++){
+   const tile=world[y][x];
+   const xx=x*T;
+   const yy=y*T;
+
+   if(tile){
+    tileArt(
+     tile,xx,yy,x,y,t
+    );
+
+   }else if(y>SURFACE){
+    // MINED TUNNELS
+    rect(
+     xx+1,yy+1,T-2,T-2,
+     {
+      dirt:"#302724",
+      stone:"#172335",
+      crystal:"#18132e",
+      lava:"#301a27",
+      ancient:"#142b36"
+     }[layer(y)]
+    );
+
+    // TUNNEL CRYSTALS
+    if(noise(x,y,16)>.91){
+     g.strokeStyle=
+      layer(y)==="lava"
+      ?"#ffad74"
+      :layer(y)==="ancient"
+      ?"#8beed8"
+      :"#9ca2e4";
+
+     g.lineWidth=2;
+     g.beginPath();
+
+     g.moveTo(xx+9,yy+42);
+     g.lineTo(xx+14,yy+24);
+     g.lineTo(xx+23,yy+42);
+     g.stroke();
+    }
+
+    // CART TRACKS
+    if(riding){
+     rect(
+      xx,yy+T*.78,T,3,
+      "#bda77f"
+     );
+
+     rect(
+      xx+9,yy+T*.72,4,9,
+      "#657f98"
+     );
+
+     rect(
+      xx+T-13,yy+T*.72,4,9,
+      "#657f98"
+     );
+    }
+   }
+
+   // GEM SCANNER HIGHLIGHT
+   if(
+    own("scanner")&&
+    gems.has(tile?.type)&&
+    Math.hypot(
+     x-p.x,y-p.y
+    )<=5
+   ){
+    g.strokeStyle="#7fffe2";
+    g.lineWidth=3;
+
+    g.strokeRect(
+     xx+4,yy+4,40,40
+    );
+   }
+
+   // NEW RELIC LENS HIGHLIGHT
+   if(
+    own("relicLens")&&
+    tile?.type==="shrine"&&
+    Math.hypot(
+     x-p.x,y-p.y
+    )<=6
+   ){
+    g.strokeStyle="#ffe9b5";
+    g.lineWidth=3;
+
+    g.strokeRect(
+     xx+3,yy+3,42,42
+    );
+   }
+  }
+ }
+
+ // CAVE LIGHTING
+ if(depth(p.y)>=7){
+  const radius=
+   own("bright")?8:
+   own("lantern")?5.2:3;
+
+  const extra=crafted("forgeLamp")
+   ?2.3:0;
+
+  for(
+   let y=Math.max(top,4);
+   y<=bottom;
+   y++
+  ){
+   for(
+    let x=left;
+    x<=right;
+    x++
+   ){
+    const distance=Math.hypot(
+     x-p.x,y-p.y
+    );
+
+    const alpha=clamp(
+     (distance-radius-extra)/6,
+     0,.72
+    );
+
+    if(alpha>0){
+     rect(
+      x*T,y*T,T,T,
+      `rgba(4,5,19,${alpha})`
+     );
+    }
+   }
+  }
+ }
+
+ // MINING PARTICLES
+ for(const q of particles){
+  g.globalAlpha=clamp(
+   q.life/.7,
+   0,1
+  );
+
+  circ(
+   q.x,q.y,3,q.color
+  );
+ }
+
+ g.globalAlpha=1;
+
+ // MINER SPRITE
+ playerArt(t);
+
+ g.restore();
+
+ // TARGET BLOCK OUTLINE
+ g.strokeStyle=graceUntil
+  ?"#ffe683"
+  :"#ffdf8980";
+
+ g.lineWidth=graceUntil?4:2;
+
+ g.strokeRect(
+  (p.x+dir.x)*T-camX+2,
+  (p.y+dir.y)*T-camY+2,
+  T-4,T-4
+ );
 }
 
-if(camY<4*T)surface(t);
-
-const top=Math.max(
-SURFACE,Math.floor(camY/T)-1
-);
-
-const bottom=Math.min(
-ROWS-1,
-Math.ceil((camY+cv.height)/T)+1
-);
-
-const left=Math.max(
-0,Math.floor(camX/T)-1
-);
-
-const right=Math.min(
-COLS-1,
-Math.ceil((camX+cv.width)/T)+1
-);
-
-// Draw visible blocks
-for(let y=top;y<=bottom;y++){
-for(let x=left;x<=right;x++){
-const tile=world[y][x];
-const xx=x*T,yy=y*T;
-
-if(tile){
-tileArt(tile,xx,yy,x,y,t);
-
-}else if(y>SURFACE){
-rect(
-xx+1,yy+1,T-2,T-2,
-layer(y)==="dirt"?"#302724":
-layer(y)==="stone"?"#172335":
-layer(y)==="crystal"?"#18132e":
-layer(y)==="lava"?"#301a27":
-"#142b36"
-);
-
-// Tunnel decorations
-if(noise(x,y,16)>.92){
-g.strokeStyle=
-layer(y)==="lava"?"#ff9767":
-layer(y)==="ancient"?"#81d8be":
-"#aaa0e4";
-
-g.lineWidth=2;
-g.beginPath();
-g.moveTo(xx+9,yy+42);
-g.lineTo(xx+13,yy+26);
-g.lineTo(xx+22,yy+42);
-g.stroke();
-}
-
-// Minecart tracks
-if(riding){
-rect(xx,yy+T*.8,T,3,"#b49c72");
-
-rect(
-xx+8,yy+T*.7,4,T*.2,
-"#65788d"
-);
-
-rect(
-xx+T-12,yy+T*.7,4,T*.2,
-"#65788d"
-);
-}
-}
-
-// Gem scanner highlights
-if(
-own("scanner")&&
-gems.has(tile?.type)&&
-Math.hypot(x-p.x,y-p.y)<=5
-){
-g.strokeStyle="#7fffe2";
-g.lineWidth=3;
-g.strokeRect(xx+4,yy+4,40,40);
-}
-}
-}
-
-// Cave darkness
-if(depth(p.y)>=7){
-const radius=
-own("bright")?8:
-own("lantern")?5.2:3;
-
-for(let y=Math.max(top,4);y<=bottom;y++){
-for(let x=left;x<=right;x++){
-const distance=Math.hypot(x-p.x,y-p.y);
-
-const alpha=clamp(
-(distance-radius)/6,
-0,.72
-);
-
-if(alpha>0){
-rect(
-x*T,y*T,T,T,
-`rgba(4,5,19,${alpha})`
-);
-}
-}
-}
-}
-
-// Mining particles
-for(const q of particles){
-g.globalAlpha=clamp(q.life/.7,0,1);
-circ(q.x,q.y,3,q.color);
-}
-
-g.globalAlpha=1;
-
-// Miner
-playerArt(t);
-g.restore();
-
-// Highlight next block
-g.strokeStyle=graceUntil
-?"#ffdd62":"#ffde8a80";
-
-g.lineWidth=graceUntil?4:2;
-
-g.strokeRect(
-(p.x+dir.x)*T-camX+2,
-(p.y+dir.y)*T-camY+2,
-T-4,T-4
-);
-}
-
-// MAIN LOOP
-let previous=performance.now();
+// GAME LOOP
+let prev=performance.now();
 
 function frame(time){
-const dt=Math.min(
-.05,
-Math.max(0,(time-previous)/1000)
-);
+ const dt=Math.min(
+  .05,
+  Math.max(
+   0,(time-prev)/1000
+  )
+ );
 
-previous=time;
+ prev=time;
 
-if(time-lastClock>250){
-lastClock=time;
-updateClock();
+ // REFRESH CLOCK
+ if(time-lastClock>250){
+  lastClock=time;
+  clock();
+ }
+
+ // HELD MOVEMENT
+ if(time>=moveAt){
+  const k=[...keys].at(-1);
+  const v=held||keyDirs[k];
+
+  if(v){
+   digOrMove(...v);
+
+   moveAt=time+
+    (own("boots")?100:170)*
+    (own("runner")?.75:1);
+  }
+ }
+
+ // PARTICLE ANIMATION
+ for(const q of particles){
+  q.x+=q.vx*dt;
+  q.y+=q.vy*dt;
+  q.vy+=170*dt;
+  q.life-=dt;
+ }
+
+ for(
+  let i=particles.length-1;
+  i>=0;
+  i--
+ ){
+  if(particles[i].life<=0){
+   particles.splice(i,1);
+  }
+ }
+
+ draw(time/1000);
+ requestAnimationFrame(frame);
 }
 
-// Repeated movement while holding arrows
-if(time>=moveAt){
-const k=[...keys].at(-1);
-const v=held||keyDirs[k];
-
-if(v){
-digOrMove(...v);
-moveAt=time+(own("boots")?100:170);
-}
-}
-
-// Particles
-for(const q of particles){
-q.x+=q.vx*dt;
-q.y+=q.vy*dt;
-q.vy+=170*dt;
-q.life-=dt;
-}
-
-for(let i=particles.length-1;i>=0;i--){
-if(particles[i].life<=0){
-particles.splice(i,1);
-}
-}
-
-draw(time/1000);
-requestAnimationFrame(frame);
-}
-
-// START GAME
+// START V2
 render();
 requestAnimationFrame(frame);
 
