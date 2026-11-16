@@ -1,687 +1,356 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1223">
-<title>Luxton Arcade | Play Free Games</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070c1c">
+<meta name="description" content="Luxton Arcade: seven free browser games. Play Space Rush, Mining Rush, Basketball Rush and more!">
+<title>Luxton Arcade V2 | Play 7 Free Games</title>
 <style>
 :root{
-  --bg:#0b1223;
-  --panel:#17233b;
-  --blue:#55abff;
-  --white:#f6f9ff;
-  --muted:#b4c4dd;
+  color-scheme:dark;
+  --bg:#070c1c;--bg2:#101a38;--panel:#111e3b;--panel2:#192a4e;
+  --line:#34496f;--text:#f4f8ff;--muted:#bbcae3;--cyan:#6be9f3;
+  --gold:#ffdc85;--blue:#729aff;--shadow:#02071299;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
-  font-family:system-ui,Arial,sans-serif;
-  overflow-x:hidden;
-}
-body.dialog-open{overflow:hidden}
-button,a{font:inherit}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#24447a 0%,#0e1836 36%,var(--bg) 75%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}
+button,input,a{font:inherit}
+a{color:inherit;text-decoration:none}
 button{cursor:pointer}
-a{text-decoration:none;color:inherit}
-button:focus-visible,a:focus-visible{
-  outline:3px solid #ffdf72;
-  outline-offset:3px;
-}
-.container{
-  width:min(1100px,100%);
-  margin:auto;
-  padding:0 18px;
-}
-nav{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:#0d1629f5;
-  border-bottom:1px solid #30415d;
-}
-.nav-inner{
-  min-height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.logo{
-  font-size:clamp(18px,3vw,25px);
-  font-weight:950;
-  letter-spacing:-1px;
-}
-.logo span{color:var(--blue)}
-.nav-actions{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-.change-device{
-  background:#253855;
-  border:1px solid #45688f;
-  color:white;
-  padding:11px 13px;
-  border-radius:10px;
-  font-size:13px;
-  font-weight:700;
-  min-height:44px;
-}
-.hero{
-  padding:80px 16px 70px;
-  text-align:center;
-  background:radial-gradient(
-    ellipse at top,#1c3b65,var(--bg) 75%
-  );
-}
-.eyebrow{
-  color:#90caff;
-  font-size:13px;
-  letter-spacing:2px;
-  font-weight:900;
-}
-.hero h1{
-  font-size:clamp(42px,8vw,84px);
-  line-height:1.08;
-  letter-spacing:-2px;
-  margin:16px 0;
-}
-.hero h1 span{color:var(--blue)}
-.hero p{
-  max-width:560px;
-  margin:0 auto 25px;
-  color:var(--muted);
-  line-height:1.7;
-}
-.primary-button,.play-button{
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  border:0;
-  background:var(--blue);
-  color:#07152b;
-  border-radius:12px;
-  padding:14px 23px;
-  min-height:52px;
-  font-weight:900;
-}
-.primary-button:hover,.play-button:hover{
-  background:#8bc7ff;
-}
-.section{padding:55px 0}
-.section h2{
-  font-size:clamp(25px,4vw,34px);
-  margin:0 0 7px;
-}
-.section-desc{
-  color:var(--muted);
-  margin:0 0 27px;
-}
-.games-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:20px;
-}
-.game-card{
-  display:flex;
-  flex-direction:column;
-  min-width:0;
-  overflow:hidden;
-  background:var(--panel);
-  border:1px solid #304562;
-  border-radius:18px;
-}
-.game-art{
-  display:grid;
-  place-items:center;
-  min-height:170px;
-  font-size:75px;
-  background:radial-gradient(
-    circle,#2a4b86,#10182c
-  );
-}
-.game-art.purple{
-  background:radial-gradient(
-    circle,#4d287c,#10182c
-  );
-}
-.game-art.green{
-  background:radial-gradient(
-    circle,#185b53,#10182c
-  );
-}
-.game-info{
-  display:flex;
-  flex-direction:column;
-  flex:1;
-  padding:20px;
-}
-.game-info h3{
-  font-size:21px;
-  margin:7px 0;
-}
-.game-info p{
-  color:var(--muted);
-  line-height:1.6;
-  font-size:14px;
-  flex:1;
-  margin:5px 0 17px;
-}
-.tag{
-  align-self:flex-start;
-  background:#214c3b;
-  color:#b5fbd2;
-  border-radius:20px;
-  padding:5px 10px;
-  font-size:11px;
-  font-weight:900;
-}
-.play-button{width:100%}
-.about{
-  background:#121e33;
-  text-align:center;
-}
-.about p{
-  margin:15px auto;
-  max-width:600px;
-  line-height:1.7;
-  color:var(--muted);
-}
-footer{
-  text-align:center;
-  padding:25px 15px;
-  color:#9aacca;
-}
-
-/* MOBILE MODE SELECTED */
-html[data-device="mobile"] .games-grid{
-  grid-template-columns:1fr;
-  max-width:700px;
-  margin:auto;
-}
-html[data-device="mobile"] .game-card{
-  flex-direction:row;
-}
-html[data-device="mobile"] .game-art{
-  width:32%;
-  flex:0 0 32%;
-  min-height:180px;
-  font-size:clamp(44px,9vw,72px);
-}
-html[data-device="mobile"] .game-info{
-  padding:16px;
-}
-html[data-device="mobile"] .play-button{
-  min-height:56px;
-}
-
-/* RESPONSIVE SAFETY FOR ALL DEVICES */
-@media(max-width:850px){
-  html[data-device="pc"] .games-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-}
-@media(max-width:600px){
-  .nav-inner{min-height:60px}
-  .hero{padding:52px 14px}
-  .hero h1{
-    font-size:clamp(36px,10vw,57px);
-  }
-  .hero .primary-button{
-    width:min(100%,350px);
-  }
-  .section{padding:35px 0}
-  .games-grid{
-    grid-template-columns:1fr!important;
-    gap:15px;
-  }
-  .game-card{
-    flex-direction:row;
-  }
-  .game-art{
-    min-height:155px;
-    width:32%;
-    flex:0 0 32%;
-    font-size:clamp(40px,9vw,60px);
-  }
-  .game-info{padding:13px}
-  .game-info h3{font-size:18px}
-  .game-info p{
-    font-size:13px;
-    line-height:1.45;
-  }
-  .play-button{
-    min-height:50px;
-  }
-  .change-device{
-    font-size:12px;
-    padding:10px;
-  }
-}
-
-/* FIRST-VISIT DEVICE SELECTION */
-.device-overlay{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:#030815e8;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  overflow-y:auto;
-}
-.device-box{
-  background:linear-gradient(
-    145deg,#213968,#151d3c
-  );
-  width:min(460px,100%);
-  border:2px solid #61b8ff;
-  border-radius:22px;
-  padding:28px;
-  text-align:center;
-  box-shadow:0 0 45px #248eff45;
-}
-.device-box h2{
-  font-size:clamp(24px,5vw,30px);
-  margin:0 0 12px;
-}
-.device-box p{
-  color:#c7d9f3;
-  line-height:1.5;
-}
-.device-options{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin:24px 0 17px;
-}
-.device-option{
-  min-height:145px;
-  padding:15px 8px;
-  border:2px solid #5477ac;
-  background:#1b2a4d;
-  color:white;
-  border-radius:16px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  font-weight:900;
-}
-.device-option:hover{
-  border-color:#74d7ff;
-  background:#2e4678;
-}
-.device-icon{font-size:40px}
-.device-option small{
-  color:#c5d7ee;
-  font-weight:400;
-  font-size:12px;
-}
-.device-note{
-  font-size:12px;
-  margin-bottom:0;
-}
-
-@media(max-width:370px){
-  .logo{font-size:17px}
-  .game-card,
-  html[data-device="mobile"] .game-card{
-    flex-direction:column;
-  }
-  .game-art,
-  html[data-device="mobile"] .game-art{
-    width:100%;
-    min-height:110px;
-  }
-  .device-box{padding:18px}
-  .device-options{gap:8px}
-}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.skip{position:absolute;left:12px;top:-100px;background:var(--gold);color:#101a32;padding:10px;z-index:30}
+.skip:focus{top:12px}
+.container{width:min(1160px,calc(100% - 30px));margin:auto}
+.site-header{position:relative;z-index:10;border-bottom:1px solid #99bbff24;background:#080f20b8;backdrop-filter:blur(12px)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:81px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-icon{display:grid;place-items:center;width:52px;height:52px;flex-shrink:0;border-radius:17px;background:linear-gradient(140deg,#59f5f0,#718aff 60%,#bf7aff);font-size:29px;box-shadow:0 0 24px #7a9dff55}
+.brand b{display:block;font-size:clamp(19px,3vw,27px);letter-spacing:-1px;line-height:1}
+.brand b span{color:var(--gold)}
+.brand small{display:block;color:#a6caff;font-size:10px;letter-spacing:2px;font-weight:900;margin-top:6px}
+.nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.nav a,.nav button{border:1px solid transparent;background:transparent;color:var(--muted);font-weight:800;padding:10px 12px;border-radius:11px}
+.nav a:hover,.nav button:hover{background:#5fa7ff1c;border-color:#87beff42;color:var(--text)}
+.nav .random-top{color:#051b28;background:linear-gradient(110deg,#6debe6,#91a3ff);border:0}
+.hero{position:relative;overflow:hidden;border-radius:27px;margin:24px 0 14px;min-height:390px;display:grid;grid-template-columns:1.13fr .87fr;align-items:center;background:linear-gradient(120deg,#12264e,#192e5c 52%,#18224a);border:1px solid #7899d660;box-shadow:0 20px 60px #0006}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 8% 15%,#fff 98%,transparent),radial-gradient(2px 2px at 25% 78%,#fff 98%,transparent),radial-gradient(2px 2px at 51% 15%,#fff 98%,transparent),radial-gradient(3px 3px at 73% 67%,#bbf8ff 98%,transparent),radial-gradient(2px 2px at 94% 12%,#fff 98%,transparent);background-size:340px 250px;opacity:.38}
+.hero-copy{position:relative;z-index:1;padding:clamp(24px,4vw,53px)}
+.kicker{display:inline-flex;align-items:center;gap:8px;border:1px solid #b4b1ff70;background:#8295ff2c;border-radius:30px;padding:8px 13px;font-size:11px;font-weight:950;letter-spacing:1.7px;color:#e2deff}
+h1{font-size:clamp(38px,5.4vw,66px);letter-spacing:-2.8px;line-height:1.05;margin:19px 0 12px}
+h1 em{font-style:normal;background:linear-gradient(90deg,#7ef2f1,#a8adff 60%,#ffdf91);background-clip:text;color:transparent}
+.hero p{color:#d0e0fa;line-height:1.65;max-width:535px;margin:0 0 22px;font-size:clamp(14px,1.6vw,16px)}
+.hero-buttons{display:flex;gap:11px;flex-wrap:wrap}
+.play-button,.outline-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;min-height:48px;padding:12px 19px;font-weight:950;font-size:14px;transition:transform .2s,filter .2s;white-space:nowrap}
+.play-button{background:linear-gradient(110deg,#6beded,#91a7ff);color:#071d34;border:0;box-shadow:0 7px 17px #161d436e}
+.outline-button{border:1px solid #82a7de99;background:#203960a8;color:#fff}
+.play-button:hover,.outline-button:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.hero .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;color:#c8daf5;font-weight:750;font-size:12px}
+.hero .tags span{background:#ffffff13;border:1px solid #ffffff1e;padding:6px 10px;border-radius:30px}
+.hero-art{height:100%;position:relative;min-height:320px;display:grid;place-items:center;overflow:hidden}
+.planet{position:absolute;width:260px;height:260px;border-radius:50%;right:7%;top:8%;background:radial-gradient(circle at 30% 25%,#a7e5ff,#517ac7 34%,#334d9c 62%,#142457 90%);box-shadow:0 0 85px #5f9eff70,inset -22px -24px 43px #071236a0}
+.planet::after{content:"";position:absolute;left:-18%;right:-18%;top:40%;height:17%;border:12px solid #8dd9f1a0;transform:rotate(-22deg);border-radius:50%;box-shadow:0 0 13px #8ff9ff56}
+.spaceship{position:absolute;z-index:3;font-size:clamp(90px,12vw,145px);transform:rotate(-21deg);filter:drop-shadow(0 18px 21px #0009) drop-shadow(0 0 15px #86ecff85);animation:float 4.3s ease-in-out infinite}
+.orbit{position:absolute;width:380px;height:185px;border:1px dashed #acdbff6e;border-radius:50%;transform:rotate(-25deg)}
+.hero-star{position:absolute;color:#ffe6a4;font-size:30px;top:17%;left:15%;text-shadow:0 0 15px #fff7a8}
+.asteroid{position:absolute;font-size:49px;bottom:19%;left:13%;filter:drop-shadow(0 8px 6px #050b20)}
+.hero-label{position:absolute;bottom:25px;right:23px;color:#dbebff;background:#081732a6;border:1px solid #acd7ff45;padding:7px 10px;border-radius:10px;font-size:12px;font-weight:850}
+@keyframes float{50%{transform:translateY(-16px) rotate(-17deg)}}
+.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:15px 0 29px}
+.stat{border:1px solid var(--line);background:linear-gradient(120deg,#17294b,#10203e);border-radius:16px;padding:15px 19px;display:flex;align-items:center;gap:12px;min-width:0}
+.stat .emoji{font-size:27px}
+.stat strong{display:block;font-size:24px;line-height:1.1;color:var(--gold)}
+.stat small{font-size:12px;color:var(--muted);display:block;margin-top:3px}
+.section-head{display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:25px 0 15px}
+.section-head h2{font-size:clamp(23px,3vw,31px);margin:0;letter-spacing:-1px}
+.section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.small-note{font-size:12px;color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:15px 0 19px}
+.search-wrap{position:relative;flex:1 1 260px;min-width:0}
+.search-wrap span{position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:#b8d2fa}
+.search-wrap input{height:49px;width:100%;border:1px solid #6481b0;background:#101e39;color:var(--text);border-radius:12px;padding:12px 14px 12px 43px;outline:none}
+.search-wrap input::placeholder{color:#a9bddb}
+.search-wrap input:focus{border-color:#9eebff;box-shadow:0 0 0 3px #8cf0f729}
+.filters{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.filter{height:42px;border-radius:11px;padding:8px 13px;background:#152542;border:1px solid #4c6691;color:#c8d8f1;font-size:12px;font-weight:850}
+.filter.active{border-color:#8bf3f2;background:linear-gradient(120deg,#80e6e8,#9aaaff);color:#092438}
+.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.game-card{display:flex;flex-direction:column;min-width:0;background:linear-gradient(150deg,var(--panel2),var(--panel));border:1px solid #5b77aa75;border-radius:18px;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.game-card:hover{transform:translateY(-4px);border-color:#95e9ffad;box-shadow:0 13px 29px #0006}
+.game-art{height:170px;position:relative;display:grid;place-items:center;isolation:isolate;overflow:hidden}
+.game-art::before{content:"";position:absolute;z-index:-1;width:220px;height:220px;border:2px solid #ffffff26;border-radius:32%;transform:rotate(28deg);box-shadow:0 0 0 28px #ffffff06,0 0 0 57px #ffffff05}
+.game-art::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 55%,#ffffff2a,transparent 65%)}
+.game-art .art-icon{font-size:91px;filter:drop-shadow(0 12px 13px #0008);transform:rotate(-8deg);transition:transform .25s}
+.game-card:hover .art-icon{transform:rotate(0) scale(1.08)}
+.game-art.target{background:linear-gradient(135deg,#174f71,#2c4e9a)}
+.game-art.bike{background:linear-gradient(135deg,#bd5e48,#632f70)}
+.game-art.basketball{background:linear-gradient(135deg,#f09840,#aa4954)}
+.game-art.castle{background:linear-gradient(135deg,#776dba,#263a7c)}
+.game-art.fishing{background:linear-gradient(135deg,#30a9b4,#184e93)}
+.game-art.mining{background:linear-gradient(135deg,#9c6845,#504079)}
+.game-art.space{background:linear-gradient(135deg,#31378f,#51266d)}
+.game-art .version{position:absolute;top:12px;left:12px;font-size:11px;font-weight:950;color:#fff;background:#06152eb9;padding:6px 9px;border:1px solid #ffffff45;border-radius:30px}
+.game-art .new{position:absolute;bottom:12px;left:12px;font-size:10px;font-weight:950;letter-spacing:.8px;color:#172342;background:#ffde84;padding:6px 9px;border-radius:30px}
+.favorite{position:absolute;top:10px;right:11px;display:grid;place-items:center;border-radius:10px;border:1px solid #ffffff7d;background:#08132a9c;color:#fff;font-size:22px;width:41px;height:39px;line-height:1;z-index:2}
+.favorite[aria-pressed="true"]{background:#ffe6a7;color:#d75a69}
+.favorite:hover{filter:brightness(1.1)}
+.game-info{padding:17px;display:flex;flex:1;flex-direction:column;align-items:flex-start}
+.game-type{font-size:10px;color:#8febfc;letter-spacing:1.2px;text-transform:uppercase;font-weight:950}
+.game-info h3{font-size:22px;margin:7px 0 7px;letter-spacing:-.5px}
+.game-info p{margin:0 0 16px;color:#c4d3ed;font-size:13px;line-height:1.55;flex:1}
+.game-info .play-button{width:100%}
+.empty{display:none;text-align:center;border:1px dashed #6688bd;border-radius:16px;padding:33px;margin-top:15px;color:var(--muted)}
+.empty button{padding:10px 18px;background:#8becec;border:0;border-radius:9px;font-weight:900;margin-top:10px;color:#0d2335}
+.continue{display:none;margin-top:18px;background:linear-gradient(125deg,#122e4c,#2c3161);border:1px solid #6d9cc3;border-radius:15px;padding:15px 18px;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.continue.visible{display:flex}
+.continue strong{display:block;font-size:17px}
+.continue small{display:block;color:#b9d4ed;font-size:12px;margin-top:4px}
+.updates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0 35px}
+.update-card{background:#132441;border:1px solid #456691;border-radius:14px;padding:19px;display:flex;align-items:center;gap:13px}
+.update-card .icon{font-size:36px}
+.update-card h3{margin:0 0 5px;font-size:16px}
+.update-card p{margin:0;font-size:12px;line-height:1.5;color:var(--muted)}
+.update-card a{color:#9ceaf0;font-size:12px;font-weight:900;display:inline-block;margin-top:8px}
+footer{border-top:1px solid #6680aa44;text-align:center;padding:23px 10px 33px;color:#aebedc;font-size:12px;line-height:1.8}
+body.light{color-scheme:light;--bg:#e8efff;--panel:#f3f7ff;--panel2:#e6edff;--line:#abbadd;--text:#152747;--muted:#50637f;--shadow:#6676a544;background:radial-gradient(ellipse at top,#d8e9ff,var(--bg))}
+body.light .site-header{background:#f5f9ffdb;border-color:#abbbdd}
+body.light .nav a,body.light .nav button:not(.random-top){color:#35466b}
+body.light .stat,body.light .game-card,body.light .update-card{background:linear-gradient(120deg,#f2f7ff,#dfe9ff)}
+body.light .game-info p,body.light .update-card p{color:#4b617e}
+body.light .game-type{color:#266e9b}
+body.light .filter{background:#eaf0ff;color:#2d4672}
+body.light .filter.active{background:#a7ecf3;color:#11263e}
+body.light .search-wrap input{background:#fff;color:#233a5a}
+body.light .section-head p{color:#5a6d8a}
+body.light .continue{background:#e5efff;color:#213454}
+body.light .continue small{color:#4d6480}
+body.light .hero,body.light .hero *{color:#fff}
+body.light .hero h1 em{color:transparent}
+body.light .hero .play-button,body.light .hero .outline-button{color:#101f38}
+body.light .hero .outline-button{color:#fff}
+body.light .quick-stats strong{color:#8c5c1a}
+body.light .game-info .play-button{color:#071d34}
+@media(max-width:950px){.hero{grid-template-columns:1.2fr .8fr}.planet{right:-7%;width:225px;height:225px}.orbit{width:300px}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.topbar{align-items:flex-start;flex-direction:column;padding:14px 0;gap:10px}.nav{width:100%;justify-content:space-between}.nav a,.nav button{padding:8px 9px;font-size:12px}.hero{display:block;min-height:0}.hero-copy{padding:28px 23px}.hero-art{height:205px;min-height:205px}.planet{width:188px;height:188px;right:18%;top:-35px}.spaceship{font-size:105px}.orbit{height:120px;width:245px}.hero-label{bottom:14px}.quick-stats{gap:6px}.stat{padding:10px;gap:5px}.stat .emoji{font-size:20px}.stat strong{font-size:18px}.stat small{font-size:10px}.updates{grid-template-columns:1fr}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-art{height:123px}.game-art .art-icon{font-size:68px}.game-info{padding:12px}.game-info h3{font-size:17px}.game-info p{font-size:12px}.game-info .play-button{font-size:12px;padding:9px;min-height:41px}.filter{font-size:11px;padding:7px 10px}.toolbar{align-items:stretch}}
+@media(max-width:430px){.container{width:min(100% - 18px,1160px)}.brand-icon{width:45px;height:45px}.brand b{font-size:23px}.hero-buttons .play-button,.hero-buttons .outline-button{flex:1 1 auto}.game-grid{grid-template-columns:1fr}.game-art{height:154px}.game-info{padding:16px}.game-info h3{font-size:20px}.game-info p{font-size:13px}.nav .random-top{margin-left:auto}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 </head>
-
 <body>
-
-<nav>
-  <div class="container nav-inner">
-    <a class="logo" href="./">
-      LUXTON <span>ARCADE</span>
+<a class="skip" href="#games">Skip to games</a>
+<header class="site-header">
+  <div class="container topbar">
+    <a class="brand" href="./" aria-label="Luxton Arcade homepage">
+      <span class="brand-icon" aria-hidden="true">🎮</span>
+      <span><b>LUXTON <span>ARCADE</span></b><small>LEVEL UP YOUR PLAY</small></span>
     </a>
-    <div class="nav-actions">
-      <button class="change-device" id="changeDevice">
-        📱 Change Device
-      </button>
-      <a class="change-device" href="#games">
-        🎮 Games
-      </a>
-    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#games">🎮 Games</a>
+      <a href="#updates">✨ What's New</a>
+      <button id="themeBtn" type="button" aria-label="Change light or dark theme">☀️ Theme</button>
+      <button id="randomTop" class="random-top" type="button">🎲 Surprise Me</button>
+    </nav>
   </div>
-</nav>
-
-<header class="hero">
-  <div class="eyebrow">
-    THE HOME OF QUICK CHALLENGES
-  </div>
-  <h1>
-    PLAY. COMPETE.<br>
-    <span>REPEAT.</span>
-  </h1>
-  <p>
-    Play free games, beat your best scores,
-    and unlock rewards at Luxton Arcade!
-  </p>
-  <a class="primary-button" href="#games">
-    🎮 EXPLORE GAMES
-  </a>
 </header>
-
-<main>
-<section class="section" id="games">
-  <div class="container">
-    <h2>🎮 Choose Your Game</h2>
-    <p class="section-desc">
-      Pick your next challenge!
-    </p>
-
-    <div class="games-grid">
-
-      <!-- TARGET RUSH -->
-      <article class="game-card">
-        <div class="game-art">🎯</div>
-        <div class="game-info">
-          <span class="tag">PLAY NOW</span>
-          <h3>Target Rush</h3>
-          <p>
-            Hit targets, build combos,
-            collect Gold Targets, and
-            beat your personal best!
-          </p>
-          <a class="play-button"
-             href="games/target-rush/">
-            ▶ PLAY NOW
-          </a>
-        </div>
-      </article>
-
-      <!-- BIKE RUSH -->
-      <article class="game-card">
-        <div class="game-art purple">🚴</div>
-        <div class="game-info">
-          <span class="tag">PLAY NOW</span>
-          <h3>Bike Rush</h3>
-          <p>
-            Jump obstacles, ride ramps,
-            collect coins, and unlock
-            items in the shop!
-          </p>
-          <a class="play-button"
-             href="games/bike-rush/">
-            ▶ PLAY NOW
-          </a>
-        </div>
-      </article>
-
-      <!-- BASKETBALL RUSH -->
-      <article class="game-card">
-        <div class="game-art green">🏀</div>
-        <div class="game-info">
-          <span class="tag">PLAY NOW</span>
-          <h3>Basketball Rush</h3>
-          <p>
-            Swipe to shoot, beat the
-            moving hoop, win championships,
-            and unlock new courts!
-          </p>
-          <a class="play-button"
-             href="games/basketball-rush/">
-            ▶ PLAY NOW
-          </a>
-        </div>
-      </article>
-
-<!-- CASTLE RUSH -->
-<article class="game-card">
-  <div class="game-art purple">🏰</div>
-  <div class="game-info">
-    <span class="tag">PLAY NOW</span>
-
-    <h3>🏰 Castle Rush</h3>
-
-    <p>
-      Battle enemy castles, launch special
-      cannonballs, earn coins, and unlock
-      powerful upgrades!
-
-      Can you defeat Legend Mode?
-    </p>
-
-    <a class="play-button"
-       href="games/castle-rush/">
-      ▶ PLAY NOW
-    </a>
-  </div>
-</article>
-
-<!-- FISHING RUSH -->
-<article class="game-card">
-  <div class="game-art green">🎣</div>
-  <div class="game-info">
-    <span class="tag">PLAY NOW</span>
-    <h3>🎣 Fishing Rush</h3>
-    <p>
-      Relax by a peaceful lake, catch rare fish,
-      earn coins, unlock fishing rods, and
-      complete your Fish Journal!
-    </p>
-    <a class="play-button" href="games/fishing-rush/">
-      ▶ PLAY NOW
-    </a>
-  </div>
-</article>
-
-<!-- MINING RUSH -->
-<article class="game-card">
-  <div class="game-art purple">⛏️</div>
-  <div class="game-info">
-    <span class="tag live">PLAY NOW</span>
-
-    <h3>⛏️ Mining Rush</h3>
-
-    <p>
-      Dig deep underground, discover valuable gems,
-      upgrade your pickaxe, explore crystal caves,
-      and find hidden treasure!
-    </p>
-<a class="play-button" href="games/mining-rush/">
-  ▶ PLAY NOW
-</a>
-    </a>
-  </div>
-</article>
-
-<!-- SPACE RUSH -->
-<article class="game-card">
-  <div class="game-art purple">🚀</div>
-  <div class="game-info">
-    <span class="tag">PLAY NOW</span>
-    <h3>🚀 Space Rush</h3>
-    <p>
-      Fly through space, blast asteroids,
-      collect coins, and unlock legendary
-      spaceships across three galaxies!
-    </p>
-    <a class="play-button" href="games/space-rush/">
-      ▶ PLAY NOW
-    </a>
-  </div>
-</article>
-
+<main class="container">
+  <section class="hero" aria-label="Featured game">
+    <div class="hero-copy">
+      <span class="kicker">🚀 FEATURED GAME · SPACE RUSH V2</span>
+      <h1>YOUR ARCADE.<br><em>YOUR ADVENTURE.</em></h1>
+      <p>Seven free games. One awesome place to play. Blast alien ships in Space Rush V2, explore secret mining caves, shoot hoops, and discover your next favorite!</p>
+      <div class="hero-buttons">
+        <a class="play-button" href="games/space-rush/" data-game="space">🚀 PLAY SPACE RUSH V2</a>
+        <a class="outline-button" href="#games">EXPLORE ALL GAMES ↓</a>
+      </div>
+      <div class="tags"><span>🎮 7 GAMES</span><span>💾 GAME SAVES</span><span>💻 DESKTOP + MOBILE</span></div>
     </div>
-  </div>
-</section>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orbit"></div><div class="planet"></div><div class="spaceship">🚀</div>
+      <div class="hero-star">✦</div><div class="asteroid">☄️</div>
+      <div class="hero-label">👾 ALIEN INVASION · V2</div>
+    </div>
+  </section>
 
-<section class="section about" id="about">
-  <div class="container">
-    <h2>🌟 About Luxton Arcade</h2>
-    <p>
-      Luxton Arcade is a growing collection
-      of free browser games for computers
-      and mobile devices.
-    </p>
-    <p>
-      Three games, lots of challenges,
-      and more updates on the way!
-    </p>
-  </div>
-</section>
+  <section class="quick-stats" aria-label="Your arcade stats">
+    <div class="stat"><span class="emoji">🎮</span><div><strong>7</strong><small>Playable games</small></div></div>
+    <div class="stat"><span class="emoji">❤️</span><div><strong id="favStat">0</strong><small>Your favorites</small></div></div>
+    <div class="stat"><span class="emoji">🏆</span><div><strong id="triedStat">0</strong><small>Games you've tried here</small></div></div>
+  </section>
+
+  <section class="continue" id="continueBox" aria-label="Continue playing">
+    <div><strong id="continueTitle">🕹️ Continue Playing</strong><small id="continueNote">Jump back into your last game.</small></div>
+    <a class="play-button" id="continueLink" href="games/space-rush/">▶ KEEP PLAYING</a>
+  </section>
+
+  <section id="games" aria-label="All games">
+    <div class="section-head">
+      <div><h2>🎮 Choose Your Game</h2><p>Search, filter, or ❤️ your favorites. All seven are ready to play.</p></div>
+      <span class="small-note" id="results" aria-live="polite">7 games shown</span>
+    </div>
+    <div class="toolbar">
+      <label class="search-wrap"><span aria-hidden="true">🔎</span><input id="search" type="search" placeholder="Search games…" aria-label="Search games" autocomplete="off"></label>
+      <div class="filters" role="group" aria-label="Filter games">
+        <button type="button" class="filter active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="filter" data-filter="action" aria-pressed="false">⚡ Action</button>
+        <button type="button" class="filter" data-filter="sports" aria-pressed="false">🏀 Sports</button>
+        <button type="button" class="filter" data-filter="adventure" aria-pressed="false">🧭 Adventure</button>
+        <button type="button" class="filter" data-filter="relax" aria-pressed="false">🌊 Relax</button>
+        <button type="button" class="filter" data-filter="favorites" aria-pressed="false">❤️ Favorites</button>
+      </div>
+    </div>
+
+    <div class="game-grid" id="gameGrid">
+      <article class="game-card" data-id="target" data-category="action" data-search="target rush reflexes tap speed combo gold targets classic">
+        <div class="game-art target"><span class="version">V7</span><span class="art-icon" aria-hidden="true">🎯</span><button type="button" class="favorite" aria-label="Favorite Target Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Action · Reflexes</span><h3>Target Rush</h3><p>Hit targets, build massive combos, and beat your personal best in 30 seconds!</p><a class="play-button" href="games/target-rush/" data-game="target">▶ PLAY NOW</a></div>
+      </article>
+      <article class="game-card" data-id="bike" data-category="action" data-search="bike rush ramps coins tricks riding platformer racing obstacles shop">
+        <div class="game-art bike"><span class="version">V3</span><span class="art-icon" aria-hidden="true">🚴</span><button type="button" class="favorite" aria-label="Favorite Bike Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Action · Racing</span><h3>Bike Rush</h3><p>Ride ramps, dodge obstacles, earn coins, and customize your bike.</p><a class="play-button" href="games/bike-rush/" data-game="bike">▶ PLAY NOW</a></div>
+      </article>
+      <article class="game-card" data-id="basketball" data-category="sports" data-search="basketball rush hoops shoot first person arcade machine basketball coins">
+        <div class="game-art basketball"><span class="version">V4.2</span><span class="art-icon" aria-hidden="true">🏀</span><button type="button" class="favorite" aria-label="Favorite Basketball Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Sports · Arcade</span><h3>Basketball Rush</h3><p>Swipe to shoot, rack up combos, unlock basketballs, and score big!</p><a class="play-button" href="games/basketball-rush/" data-game="basketball">▶ PLAY NOW</a></div>
+      </article>
+      <article class="game-card" data-id="castle" data-category="adventure" data-search="castle rush castles cannon strategy battle upgrades defend kingdom">
+        <div class="game-art castle"><span class="version">V2</span><span class="art-icon" aria-hidden="true">🏰</span><button type="button" class="favorite" aria-label="Favorite Castle Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Strategy · Adventure</span><h3>Castle Rush</h3><p>Launch cannonballs, upgrade your castle, and take on tricky opponents.</p><a class="play-button" href="games/castle-rush/" data-game="castle">▶ PLAY NOW</a></div>
+      </article>
+      <article class="game-card" data-id="fishing" data-category="relax" data-search="fishing rush ocean relaxing fish boats rods aquarium collection shop">
+        <div class="game-art fishing"><span class="version">V3.5</span><span class="art-icon" aria-hidden="true">🎣</span><button type="button" class="favorite" aria-label="Favorite Fishing Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Relax · Collection</span><h3>Fishing Rush</h3><p>Catch rare fish, upgrade your gear, cruise in boats, and build an aquarium.</p><a class="play-button" href="games/fishing-rush/" data-game="fishing">▶ PLAY NOW</a></div>
+      </article>
+      <article class="game-card" data-id="mining" data-category="adventure" data-search="mining rush cave treasure minerals minecart pets forge headquarters relics">
+        <div class="game-art mining"><span class="version">V2.1</span><span class="new">✨ SECRET TREASURES</span><span class="art-icon" aria-hidden="true">⛏️</span><button type="button" class="favorite" aria-label="Favorite Mining Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Adventure · Mining</span><h3>Mining Rush</h3><p>Explore 200 meters underground, find secret vaults, and adopt mining pets.</p><a class="play-button" href="games/mining-rush/" data-game="mining">▶ PLAY NOW</a></div>
+      </article>
+      <article class="game-card" data-id="space" data-category="action" data-search="space rush spaceships aliens asteroid invasion boss galactic galaxy mission coins">
+        <div class="game-art space"><span class="version">V2</span><span class="new">🚀 NEW INVASION</span><span class="art-icon" aria-hidden="true">🚀</span><button type="button" class="favorite" aria-label="Favorite Space Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Action · Space</span><h3>Space Rush</h3><p>Fight alien drones, defeat the giant mothership, and unlock eight spaceships!</p><a class="play-button" href="games/space-rush/" data-game="space">▶ PLAY NOW</a></div>
+      </article>
+    </div>
+    <div class="empty" id="empty" role="status"><div style="font-size:38px">🪐</div><h3>No games found</h3><p>Try a different search or filter.</p><button type="button" id="reset">SHOW ALL GAMES</button></div>
+  </section>
+
+  <section id="updates">
+    <div class="section-head"><div><h2>✨ What's New</h2><p>New adventures have landed at Luxton Arcade.</p></div></div>
+    <div class="updates">
+      <article class="update-card"><div class="icon">🚀</div><div><h3>Space Rush V2 — Alien Invasion</h3><p>Alien drones, a giant mothership, eight unlockable ships, and a gear lab.</p><a href="games/space-rush/" data-game="space">Launch Space Rush →</a></div></article>
+      <article class="update-card"><div class="icon">⛏️</div><div><h3>Mining Rush V2.1 — Secret Treasures</h3><p>Hidden vaults, three mining pets, new headquarters, and more upgrades.</p><a href="games/mining-rush/" data-game="mining">Explore the caves →</a></div></article>
+    </div>
+  </section>
 </main>
-
-<footer>
-  <strong>🎮 LUXTON ARCADE</strong>
-  <p>© 2026 Luxton Arcade</p>
-</footer>
-
-<!-- DEVICE CHOICE POPUP -->
-<div class="device-overlay"
-     id="deviceOverlay"
-     role="dialog"
-     aria-modal="true"
-     aria-labelledby="deviceTitle"
-     hidden>
-  <div class="device-box">
-    <h2 id="deviceTitle">
-      🎮 Welcome to Luxton Arcade!
-    </h2>
-    <p>
-      What device are you playing on?
-    </p>
-
-    <div class="device-options">
-      <button class="device-option"
-              id="mobileChoice">
-        <span class="device-icon">📱</span>
-        MOBILE
-        <small>Touch-friendly layout</small>
-      </button>
-
-      <button class="device-option"
-              id="pcChoice">
-        <span class="device-icon">💻</span>
-        PC
-        <small>Computer layout</small>
-      </button>
-    </div>
-
-    <p class="device-note">
-      We'll remember your choice.
-      You can change it anytime!
-    </p>
-  </div>
-</div>
-
+<footer>🎮 <strong>LUXTON ARCADE V2</strong> · 7 free games · Built for fun<br>Favorites and the Continue Playing shortcut save locally in this browser. Your game saves stay inside each individual game.</footer>
 <script>
-(function(){
+(()=>{
   "use strict";
+  const $=s=>document.querySelector(s);
+  const $$=s=>[...document.querySelectorAll(s)];
+  const cards=$$(".game-card");
+  const byId=Object.fromEntries(cards.map(c=>[c.dataset.id,c]));
+  const names=Object.fromEntries(cards.map(c=>[c.dataset.id,c.querySelector("h3").textContent]));
+  const storage={favorites:"luxton_arcade_v2_favorites",recent:"luxton_arcade_v2_recent",tried:"luxton_arcade_v2_tried",theme:"luxton_arcade_v2_theme"};
+  function read(key,fallback){try{const value=JSON.parse(localStorage.getItem(key));return value===null?fallback:value;}catch{return fallback;}}
+  function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{}}
+  let favorites=read(storage.favorites,[]);
+  let tried=read(storage.tried,[]);
+  let recent=read(storage.recent,null);
+  let filter="all";
+  if(!Array.isArray(favorites))favorites=[];
+  if(!Array.isArray(tried))tried=[];
+  favorites=favorites.filter(id=>byId[id]);
+  tried=tried.filter(id=>byId[id]);
 
-  const KEY="luxton_arcade_device_choice_v1";
-  const overlay=document.getElementById("deviceOverlay");
-  const mobileBtn=document.getElementById("mobileChoice");
-  const pcBtn=document.getElementById("pcChoice");
-  const changeBtn=document.getElementById("changeDevice");
-
-  let previousFocus=null;
-
-  function getSaved(){
-    try{
-      return localStorage.getItem(KEY);
-    }catch(error){
-      return null;
-    }
+  function updateStats(){
+    $("#favStat").textContent=favorites.length;
+    $("#triedStat").textContent=tried.length;
   }
-
-  function saveChoice(device){
-    try{
-      localStorage.setItem(KEY,device);
-    }catch(error){
-      // Site still works if storage is blocked.
-    }
+  function updateContinue(){
+    const box=$("#continueBox");
+    if(!recent||!byId[recent]){box.classList.remove("visible");return;}
+    box.classList.add("visible");
+    $("#continueTitle").textContent="🕹️ Continue Playing "+names[recent];
+    $("#continueNote").textContent="Jump back into "+names[recent]+" where you left off.";
+    const link=$("#continueLink");
+    link.href=byId[recent].querySelector("a.play-button").getAttribute("href");
+    link.dataset.game=recent;
   }
-
-  function showChoice(){
-    previousFocus=document.activeElement;
-    overlay.hidden=false;
-    document.body.classList.add("dialog-open");
-
-    const current=document.documentElement.dataset.device;
-    if(current==="pc"){
-      pcBtn.focus();
-    }else{
-      mobileBtn.focus();
-    }
+  function saveVisit(id){
+    if(!byId[id])return;
+    recent=id;
+    if(!tried.includes(id))tried.push(id);
+    write(storage.recent,recent);
+    write(storage.tried,tried);
+    updateStats();updateContinue();
   }
+  $$('a[data-game]').forEach(link=>link.addEventListener("click",()=>saveVisit(link.dataset.game)));
+  // Continue Playing is populated later, so use event delegation for its link.
+  $("#continueLink").addEventListener("click",()=>saveVisit($("#continueLink").dataset.game));
 
-  function chooseDevice(device){
-    document.documentElement.dataset.device=device;
-    saveChoice(device);
-    overlay.hidden=true;
-    document.body.classList.remove("dialog-open");
-
-    if(previousFocus&&previousFocus!==document.body){
-      previousFocus.focus();
-    }else{
-      changeBtn.focus();
+  function paintFavorites(){
+    for(const card of cards){
+      const active=favorites.includes(card.dataset.id);
+      const button=card.querySelector(".favorite");
+      button.textContent=active?"♥":"♡";
+      button.setAttribute("aria-pressed",String(active));
+      button.setAttribute("aria-label",(active?"Remove ":"Favorite ")+names[card.dataset.id]+(active?" from favorites":""));
+      button.title=active?"Remove favorite":"Add favorite";
     }
+    updateStats();
   }
-
-  mobileBtn.addEventListener("click",function(){
-    chooseDevice("mobile");
-  });
-
-  pcBtn.addEventListener("click",function(){
-    chooseDevice("pc");
-  });
-
-  changeBtn.addEventListener("click",showChoice);
-
-  // Keep keyboard focus inside the popup.
-  overlay.addEventListener("keydown",function(event){
-    if(event.key!=="Tab")return;
-
-    const buttons=[mobileBtn,pcBtn];
-    const index=buttons.indexOf(document.activeElement);
-
-    if(event.shiftKey&&index===0){
-      event.preventDefault();
-      pcBtn.focus();
-    }else if(!event.shiftKey&&index===1){
-      event.preventDefault();
-      mobileBtn.focus();
+  for(const card of cards){
+    card.querySelector(".favorite").addEventListener("click",()=>{
+      const id=card.dataset.id;
+      if(favorites.includes(id))favorites=favorites.filter(x=>x!==id);
+      else favorites.push(id);
+      write(storage.favorites,favorites);
+      paintFavorites();applyFilter();
+    });
+  }
+  function applyFilter(){
+    const search=$("#search").value.toLowerCase().trim();
+    let shown=0;
+    for(const card of cards){
+      const text=(card.querySelector("h3").textContent+" "+card.dataset.search+" "+card.querySelector("p").textContent).toLowerCase();
+      const categoryMatches=filter==="all"||(filter==="favorites"?favorites.includes(card.dataset.id):card.dataset.category===filter);
+      const visible=categoryMatches&&text.includes(search);
+      card.hidden=!visible;
+      if(visible)shown++;
     }
-  });
-
-  const saved=getSaved();
-
-  if(saved==="mobile"||saved==="pc"){
-    document.documentElement.dataset.device=saved;
-  }else{
-    showChoice();
+    $("#results").textContent=shown+" game"+(shown===1?"":"s")+" shown";
+    $("#empty").style.display=shown?"none":"block";
   }
+  function chooseFilter(value){
+    filter=value;
+    for(const b of $$(".filter")){
+      const selected=b.dataset.filter===value;
+      b.classList.toggle("active",selected);
+      b.setAttribute("aria-pressed",String(selected));
+    }
+    applyFilter();
+  }
+  $("#search").addEventListener("input",applyFilter);
+  $$(".filter").forEach(b=>b.addEventListener("click",()=>chooseFilter(b.dataset.filter)));
+  $("#reset").addEventListener("click",()=>{$("#search").value="";chooseFilter("all");});
+  function randomGame(){
+    const visible=cards.filter(c=>!c.hidden);
+    const candidates=visible.length?visible:cards;
+    const card=candidates[Math.floor(Math.random()*candidates.length)];
+    saveVisit(card.dataset.id);
+    window.location.assign(card.querySelector("a.play-button").getAttribute("href"));
+  }
+  $("#randomTop").addEventListener("click",randomGame);
+  function setTheme(theme){
+    document.body.classList.toggle("light",theme==="light");
+    $("#themeBtn").textContent=theme==="light"?"🌙 Dark Mode":"☀️ Theme";
+    write(storage.theme,theme);
+  }
+  $("#themeBtn").addEventListener("click",()=>setTheme(document.body.classList.contains("light")?"dark":"light"));
+  setTheme(read(storage.theme,"dark"));
+  paintFavorites();updateContinue();applyFilter();
 })();
 </script>
-
-<!-- Refresh GitHub Pages for Mining Rush V1.3 -->
-
 </body>
 </html>
