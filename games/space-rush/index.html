@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#070e24">
-<title>Space Rush V1 | Luxton Arcade</title>
+<title>Space Rush V2 | Luxton Arcade</title>
 <style>
 :root{color-scheme:dark;--sky:#0a1530;--panel:#101c3a;--stroke:#35588d;--aqua:#70f3ee;--gold:#ffd76c;--text:#f5f9ff;--muted:#b6c6e2}
 *{box-sizing:border-box}
@@ -69,13 +69,27 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff0a2;outline-offset:3p
 .bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:13px 0;color:#a3b6d7;font-size:12px}
 .toast{position:absolute;top:66px;left:50%;transform:translateX(-50%);width:max-content;max-width:85%;pointer-events:none;background:#101e3ee3;border:1px solid #7be9cb;border-radius:12px;padding:9px 14px;color:#fff8c8;font-weight:900;text-align:center;box-shadow:0 6px 20px #0006;z-index:2;transition:opacity .3s}
 .toast.hidden{opacity:0}
+/* V2: boss display, permanent upgrades and missions */
+.boss-hud{position:absolute;top:52px;left:50%;transform:translateX(-50%);width:min(330px,75%);z-index:2;padding:8px 11px;border-radius:12px;background:#101a39dc;border:1px solid #fa95dd;box-shadow:0 0 20px #f864a034;pointer-events:none}
+.boss-hud[hidden]{display:none!important}.boss-hud>div:first-child{display:flex;gap:8px;justify-content:space-between;color:#ffdef9;font-size:11px;align-items:center}
+.boss-track{height:10px;border-radius:99px;background:#392345;margin-top:6px;overflow:hidden}
+#bossFill{height:100%;width:100%;background:linear-gradient(90deg,#ff6c8d,#ffa8ed);transition:width .12s}
+.mission-grid{display:grid;gap:8px;text-align:left;margin:12px 0}
+.mission-item{border:1px solid #5278ab;border-radius:12px;background:#203657;padding:10px}
+.mission-item .head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.mission-item h3{margin:0;font-size:14px}.mission-item p{margin:4px 0 6px;font-size:11px}
+.mission-item button{min-height:33px;padding:6px 12px;font-size:12px;white-space:nowrap}
+.progress-track{height:8px;background:#0a1b37;border-radius:99px;overflow:hidden;margin-top:7px}
+.progress-bar{height:100%;background:linear-gradient(90deg,#50dce5,#fff1a2);border-radius:99px}
+#bossHud b{white-space:nowrap}
+@media(max-width:610px){.boss-hud{top:41px;padding:6px 8px}.boss-hud>div:first-child{font-size:9px}.screenbuttons button{min-width:100px}.mission-item{padding:7px}}
 @media(max-width:610px){canvas{aspect-ratio:6/5}.page{padding:8px}.hud{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.hudbox{padding:5px 3px}.hudbox small{font-size:9px}.hudbox b{font-size:16px}.screen{padding:8px;border-radius:12px}.screen h2{font-size:23px}.screen p{font-size:12px;margin:4px 0 9px}.logo-icon{font-size:32px}.feature-line{margin:7px 0}.feature-line span{font-size:10px;padding:4px 6px}.screenbuttons{margin-top:9px}.screenbuttons button{min-height:37px;font-size:12px}.frame{border-radius:11px}.corner{font-size:9px;top:7px;left:7px;padding:4px 7px}.game-actions{top:5px;right:5px}.game-actions button{font-size:11px;min-height:29px;padding:4px 7px}.overlay{padding:4px}.shop-grid{gap:5px;margin:6px 0}.ship-card{padding:7px}.ship-card p{min-height:0;font-size:10px}.ship-card h3{font-size:13px}.pad{grid-template-columns:repeat(3,49px);grid-template-rows:repeat(2,45px)}#fireBtn{height:95px;min-width:112px}.instruction{flex-basis:100%;text-align:center}.controls{padding:8px}.controlrow{justify-content:space-around}.bottom{font-size:11px}}
 </style>
 </head>
 <body>
 <div class="page">
  <header class="top">
-  <div><h1>🚀 SPACE <span>RUSH</span></h1><div class="subtitle">V1 · GALACTIC ARCADE</div></div>
+  <div><h1>🚀 SPACE <span>RUSH</span></h1><div class="subtitle">V2 · ALIEN INVASION</div></div>
   <a class="back" href="../../">← Luxton Arcade</a>
  </header>
  <div class="hud">
@@ -90,22 +104,42 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff0a2;outline-offset:3p
   <canvas id="game" width="960" height="540" aria-label="Space Rush game screen"></canvas>
   <div class="corner" id="powerStatus">🚀 Ready for launch</div>
   <div class="game-actions"><button id="pauseBtn" aria-label="Pause or resume">⏸ Pause</button><button id="soundBtn" aria-label="Toggle sound">🔇</button></div>
+  <div id="bossHud" class="boss-hud" hidden>
+   <div>🛸 <b id="bossName">ALIEN MOTHERSHIP</b> <span id="bossPercent">100%</span></div>
+   <div class="boss-track"><div id="bossFill"></div></div>
+  </div>
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
   <div class="overlay" id="overlay">
    <section class="screen" id="menuScreen">
     <div class="logo-icon">🛸 🌎 ✨</div>
     <h2>WELCOME, SPACE PILOT!</h2>
-    <p><b>60 seconds. Three galaxies. One mission.</b> Dodge meteors, blast asteroids, grab space coins, and survive the run. Buy stronger ships with the coins you earn!</p>
-    <div class="feature-line"><span>🚀 5 ships</span><span>☄️ Asteroids</span><span>🪙 Space coins</span><span>🛡️ Power-ups</span><span>💾 Auto-save</span></div>
+    <p><b>60 seconds. Three galaxies. One epic boss fight!</b> Blast asteroids, defeat alien drones, collect coins, and survive the final battle. Upgrade your ship to become a galactic legend!</p>
+    <div class="feature-line"><span>🚀 8 ships</span><span>👾 Aliens</span><span>🛸 Boss battle</span><span>🔧 Gear upgrades</span><span>🏅 Missions</span><span>💾 Auto-save</span></div>
     <div class="statusline" id="menuInfo">Starter Scout ready · Wallet: 0 coins</div>
-    <div class="screenbuttons"><button id="startBtn">🚀 START MISSION</button><button id="shopBtn" class="gold">🛒 SHIP SHOP</button></div>
+    <div class="screenbuttons"><button id="startBtn">🚀 START MISSION</button><button id="shopBtn" class="gold">🛒 SHIP SHOP</button><button id="labBtn" class="secondary">🔧 GEAR LAB</button><button id="missionsBtn" class="secondary">🏅 MISSIONS</button></div>
    </section>
    <section class="screen" id="shopScreen" hidden>
-    <h2>🛒 GALACTIC SHIP SHOP</h2>
-    <p>Earn coins during runs. Every ship you buy is yours forever!</p>
+    <h2>🛒 GALACTIC SHIP SHOP · 8 SHIPS</h2>
+    <p>Earn coins during runs. All V1 ships stay unlocked. Add three powerful new ships!</p>
     <div class="shop-wallet" id="shopWallet">🪙 0 coins</div>
     <div class="shop-grid" id="shipList"></div>
     <div class="screenbuttons"><button id="shopBackBtn" class="secondary">← BACK TO MISSION</button></div>
+   </section>
+   <section class="screen" id="labScreen" hidden>
+    <div class="logo-icon">🔧</div>
+    <h2>GALACTIC GEAR LAB</h2>
+    <p>Buy permanent upgrades for ALL your spaceships. These bonuses stack with ship abilities!</p>
+    <div class="shop-wallet" id="labWallet">🪙 0 coins</div>
+    <div class="shop-grid" id="labList"></div>
+    <div class="screenbuttons"><button id="labBackBtn" class="secondary">← BACK</button></div>
+   </section>
+   <section class="screen" id="missionsScreen" hidden>
+    <div class="logo-icon">🏅</div>
+    <h2>GALACTIC MISSIONS</h2>
+    <p>Track your lifetime progress, claim coin rewards, and unlock tougher missions. Your progress is saved!</p>
+    <div class="shop-wallet" id="missionWallet">🪙 0 coins</div>
+    <div class="mission-grid" id="missionList"></div>
+    <div class="screenbuttons"><button id="missionBackBtn" class="secondary">← BACK</button></div>
    </section>
    <section class="screen" id="resultScreen" hidden>
     <div class="logo-icon" id="resultIcon">🌟</div>
@@ -116,6 +150,8 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff0a2;outline-offset:3p
      <div><small>🪙 COINS EARNED</small><b id="resultCoins">0</b></div>
      <div><small>🏆 PERSONAL BEST</small><b id="resultBest">0</b></div>
      <div><small>🌌 SECTOR REACHED</small><b id="resultSector">1</b></div>
+     <div><small>👾 ALIENS DEFEATED</small><b id="resultAliens">0</b></div>
+     <div><small>🛸 BOSS</small><b id="resultBoss">Not reached</b></div>
     </div>
     <div id="newBest" class="statusline"></div>
     <div class="screenbuttons"><button id="againBtn">🔄 PLAY AGAIN</button><button id="resultShopBtn" class="gold">🛒 SHIP SHOP</button><button id="menuBtn" class="secondary">🏠 MENU</button></div>
@@ -137,10 +173,10 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff0a2;outline-offset:3p
     <button data-dir="right" aria-label="Move right">▶</button>
    </div>
    <button id="fireBtn">🔥<br>FIRE!</button>
-   <div class="instruction"><b>💻 Chromebook / PC:</b> WASD or arrow keys to fly. Hold <b>SPACE</b> to shoot. <b>P</b> to pause.<br><b>📱 Phone / tablet:</b> Drag your ship or hold the arrows. Hold <b>FIRE</b> to shoot.<br>🛡️ Blue power-ups give shields; ⚡ yellow ones give rapid fire.</div>
+   <div class="instruction"><b>💻 Chromebook / PC:</b> WASD or arrow keys to fly. Hold <b>SPACE</b> to shoot. <b>P</b> to pause.<br><b>📱 Phone / tablet:</b> Drag your ship or hold the arrows. Hold <b>FIRE</b> to shoot.<br>🛡️ Shield · ⚡ Rapid Fire · 🔱 Triple Shot · ❤️ Repair · 🪙 Coin Boost. Blast green alien lasers!</div>
   </div>
  </section>
- <div class="bottom"><span>🌌 Explore three colorful space sectors · Unlock all five ships!</span><span>💾 Wallet, ships and personal best save automatically in this browser.</span></div>
+ <div class="bottom"><span>🌌 V2: Alien drones in sector 2 · Massive boss in sector 3 · Unlock all eight ships!</span><span>💾 Wallet, ships and personal best save automatically in this browser.</span></div>
 </div>
 <script>
 (()=>{
@@ -156,9 +192,25 @@ const ships=[
  {id:"comet",name:"Comet",symbol:"☄️",price:30,desc:"Faster flying and quicker lasers",speed:365,rate:.235,magnet:0,hp:3,color:"#ffb879",accent:"#ffe1a8"},
  {id:"nova",name:"Neon Nova",symbol:"🌈",price:65,desc:"Coin magnet + super-fast lasers",speed:335,rate:.205,magnet:108,hp:3,color:"#bd91ff",accent:"#ffb6fa"},
  {id:"viper",name:"Viper",symbol:"⚡",price:105,desc:"Lightning speed + powerful magnet",speed:405,rate:.21,magnet:122,hp:3,color:"#9aff9c",accent:"#f7ffc5"},
- {id:"titan",name:"Titan",symbol:"🛡️",price:155,desc:"4 hull hearts + fastest laser + magnet",speed:315,rate:.17,magnet:105,hp:4,color:"#ffd67f",accent:"#fff2cb"}
+ {id:"titan",name:"Titan",symbol:"🛡️",price:155,desc:"4 hull hearts + fastest laser + magnet",speed:315,rate:.17,magnet:105,hp:4,color:"#ffd67f",accent:"#fff2cb"},
+ {id:"phantom",name:"Phantom",symbol:"👻",price:210,desc:"Stealth-purple fighter · lightning lasers and magnet",speed:392,rate:.155,magnet:135,hp:3,color:"#bf9bff",accent:"#fff4ff"},
+ {id:"guardian",name:"Guardian",symbol:"💠",price:285,desc:"Heavy defender · 5 hearts and wide coin magnet",speed:335,rate:.19,magnet:135,hp:5,color:"#74ffcf",accent:"#dcfff4"},
+ {id:"galaxy",name:"Galaxy X",symbol:"🌠",price:420,desc:"Legendary all-rounder · 4 hearts and ultra-fast lasers",speed:420,rate:.14,magnet:175,hp:4,color:"#ffd1fa",accent:"#fff2a5"}
 ];
-let save={wallet:0,best:0,owned:["scout"],equipped:"scout",runs:0,sound:false};
+const modules=[
+ {id:"engine",icon:"💨",name:"Hyperdrive",price:38,desc:"+45 flying speed for every ship"},
+ {id:"laser",icon:"🔫",name:"Laser Amplifier",price:55,desc:"Deal double damage to rocks, drones and bosses"},
+ {id:"armor",icon:"❤️",name:"Reinforced Hull",price:48,desc:"Add one permanent heart to every ship"},
+ {id:"gravity",icon:"🧲",name:"Gravity Collector",price:35,desc:"Pull in coins from farther away"},
+ {id:"battery",icon:"🔋",name:"Power Cell",price:65,desc:"Power-ups last 40% longer"}
+];
+const missions=[
+ {id:"asteroids",name:"☄️ Asteroid Buster",title:"Destroy asteroids",base:15,step:10,reward:30,bonus:15},
+ {id:"coins",name:"🪙 Space Treasure",title:"Collect coins during missions",base:40,step:30,reward:45,bonus:20},
+ {id:"drones",name:"👾 Alien Defender",title:"Defeat enemy drones",base:6,step:5,reward:55,bonus:25},
+ {id:"bosses",name:"🛸 Boss Hunter",title:"Defeat alien motherships",base:1,step:1,reward:100,bonus:35}
+];
+let save={wallet:0,best:0,owned:["scout"],equipped:"scout",runs:0,sound:false,modules:[],lifetime:{asteroids:0,coins:0,drones:0,bosses:0},contracts:{}};
 try{
  const loaded=JSON.parse(localStorage.getItem(KEY)||"null");
  if(loaded&&typeof loaded==="object")save={...save,...loaded};
@@ -170,13 +222,28 @@ if(!Array.isArray(save.owned))save.owned=["scout"];
 save.owned=[...new Set(["scout",...save.owned.filter(x=>ships.some(s=>s.id===x))])];
 if(!save.owned.includes(save.equipped))save.equipped="scout";
 save.sound=!!save.sound;
+if(!Array.isArray(save.modules))save.modules=[];
+save.modules=[...new Set(save.modules.filter(id=>modules.some(m=>m.id===id)))];
+if(!save.lifetime||typeof save.lifetime!=="object")save.lifetime={};
+for(const id of ["asteroids","coins","drones","bosses"]){
+ save.lifetime[id]=Math.max(0,Math.floor(Number(save.lifetime[id])||0));
+}
+if(!save.contracts||typeof save.contracts!=="object")save.contracts={};
+for(const m of missions){
+ const rec=save.contracts[m.id];
+ save.contracts[m.id]={tier:rec&&Number.isInteger(rec.tier)?Math.max(0,rec.tier):0,
+ baseline:rec&&Number.isFinite(rec.baseline)?Math.max(0,rec.baseline):0};
+}
+const moduleOwned=id=>save.modules.includes(id);
+const maxHull=()=>selected().hp+(moduleOwned("armor")?1:0);
+const powerLife=n=>n*(moduleOwned("battery")?1.4:1);
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(save));}catch{}};
 const selected=()=>ships.find(s=>s.id===save.equipped)||ships[0];
 let mode="menu",time=60,elapsed=0,score=0,runCoins=0,health=3;
 let player={x:W/2,y:H-100,r:20},invincible=0,shield=0,rapid=0,fireTimer=0,astTimer=0,coinTimer=0,powerTimer=0;
-let asteroids=[],bullets=[],coins=[],powerups=[],particles=[],texts=[],stars=[];
+let asteroids=[],bullets=[],coins=[],powerups=[],particles=[],texts=[],stars=[],drones=[],enemyShots=[],boss=null;
 let pressed=new Set(),heldDirections=new Set(),shootHeld=false,dragTarget=null;
-let totalDestroyed=0,lastSector=1,visualTime=0,lastFrame=0,toasting=0;
+let totalDestroyed=0,totalDrones=0,bossBeaten=false,bossStarted=false,droneTimer=3,lastSector=1,visualTime=0,lastFrame=0,toasting=0,triple=0,coinBoost=0;
 let audioContext=null;
 const sectors=[
  {name:"EARTH ORBIT",bg1:"#081a43",bg2:"#120b39",planet:"#56bdec",glow:"#83d3fb"},
@@ -198,11 +265,57 @@ function sound(freq=350,length=.08,type="sine",volume=.03){
 function toast(message){ui("toast",message);$("toast").classList.remove("hidden");toasting=2.25;}
 function setScreen(name){
  $("overlay").hidden=name===null;
- for(const screen of ["menu","shop","result","pause"])$(screen+"Screen").hidden=screen!==name;
+ for(const screen of ["menu","shop","lab","missions","result","pause"])$(screen+"Screen").hidden=screen!==name;
 }
 function showMenu(){mode="menu";heldDirections.clear();pressed.clear();shootHeld=false;dragTarget=null;updateMenu();setScreen("menu");}
 function updateMenu(){ui("menuInfo",`${selected().symbol} ${selected().name} equipped · Wallet: ${save.wallet} 🪙 · Best: ${save.best.toLocaleString()}`);ui("best",save.best.toLocaleString());}
 function shop(){mode="shop";setScreen("shop");drawShop();}
+function lab(){mode="lab";setScreen("lab");drawLab();}
+function drawLab(){
+ ui("labWallet",`🪙 ${save.wallet} coins`);
+ const list=$("labList");list.replaceChildren();
+ for(const m of modules){
+  const owned=moduleOwned(m.id),card=document.createElement("article");
+  card.className="ship-card"+(owned?" equipped":"");
+  const icon=document.createElement("div");icon.className="symbol";icon.textContent=m.icon;
+  const title=document.createElement("h3");title.textContent=m.name;
+  const desc=document.createElement("p");desc.textContent=m.desc;
+  const btn=document.createElement("button");btn.textContent=owned?"✓ OWNED":`BUY ${m.price} 🪙`;
+  btn.disabled=owned||save.wallet<m.price;
+  btn.onclick=()=>{
+   if(moduleOwned(m.id)||save.wallet<m.price)return;
+   save.wallet-=m.price;save.modules.push(m.id);persist();drawLab();updateMenu();
+   toast(`${m.name} purchased!`);sound(790,.14,"triangle");
+  };
+  card.append(icon,title,desc,btn);list.append(card);
+ }
+}
+function missionScreen(){mode="missions";setScreen("missions");drawMissions();}
+function drawMissions(){
+ ui("missionWallet",`🪙 ${save.wallet} coins`);
+ const list=$("missionList");list.replaceChildren();
+ for(const m of missions){
+  const c=save.contracts[m.id],goal=m.base+c.tier*m.step;
+  const progress=Math.max(0,save.lifetime[m.id]-c.baseline),ready=progress>=goal;
+  const reward=m.reward+c.tier*m.bonus;
+  const item=document.createElement("article");item.className="mission-item";
+  const top=document.createElement("div");top.className="head";
+  const words=document.createElement("div"),heading=document.createElement("h3"),desc=document.createElement("p");
+  heading.textContent=m.name;desc.textContent=`Level ${c.tier+1} · ${m.title} · ${Math.min(progress,goal)}/${goal}`;
+  words.append(heading,desc);
+  const btn=document.createElement("button");btn.textContent=ready?`CLAIM +${reward} 🪙`:`+${reward} 🪙`;
+  btn.disabled=!ready;
+  btn.onclick=()=>{
+   if(save.lifetime[m.id]-c.baseline<goal)return;
+   save.wallet+=reward;c.baseline=save.lifetime[m.id];c.tier++;
+   persist();drawMissions();updateMenu();toast(`🏅 Mission complete! +${reward} coins!`);sound(970,.19,"triangle");
+  };
+  top.append(words,btn);
+  const track=document.createElement("div");track.className="progress-track";
+  const bar=document.createElement("div");bar.className="progress-bar";bar.style.width=Math.min(100,progress/goal*100)+"%";
+  track.append(bar);item.append(top,track);list.append(item);
+ }
+}
 function drawShop(){
  ui("shopWallet",`🪙 ${save.wallet} coins`);
  const list=$("shipList");list.replaceChildren();
@@ -226,10 +339,10 @@ function drawShop(){
 }
 function resetRun(){
  mode="playing";setScreen(null);
- const ship=selected();time=DURATION;elapsed=0;score=0;runCoins=0;health=ship.hp;
- player={x:W/2,y:H-94,r:19};invincible=1.2;shield=0;rapid=0;fireTimer=0;
- astTimer=.8;coinTimer=.6;powerTimer=7.5;totalDestroyed=0;lastSector=1;
- asteroids=[];coins=[];bullets=[];powerups=[];particles=[];texts=[];
+ const ship=selected();time=DURATION;elapsed=0;score=0;runCoins=0;health=maxHull();
+ player={x:W/2,y:H-94,r:19};invincible=1.2;shield=0;rapid=0;triple=0;coinBoost=0;fireTimer=0;
+ astTimer=.8;coinTimer=.6;powerTimer=7.5;droneTimer=4;totalDestroyed=0;totalDrones=0;bossBeaten=false;bossStarted=false;boss=null;lastSector=1;
+ asteroids=[];coins=[];bullets=[];powerups=[];particles=[];texts=[];drones=[];enemyShots=[];$("bossHud").hidden=true;
  heldDirections.clear();pressed.clear();shootHeld=false;dragTarget=null;
  ui("powerStatus","🌎 EARTH ORBIT");toast("🚀 MISSION START! Good luck, pilot!");hud();sound(650,.2,"triangle");
 }
@@ -245,15 +358,25 @@ function endRun(reason){
  ui("resultDesc",reason==="complete"?"You survived the entire 60-second galaxy run!":reason==="quit"?"You ended your run early. Your collected coins were banked!":"Your ship took too much damage. Your collected coins are safe!");
  ui("resultScore",score.toLocaleString());ui("resultCoins","+"+runCoins);
  ui("resultBest",save.best.toLocaleString());ui("resultSector",sector()+" / 3");
- ui("newBest",newRecord?"🌟 NEW PERSONAL BEST! 🌟":`☄️ Asteroids blasted: ${totalDestroyed} · Wallet: ${save.wallet} 🪙`);
+ ui("resultAliens",totalDrones);ui("resultBoss",bossBeaten?"DEFEATED!":bossStarted?"Escaped":"Not reached");
+ ui("newBest",newRecord?"🌟 NEW PERSONAL BEST! 🌟":`☄️ Asteroids: ${totalDestroyed} · 👾 Aliens: ${totalDrones} · Wallet: ${save.wallet} 🪙`);
  setScreen("result");hud();
  if(newRecord)sound(920,.2,"triangle");
 }
 function hud(){
  ui("score",score.toLocaleString());ui("best",Math.max(score,save.best).toLocaleString());
- ui("runCoins",runCoins);ui("hull","♥".repeat(Math.max(0,health))+"♡".repeat(Math.max(0,selected().hp-health)));
+ ui("runCoins",runCoins);ui("hull","♥".repeat(Math.max(0,health))+"♡".repeat(Math.max(0,maxHull()-health)));
  ui("time",Math.ceil(time)+"s");ui("sector",sector()+" / 3");
- if(mode==="playing")ui("powerStatus",shield>0?`🛡️ SHIELD ${Math.ceil(shield)}s`:rapid>0?`⚡ RAPID FIRE ${Math.ceil(rapid)}s`:`🌌 ${sectors[sector()-1].name}`);
+ if(mode==="playing"){
+ let powers=[];
+ if(shield>0)powers.push(`🛡️${Math.ceil(shield)}s`);
+ if(rapid>0)powers.push(`⚡${Math.ceil(rapid)}s`);
+ if(triple>0)powers.push(`🔱${Math.ceil(triple)}s`);
+ if(coinBoost>0)powers.push(`🪙×2 ${Math.ceil(coinBoost)}s`);
+ ui("powerStatus",powers.length?powers.join(" · "):`🌌 ${sectors[sector()-1].name}`);
+ if(boss){$("bossHud").hidden=false;ui("bossPercent",Math.ceil(boss.hp/boss.maxHp*100)+"%");$("bossFill").style.width=clamp(boss.hp/boss.maxHp*100,0,100)+"%";}
+ else $("bossHud").hidden=true;
+}
 }
 function burst(x,y,color,count=13,speed=130){
  for(let i=0;i<count;i++){
@@ -274,14 +397,49 @@ function spawnCoin(){
  coins.push({x:rng(35,W-35),y:-22,r:bonus?17:13,vy:rng(110,150),value:bonus?5:2,phase:rng(0,7)});
 }
 function spawnPowerup(){
- powerups.push({x:rng(35,W-35),y:-25,r:18,vy:115,type:Math.random()<.55?"shield":"rapid",spin:0});
+ const roll=Math.random();
+ const type=roll<.22?"shield":roll<.43?"rapid":roll<.64?"triple":roll<.83?"coinBoost":"repair";
+ powerups.push({x:rng(35,W-35),y:-25,r:18,vy:115,type,spin:0});
 }
 function fire(){
  if(mode!=="playing"||fireTimer>0)return;
- const ship=selected();fireTimer=Math.max(.095,ship.rate*(rapid>0?.55:1));
+ const ship=selected();fireTimer=Math.max(.085,ship.rate*(rapid>0?.53:1));
  const x=player.x,y=player.y-20;
- bullets.push({x:x-9,y,v:-680,r:4});bullets.push({x:x+9,y,v:-680,r:4});
+ bullets.push({x:x-9,y,v:-680,r:4,damage:moduleOwned("laser")?2:1});
+ bullets.push({x:x+9,y,v:-680,r:4,damage:moduleOwned("laser")?2:1});
+ if(triple>0)bullets.push({x,y:y-7,v:-760,r:5,damage:moduleOwned("laser")?2:1});
  burst(x,y-10,ship.color,3,36);sound(450,.047,"sawtooth",.012);
+}
+function spawnDrone(){
+ if(drones.length>=5)return;
+ const x=rng(50,W-50);
+ drones.push({x,y:-40,r:22,baseX:x,phase:rng(0,6.28),age:0,vy:rng(78,104)+elapsed*.55,
+   hp:sector()===3?4:3,maxHp:sector()===3?4:3,shot:rng(1.35,2.3)});
+}
+function startBoss(){
+ if(bossStarted)return;
+ bossStarted=true;
+ boss={x:W/2,y:90,r:67,hp:52,maxHp:52,vx:115,shot:1.4,age:0};
+ toast("🛸 WARNING! ALIEN MOTHERSHIP APPROACHING!");sound(145,.42,"sawtooth",.045);
+}
+function fireEnemyShot(x,y,vx=0,vy=245,r=8){
+ if(enemyShots.length<40)enemyShots.push({x,y,vx,vy,r});
+}
+function destroyDrone(i){
+ const a=drones[i];if(!a)return;
+ drones.splice(i,1);totalDrones++;save.lifetime.drones++;
+ score+=35;runCoins+=2;
+ floatText(a.x,a.y,"+35 ⭐ +2 🪙","#b2ffb1");burst(a.x,a.y,"#8bffbf",22,170);
+ sound(420,.1,"triangle",.03);
+}
+function destroyBoss(){
+ if(!boss)return;
+ const b=boss;boss=null;bossBeaten=true;save.lifetime.bosses++;
+ score+=700;runCoins+=55;burst(b.x,b.y,"#ffc5f6",80,265);
+ floatText(b.x,b.y,"+700 ⭐ +55 🪙","#fff2a4");
+ toast("🏆 BOSS DEFEATED! +55 COINS!");sound(860,.4,"triangle",.055);
+ $("bossHud").hidden=true;
+ enemyShots=[];
 }
 function hurt(){
  if(invincible>0)return;
@@ -296,40 +454,72 @@ function update(dt){
   lastSector=sector();toast(`🌌 SECTOR ${lastSector}: ${sectors[lastSector-1].name}`);sound(720,.14,"triangle");
  }
  fireTimer=Math.max(0,fireTimer-dt);invincible=Math.max(0,invincible-dt);
- shield=Math.max(0,shield-dt);rapid=Math.max(0,rapid-dt);
+ shield=Math.max(0,shield-dt);rapid=Math.max(0,rapid-dt);triple=Math.max(0,triple-dt);coinBoost=Math.max(0,coinBoost-dt);
  let dx=0,dy=0;
  if(pressed.has("ArrowLeft")||pressed.has("a")||heldDirections.has("left"))dx--;
  if(pressed.has("ArrowRight")||pressed.has("d")||heldDirections.has("right"))dx++;
  if(pressed.has("ArrowUp")||pressed.has("w")||heldDirections.has("up"))dy--;
  if(pressed.has("ArrowDown")||pressed.has("s")||heldDirections.has("down"))dy++;
  const ship=selected();
- if(dx||dy){const v=Math.hypot(dx,dy);player.x+=(dx/v)*ship.speed*dt;player.y+=(dy/v)*ship.speed*dt;dragTarget=null;}
+ if(dx||dy){const v=Math.hypot(dx,dy);player.x+=(dx/v)*(ship.speed+(moduleOwned("engine")?45:0))*dt;player.y+=(dy/v)*(ship.speed+(moduleOwned("engine")?45:0))*dt;dragTarget=null;}
  if(dragTarget){
-  const diffX=dragTarget.x-player.x,diffY=dragTarget.y-player.y,dist=Math.hypot(diffX,diffY),step=Math.min(ship.speed*dt*1.8,dist);
+  const diffX=dragTarget.x-player.x,diffY=dragTarget.y-player.y,dist=Math.hypot(diffX,diffY),step=Math.min((ship.speed+(moduleOwned("engine")?45:0))*dt*1.8,dist);
   if(dist>2){player.x+=diffX/dist*step;player.y+=diffY/dist*step;}
  }
  player.x=clamp(player.x,23,W-23);player.y=clamp(player.y,45,H-30);
  if(shootHeld||pressed.has(" "))fire();
- astTimer-=dt;coinTimer-=dt;powerTimer-=dt;
+ astTimer-=dt;coinTimer-=dt;powerTimer-=dt;droneTimer-=dt;
  if(astTimer<=0){spawnAsteroid();astTimer=rng(.62,.98)*Math.max(.57,1-elapsed*.006);}
  if(coinTimer<=0){spawnCoin();coinTimer=rng(.68,1.08);}
- if(powerTimer<=0){spawnPowerup();powerTimer=rng(11,16);}
+ if(powerTimer<=0){spawnPowerup();powerTimer=rng(10,14);}
+ if(elapsed>13&&droneTimer<=0){spawnDrone();droneTimer=rng(3.4,4.8);}
+ if(elapsed>=47&&!bossStarted)startBoss();
+ for(const a of drones){
+  a.age+=dt;a.y+=a.vy*dt;a.x=a.baseX+Math.sin(a.age*2.7+a.phase)*55;
+  a.shot-=dt;
+  if(a.shot<=0&&a.y>20&&a.y<H-95){
+   fireEnemyShot(a.x,a.y+14,clamp((player.x-a.x)*.18,-65,65),235);
+   a.shot=rng(1.7,2.7);
+  }
+ }
+ if(boss){
+  boss.age+=dt;boss.x+=boss.vx*dt;
+  if(boss.x<130||boss.x>W-130){boss.x=clamp(boss.x,130,W-130);boss.vx*=-1;}
+  boss.shot-=dt;
+  if(boss.shot<=0){
+   for(const v of [-100,0,100])fireEnemyShot(boss.x,boss.y+48,v,225,10);
+   boss.shot=rng(1.45,2);
+  }
+ }
+ for(const shot of enemyShots){shot.x+=shot.vx*dt;shot.y+=shot.vy*dt;}
  for(const bullet of bullets)bullet.y+=bullet.v*dt;
  for(const a of asteroids){a.x+=a.vx*dt;a.y+=a.vy*dt;a.spin+=a.rot*dt;if(a.x<a.r||a.x>W-a.r)a.vx*=-1;}
  for(const c of coins){
   c.y+=c.vy*dt;c.phase+=dt*7;
-  if(ship.magnet>0){const d=Math.sqrt(dist2(c,player));if(d<ship.magnet+24&&d>1){const pull=Math.min(520*dt,d);c.x+=(player.x-c.x)/d*pull;c.y+=(player.y-c.y)/d*pull;}}
+  if(ship.magnet>0||moduleOwned("gravity")){const d=Math.sqrt(dist2(c,player));if(d<ship.magnet+(moduleOwned("gravity")?100:0)+24&&d>1){const pull=Math.min(520*dt,d);c.x+=(player.x-c.x)/d*pull;c.y+=(player.y-c.y)/d*pull;}}
  }
  for(const p of powerups){p.y+=p.vy*dt;p.spin+=dt*3;}
  for(let bi=bullets.length-1;bi>=0;bi--){
   const b=bullets[bi];if(b.y< -20){bullets.splice(bi,1);continue;}
   let hit=false;
-  for(let ai=asteroids.length-1;ai>=0;ai--){
+  if(boss&&dist2(b,boss)<(boss.r+b.r-9)**2){
+   hit=true;boss.hp-=b.damage;burst(b.x,b.y,"#ffa4e7",4,90);
+   if(boss.hp<=0)destroyBoss();
+  }
+  if(!hit)for(let di=drones.length-1;di>=0;di--){
+   const a=drones[di];
+   if(dist2(a,b)<(a.r+b.r)**2){
+    hit=true;a.hp-=b.damage;burst(b.x,b.y,"#acffbe",5,90);
+    if(a.hp<=0)destroyDrone(di);
+    break;
+   }
+  }
+  if(!hit)for(let ai=asteroids.length-1;ai>=0;ai--){
    const a=asteroids[ai];
-   if(dist2(a,b)<(a.r+b.r)*(a.r+b.r)){
-    hit=true;a.hp--;burst(b.x,b.y,"#ffdba9",5,90);
+   if(dist2(a,b)<(a.r+b.r)**2){
+    hit=true;a.hp-=b.damage;burst(b.x,b.y,"#ffdba9",5,90);
     if(a.hp<=0){
-     asteroids.splice(ai,1);score+=15;totalDestroyed++;
+     asteroids.splice(ai,1);score+=15;totalDestroyed++;save.lifetime.asteroids++;
      floatText(a.x,a.y,"+15 ⭐");burst(a.x,a.y,"#ffc39d",17,175);sound(195,.1,"triangle",.025);
     }
     break;
@@ -345,12 +535,31 @@ function update(dt){
    if(mode!=="playing")return;
   }
  }
+ for(let i=drones.length-1;i>=0;i--){
+  const a=drones[i];
+  if(a.y>H+40){drones.splice(i,1);continue;}
+  if(dist2(a,player)<(a.r+player.r-5)**2){
+   drones.splice(i,1);burst(a.x,a.y,"#81f6bd",15,160);hurt();
+   if(mode!=="playing")return;
+  }
+ }
+ if(boss&&dist2(boss,player)<(boss.r+player.r-11)**2){
+  hurt();if(mode!=="playing")return;
+ }
+ for(let i=enemyShots.length-1;i>=0;i--){
+  const s=enemyShots[i];
+  if(s.y>H+30||s.x<-30||s.x>W+30){enemyShots.splice(i,1);continue;}
+  if(dist2(s,player)<(s.r+player.r-5)**2){
+   enemyShots.splice(i,1);burst(s.x,s.y,"#9effb0",8,90);hurt();
+   if(mode!=="playing")return;
+  }
+ }
  for(let i=coins.length-1;i>=0;i--){
   const c=coins[i];
   if(c.y>H+22){coins.splice(i,1);continue;}
   if(dist2(c,player)<(c.r+player.r+6)**2){
-   coins.splice(i,1);runCoins+=c.value;score+=c.value*10;
-   burst(c.x,c.y,"#ffe384",9,110);floatText(c.x,c.y,`+${c.value} 🪙`);sound(760,.055,"triangle",.025);
+   coins.splice(i,1);const amount=c.value*(coinBoost>0?2:1);runCoins+=amount;save.lifetime.coins+=amount;score+=amount*10;
+   burst(c.x,c.y,"#ffe384",9,110);floatText(c.x,c.y,`+${amount} 🪙`);sound(760,.055,"triangle",.025);
   }
  }
  for(let i=powerups.length-1;i>=0;i--){
@@ -358,8 +567,11 @@ function update(dt){
   if(p.y>H+30){powerups.splice(i,1);continue;}
   if(dist2(p,player)<(p.r+player.r+7)**2){
    powerups.splice(i,1);
-   if(p.type==="shield"){shield=10;toast("🛡️ SHIELD ACTIVE — one hit blocked!");}
-   else {rapid=9;toast("⚡ RAPID FIRE ACTIVE!");}
+   if(p.type==="shield"){shield=powerLife(11);toast("🛡️ SHIELD ACTIVE — one hit blocked!");}
+   else if(p.type==="rapid"){rapid=powerLife(10);toast("⚡ RAPID FIRE ACTIVE!");}
+   else if(p.type==="triple"){triple=powerLife(10);toast("🔱 TRIPLE LASERS ACTIVE!");}
+   else if(p.type==="coinBoost"){coinBoost=powerLife(12);toast("🪙 DOUBLE COINS ACTIVE!");}
+   else {health=Math.min(maxHull(),health+1);toast("❤️ HULL REPAIRED!");}
    score+=25;burst(p.x,p.y,p.type==="shield"?"#78faff":"#ffef87",15,130);sound(980,.18,"triangle");
   }
  }
@@ -429,15 +641,52 @@ function drawCoin(c){
  ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#866322";ctx.font=`900 ${c.r*.95}px system-ui`;ctx.fillText(c.value===5?"5":"★",0,1);ctx.restore();
 }
 function drawPower(p){
- ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.sin(p.spin)*.15);ctx.shadowBlur=22;ctx.shadowColor=p.type==="shield"?"#66f3ff":"#ffdf5e";
- roundRect(-18,-18,36,36,9,p.type==="shield"?"#35a8da":"#dab34a");ctx.strokeStyle="#f8ffff";ctx.lineWidth=2;ctx.strokeRect(-13,-13,26,26);
- ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="23px system-ui";ctx.fillText(p.type==="shield"?"🛡️":"⚡",0,1);ctx.restore();
+ ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.sin(p.spin)*.15);ctx.shadowBlur=22;
+ const looks={shield:["#66f3ff","#35a8da","🛡️"],rapid:["#ffe570","#dab34a","⚡"],triple:["#d2a8ff","#8263d9","🔱"],coinBoost:["#ffe18d","#dfaa3c","🪙"],repair:["#ff9faa","#b65771","❤️"]};
+ const look=looks[p.type]||looks.rapid;
+ ctx.shadowColor=look[0];roundRect(-18,-18,36,36,9,look[1]);
+ ctx.strokeStyle="#f8ffff";ctx.lineWidth=2;ctx.strokeRect(-13,-13,26,26);
+ ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="23px system-ui";ctx.fillText(look[2],0,1);ctx.restore();
+}
+function drawDrone(a){
+ ctx.save();ctx.translate(a.x,a.y);ctx.rotate(Math.sin(a.age*4)*.07);
+ ctx.shadowColor="#70ffc2";ctx.shadowBlur=15;
+ roundRect(-23,-10,46,23,10,"#388a77");
+ roundRect(-13,-19,26,26,11,"#63d9b1");
+ ctx.shadowBlur=0;
+ roundRect(-10,-8,20,12,5,"#173b46");
+ ctx.fillStyle="#b5fff7";ctx.beginPath();ctx.arc(-5,-2,3,0,6.283);ctx.arc(5,-2,3,0,6.283);ctx.fill();
+ roundRect(-32,-1,12,8,3,"#7ceddb");roundRect(20,-1,12,8,3,"#7ceddb");
+ ctx.fillStyle="#ffe795";ctx.fillRect(-17,14,8,4);ctx.fillRect(9,14,8,4);
+ ctx.restore();
+}
+function drawBoss(b){
+ ctx.save();ctx.translate(b.x,b.y);
+ ctx.shadowColor="#ff86eb";ctx.shadowBlur=30;
+ ctx.fillStyle="#643866";ctx.strokeStyle="#ffc8fc";ctx.lineWidth=3;
+ ctx.beginPath();ctx.moveTo(0,-54);ctx.lineTo(46,-25);ctx.lineTo(78,8);ctx.lineTo(43,34);
+ ctx.lineTo(24,25);ctx.lineTo(0,52);ctx.lineTo(-24,25);ctx.lineTo(-43,34);ctx.lineTo(-78,8);ctx.lineTo(-46,-25);
+ ctx.closePath();ctx.fill();ctx.stroke();
+ ctx.shadowBlur=12;ctx.shadowColor="#ff8eee";
+ roundRect(-34,-22,68,45,16,"#ae6bb3");
+ ctx.shadowBlur=0;roundRect(-21,-13,42,23,10,"#3a214c");
+ ctx.fillStyle="#bafffd";ctx.beginPath();ctx.ellipse(0,-3,14,8,0,0,6.283);ctx.fill();
+ for(const dx of [-52,52]){ctx.fillStyle="#ff778b";ctx.beginPath();ctx.arc(dx,13,8+Math.sin(visualTime*8)*2,0,6.283);ctx.fill();}
+ ctx.restore();
+}
+function drawEnemyShot(b){
+ ctx.save();ctx.shadowColor="#8cff91";ctx.shadowBlur=20;
+ ctx.fillStyle="#98ffa7";ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,6.283);ctx.fill();
+ ctx.fillStyle="#faffdf";ctx.beginPath();ctx.arc(b.x,b.y,b.r*.44,0,6.283);ctx.fill();ctx.restore();
 }
 function render(dt){
  backdrop(dt);
  for(const c of coins)drawCoin(c);
  for(const p of powerups)drawPower(p);
  for(const a of asteroids)drawAsteroid(a);
+ for(const a of drones)drawDrone(a);
+ if(boss)drawBoss(boss);
+ for(const b of enemyShots)drawEnemyShot(b);
  ctx.save();ctx.shadowBlur=18;ctx.shadowColor="#8feaff";ctx.fillStyle="#9afaff";
  for(const b of bullets){roundRect(b.x-3,b.y-14,6,21,3,"#9ffaff");}
  ctx.restore();
@@ -455,7 +704,7 @@ function render(dt){
 function drawFrame(now){
  const dt=clamp((now-lastFrame)/1000,0,.036);lastFrame=now;visualTime+=dt;
  if(mode==="playing")update(dt);
- if(mode==="playing"||mode==="menu"||mode==="result"||mode==="shop"){
+ if(mode==="playing"||mode==="menu"||mode==="result"||mode==="shop"||mode==="lab"||mode==="missions"){
   for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;}
   particles=particles.filter(p=>p.life>0);
   for(const t of texts){t.y-=30*dt;t.life-=dt;}
@@ -470,6 +719,8 @@ function pause(){
  else if(mode==="paused"){mode="playing";setScreen(null);}
 }
 $("startBtn").onclick=resetRun;$("againBtn").onclick=resetRun;
+ $("labBtn").onclick=lab;$("missionsBtn").onclick=missionScreen;
+ $("labBackBtn").onclick=showMenu;$("missionBackBtn").onclick=showMenu;
 $("shopBtn").onclick=shop;$("resultShopBtn").onclick=shop;
 $("shopBackBtn").onclick=showMenu;$("menuBtn").onclick=showMenu;
 $("resumeBtn").onclick=pause;
