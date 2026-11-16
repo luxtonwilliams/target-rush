@@ -1,761 +1,687 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070e24">
-<title>Space Rush V2 | Luxton Arcade</title>
+<meta name="theme-color" content="#0b1223">
+<title>Luxton Arcade | Play Free Games</title>
 <style>
-:root{color-scheme:dark;--sky:#0a1530;--panel:#101c3a;--stroke:#35588d;--aqua:#70f3ee;--gold:#ffd76c;--text:#f5f9ff;--muted:#b6c6e2}
+:root{
+  --bg:#0b1223;
+  --panel:#17233b;
+  --blue:#55abff;
+  --white:#f6f9ff;
+  --muted:#b4c4dd;
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 50% -10%,#293e76 0%,#0a1430 46%,#060b1c 100%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;min-height:100vh}
-.page{max-width:1030px;margin:auto;padding:13px 13px 25px}
-a{color:#b7faff;text-decoration:none}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:11px}
-h1{margin:0;font-weight:1000;letter-spacing:-1.1px;font-size:clamp(26px,4.8vw,43px);color:#fff}
-h1 span{color:var(--gold)}
-.subtitle{font-size:12px;letter-spacing:2.3px;color:#90e5ff;font-weight:900}
-.back{background:#1b3155;border:1px solid #50739e;border-radius:11px;padding:10px 13px;font-weight:800;white-space:nowrap}
-.hud{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;margin:10px 0}
-.hudbox{border:1px solid #375b91;background:linear-gradient(145deg,#1b3255,#101e3b);border-radius:11px;padding:9px 6px;text-align:center;min-width:0}
-.hudbox small{display:block;color:#a9c3e6;font-size:10px;letter-spacing:.7px;font-weight:800}
-.hudbox b{display:block;color:#fff;margin-top:3px;font-size:clamp(14px,2.8vw,25px);font-variant-numeric:tabular-nums}
-.hudbox:nth-child(3) b,.hudbox:nth-child(5) b{color:#ffe597}
-.frame{position:relative;border-radius:16px;border:2px solid #5498c5;overflow:hidden;box-shadow:0 16px 55px #000a,0 0 25px #4be2ed16;background:#08152b}
-canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;touch-action:none}
-.corner{position:absolute;top:10px;left:12px;background:#06152cc4;padding:6px 11px;border:1px solid #6bcdf766;border-radius:20px;font-weight:850;font-size:12px;pointer-events:none}
-.game-actions{display:flex;gap:7px;position:absolute;top:9px;right:9px;z-index:2}
-.game-actions button{min-height:36px;padding:6px 10px;font-size:13px;background:#162b50c9;border:1px solid #6994bd;color:#e8f7ff;border-radius:9px}
-button{font:inherit;cursor:pointer;font-weight:900;color:#07192e;background:linear-gradient(135deg,#6aefe5,#8fabff);border:0;border-radius:12px;min-height:46px;padding:10px 17px;touch-action:manipulation;transition:filter .13s,transform .1s}
-button:hover:not(:disabled){filter:brightness(1.12)}
-button:active:not(:disabled){transform:scale(.97)}
-button:disabled{opacity:.45;cursor:not-allowed}
-button:focus-visible,a:focus-visible{outline:3px solid #fff0a2;outline-offset:3px}
-.secondary{background:#263c63;color:#e7f4ff;border:1px solid #608db5}
-.gold{background:linear-gradient(135deg,#ffe996,#ffb960)}
-.overlay{position:absolute;inset:0;background:#030b21aa;display:grid;place-items:center;padding:12px;z-index:3;overflow:auto}
-.overlay[hidden],.screen[hidden]{display:none!important}
-.screen{width:min(560px,98%);max-height:100%;overflow:auto;background:linear-gradient(150deg,#182c55f2,#101a36f6);border:1px solid #6a9fcd;border-radius:20px;box-shadow:0 20px 65px #000b;padding:clamp(15px,3vw,26px);text-align:center}
-.screen h2{margin:2px 0 8px;color:#fff;font-size:clamp(23px,4vw,35px);line-height:1.14}
-.screen p{color:#c4d4ed;font-size:14px;line-height:1.55;margin:8px 0 15px}
-.logo-icon{font-size:48px;line-height:1.3;filter:drop-shadow(0 0 14px #6af5f5)}
-.screenbuttons{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:15px}
-.screenbuttons button{flex:1;min-width:125px;max-width:260px}
-.feature-line{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:12px 0}
-.feature-line span{background:#203e63;border:1px solid #436f9c;border-radius:99px;padding:5px 9px;font-size:11px;color:#e4f6ff}
-.shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;text-align:left;margin:14px 0}
-.ship-card{background:#1f3458;border:1px solid #5278ab;border-radius:12px;padding:11px;min-width:0}
-.ship-card.equipped{border-color:#6df8c3;box-shadow:inset 0 0 15px #45e4c319}
-.ship-card .symbol{font-size:25px}
-.ship-card h3{font-size:15px;margin:4px 0 2px}
-.ship-card p{font-size:11px;margin:4px 0 9px;min-height:34px}
-.ship-card button{width:100%;min-height:37px;font-size:12px;padding:7px 4px}
-.shop-wallet{font-size:17px;font-weight:900;color:#ffe297}
-.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
-.result-grid div{border:1px solid #446c9f;background:#182e52;border-radius:12px;padding:10px}
-.result-grid small{display:block;color:#bbcee9;font-size:11px}
-.result-grid b{display:block;font-size:23px;color:#fff}
-.statusline{min-height:18px;margin-top:8px;font-size:12px;font-weight:800;color:#a7fff0}
-.controls{margin-top:10px;border:1px solid #38598b;border-radius:14px;background:#112142;padding:12px}
-.controlrow{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-.pad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,48px);gap:5px;touch-action:none;user-select:none}
-.pad button{font-size:20px;min-height:0;padding:0;touch-action:none;background:#2c4a78;color:#ecf8ff;border:1px solid #678fb8}
-.pad [data-dir="up"]{grid-column:2;grid-row:1}
-.pad [data-dir="left"]{grid-column:1;grid-row:2}
-.pad [data-dir="down"]{grid-column:2;grid-row:2}
-.pad [data-dir="right"]{grid-column:3;grid-row:2}
-#fireBtn{background:linear-gradient(135deg,#ffe497,#ff8f77);height:99px;min-width:130px;border-radius:18px;font-size:21px;box-shadow:0 8px 0 #70482b;color:#492820;touch-action:none;user-select:none}
-.instruction{flex:1;min-width:180px;color:#c5d6ed;font-size:12px;line-height:1.65}
-.bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:13px 0;color:#a3b6d7;font-size:12px}
-.toast{position:absolute;top:66px;left:50%;transform:translateX(-50%);width:max-content;max-width:85%;pointer-events:none;background:#101e3ee3;border:1px solid #7be9cb;border-radius:12px;padding:9px 14px;color:#fff8c8;font-weight:900;text-align:center;box-shadow:0 6px 20px #0006;z-index:2;transition:opacity .3s}
-.toast.hidden{opacity:0}
-/* V2: boss display, permanent upgrades and missions */
-.boss-hud{position:absolute;top:52px;left:50%;transform:translateX(-50%);width:min(330px,75%);z-index:2;padding:8px 11px;border-radius:12px;background:#101a39dc;border:1px solid #fa95dd;box-shadow:0 0 20px #f864a034;pointer-events:none}
-.boss-hud[hidden]{display:none!important}.boss-hud>div:first-child{display:flex;gap:8px;justify-content:space-between;color:#ffdef9;font-size:11px;align-items:center}
-.boss-track{height:10px;border-radius:99px;background:#392345;margin-top:6px;overflow:hidden}
-#bossFill{height:100%;width:100%;background:linear-gradient(90deg,#ff6c8d,#ffa8ed);transition:width .12s}
-.mission-grid{display:grid;gap:8px;text-align:left;margin:12px 0}
-.mission-item{border:1px solid #5278ab;border-radius:12px;background:#203657;padding:10px}
-.mission-item .head{display:flex;justify-content:space-between;gap:8px;align-items:center}
-.mission-item h3{margin:0;font-size:14px}.mission-item p{margin:4px 0 6px;font-size:11px}
-.mission-item button{min-height:33px;padding:6px 12px;font-size:12px;white-space:nowrap}
-.progress-track{height:8px;background:#0a1b37;border-radius:99px;overflow:hidden;margin-top:7px}
-.progress-bar{height:100%;background:linear-gradient(90deg,#50dce5,#fff1a2);border-radius:99px}
-#bossHud b{white-space:nowrap}
-@media(max-width:610px){.boss-hud{top:41px;padding:6px 8px}.boss-hud>div:first-child{font-size:9px}.screenbuttons button{min-width:100px}.mission-item{padding:7px}}
-@media(max-width:610px){canvas{aspect-ratio:6/5}.page{padding:8px}.hud{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.hudbox{padding:5px 3px}.hudbox small{font-size:9px}.hudbox b{font-size:16px}.screen{padding:8px;border-radius:12px}.screen h2{font-size:23px}.screen p{font-size:12px;margin:4px 0 9px}.logo-icon{font-size:32px}.feature-line{margin:7px 0}.feature-line span{font-size:10px;padding:4px 6px}.screenbuttons{margin-top:9px}.screenbuttons button{min-height:37px;font-size:12px}.frame{border-radius:11px}.corner{font-size:9px;top:7px;left:7px;padding:4px 7px}.game-actions{top:5px;right:5px}.game-actions button{font-size:11px;min-height:29px;padding:4px 7px}.overlay{padding:4px}.shop-grid{gap:5px;margin:6px 0}.ship-card{padding:7px}.ship-card p{min-height:0;font-size:10px}.ship-card h3{font-size:13px}.pad{grid-template-columns:repeat(3,49px);grid-template-rows:repeat(2,45px)}#fireBtn{height:95px;min-width:112px}.instruction{flex-basis:100%;text-align:center}.controls{padding:8px}.controlrow{justify-content:space-around}.bottom{font-size:11px}}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:system-ui,Arial,sans-serif;
+  overflow-x:hidden;
+}
+body.dialog-open{overflow:hidden}
+button,a{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible{
+  outline:3px solid #ffdf72;
+  outline-offset:3px;
+}
+.container{
+  width:min(1100px,100%);
+  margin:auto;
+  padding:0 18px;
+}
+nav{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#0d1629f5;
+  border-bottom:1px solid #30415d;
+}
+.nav-inner{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.logo{
+  font-size:clamp(18px,3vw,25px);
+  font-weight:950;
+  letter-spacing:-1px;
+}
+.logo span{color:var(--blue)}
+.nav-actions{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.change-device{
+  background:#253855;
+  border:1px solid #45688f;
+  color:white;
+  padding:11px 13px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:700;
+  min-height:44px;
+}
+.hero{
+  padding:80px 16px 70px;
+  text-align:center;
+  background:radial-gradient(
+    ellipse at top,#1c3b65,var(--bg) 75%
+  );
+}
+.eyebrow{
+  color:#90caff;
+  font-size:13px;
+  letter-spacing:2px;
+  font-weight:900;
+}
+.hero h1{
+  font-size:clamp(42px,8vw,84px);
+  line-height:1.08;
+  letter-spacing:-2px;
+  margin:16px 0;
+}
+.hero h1 span{color:var(--blue)}
+.hero p{
+  max-width:560px;
+  margin:0 auto 25px;
+  color:var(--muted);
+  line-height:1.7;
+}
+.primary-button,.play-button{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  border:0;
+  background:var(--blue);
+  color:#07152b;
+  border-radius:12px;
+  padding:14px 23px;
+  min-height:52px;
+  font-weight:900;
+}
+.primary-button:hover,.play-button:hover{
+  background:#8bc7ff;
+}
+.section{padding:55px 0}
+.section h2{
+  font-size:clamp(25px,4vw,34px);
+  margin:0 0 7px;
+}
+.section-desc{
+  color:var(--muted);
+  margin:0 0 27px;
+}
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+.game-card{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  background:var(--panel);
+  border:1px solid #304562;
+  border-radius:18px;
+}
+.game-art{
+  display:grid;
+  place-items:center;
+  min-height:170px;
+  font-size:75px;
+  background:radial-gradient(
+    circle,#2a4b86,#10182c
+  );
+}
+.game-art.purple{
+  background:radial-gradient(
+    circle,#4d287c,#10182c
+  );
+}
+.game-art.green{
+  background:radial-gradient(
+    circle,#185b53,#10182c
+  );
+}
+.game-info{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  padding:20px;
+}
+.game-info h3{
+  font-size:21px;
+  margin:7px 0;
+}
+.game-info p{
+  color:var(--muted);
+  line-height:1.6;
+  font-size:14px;
+  flex:1;
+  margin:5px 0 17px;
+}
+.tag{
+  align-self:flex-start;
+  background:#214c3b;
+  color:#b5fbd2;
+  border-radius:20px;
+  padding:5px 10px;
+  font-size:11px;
+  font-weight:900;
+}
+.play-button{width:100%}
+.about{
+  background:#121e33;
+  text-align:center;
+}
+.about p{
+  margin:15px auto;
+  max-width:600px;
+  line-height:1.7;
+  color:var(--muted);
+}
+footer{
+  text-align:center;
+  padding:25px 15px;
+  color:#9aacca;
+}
+
+/* MOBILE MODE SELECTED */
+html[data-device="mobile"] .games-grid{
+  grid-template-columns:1fr;
+  max-width:700px;
+  margin:auto;
+}
+html[data-device="mobile"] .game-card{
+  flex-direction:row;
+}
+html[data-device="mobile"] .game-art{
+  width:32%;
+  flex:0 0 32%;
+  min-height:180px;
+  font-size:clamp(44px,9vw,72px);
+}
+html[data-device="mobile"] .game-info{
+  padding:16px;
+}
+html[data-device="mobile"] .play-button{
+  min-height:56px;
+}
+
+/* RESPONSIVE SAFETY FOR ALL DEVICES */
+@media(max-width:850px){
+  html[data-device="pc"] .games-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:600px){
+  .nav-inner{min-height:60px}
+  .hero{padding:52px 14px}
+  .hero h1{
+    font-size:clamp(36px,10vw,57px);
+  }
+  .hero .primary-button{
+    width:min(100%,350px);
+  }
+  .section{padding:35px 0}
+  .games-grid{
+    grid-template-columns:1fr!important;
+    gap:15px;
+  }
+  .game-card{
+    flex-direction:row;
+  }
+  .game-art{
+    min-height:155px;
+    width:32%;
+    flex:0 0 32%;
+    font-size:clamp(40px,9vw,60px);
+  }
+  .game-info{padding:13px}
+  .game-info h3{font-size:18px}
+  .game-info p{
+    font-size:13px;
+    line-height:1.45;
+  }
+  .play-button{
+    min-height:50px;
+  }
+  .change-device{
+    font-size:12px;
+    padding:10px;
+  }
+}
+
+/* FIRST-VISIT DEVICE SELECTION */
+.device-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#030815e8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  overflow-y:auto;
+}
+.device-box{
+  background:linear-gradient(
+    145deg,#213968,#151d3c
+  );
+  width:min(460px,100%);
+  border:2px solid #61b8ff;
+  border-radius:22px;
+  padding:28px;
+  text-align:center;
+  box-shadow:0 0 45px #248eff45;
+}
+.device-box h2{
+  font-size:clamp(24px,5vw,30px);
+  margin:0 0 12px;
+}
+.device-box p{
+  color:#c7d9f3;
+  line-height:1.5;
+}
+.device-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:24px 0 17px;
+}
+.device-option{
+  min-height:145px;
+  padding:15px 8px;
+  border:2px solid #5477ac;
+  background:#1b2a4d;
+  color:white;
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-weight:900;
+}
+.device-option:hover{
+  border-color:#74d7ff;
+  background:#2e4678;
+}
+.device-icon{font-size:40px}
+.device-option small{
+  color:#c5d7ee;
+  font-weight:400;
+  font-size:12px;
+}
+.device-note{
+  font-size:12px;
+  margin-bottom:0;
+}
+
+@media(max-width:370px){
+  .logo{font-size:17px}
+  .game-card,
+  html[data-device="mobile"] .game-card{
+    flex-direction:column;
+  }
+  .game-art,
+  html[data-device="mobile"] .game-art{
+    width:100%;
+    min-height:110px;
+  }
+  .device-box{padding:18px}
+  .device-options{gap:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
+
 <body>
-<div class="page">
- <header class="top">
-  <div><h1>🚀 SPACE <span>RUSH</span></h1><div class="subtitle">V2 · ALIEN INVASION</div></div>
-  <a class="back" href="../../">← Luxton Arcade</a>
- </header>
- <div class="hud">
-  <div class="hudbox"><small>⭐ SCORE</small><b id="score">0</b></div>
-  <div class="hudbox"><small>🏆 BEST</small><b id="best">0</b></div>
-  <div class="hudbox"><small>🪙 RUN COINS</small><b id="runCoins">0</b></div>
-  <div class="hudbox"><small>❤️ HULL</small><b id="hull">♥♥♥</b></div>
-  <div class="hudbox"><small>⏱️ TIME</small><b id="time">60s</b></div>
-  <div class="hudbox"><small>🌌 SECTOR</small><b id="sector">1 / 3</b></div>
- </div>
- <div class="frame" id="frame">
-  <canvas id="game" width="960" height="540" aria-label="Space Rush game screen"></canvas>
-  <div class="corner" id="powerStatus">🚀 Ready for launch</div>
-  <div class="game-actions"><button id="pauseBtn" aria-label="Pause or resume">⏸ Pause</button><button id="soundBtn" aria-label="Toggle sound">🔇</button></div>
-  <div id="bossHud" class="boss-hud" hidden>
-   <div>🛸 <b id="bossName">ALIEN MOTHERSHIP</b> <span id="bossPercent">100%</span></div>
-   <div class="boss-track"><div id="bossFill"></div></div>
-  </div>
-  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
-  <div class="overlay" id="overlay">
-   <section class="screen" id="menuScreen">
-    <div class="logo-icon">🛸 🌎 ✨</div>
-    <h2>WELCOME, SPACE PILOT!</h2>
-    <p><b>60 seconds. Three galaxies. One epic boss fight!</b> Blast asteroids, defeat alien drones, collect coins, and survive the final battle. Upgrade your ship to become a galactic legend!</p>
-    <div class="feature-line"><span>🚀 8 ships</span><span>👾 Aliens</span><span>🛸 Boss battle</span><span>🔧 Gear upgrades</span><span>🏅 Missions</span><span>💾 Auto-save</span></div>
-    <div class="statusline" id="menuInfo">Starter Scout ready · Wallet: 0 coins</div>
-    <div class="screenbuttons"><button id="startBtn">🚀 START MISSION</button><button id="shopBtn" class="gold">🛒 SHIP SHOP</button><button id="labBtn" class="secondary">🔧 GEAR LAB</button><button id="missionsBtn" class="secondary">🏅 MISSIONS</button></div>
-   </section>
-   <section class="screen" id="shopScreen" hidden>
-    <h2>🛒 GALACTIC SHIP SHOP · 8 SHIPS</h2>
-    <p>Earn coins during runs. All V1 ships stay unlocked. Add three powerful new ships!</p>
-    <div class="shop-wallet" id="shopWallet">🪙 0 coins</div>
-    <div class="shop-grid" id="shipList"></div>
-    <div class="screenbuttons"><button id="shopBackBtn" class="secondary">← BACK TO MISSION</button></div>
-   </section>
-   <section class="screen" id="labScreen" hidden>
-    <div class="logo-icon">🔧</div>
-    <h2>GALACTIC GEAR LAB</h2>
-    <p>Buy permanent upgrades for ALL your spaceships. These bonuses stack with ship abilities!</p>
-    <div class="shop-wallet" id="labWallet">🪙 0 coins</div>
-    <div class="shop-grid" id="labList"></div>
-    <div class="screenbuttons"><button id="labBackBtn" class="secondary">← BACK</button></div>
-   </section>
-   <section class="screen" id="missionsScreen" hidden>
-    <div class="logo-icon">🏅</div>
-    <h2>GALACTIC MISSIONS</h2>
-    <p>Track your lifetime progress, claim coin rewards, and unlock tougher missions. Your progress is saved!</p>
-    <div class="shop-wallet" id="missionWallet">🪙 0 coins</div>
-    <div class="mission-grid" id="missionList"></div>
-    <div class="screenbuttons"><button id="missionBackBtn" class="secondary">← BACK</button></div>
-   </section>
-   <section class="screen" id="resultScreen" hidden>
-    <div class="logo-icon" id="resultIcon">🌟</div>
-    <h2 id="resultTitle">MISSION COMPLETE!</h2>
-    <p id="resultDesc">Your galaxy adventure is complete.</p>
-    <div class="result-grid">
-     <div><small>⭐ YOUR SCORE</small><b id="resultScore">0</b></div>
-     <div><small>🪙 COINS EARNED</small><b id="resultCoins">0</b></div>
-     <div><small>🏆 PERSONAL BEST</small><b id="resultBest">0</b></div>
-     <div><small>🌌 SECTOR REACHED</small><b id="resultSector">1</b></div>
-     <div><small>👾 ALIENS DEFEATED</small><b id="resultAliens">0</b></div>
-     <div><small>🛸 BOSS</small><b id="resultBoss">Not reached</b></div>
+
+<nav>
+  <div class="container nav-inner">
+    <a class="logo" href="./">
+      LUXTON <span>ARCADE</span>
+    </a>
+    <div class="nav-actions">
+      <button class="change-device" id="changeDevice">
+        📱 Change Device
+      </button>
+      <a class="change-device" href="#games">
+        🎮 Games
+      </a>
     </div>
-    <div id="newBest" class="statusline"></div>
-    <div class="screenbuttons"><button id="againBtn">🔄 PLAY AGAIN</button><button id="resultShopBtn" class="gold">🛒 SHIP SHOP</button><button id="menuBtn" class="secondary">🏠 MENU</button></div>
-   </section>
-   <section class="screen" id="pauseScreen" hidden>
-    <div class="logo-icon">⏸️</div>
-    <h2>MISSION PAUSED</h2>
-    <p>Your time is frozen. The galaxy will be right here when you're ready.</p>
-    <div class="screenbuttons"><button id="resumeBtn">▶ RESUME</button><button id="quitBtn" class="secondary">🏠 END RUN & BANK COINS</button></div>
-   </section>
   </div>
- </div>
- <section class="controls">
-  <div class="controlrow">
-   <div class="pad" aria-label="Move your spaceship">
-    <button data-dir="up" aria-label="Move up">▲</button>
-    <button data-dir="left" aria-label="Move left">◀</button>
-    <button data-dir="down" aria-label="Move down">▼</button>
-    <button data-dir="right" aria-label="Move right">▶</button>
-   </div>
-   <button id="fireBtn">🔥<br>FIRE!</button>
-   <div class="instruction"><b>💻 Chromebook / PC:</b> WASD or arrow keys to fly. Hold <b>SPACE</b> to shoot. <b>P</b> to pause.<br><b>📱 Phone / tablet:</b> Drag your ship or hold the arrows. Hold <b>FIRE</b> to shoot.<br>🛡️ Shield · ⚡ Rapid Fire · 🔱 Triple Shot · ❤️ Repair · 🪙 Coin Boost. Blast green alien lasers!</div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">
+    THE HOME OF QUICK CHALLENGES
   </div>
- </section>
- <div class="bottom"><span>🌌 V2: Alien drones in sector 2 · Massive boss in sector 3 · Unlock all eight ships!</span><span>💾 Wallet, ships and personal best save automatically in this browser.</span></div>
+  <h1>
+    PLAY. COMPETE.<br>
+    <span>REPEAT.</span>
+  </h1>
+  <p>
+    Play free games, beat your best scores,
+    and unlock rewards at Luxton Arcade!
+  </p>
+  <a class="primary-button" href="#games">
+    🎮 EXPLORE GAMES
+  </a>
+</header>
+
+<main>
+<section class="section" id="games">
+  <div class="container">
+    <h2>🎮 Choose Your Game</h2>
+    <p class="section-desc">
+      Pick your next challenge!
+    </p>
+
+    <div class="games-grid">
+
+      <!-- TARGET RUSH -->
+      <article class="game-card">
+        <div class="game-art">🎯</div>
+        <div class="game-info">
+          <span class="tag">PLAY NOW</span>
+          <h3>Target Rush</h3>
+          <p>
+            Hit targets, build combos,
+            collect Gold Targets, and
+            beat your personal best!
+          </p>
+          <a class="play-button"
+             href="games/target-rush/">
+            ▶ PLAY NOW
+          </a>
+        </div>
+      </article>
+
+      <!-- BIKE RUSH -->
+      <article class="game-card">
+        <div class="game-art purple">🚴</div>
+        <div class="game-info">
+          <span class="tag">PLAY NOW</span>
+          <h3>Bike Rush</h3>
+          <p>
+            Jump obstacles, ride ramps,
+            collect coins, and unlock
+            items in the shop!
+          </p>
+          <a class="play-button"
+             href="games/bike-rush/">
+            ▶ PLAY NOW
+          </a>
+        </div>
+      </article>
+
+      <!-- BASKETBALL RUSH -->
+      <article class="game-card">
+        <div class="game-art green">🏀</div>
+        <div class="game-info">
+          <span class="tag">PLAY NOW</span>
+          <h3>Basketball Rush</h3>
+          <p>
+            Swipe to shoot, beat the
+            moving hoop, win championships,
+            and unlock new courts!
+          </p>
+          <a class="play-button"
+             href="games/basketball-rush/">
+            ▶ PLAY NOW
+          </a>
+        </div>
+      </article>
+
+<!-- CASTLE RUSH -->
+<article class="game-card">
+  <div class="game-art purple">🏰</div>
+  <div class="game-info">
+    <span class="tag">PLAY NOW</span>
+
+    <h3>🏰 Castle Rush</h3>
+
+    <p>
+      Battle enemy castles, launch special
+      cannonballs, earn coins, and unlock
+      powerful upgrades!
+
+      Can you defeat Legend Mode?
+    </p>
+
+    <a class="play-button"
+       href="games/castle-rush/">
+      ▶ PLAY NOW
+    </a>
+  </div>
+</article>
+
+<!-- FISHING RUSH -->
+<article class="game-card">
+  <div class="game-art green">🎣</div>
+  <div class="game-info">
+    <span class="tag">PLAY NOW</span>
+    <h3>🎣 Fishing Rush</h3>
+    <p>
+      Relax by a peaceful lake, catch rare fish,
+      earn coins, unlock fishing rods, and
+      complete your Fish Journal!
+    </p>
+    <a class="play-button" href="games/fishing-rush/">
+      ▶ PLAY NOW
+    </a>
+  </div>
+</article>
+
+<!-- MINING RUSH -->
+<article class="game-card">
+  <div class="game-art purple">⛏️</div>
+  <div class="game-info">
+    <span class="tag live">PLAY NOW</span>
+
+    <h3>⛏️ Mining Rush</h3>
+
+    <p>
+      Dig deep underground, discover valuable gems,
+      upgrade your pickaxe, explore crystal caves,
+      and find hidden treasure!
+    </p>
+<a class="play-button" href="games/mining-rush/">
+  ▶ PLAY NOW
+</a>
+    </a>
+  </div>
+</article>
+
+<!-- SPACE RUSH -->
+<article class="game-card">
+  <div class="game-art purple">🚀</div>
+  <div class="game-info">
+    <span class="tag">PLAY NOW</span>
+    <h3>🚀 Space Rush</h3>
+    <p>
+      Fly through space, blast asteroids,
+      collect coins, and unlock legendary
+      spaceships across three galaxies!
+    </p>
+    <a class="card-button" href="games/space-rush/">
+      ▶ PLAY NOW
+    </a>
+  </div>
+</article>
+
+    </div>
+  </div>
+</section>
+
+<section class="section about" id="about">
+  <div class="container">
+    <h2>🌟 About Luxton Arcade</h2>
+    <p>
+      Luxton Arcade is a growing collection
+      of free browser games for computers
+      and mobile devices.
+    </p>
+    <p>
+      Three games, lots of challenges,
+      and more updates on the way!
+    </p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <strong>🎮 LUXTON ARCADE</strong>
+  <p>© 2026 Luxton Arcade</p>
+</footer>
+
+<!-- DEVICE CHOICE POPUP -->
+<div class="device-overlay"
+     id="deviceOverlay"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="deviceTitle"
+     hidden>
+  <div class="device-box">
+    <h2 id="deviceTitle">
+      🎮 Welcome to Luxton Arcade!
+    </h2>
+    <p>
+      What device are you playing on?
+    </p>
+
+    <div class="device-options">
+      <button class="device-option"
+              id="mobileChoice">
+        <span class="device-icon">📱</span>
+        MOBILE
+        <small>Touch-friendly layout</small>
+      </button>
+
+      <button class="device-option"
+              id="pcChoice">
+        <span class="device-icon">💻</span>
+        PC
+        <small>Computer layout</small>
+      </button>
+    </div>
+
+    <p class="device-note">
+      We'll remember your choice.
+      You can change it anytime!
+    </p>
+  </div>
 </div>
+
 <script>
-(()=>{
-"use strict";
-const W=960,H=540,DURATION=60,KEY="luxton_space_rush_v1";
-const $=id=>document.getElementById(id);
-const canvas=$("game"),ctx=canvas.getContext("2d");
-const rng=(a,b)=>a+Math.random()*(b-a);
-const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-const dist2=(a,b)=>{const x=a.x-b.x,y=a.y-b.y;return x*x+y*y};
-const ships=[
- {id:"scout",name:"Scout",symbol:"🚀",price:0,desc:"Starter ship · balanced speed and lasers",speed:315,rate:.28,magnet:0,hp:3,color:"#79eafb",accent:"#d8faff"},
- {id:"comet",name:"Comet",symbol:"☄️",price:30,desc:"Faster flying and quicker lasers",speed:365,rate:.235,magnet:0,hp:3,color:"#ffb879",accent:"#ffe1a8"},
- {id:"nova",name:"Neon Nova",symbol:"🌈",price:65,desc:"Coin magnet + super-fast lasers",speed:335,rate:.205,magnet:108,hp:3,color:"#bd91ff",accent:"#ffb6fa"},
- {id:"viper",name:"Viper",symbol:"⚡",price:105,desc:"Lightning speed + powerful magnet",speed:405,rate:.21,magnet:122,hp:3,color:"#9aff9c",accent:"#f7ffc5"},
- {id:"titan",name:"Titan",symbol:"🛡️",price:155,desc:"4 hull hearts + fastest laser + magnet",speed:315,rate:.17,magnet:105,hp:4,color:"#ffd67f",accent:"#fff2cb"},
- {id:"phantom",name:"Phantom",symbol:"👻",price:210,desc:"Stealth-purple fighter · lightning lasers and magnet",speed:392,rate:.155,magnet:135,hp:3,color:"#bf9bff",accent:"#fff4ff"},
- {id:"guardian",name:"Guardian",symbol:"💠",price:285,desc:"Heavy defender · 5 hearts and wide coin magnet",speed:335,rate:.19,magnet:135,hp:5,color:"#74ffcf",accent:"#dcfff4"},
- {id:"galaxy",name:"Galaxy X",symbol:"🌠",price:420,desc:"Legendary all-rounder · 4 hearts and ultra-fast lasers",speed:420,rate:.14,magnet:175,hp:4,color:"#ffd1fa",accent:"#fff2a5"}
-];
-const modules=[
- {id:"engine",icon:"💨",name:"Hyperdrive",price:38,desc:"+45 flying speed for every ship"},
- {id:"laser",icon:"🔫",name:"Laser Amplifier",price:55,desc:"Deal double damage to rocks, drones and bosses"},
- {id:"armor",icon:"❤️",name:"Reinforced Hull",price:48,desc:"Add one permanent heart to every ship"},
- {id:"gravity",icon:"🧲",name:"Gravity Collector",price:35,desc:"Pull in coins from farther away"},
- {id:"battery",icon:"🔋",name:"Power Cell",price:65,desc:"Power-ups last 40% longer"}
-];
-const missions=[
- {id:"asteroids",name:"☄️ Asteroid Buster",title:"Destroy asteroids",base:15,step:10,reward:30,bonus:15},
- {id:"coins",name:"🪙 Space Treasure",title:"Collect coins during missions",base:40,step:30,reward:45,bonus:20},
- {id:"drones",name:"👾 Alien Defender",title:"Defeat enemy drones",base:6,step:5,reward:55,bonus:25},
- {id:"bosses",name:"🛸 Boss Hunter",title:"Defeat alien motherships",base:1,step:1,reward:100,bonus:35}
-];
-let save={wallet:0,best:0,owned:["scout"],equipped:"scout",runs:0,sound:false,modules:[],lifetime:{asteroids:0,coins:0,drones:0,bosses:0},contracts:{}};
-try{
- const loaded=JSON.parse(localStorage.getItem(KEY)||"null");
- if(loaded&&typeof loaded==="object")save={...save,...loaded};
-}catch{}
-save.wallet=clamp(Math.floor(Number(save.wallet)||0),0,99999999);
-save.best=clamp(Math.floor(Number(save.best)||0),0,99999999);
-save.runs=Math.max(0,Math.floor(Number(save.runs)||0));
-if(!Array.isArray(save.owned))save.owned=["scout"];
-save.owned=[...new Set(["scout",...save.owned.filter(x=>ships.some(s=>s.id===x))])];
-if(!save.owned.includes(save.equipped))save.equipped="scout";
-save.sound=!!save.sound;
-if(!Array.isArray(save.modules))save.modules=[];
-save.modules=[...new Set(save.modules.filter(id=>modules.some(m=>m.id===id)))];
-if(!save.lifetime||typeof save.lifetime!=="object")save.lifetime={};
-for(const id of ["asteroids","coins","drones","bosses"]){
- save.lifetime[id]=Math.max(0,Math.floor(Number(save.lifetime[id])||0));
-}
-if(!save.contracts||typeof save.contracts!=="object")save.contracts={};
-for(const m of missions){
- const rec=save.contracts[m.id];
- save.contracts[m.id]={tier:rec&&Number.isInteger(rec.tier)?Math.max(0,rec.tier):0,
- baseline:rec&&Number.isFinite(rec.baseline)?Math.max(0,rec.baseline):0};
-}
-const moduleOwned=id=>save.modules.includes(id);
-const maxHull=()=>selected().hp+(moduleOwned("armor")?1:0);
-const powerLife=n=>n*(moduleOwned("battery")?1.4:1);
-const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(save));}catch{}};
-const selected=()=>ships.find(s=>s.id===save.equipped)||ships[0];
-let mode="menu",time=60,elapsed=0,score=0,runCoins=0,health=3;
-let player={x:W/2,y:H-100,r:20},invincible=0,shield=0,rapid=0,fireTimer=0,astTimer=0,coinTimer=0,powerTimer=0;
-let asteroids=[],bullets=[],coins=[],powerups=[],particles=[],texts=[],stars=[],drones=[],enemyShots=[],boss=null;
-let pressed=new Set(),heldDirections=new Set(),shootHeld=false,dragTarget=null;
-let totalDestroyed=0,totalDrones=0,bossBeaten=false,bossStarted=false,droneTimer=3,lastSector=1,visualTime=0,lastFrame=0,toasting=0,triple=0,coinBoost=0;
-let audioContext=null;
-const sectors=[
- {name:"EARTH ORBIT",bg1:"#081a43",bg2:"#120b39",planet:"#56bdec",glow:"#83d3fb"},
- {name:"NEON NEBULA",bg1:"#25134c",bg2:"#090d39",planet:"#bc79fa",glow:"#ef92ff"},
- {name:"METEOR BELT",bg1:"#3d183c",bg2:"#150b25",planet:"#ed9470",glow:"#ffb387"}
-];
-const sector=()=>elapsed<20?1:elapsed<40?2:3;
-const ui=(id,val)=>{const e=$(id);if(e.textContent!==String(val))e.textContent=String(val)};
-function sound(freq=350,length=.08,type="sine",volume=.03){
- if(!save.sound)return;
- try{
-  audioContext ||=new (window.AudioContext||window.webkitAudioContext)();
-  const osc=audioContext.createOscillator(),gain=audioContext.createGain(),t=audioContext.currentTime;
-  osc.type=type;osc.frequency.setValueAtTime(freq,t);osc.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.6),t+length);
-  gain.gain.setValueAtTime(volume,t);gain.gain.exponentialRampToValueAtTime(.0001,t+length);
-  osc.connect(gain);gain.connect(audioContext.destination);osc.start(t);osc.stop(t+length);
- }catch{}
-}
-function toast(message){ui("toast",message);$("toast").classList.remove("hidden");toasting=2.25;}
-function setScreen(name){
- $("overlay").hidden=name===null;
- for(const screen of ["menu","shop","lab","missions","result","pause"])$(screen+"Screen").hidden=screen!==name;
-}
-function showMenu(){mode="menu";heldDirections.clear();pressed.clear();shootHeld=false;dragTarget=null;updateMenu();setScreen("menu");}
-function updateMenu(){ui("menuInfo",`${selected().symbol} ${selected().name} equipped · Wallet: ${save.wallet} 🪙 · Best: ${save.best.toLocaleString()}`);ui("best",save.best.toLocaleString());}
-function shop(){mode="shop";setScreen("shop");drawShop();}
-function lab(){mode="lab";setScreen("lab");drawLab();}
-function drawLab(){
- ui("labWallet",`🪙 ${save.wallet} coins`);
- const list=$("labList");list.replaceChildren();
- for(const m of modules){
-  const owned=moduleOwned(m.id),card=document.createElement("article");
-  card.className="ship-card"+(owned?" equipped":"");
-  const icon=document.createElement("div");icon.className="symbol";icon.textContent=m.icon;
-  const title=document.createElement("h3");title.textContent=m.name;
-  const desc=document.createElement("p");desc.textContent=m.desc;
-  const btn=document.createElement("button");btn.textContent=owned?"✓ OWNED":`BUY ${m.price} 🪙`;
-  btn.disabled=owned||save.wallet<m.price;
-  btn.onclick=()=>{
-   if(moduleOwned(m.id)||save.wallet<m.price)return;
-   save.wallet-=m.price;save.modules.push(m.id);persist();drawLab();updateMenu();
-   toast(`${m.name} purchased!`);sound(790,.14,"triangle");
-  };
-  card.append(icon,title,desc,btn);list.append(card);
- }
-}
-function missionScreen(){mode="missions";setScreen("missions");drawMissions();}
-function drawMissions(){
- ui("missionWallet",`🪙 ${save.wallet} coins`);
- const list=$("missionList");list.replaceChildren();
- for(const m of missions){
-  const c=save.contracts[m.id],goal=m.base+c.tier*m.step;
-  const progress=Math.max(0,save.lifetime[m.id]-c.baseline),ready=progress>=goal;
-  const reward=m.reward+c.tier*m.bonus;
-  const item=document.createElement("article");item.className="mission-item";
-  const top=document.createElement("div");top.className="head";
-  const words=document.createElement("div"),heading=document.createElement("h3"),desc=document.createElement("p");
-  heading.textContent=m.name;desc.textContent=`Level ${c.tier+1} · ${m.title} · ${Math.min(progress,goal)}/${goal}`;
-  words.append(heading,desc);
-  const btn=document.createElement("button");btn.textContent=ready?`CLAIM +${reward} 🪙`:`+${reward} 🪙`;
-  btn.disabled=!ready;
-  btn.onclick=()=>{
-   if(save.lifetime[m.id]-c.baseline<goal)return;
-   save.wallet+=reward;c.baseline=save.lifetime[m.id];c.tier++;
-   persist();drawMissions();updateMenu();toast(`🏅 Mission complete! +${reward} coins!`);sound(970,.19,"triangle");
-  };
-  top.append(words,btn);
-  const track=document.createElement("div");track.className="progress-track";
-  const bar=document.createElement("div");bar.className="progress-bar";bar.style.width=Math.min(100,progress/goal*100)+"%";
-  track.append(bar);item.append(top,track);list.append(item);
- }
-}
-function drawShop(){
- ui("shopWallet",`🪙 ${save.wallet} coins`);
- const list=$("shipList");list.replaceChildren();
- for(const ship of ships){
-  const owned=save.owned.includes(ship.id),equipped=save.equipped===ship.id;
-  const card=document.createElement("article");card.className="ship-card"+(equipped?" equipped":"");
-  const symbol=document.createElement("div");symbol.className="symbol";symbol.textContent=ship.symbol;
-  const title=document.createElement("h3");title.textContent=ship.name;
-  const desc=document.createElement("p");desc.textContent=ship.desc;
-  const btn=document.createElement("button");btn.textContent=equipped?"✓ EQUIPPED":owned?"EQUIP":`BUY ${ship.price} 🪙`;
-  btn.disabled=equipped||(!owned&&save.wallet<ship.price);
-  btn.onclick=()=>{
-   if(!save.owned.includes(ship.id)){
-    if(save.wallet<ship.price)return;
-    save.wallet-=ship.price;save.owned.push(ship.id);sound(750,.13,"triangle");
-   }
-   save.equipped=ship.id;persist();drawShop();updateMenu();toast(`${ship.name} equipped! 🚀`);
-  };
-  card.append(symbol,title,desc,btn);list.append(card);
- }
-}
-function resetRun(){
- mode="playing";setScreen(null);
- const ship=selected();time=DURATION;elapsed=0;score=0;runCoins=0;health=maxHull();
- player={x:W/2,y:H-94,r:19};invincible=1.2;shield=0;rapid=0;triple=0;coinBoost=0;fireTimer=0;
- astTimer=.8;coinTimer=.6;powerTimer=7.5;droneTimer=4;totalDestroyed=0;totalDrones=0;bossBeaten=false;bossStarted=false;boss=null;lastSector=1;
- asteroids=[];coins=[];bullets=[];powerups=[];particles=[];texts=[];drones=[];enemyShots=[];$("bossHud").hidden=true;
- heldDirections.clear();pressed.clear();shootHeld=false;dragTarget=null;
- ui("powerStatus","🌎 EARTH ORBIT");toast("🚀 MISSION START! Good luck, pilot!");hud();sound(650,.2,"triangle");
-}
-function endRun(reason){
- if(mode!=="playing"&&mode!=="paused")return;
- mode="result";
- if(reason==="complete")score+=100+health*40;
- const newRecord=score>save.best;
- if(newRecord)save.best=score;
- save.wallet+=runCoins;save.runs++;persist();
- ui("resultIcon",reason==="complete"?"🏆":reason==="quit"?"🚀":"☄️");
- ui("resultTitle",reason==="complete"?"MISSION COMPLETE!":"RUN ENDED!");
- ui("resultDesc",reason==="complete"?"You survived the entire 60-second galaxy run!":reason==="quit"?"You ended your run early. Your collected coins were banked!":"Your ship took too much damage. Your collected coins are safe!");
- ui("resultScore",score.toLocaleString());ui("resultCoins","+"+runCoins);
- ui("resultBest",save.best.toLocaleString());ui("resultSector",sector()+" / 3");
- ui("resultAliens",totalDrones);ui("resultBoss",bossBeaten?"DEFEATED!":bossStarted?"Escaped":"Not reached");
- ui("newBest",newRecord?"🌟 NEW PERSONAL BEST! 🌟":`☄️ Asteroids: ${totalDestroyed} · 👾 Aliens: ${totalDrones} · Wallet: ${save.wallet} 🪙`);
- setScreen("result");hud();
- if(newRecord)sound(920,.2,"triangle");
-}
-function hud(){
- ui("score",score.toLocaleString());ui("best",Math.max(score,save.best).toLocaleString());
- ui("runCoins",runCoins);ui("hull","♥".repeat(Math.max(0,health))+"♡".repeat(Math.max(0,maxHull()-health)));
- ui("time",Math.ceil(time)+"s");ui("sector",sector()+" / 3");
- if(mode==="playing"){
- let powers=[];
- if(shield>0)powers.push(`🛡️${Math.ceil(shield)}s`);
- if(rapid>0)powers.push(`⚡${Math.ceil(rapid)}s`);
- if(triple>0)powers.push(`🔱${Math.ceil(triple)}s`);
- if(coinBoost>0)powers.push(`🪙×2 ${Math.ceil(coinBoost)}s`);
- ui("powerStatus",powers.length?powers.join(" · "):`🌌 ${sectors[sector()-1].name}`);
- if(boss){$("bossHud").hidden=false;ui("bossPercent",Math.ceil(boss.hp/boss.maxHp*100)+"%");$("bossFill").style.width=clamp(boss.hp/boss.maxHp*100,0,100)+"%";}
- else $("bossHud").hidden=true;
-}
-}
-function burst(x,y,color,count=13,speed=130){
- for(let i=0;i<count;i++){
-  const a=rng(0,Math.PI*2),v=rng(speed*.3,speed);
-  particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:rng(.3,.76),max:.76,r:rng(1.6,4.1),color});
- }
- if(particles.length>300)particles.splice(0,particles.length-300);
-}
-function floatText(x,y,text,color="#ffec91"){
- texts.push({x,y,text,color,life:1.1});
-}
-function spawnAsteroid(){
- const r=rng(17,36),s=sectors[sector()-1];
- asteroids.push({x:rng(r+12,W-r-12),y:-r-30,r,vx:rng(-26,26),vy:rng(125,194)+elapsed*1.25,hp:r>29?2:1,spin:rng(0,6.28),rot:rng(-1.6,1.6),edges:Array.from({length:10},()=>rng(.77,1.08)),color:s.planet});
-}
-function spawnCoin(){
- const bonus=Math.random()<.17;
- coins.push({x:rng(35,W-35),y:-22,r:bonus?17:13,vy:rng(110,150),value:bonus?5:2,phase:rng(0,7)});
-}
-function spawnPowerup(){
- const roll=Math.random();
- const type=roll<.22?"shield":roll<.43?"rapid":roll<.64?"triple":roll<.83?"coinBoost":"repair";
- powerups.push({x:rng(35,W-35),y:-25,r:18,vy:115,type,spin:0});
-}
-function fire(){
- if(mode!=="playing"||fireTimer>0)return;
- const ship=selected();fireTimer=Math.max(.085,ship.rate*(rapid>0?.53:1));
- const x=player.x,y=player.y-20;
- bullets.push({x:x-9,y,v:-680,r:4,damage:moduleOwned("laser")?2:1});
- bullets.push({x:x+9,y,v:-680,r:4,damage:moduleOwned("laser")?2:1});
- if(triple>0)bullets.push({x,y:y-7,v:-760,r:5,damage:moduleOwned("laser")?2:1});
- burst(x,y-10,ship.color,3,36);sound(450,.047,"sawtooth",.012);
-}
-function spawnDrone(){
- if(drones.length>=5)return;
- const x=rng(50,W-50);
- drones.push({x,y:-40,r:22,baseX:x,phase:rng(0,6.28),age:0,vy:rng(78,104)+elapsed*.55,
-   hp:sector()===3?4:3,maxHp:sector()===3?4:3,shot:rng(1.35,2.3)});
-}
-function startBoss(){
- if(bossStarted)return;
- bossStarted=true;
- boss={x:W/2,y:90,r:67,hp:52,maxHp:52,vx:115,shot:1.4,age:0};
- toast("🛸 WARNING! ALIEN MOTHERSHIP APPROACHING!");sound(145,.42,"sawtooth",.045);
-}
-function fireEnemyShot(x,y,vx=0,vy=245,r=8){
- if(enemyShots.length<40)enemyShots.push({x,y,vx,vy,r});
-}
-function destroyDrone(i){
- const a=drones[i];if(!a)return;
- drones.splice(i,1);totalDrones++;save.lifetime.drones++;
- score+=35;runCoins+=2;
- floatText(a.x,a.y,"+35 ⭐ +2 🪙","#b2ffb1");burst(a.x,a.y,"#8bffbf",22,170);
- sound(420,.1,"triangle",.03);
-}
-function destroyBoss(){
- if(!boss)return;
- const b=boss;boss=null;bossBeaten=true;save.lifetime.bosses++;
- score+=700;runCoins+=55;burst(b.x,b.y,"#ffc5f6",80,265);
- floatText(b.x,b.y,"+700 ⭐ +55 🪙","#fff2a4");
- toast("🏆 BOSS DEFEATED! +55 COINS!");sound(860,.4,"triangle",.055);
- $("bossHud").hidden=true;
- enemyShots=[];
-}
-function hurt(){
- if(invincible>0)return;
- if(shield>0){shield=0;invincible=1;toast("🛡️ Shield absorbed the collision!");sound(230,.15,"triangle");return;}
- health--;invincible=1.4;burst(player.x,player.y,"#ff9d8b",24,235);sound(170,.22,"sawtooth");
- if(health<=0){endRun("crash");return;}
- toast(`⚠️ HULL DAMAGED! ${health} heart${health===1?"":"s"} left!`);
-}
-function update(dt){
- elapsed=Math.min(DURATION,elapsed+dt);time=Math.max(0,DURATION-elapsed);
- if(sector()!==lastSector){
-  lastSector=sector();toast(`🌌 SECTOR ${lastSector}: ${sectors[lastSector-1].name}`);sound(720,.14,"triangle");
- }
- fireTimer=Math.max(0,fireTimer-dt);invincible=Math.max(0,invincible-dt);
- shield=Math.max(0,shield-dt);rapid=Math.max(0,rapid-dt);triple=Math.max(0,triple-dt);coinBoost=Math.max(0,coinBoost-dt);
- let dx=0,dy=0;
- if(pressed.has("ArrowLeft")||pressed.has("a")||heldDirections.has("left"))dx--;
- if(pressed.has("ArrowRight")||pressed.has("d")||heldDirections.has("right"))dx++;
- if(pressed.has("ArrowUp")||pressed.has("w")||heldDirections.has("up"))dy--;
- if(pressed.has("ArrowDown")||pressed.has("s")||heldDirections.has("down"))dy++;
- const ship=selected();
- if(dx||dy){const v=Math.hypot(dx,dy);player.x+=(dx/v)*(ship.speed+(moduleOwned("engine")?45:0))*dt;player.y+=(dy/v)*(ship.speed+(moduleOwned("engine")?45:0))*dt;dragTarget=null;}
- if(dragTarget){
-  const diffX=dragTarget.x-player.x,diffY=dragTarget.y-player.y,dist=Math.hypot(diffX,diffY),step=Math.min((ship.speed+(moduleOwned("engine")?45:0))*dt*1.8,dist);
-  if(dist>2){player.x+=diffX/dist*step;player.y+=diffY/dist*step;}
- }
- player.x=clamp(player.x,23,W-23);player.y=clamp(player.y,45,H-30);
- if(shootHeld||pressed.has(" "))fire();
- astTimer-=dt;coinTimer-=dt;powerTimer-=dt;droneTimer-=dt;
- if(astTimer<=0){spawnAsteroid();astTimer=rng(.62,.98)*Math.max(.57,1-elapsed*.006);}
- if(coinTimer<=0){spawnCoin();coinTimer=rng(.68,1.08);}
- if(powerTimer<=0){spawnPowerup();powerTimer=rng(10,14);}
- if(elapsed>13&&droneTimer<=0){spawnDrone();droneTimer=rng(3.4,4.8);}
- if(elapsed>=47&&!bossStarted)startBoss();
- for(const a of drones){
-  a.age+=dt;a.y+=a.vy*dt;a.x=a.baseX+Math.sin(a.age*2.7+a.phase)*55;
-  a.shot-=dt;
-  if(a.shot<=0&&a.y>20&&a.y<H-95){
-   fireEnemyShot(a.x,a.y+14,clamp((player.x-a.x)*.18,-65,65),235);
-   a.shot=rng(1.7,2.7);
-  }
- }
- if(boss){
-  boss.age+=dt;boss.x+=boss.vx*dt;
-  if(boss.x<130||boss.x>W-130){boss.x=clamp(boss.x,130,W-130);boss.vx*=-1;}
-  boss.shot-=dt;
-  if(boss.shot<=0){
-   for(const v of [-100,0,100])fireEnemyShot(boss.x,boss.y+48,v,225,10);
-   boss.shot=rng(1.45,2);
-  }
- }
- for(const shot of enemyShots){shot.x+=shot.vx*dt;shot.y+=shot.vy*dt;}
- for(const bullet of bullets)bullet.y+=bullet.v*dt;
- for(const a of asteroids){a.x+=a.vx*dt;a.y+=a.vy*dt;a.spin+=a.rot*dt;if(a.x<a.r||a.x>W-a.r)a.vx*=-1;}
- for(const c of coins){
-  c.y+=c.vy*dt;c.phase+=dt*7;
-  if(ship.magnet>0||moduleOwned("gravity")){const d=Math.sqrt(dist2(c,player));if(d<ship.magnet+(moduleOwned("gravity")?100:0)+24&&d>1){const pull=Math.min(520*dt,d);c.x+=(player.x-c.x)/d*pull;c.y+=(player.y-c.y)/d*pull;}}
- }
- for(const p of powerups){p.y+=p.vy*dt;p.spin+=dt*3;}
- for(let bi=bullets.length-1;bi>=0;bi--){
-  const b=bullets[bi];if(b.y< -20){bullets.splice(bi,1);continue;}
-  let hit=false;
-  if(boss&&dist2(b,boss)<(boss.r+b.r-9)**2){
-   hit=true;boss.hp-=b.damage;burst(b.x,b.y,"#ffa4e7",4,90);
-   if(boss.hp<=0)destroyBoss();
-  }
-  if(!hit)for(let di=drones.length-1;di>=0;di--){
-   const a=drones[di];
-   if(dist2(a,b)<(a.r+b.r)**2){
-    hit=true;a.hp-=b.damage;burst(b.x,b.y,"#acffbe",5,90);
-    if(a.hp<=0)destroyDrone(di);
-    break;
-   }
-  }
-  if(!hit)for(let ai=asteroids.length-1;ai>=0;ai--){
-   const a=asteroids[ai];
-   if(dist2(a,b)<(a.r+b.r)**2){
-    hit=true;a.hp-=b.damage;burst(b.x,b.y,"#ffdba9",5,90);
-    if(a.hp<=0){
-     asteroids.splice(ai,1);score+=15;totalDestroyed++;save.lifetime.asteroids++;
-     floatText(a.x,a.y,"+15 ⭐");burst(a.x,a.y,"#ffc39d",17,175);sound(195,.1,"triangle",.025);
+(function(){
+  "use strict";
+
+  const KEY="luxton_arcade_device_choice_v1";
+  const overlay=document.getElementById("deviceOverlay");
+  const mobileBtn=document.getElementById("mobileChoice");
+  const pcBtn=document.getElementById("pcChoice");
+  const changeBtn=document.getElementById("changeDevice");
+
+  let previousFocus=null;
+
+  function getSaved(){
+    try{
+      return localStorage.getItem(KEY);
+    }catch(error){
+      return null;
     }
-    break;
-   }
   }
-  if(hit)bullets.splice(bi,1);
- }
- for(let i=asteroids.length-1;i>=0;i--){
-  const a=asteroids[i];
-  if(a.y>H+a.r+30){asteroids.splice(i,1);continue;}
-  if(dist2(a,player)<(a.r+player.r-5)**2){
-   burst(a.x,a.y,"#ffb988",14,150);asteroids.splice(i,1);hurt();
-   if(mode!=="playing")return;
+
+  function saveChoice(device){
+    try{
+      localStorage.setItem(KEY,device);
+    }catch(error){
+      // Site still works if storage is blocked.
+    }
   }
- }
- for(let i=drones.length-1;i>=0;i--){
-  const a=drones[i];
-  if(a.y>H+40){drones.splice(i,1);continue;}
-  if(dist2(a,player)<(a.r+player.r-5)**2){
-   drones.splice(i,1);burst(a.x,a.y,"#81f6bd",15,160);hurt();
-   if(mode!=="playing")return;
+
+  function showChoice(){
+    previousFocus=document.activeElement;
+    overlay.hidden=false;
+    document.body.classList.add("dialog-open");
+
+    const current=document.documentElement.dataset.device;
+    if(current==="pc"){
+      pcBtn.focus();
+    }else{
+      mobileBtn.focus();
+    }
   }
- }
- if(boss&&dist2(boss,player)<(boss.r+player.r-11)**2){
-  hurt();if(mode!=="playing")return;
- }
- for(let i=enemyShots.length-1;i>=0;i--){
-  const s=enemyShots[i];
-  if(s.y>H+30||s.x<-30||s.x>W+30){enemyShots.splice(i,1);continue;}
-  if(dist2(s,player)<(s.r+player.r-5)**2){
-   enemyShots.splice(i,1);burst(s.x,s.y,"#9effb0",8,90);hurt();
-   if(mode!=="playing")return;
+
+  function chooseDevice(device){
+    document.documentElement.dataset.device=device;
+    saveChoice(device);
+    overlay.hidden=true;
+    document.body.classList.remove("dialog-open");
+
+    if(previousFocus&&previousFocus!==document.body){
+      previousFocus.focus();
+    }else{
+      changeBtn.focus();
+    }
   }
- }
- for(let i=coins.length-1;i>=0;i--){
-  const c=coins[i];
-  if(c.y>H+22){coins.splice(i,1);continue;}
-  if(dist2(c,player)<(c.r+player.r+6)**2){
-   coins.splice(i,1);const amount=c.value*(coinBoost>0?2:1);runCoins+=amount;save.lifetime.coins+=amount;score+=amount*10;
-   burst(c.x,c.y,"#ffe384",9,110);floatText(c.x,c.y,`+${amount} 🪙`);sound(760,.055,"triangle",.025);
+
+  mobileBtn.addEventListener("click",function(){
+    chooseDevice("mobile");
+  });
+
+  pcBtn.addEventListener("click",function(){
+    chooseDevice("pc");
+  });
+
+  changeBtn.addEventListener("click",showChoice);
+
+  // Keep keyboard focus inside the popup.
+  overlay.addEventListener("keydown",function(event){
+    if(event.key!=="Tab")return;
+
+    const buttons=[mobileBtn,pcBtn];
+    const index=buttons.indexOf(document.activeElement);
+
+    if(event.shiftKey&&index===0){
+      event.preventDefault();
+      pcBtn.focus();
+    }else if(!event.shiftKey&&index===1){
+      event.preventDefault();
+      mobileBtn.focus();
+    }
+  });
+
+  const saved=getSaved();
+
+  if(saved==="mobile"||saved==="pc"){
+    document.documentElement.dataset.device=saved;
+  }else{
+    showChoice();
   }
- }
- for(let i=powerups.length-1;i>=0;i--){
-  const p=powerups[i];
-  if(p.y>H+30){powerups.splice(i,1);continue;}
-  if(dist2(p,player)<(p.r+player.r+7)**2){
-   powerups.splice(i,1);
-   if(p.type==="shield"){shield=powerLife(11);toast("🛡️ SHIELD ACTIVE — one hit blocked!");}
-   else if(p.type==="rapid"){rapid=powerLife(10);toast("⚡ RAPID FIRE ACTIVE!");}
-   else if(p.type==="triple"){triple=powerLife(10);toast("🔱 TRIPLE LASERS ACTIVE!");}
-   else if(p.type==="coinBoost"){coinBoost=powerLife(12);toast("🪙 DOUBLE COINS ACTIVE!");}
-   else {health=Math.min(maxHull(),health+1);toast("❤️ HULL REPAIRED!");}
-   score+=25;burst(p.x,p.y,p.type==="shield"?"#78faff":"#ffef87",15,130);sound(980,.18,"triangle");
-  }
- }
- if(time<=0)endRun("complete");
- hud();
-}
-const starColors=["#d2faff","#b6adff","#ffe3c3","#ffffff"];
-for(let i=0;i<125;i++)stars.push({x:rng(0,W),y:rng(0,H),r:rng(.5,2.3),speed:rng(11,50),blink:rng(0,6.28),color:starColors[Math.floor(rng(0,4))]});
-function roundRect(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();}
-function planet(x,y,r,col,glow,ring=false){
- ctx.save();ctx.shadowBlur=45;ctx.shadowColor=glow;
- const grad=ctx.createRadialGradient(x-r*.32,y-r*.3,r*.05,x,y,r);grad.addColorStop(0,"#f5fcff");grad.addColorStop(.15,glow);grad.addColorStop(.57,col);grad.addColorStop(1,"#172344");
- ctx.fillStyle=grad;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
- ctx.save();ctx.beginPath();ctx.arc(x,y,r-1,0,Math.PI*2);ctx.clip();ctx.globalAlpha=.15;
- for(let i=0;i<5;i++){ctx.strokeStyle=i%2?"#fff":"#111b53";ctx.lineWidth=r*.08;ctx.beginPath();ctx.ellipse(x+r*.05,y-r*.45+i*r*.24,r*.8,r*.17,-.2,0,Math.PI*2);ctx.stroke();}
- ctx.restore();
- if(ring){ctx.save();ctx.strokeStyle="#f9d9ecba";ctx.lineWidth=13;ctx.beginPath();ctx.ellipse(x,y,r*1.63,r*.36,-.31,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#fff9c5bb";ctx.lineWidth=3;ctx.stroke();ctx.restore();}
- ctx.restore();
-}
-function backdrop(dt){
- const s=sectors[mode==="playing"||mode==="paused"||mode==="result"?sector()-1:0];
- const grad=ctx.createLinearGradient(0,0,W,H);grad.addColorStop(0,s.bg1);grad.addColorStop(1,s.bg2);ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
- for(const [cx,cy,r,color] of [[135,220,310,s.glow],[750,290,270,s.planet]]){
-  const neb=ctx.createRadialGradient(cx,cy,1,cx,cy,r);neb.addColorStop(0,color+"23");neb.addColorStop(1,"#00000000");ctx.fillStyle=neb;ctx.fillRect(cx-r,cy-r,r*2,r*2);
- }
- planet(803,145,83,s.planet,s.glow,sector()===3);
- for(const st of stars){
-  st.y+=st.speed*dt*(mode==="playing"?1.7:.3);
-  if(st.y>H+5){st.y=-5;st.x=rng(0,W);}
-  const alpha=.35+.55*(Math.sin(visualTime*2+st.blink)+1)/2;
-  ctx.globalAlpha=alpha;ctx.fillStyle=st.color;ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,6.283);ctx.fill();
- }
- ctx.globalAlpha=1;
-}
-function drawAsteroid(a){
- ctx.save();ctx.translate(a.x,a.y);ctx.rotate(a.spin);
- ctx.shadowBlur=12;ctx.shadowColor="#ff8d6590";
- const grad=ctx.createRadialGradient(-a.r*.4,-a.r*.5,2,0,0,a.r*1.2);
- grad.addColorStop(0,"#cbb8a3");grad.addColorStop(.5,"#796277");grad.addColorStop(1,"#39364b");ctx.fillStyle=grad;ctx.strokeStyle="#d9a68d";ctx.lineWidth=2;
- ctx.beginPath();a.edges.forEach((v,i)=>{const theta=i*2*Math.PI/a.edges.length;const x=Math.cos(theta)*a.r*v,y=Math.sin(theta)*a.r*v;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.fill();ctx.stroke();ctx.shadowBlur=0;
- for(const [cx,cy,rr] of [[-.33,-.11,.23],[.25,.24,.17],[.32,-.37,.13]]){
-  ctx.fillStyle="#37354b88";ctx.beginPath();ctx.arc(a.r*cx,a.r*cy,a.r*rr,0,6.283);ctx.fill();
- }
- ctx.restore();
-}
-function drawShip(x,y,color,accent,scale=1,inv=0,thruster=true){
- ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
- if(inv>0&&Math.floor(visualTime*13)%2===0)ctx.globalAlpha=.38;
- if(thruster){
-  const flame=16+Math.sin(visualTime*30)*6;ctx.shadowBlur=19;ctx.shadowColor="#50eaff";
-  ctx.fillStyle="#51a9ff";ctx.beginPath();ctx.moveTo(-10,12);ctx.lineTo(0,31+flame);ctx.lineTo(10,12);ctx.closePath();ctx.fill();
-  ctx.fillStyle="#fff4a8";ctx.beginPath();ctx.moveTo(-4,14);ctx.lineTo(0,21+flame*.6);ctx.lineTo(4,14);ctx.fill();
- }
- ctx.shadowColor=color;ctx.shadowBlur=18;ctx.fillStyle=color;ctx.strokeStyle=accent;ctx.lineWidth=2.2;
- ctx.beginPath();ctx.moveTo(0,-29);ctx.lineTo(12,-11);ctx.lineTo(25,15);ctx.lineTo(13,12);ctx.lineTo(9,22);ctx.lineTo(-9,22);ctx.lineTo(-13,12);ctx.lineTo(-25,15);ctx.lineTo(-12,-11);ctx.closePath();ctx.fill();ctx.stroke();
- ctx.shadowBlur=0;ctx.fillStyle="#1a315f";ctx.beginPath();ctx.moveTo(0,-20);ctx.lineTo(8,2);ctx.lineTo(0,8);ctx.lineTo(-8,2);ctx.fill();
- ctx.fillStyle="#ddfaff";ctx.beginPath();ctx.moveTo(0,-16);ctx.lineTo(4,1);ctx.lineTo(0,4);ctx.lineTo(-4,1);ctx.fill();
- ctx.fillStyle=accent;ctx.fillRect(-22,12,9,4);ctx.fillRect(13,12,9,4);
- ctx.restore();
-}
-function drawCoin(c){
- const shine=(Math.sin(c.phase)+1)*.5;
- ctx.save();ctx.translate(c.x,c.y);ctx.shadowBlur=14;ctx.shadowColor="#ffda64";
- ctx.fillStyle="#c78730";ctx.beginPath();ctx.arc(0,0,c.r+2,0,6.283);ctx.fill();
- ctx.fillStyle="#ffe68a";ctx.beginPath();ctx.ellipse(0,0,c.r*(.75+.25*shine),c.r,0,0,6.283);ctx.fill();
- ctx.strokeStyle="#fff9d2";ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,c.r*.7,0,6.283);ctx.stroke();
- ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#866322";ctx.font=`900 ${c.r*.95}px system-ui`;ctx.fillText(c.value===5?"5":"★",0,1);ctx.restore();
-}
-function drawPower(p){
- ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.sin(p.spin)*.15);ctx.shadowBlur=22;
- const looks={shield:["#66f3ff","#35a8da","🛡️"],rapid:["#ffe570","#dab34a","⚡"],triple:["#d2a8ff","#8263d9","🔱"],coinBoost:["#ffe18d","#dfaa3c","🪙"],repair:["#ff9faa","#b65771","❤️"]};
- const look=looks[p.type]||looks.rapid;
- ctx.shadowColor=look[0];roundRect(-18,-18,36,36,9,look[1]);
- ctx.strokeStyle="#f8ffff";ctx.lineWidth=2;ctx.strokeRect(-13,-13,26,26);
- ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="23px system-ui";ctx.fillText(look[2],0,1);ctx.restore();
-}
-function drawDrone(a){
- ctx.save();ctx.translate(a.x,a.y);ctx.rotate(Math.sin(a.age*4)*.07);
- ctx.shadowColor="#70ffc2";ctx.shadowBlur=15;
- roundRect(-23,-10,46,23,10,"#388a77");
- roundRect(-13,-19,26,26,11,"#63d9b1");
- ctx.shadowBlur=0;
- roundRect(-10,-8,20,12,5,"#173b46");
- ctx.fillStyle="#b5fff7";ctx.beginPath();ctx.arc(-5,-2,3,0,6.283);ctx.arc(5,-2,3,0,6.283);ctx.fill();
- roundRect(-32,-1,12,8,3,"#7ceddb");roundRect(20,-1,12,8,3,"#7ceddb");
- ctx.fillStyle="#ffe795";ctx.fillRect(-17,14,8,4);ctx.fillRect(9,14,8,4);
- ctx.restore();
-}
-function drawBoss(b){
- ctx.save();ctx.translate(b.x,b.y);
- ctx.shadowColor="#ff86eb";ctx.shadowBlur=30;
- ctx.fillStyle="#643866";ctx.strokeStyle="#ffc8fc";ctx.lineWidth=3;
- ctx.beginPath();ctx.moveTo(0,-54);ctx.lineTo(46,-25);ctx.lineTo(78,8);ctx.lineTo(43,34);
- ctx.lineTo(24,25);ctx.lineTo(0,52);ctx.lineTo(-24,25);ctx.lineTo(-43,34);ctx.lineTo(-78,8);ctx.lineTo(-46,-25);
- ctx.closePath();ctx.fill();ctx.stroke();
- ctx.shadowBlur=12;ctx.shadowColor="#ff8eee";
- roundRect(-34,-22,68,45,16,"#ae6bb3");
- ctx.shadowBlur=0;roundRect(-21,-13,42,23,10,"#3a214c");
- ctx.fillStyle="#bafffd";ctx.beginPath();ctx.ellipse(0,-3,14,8,0,0,6.283);ctx.fill();
- for(const dx of [-52,52]){ctx.fillStyle="#ff778b";ctx.beginPath();ctx.arc(dx,13,8+Math.sin(visualTime*8)*2,0,6.283);ctx.fill();}
- ctx.restore();
-}
-function drawEnemyShot(b){
- ctx.save();ctx.shadowColor="#8cff91";ctx.shadowBlur=20;
- ctx.fillStyle="#98ffa7";ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,6.283);ctx.fill();
- ctx.fillStyle="#faffdf";ctx.beginPath();ctx.arc(b.x,b.y,b.r*.44,0,6.283);ctx.fill();ctx.restore();
-}
-function render(dt){
- backdrop(dt);
- for(const c of coins)drawCoin(c);
- for(const p of powerups)drawPower(p);
- for(const a of asteroids)drawAsteroid(a);
- for(const a of drones)drawDrone(a);
- if(boss)drawBoss(boss);
- for(const b of enemyShots)drawEnemyShot(b);
- ctx.save();ctx.shadowBlur=18;ctx.shadowColor="#8feaff";ctx.fillStyle="#9afaff";
- for(const b of bullets){roundRect(b.x-3,b.y-14,6,21,3,"#9ffaff");}
- ctx.restore();
- if(mode!=="menu"&&mode!=="shop"){
-  const ship=selected();drawShip(player.x,player.y,ship.color,ship.accent,1,invincible);
-  if(shield>0){ctx.save();ctx.strokeStyle="#7cf8ff";ctx.lineWidth=3;ctx.shadowBlur=22;ctx.shadowColor="#75e8ff";ctx.beginPath();ctx.arc(player.x,player.y,34+Math.sin(visualTime*7)*2,0,6.283);ctx.stroke();ctx.restore();}
- }
- for(const p of particles){
-  ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();
- }
- ctx.globalAlpha=1;
- for(const t of texts){ctx.globalAlpha=clamp(t.life,0,1);ctx.font="900 18px system-ui";ctx.textAlign="center";ctx.fillStyle=t.color;ctx.shadowBlur=8;ctx.shadowColor="#000";ctx.fillText(t.text,t.x,t.y);ctx.shadowBlur=0;}
- ctx.globalAlpha=1;
-}
-function drawFrame(now){
- const dt=clamp((now-lastFrame)/1000,0,.036);lastFrame=now;visualTime+=dt;
- if(mode==="playing")update(dt);
- if(mode==="playing"||mode==="menu"||mode==="result"||mode==="shop"||mode==="lab"||mode==="missions"){
-  for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;}
-  particles=particles.filter(p=>p.life>0);
-  for(const t of texts){t.y-=30*dt;t.life-=dt;}
-  texts=texts.filter(t=>t.life>0);
-  if(toasting>0){toasting-=dt;if(toasting<=0)$("toast").classList.add("hidden");}
- }
- render(mode==="paused"?0:dt);
- requestAnimationFrame(drawFrame);
-}
-function pause(){
- if(mode==="playing"){mode="paused";heldDirections.clear();pressed.clear();shootHeld=false;dragTarget=null;setScreen("pause");}
- else if(mode==="paused"){mode="playing";setScreen(null);}
-}
-$("startBtn").onclick=resetRun;$("againBtn").onclick=resetRun;
- $("labBtn").onclick=lab;$("missionsBtn").onclick=missionScreen;
- $("labBackBtn").onclick=showMenu;$("missionBackBtn").onclick=showMenu;
-$("shopBtn").onclick=shop;$("resultShopBtn").onclick=shop;
-$("shopBackBtn").onclick=showMenu;$("menuBtn").onclick=showMenu;
-$("resumeBtn").onclick=pause;
-$("quitBtn").onclick=()=>endRun("quit");
-$("pauseBtn").onclick=pause;
-$("soundBtn").onclick=()=>{save.sound=!save.sound;ui("soundBtn",save.sound?"🔊":"🔇");persist();if(save.sound)sound(700,.12);};
-ui("soundBtn",save.sound?"🔊":"🔇");
-const keyNames={ArrowUp:"up",w:"up",ArrowDown:"down",s:"down",ArrowLeft:"left",a:"left",ArrowRight:"right",d:"right"};
-window.addEventListener("keydown",e=>{
- const k=e.key.length===1?e.key.toLowerCase():e.key;
- if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," ","w","a","s","d","p"].includes(k))e.preventDefault();
- if(k==="p"&&!e.repeat){pause();return;}
- if(mode!=="playing")return;
- if(k===" "){pressed.add(" ");if(!e.repeat)fire();}
- else if(keyNames[k])pressed.add(k);
-});
-window.addEventListener("keyup",e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;pressed.delete(k);});
-window.addEventListener("blur",()=>{if(mode==="playing")pause();});
-document.addEventListener("visibilitychange",()=>{if(document.hidden&&mode==="playing")pause();});
-for(const btn of document.querySelectorAll("[data-dir]")){
- const dir=btn.dataset.dir;
- btn.addEventListener("pointerdown",e=>{e.preventDefault();btn.setPointerCapture(e.pointerId);heldDirections.add(dir);});
- for(const event of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(event,()=>heldDirections.delete(dir));
-}
-$("fireBtn").addEventListener("pointerdown",e=>{e.preventDefault();$("fireBtn").setPointerCapture(e.pointerId);shootHeld=true;fire();});
-for(const event of ["pointerup","pointercancel","lostpointercapture"])$("fireBtn").addEventListener(event,()=>shootHeld=false);
-function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};}
-let dragging=false;
-canvas.addEventListener("pointerdown",e=>{
- if(mode!=="playing")return;e.preventDefault();dragging=true;canvas.setPointerCapture(e.pointerId);dragTarget=point(e);
-});
-canvas.addEventListener("pointermove",e=>{if(dragging&&mode==="playing")dragTarget=point(e);});
-for(const event of ["pointerup","pointercancel","lostpointercapture"])canvas.addEventListener(event,()=>{dragging=false;dragTarget=null;});
-updateMenu();hud();requestAnimationFrame(drawFrame);
 })();
 </script>
+
+<!-- Refresh GitHub Pages for Mining Rush V1.3 -->
+
 </body>
 </html>
