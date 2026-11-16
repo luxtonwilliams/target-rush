@@ -189,20 +189,20 @@ const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const dist2=(a,b)=>{const x=a.x-b.x,y=a.y-b.y;return x*x+y*y};
 const ships=[
  {id:"scout",name:"Scout",symbol:"🚀",price:0,desc:"Starter ship · balanced speed and lasers",speed:315,rate:.28,magnet:0,hp:3,color:"#79eafb",accent:"#d8faff"},
- {id:"comet",name:"Comet",symbol:"☄️",price:30,desc:"Faster flying and quicker lasers",speed:365,rate:.235,magnet:0,hp:3,color:"#ffb879",accent:"#ffe1a8"},
- {id:"nova",name:"Neon Nova",symbol:"🌈",price:65,desc:"Coin magnet + super-fast lasers",speed:335,rate:.205,magnet:108,hp:3,color:"#bd91ff",accent:"#ffb6fa"},
- {id:"viper",name:"Viper",symbol:"⚡",price:105,desc:"Lightning speed + powerful magnet",speed:405,rate:.21,magnet:122,hp:3,color:"#9aff9c",accent:"#f7ffc5"},
- {id:"titan",name:"Titan",symbol:"🛡️",price:155,desc:"4 hull hearts + fastest laser + magnet",speed:315,rate:.17,magnet:105,hp:4,color:"#ffd67f",accent:"#fff2cb"},
- {id:"phantom",name:"Phantom",symbol:"👻",price:210,desc:"Stealth-purple fighter · lightning lasers and magnet",speed:392,rate:.155,magnet:135,hp:3,color:"#bf9bff",accent:"#fff4ff"},
- {id:"guardian",name:"Guardian",symbol:"💠",price:285,desc:"Heavy defender · 5 hearts and wide coin magnet",speed:335,rate:.19,magnet:135,hp:5,color:"#74ffcf",accent:"#dcfff4"},
- {id:"galaxy",name:"Galaxy X",symbol:"🌠",price:420,desc:"Legendary all-rounder · 4 hearts and ultra-fast lasers",speed:420,rate:.14,magnet:175,hp:4,color:"#ffd1fa",accent:"#fff2a5"}
+ {id:"comet",name:"Comet",symbol:"☄️",price:22,desc:"Faster flying and quicker lasers",speed:365,rate:.235,magnet:0,hp:3,color:"#ffb879",accent:"#ffe1a8"},
+ {id:"nova",name:"Neon Nova",symbol:"🌈",price:50,desc:"Coin magnet + super-fast lasers",speed:335,rate:.205,magnet:108,hp:3,color:"#bd91ff",accent:"#ffb6fa"},
+ {id:"viper",name:"Viper",symbol:"⚡",price:80,desc:"Lightning speed + powerful magnet",speed:405,rate:.21,magnet:122,hp:3,color:"#9aff9c",accent:"#f7ffc5"},
+ {id:"titan",name:"Titan",symbol:"🛡️",price:120,desc:"4 hull hearts + fastest laser + magnet",speed:315,rate:.17,magnet:105,hp:4,color:"#ffd67f",accent:"#fff2cb"},
+ {id:"phantom",name:"Phantom",symbol:"👻",price:160,desc:"Stealth-purple fighter · lightning lasers and magnet",speed:392,rate:.155,magnet:135,hp:3,color:"#bf9bff",accent:"#fff4ff"},
+ {id:"guardian",name:"Guardian",symbol:"💠",price:215,desc:"Heavy defender · 5 hearts and wide coin magnet",speed:335,rate:.19,magnet:135,hp:5,color:"#74ffcf",accent:"#dcfff4"},
+ {id:"galaxy",name:"Galaxy X",symbol:"🌠",price:320,desc:"Legendary all-rounder · 4 hearts and ultra-fast lasers",speed:420,rate:.14,magnet:175,hp:4,color:"#ffd1fa",accent:"#fff2a5"}
 ];
 const modules=[
- {id:"engine",icon:"💨",name:"Hyperdrive",price:38,desc:"+45 flying speed for every ship"},
- {id:"laser",icon:"🔫",name:"Laser Amplifier",price:55,desc:"Deal double damage to rocks, drones and bosses"},
- {id:"armor",icon:"❤️",name:"Reinforced Hull",price:48,desc:"Add one permanent heart to every ship"},
- {id:"gravity",icon:"🧲",name:"Gravity Collector",price:35,desc:"Pull in coins from farther away"},
- {id:"battery",icon:"🔋",name:"Power Cell",price:65,desc:"Power-ups last 40% longer"}
+ {id:"engine",icon:"💨",name:"Hyperdrive",price:30,desc:"+45 flying speed for every ship"},
+ {id:"laser",icon:"🔫",name:"Laser Amplifier",price:42,desc:"Deal double damage to rocks, drones and bosses"},
+ {id:"armor",icon:"❤️",name:"Reinforced Hull",price:36,desc:"Add one permanent heart to every ship"},
+ {id:"gravity",icon:"🧲",name:"Gravity Collector",price:27,desc:"Pull in coins from farther away"},
+ {id:"battery",icon:"🔋",name:"Power Cell",price:50,desc:"Power-ups last 40% longer"}
 ];
 const missions=[
  {id:"asteroids",name:"☄️ Asteroid Buster",title:"Destroy asteroids",base:15,step:10,reward:30,bonus:15},
