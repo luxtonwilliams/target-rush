@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#070c1c">
-<meta name="description" content="Luxton Arcade: seven free browser games. Play Space Rush, Mining Rush, Basketball Rush and more!">
-<title>Luxton Arcade V2 | Play 7 Free Games</title>
+<meta name="description" content="Luxton Arcade: eight free browser games! Just released: Golf Rush V1, with 9 mini-golf holes and 3 worlds. Play Space Rush, Mining Rush and more!">
+<title>Luxton Arcade V2 | Golf Rush Just Released · 8 Games</title>
 <style>
 :root{
   color-scheme:dark;
@@ -35,29 +35,38 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .nav a,.nav button{border:1px solid transparent;background:transparent;color:var(--muted);font-weight:800;padding:10px 12px;border-radius:11px}
 .nav a:hover,.nav button:hover{background:#5fa7ff1c;border-color:#87beff42;color:var(--text)}
 .nav .random-top{color:#051b28;background:linear-gradient(110deg,#6debe6,#91a3ff);border:0}
-.hero{position:relative;overflow:hidden;border-radius:27px;margin:24px 0 14px;min-height:390px;display:grid;grid-template-columns:1.13fr .87fr;align-items:center;background:linear-gradient(120deg,#12264e,#192e5c 52%,#18224a);border:1px solid #7899d660;box-shadow:0 20px 60px #0006}
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 8% 15%,#fff 98%,transparent),radial-gradient(2px 2px at 25% 78%,#fff 98%,transparent),radial-gradient(2px 2px at 51% 15%,#fff 98%,transparent),radial-gradient(3px 3px at 73% 67%,#bbf8ff 98%,transparent),radial-gradient(2px 2px at 94% 12%,#fff 98%,transparent);background-size:340px 250px;opacity:.38}
-.hero-copy{position:relative;z-index:1;padding:clamp(24px,4vw,53px)}
-.kicker{display:inline-flex;align-items:center;gap:8px;border:1px solid #b4b1ff70;background:#8295ff2c;border-radius:30px;padding:8px 13px;font-size:11px;font-weight:950;letter-spacing:1.7px;color:#e2deff}
+.hero{position:relative;overflow:hidden;border-radius:27px;margin:24px 0 14px;min-height:390px;display:grid;grid-template-columns:1.13fr .87fr;align-items:center;background:linear-gradient(118deg,#11294b 0%,#16385c 52%,#165344 100%);border:1px solid #8eeec477;box-shadow:0 20px 60px #0006}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 80% 20%,#9dfbc128,transparent 45%),radial-gradient(circle at 7% 12%,#9ef6d51a,transparent 30%)}
+.hero-copy{position:relative;z-index:2;padding:clamp(24px,4vw,53px)}
+.kicker{display:inline-flex;align-items:center;gap:8px;border:1px solid #b7f7c085;background:#5bd88e2a;border-radius:30px;padding:8px 13px;font-size:11px;font-weight:950;letter-spacing:1.5px;color:#caffdb}
 h1{font-size:clamp(38px,5.4vw,66px);letter-spacing:-2.8px;line-height:1.05;margin:19px 0 12px}
-h1 em{font-style:normal;background:linear-gradient(90deg,#7ef2f1,#a8adff 60%,#ffdf91);background-clip:text;color:transparent}
-.hero p{color:#d0e0fa;line-height:1.65;max-width:535px;margin:0 0 22px;font-size:clamp(14px,1.6vw,16px)}
+h1 em{font-style:normal;background:linear-gradient(90deg,#9df7c7,#90defa 64%,#ffe5a2);background-clip:text;color:transparent}
+.hero p{color:#d3ecf4;line-height:1.65;max-width:535px;margin:0 0 22px;font-size:clamp(14px,1.6vw,16px)}
 .hero-buttons{display:flex;gap:11px;flex-wrap:wrap}
 .play-button,.outline-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;min-height:48px;padding:12px 19px;font-weight:950;font-size:14px;transition:transform .2s,filter .2s;white-space:nowrap}
 .play-button{background:linear-gradient(110deg,#6beded,#91a7ff);color:#071d34;border:0;box-shadow:0 7px 17px #161d436e}
 .outline-button{border:1px solid #82a7de99;background:#203960a8;color:#fff}
 .play-button:hover,.outline-button:hover{transform:translateY(-2px);filter:brightness(1.07)}
-.hero .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;color:#c8daf5;font-weight:750;font-size:12px}
+.hero .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;color:#d1eae5;font-weight:750;font-size:12px}
 .hero .tags span{background:#ffffff13;border:1px solid #ffffff1e;padding:6px 10px;border-radius:30px}
-.hero-art{height:100%;position:relative;min-height:320px;display:grid;place-items:center;overflow:hidden}
-.planet{position:absolute;width:260px;height:260px;border-radius:50%;right:7%;top:8%;background:radial-gradient(circle at 30% 25%,#a7e5ff,#517ac7 34%,#334d9c 62%,#142457 90%);box-shadow:0 0 85px #5f9eff70,inset -22px -24px 43px #071236a0}
-.planet::after{content:"";position:absolute;left:-18%;right:-18%;top:40%;height:17%;border:12px solid #8dd9f1a0;transform:rotate(-22deg);border-radius:50%;box-shadow:0 0 13px #8ff9ff56}
-.spaceship{position:absolute;z-index:3;font-size:clamp(90px,12vw,145px);transform:rotate(-21deg);filter:drop-shadow(0 18px 21px #0009) drop-shadow(0 0 15px #86ecff85);animation:float 4.3s ease-in-out infinite}
-.orbit{position:absolute;width:380px;height:185px;border:1px dashed #acdbff6e;border-radius:50%;transform:rotate(-25deg)}
-.hero-star{position:absolute;color:#ffe6a4;font-size:30px;top:17%;left:15%;text-shadow:0 0 15px #fff7a8}
-.asteroid{position:absolute;font-size:49px;bottom:19%;left:13%;filter:drop-shadow(0 8px 6px #050b20)}
-.hero-label{position:absolute;bottom:25px;right:23px;color:#dbebff;background:#081732a6;border:1px solid #acd7ff45;padding:7px 10px;border-radius:10px;font-size:12px;font-weight:850}
-@keyframes float{50%{transform:translateY(-16px) rotate(-17deg)}}
+.hero-art{height:100%;position:relative;min-height:320px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,#7dccd7 0%,#a4e4d7 46%,#56ac85 100%);border-left:1px solid #ffffff25}
+.golf-sun{position:absolute;width:115px;height:115px;right:16%;top:10%;border-radius:50%;background:radial-gradient(circle,#fff8cf 20%,#ffeda5 67%,#fff0b000 70%);box-shadow:0 0 65px #fff9a9aa}
+.golf-cloud{position:absolute;width:100px;height:26px;border-radius:35px;background:#e6fff3e0;box-shadow:18px -13px 0 6px #e6fff3d9,-21px -6px 0 3px #e6fff3d3;opacity:.7}
+.golf-cloud.one{top:17%;left:14%}
+.golf-cloud.two{top:32%;right:-4%;transform:scale(.7);opacity:.45}
+.golf-hill-back{position:absolute;left:-15%;bottom:11%;width:135%;height:55%;border-radius:50% 50% 0 0;background:linear-gradient(140deg,#61a88e,#2d907b)}
+.golf-hill-front{position:absolute;left:-18%;bottom:-34%;width:146%;height:74%;border-radius:50% 50% 0 0;background:linear-gradient(155deg,#a2e588,#4fb56f 60%,#1c866c);box-shadow:inset 0 12px 20px #d2ffaf66}
+.golf-fairway{position:absolute;bottom:7%;left:-5%;width:111%;height:23%;transform:rotate(-8deg);border-radius:50%;background:#b9ef88a0;box-shadow:0 0 0 15px #b5ec8033}
+.golf-sand{position:absolute;bottom:8%;right:6%;width:125px;height:42px;transform:rotate(12deg);border-radius:50%;background:#ffe4a5;box-shadow:inset 0 4px 9px #c1a66d55}
+.golf-water{position:absolute;bottom:16%;left:-6%;width:34%;height:35px;border-radius:50%;background:#5fdde3b9;transform:rotate(-17deg);box-shadow:inset 0 7px 8px #6ef6ff7a}
+.golf-cup{position:absolute;left:calc(73% - 32px);bottom:18%;width:70px;height:17px;border-radius:50%;background:#175d4c;box-shadow:inset 0 4px 6px #042e2c8c}
+.golf-pin{position:absolute;left:73%;bottom:21%;height:184px;width:5px;background:linear-gradient(90deg,#fff,#cfe2f7);border-radius:5px;box-shadow:0 0 5px #fff8}
+.golf-flag{position:absolute;left:73%;bottom:calc(21% + 130px);width:85px;height:55px;background:linear-gradient(125deg,#ffec9e,#ffc56f);clip-path:polygon(0 0,100% 14%,80% 51%,100% 90%,0 79%);filter:drop-shadow(0 4px 3px #164b3b40)}
+.golf-ball{position:absolute;left:25%;bottom:25%;width:83px;height:83px;border-radius:50%;background:radial-gradient(circle at 33% 27%,#ffffff,#f7ffff 34%,#c4e0eb 77%,#6d979e 100%);box-shadow:0 17px 12px #0d503d6b,0 0 30px #ffffff40;animation:ball-bob 3.5s ease-in-out infinite}
+.golf-ball::after{content:"";position:absolute;inset:13px;border-radius:50%;opacity:.45;background:radial-gradient(circle at 10px 10px,#8eaebf 2px,transparent 3px),radial-gradient(circle at 30px 16px,#8eaebf 2px,transparent 3px),radial-gradient(circle at 16px 33px,#8eaebf 2px,transparent 3px),radial-gradient(circle at 40px 37px,#8eaebf 2px,transparent 3px)}
+.golf-sparkle{position:absolute;left:11%;top:23%;color:#fff5a1;font-size:35px;text-shadow:0 0 14px #fffbd1}
+.hero-label{position:absolute;bottom:20px;right:20px;color:#e7fff3;background:#102e35d9;border:1px solid #d6ffcd78;padding:8px 11px;border-radius:10px;font-size:12px;font-weight:850}
+@keyframes ball-bob{50%{transform:translate(11px,-7px) rotate(20deg)}}
 .quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:15px 0 29px}
 .stat{border:1px solid var(--line);background:linear-gradient(120deg,#17294b,#10203e);border-radius:16px;padding:15px 19px;display:flex;align-items:center;gap:12px;min-width:0}
 .stat .emoji{font-size:27px}
@@ -91,6 +100,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#7ef2f1,#a8adff 60%,#ff
 .game-art.fishing{background:linear-gradient(135deg,#30a9b4,#184e93)}
 .game-art.mining{background:linear-gradient(135deg,#9c6845,#504079)}
 .game-art.space{background:linear-gradient(135deg,#31378f,#51266d)}
+.game-art.golf{background:linear-gradient(135deg,#259c71,#277ea1)}
 .game-art .version{position:absolute;top:12px;left:12px;font-size:11px;font-weight:950;color:#fff;background:#06152eb9;padding:6px 9px;border:1px solid #ffffff45;border-radius:30px}
 .game-art .new{position:absolute;bottom:12px;left:12px;font-size:10px;font-weight:950;letter-spacing:.8px;color:#172342;background:#ffde84;padding:6px 9px;border-radius:30px}
 .favorite{position:absolute;top:10px;right:11px;display:grid;place-items:center;border-radius:10px;border:1px solid #ffffff7d;background:#08132a9c;color:#fff;font-size:22px;width:41px;height:39px;line-height:1;z-index:2}
@@ -108,6 +118,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,#7ef2f1,#a8adff 60%,#ff
 .continue strong{display:block;font-size:17px}
 .continue small{display:block;color:#b9d4ed;font-size:12px;margin-top:4px}
 .updates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0 35px}
+.update-card.release-feature{grid-column:1/-1;border-color:#7ce9bb91;background:linear-gradient(100deg,#123f44,#172d53)}
 .update-card{background:#132441;border:1px solid #456691;border-radius:14px;padding:19px;display:flex;align-items:center;gap:13px}
 .update-card .icon{font-size:36px}
 .update-card h3{margin:0 0 5px;font-size:16px}
@@ -132,8 +143,8 @@ body.light .hero .play-button,body.light .hero .outline-button{color:#101f38}
 body.light .hero .outline-button{color:#fff}
 body.light .quick-stats strong{color:#8c5c1a}
 body.light .game-info .play-button{color:#071d34}
-@media(max-width:950px){.hero{grid-template-columns:1.2fr .8fr}.planet{right:-7%;width:225px;height:225px}.orbit{width:300px}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:680px){.topbar{align-items:flex-start;flex-direction:column;padding:14px 0;gap:10px}.nav{width:100%;justify-content:space-between}.nav a,.nav button{padding:8px 9px;font-size:12px}.hero{display:block;min-height:0}.hero-copy{padding:28px 23px}.hero-art{height:205px;min-height:205px}.planet{width:188px;height:188px;right:18%;top:-35px}.spaceship{font-size:105px}.orbit{height:120px;width:245px}.hero-label{bottom:14px}.quick-stats{gap:6px}.stat{padding:10px;gap:5px}.stat .emoji{font-size:20px}.stat strong{font-size:18px}.stat small{font-size:10px}.updates{grid-template-columns:1fr}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-art{height:123px}.game-art .art-icon{font-size:68px}.game-info{padding:12px}.game-info h3{font-size:17px}.game-info p{font-size:12px}.game-info .play-button{font-size:12px;padding:9px;min-height:41px}.filter{font-size:11px;padding:7px 10px}.toolbar{align-items:stretch}}
+@media(max-width:950px){.hero{grid-template-columns:1.2fr .8fr}.golf-flag{width:65px}.golf-ball{left:19%}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.topbar{align-items:flex-start;flex-direction:column;padding:14px 0;gap:10px}.nav{width:100%;justify-content:space-between}.nav a,.nav button{padding:8px 9px;font-size:12px}.hero{display:block;min-height:0}.hero-copy{padding:28px 23px}.hero-art{height:205px;min-height:205px}.golf-sun{width:80px;height:80px;top:-8%}.golf-pin{height:120px}.golf-flag{bottom:calc(21% + 78px);width:62px;height:42px}.golf-ball{width:60px;height:60px;left:30%}.golf-hill-back{bottom:4%}.golf-hill-front{bottom:-52%}.hero-label{bottom:14px}.quick-stats{gap:6px}.stat{padding:10px;gap:5px}.stat .emoji{font-size:20px}.stat strong{font-size:18px}.stat small{font-size:10px}.updates{grid-template-columns:1fr}.update-card.release-feature{grid-column:auto}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-art{height:123px}.game-art .art-icon{font-size:68px}.game-info{padding:12px}.game-info h3{font-size:17px}.game-info p{font-size:12px}.game-info .play-button{font-size:12px;padding:9px;min-height:41px}.filter{font-size:11px;padding:7px 10px}.toolbar{align-items:stretch}}
 @media(max-width:430px){.container{width:min(100% - 18px,1160px)}.brand-icon{width:45px;height:45px}.brand b{font-size:23px}.hero-buttons .play-button,.hero-buttons .outline-button{flex:1 1 auto}.game-grid{grid-template-columns:1fr}.game-art{height:154px}.game-info{padding:16px}.game-info h3{font-size:20px}.game-info p{font-size:13px}.nav .random-top{margin-left:auto}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
@@ -155,39 +166,43 @@ body.light .game-info .play-button{color:#071d34}
   </div>
 </header>
 <main class="container">
-  <section class="hero" aria-label="Featured game">
+  <section class="hero" aria-label="Featured game: Golf Rush, our newest release">
     <div class="hero-copy">
-      <span class="kicker">🚀 FEATURED GAME · SPACE RUSH V2</span>
-      <h1>YOUR ARCADE.<br><em>YOUR ADVENTURE.</em></h1>
-      <p>Seven free games. One awesome place to play. Blast alien ships in Space Rush V2, explore secret mining caves, shoot hoops, and discover your next favorite!</p>
+      <span class="kicker">⛳ JUST RELEASED · GAME #8</span>
+      <h1>GOLF RUSH<br><em>IS HERE!</em></h1>
+      <p>Fresh out of the clubhouse! Take on <strong>9 mini-golf holes across 3 worlds</strong>, master sand, water and ice, earn coins, and unlock new golf balls. Golf Rush V1 is the newest game in Luxton Arcade!</p>
       <div class="hero-buttons">
-        <a class="play-button" href="games/space-rush/" data-game="space">🚀 PLAY SPACE RUSH V2</a>
-        <a class="outline-button" href="#games">EXPLORE ALL GAMES ↓</a>
+        <a class="play-button" href="games/golf-rush/" data-game="golf">⛳ PLAY GOLF RUSH</a>
+        <a class="outline-button" href="#games">EXPLORE ALL 8 GAMES ↓</a>
       </div>
-      <div class="tags"><span>🎮 7 GAMES</span><span>💾 GAME SAVES</span><span>💻 DESKTOP + MOBILE</span></div>
+      <div class="tags"><span>🆕 NEW GAME</span><span>⛳ 9 HOLES · 3 WORLDS</span><span>🎮 8 FREE GAMES</span></div>
     </div>
     <div class="hero-art" aria-hidden="true">
-      <div class="orbit"></div><div class="planet"></div><div class="spaceship">🚀</div>
-      <div class="hero-star">✦</div><div class="asteroid">☄️</div>
-      <div class="hero-label">👾 ALIEN INVASION · V2</div>
+      <div class="golf-sun"></div>
+      <div class="golf-cloud one"></div><div class="golf-cloud two"></div>
+      <div class="golf-hill-back"></div><div class="golf-hill-front"></div>
+      <div class="golf-fairway"></div><div class="golf-water"></div><div class="golf-sand"></div>
+      <div class="golf-cup"></div><div class="golf-pin"></div><div class="golf-flag"></div>
+      <div class="golf-ball"></div><div class="golf-sparkle">✦</div>
+      <div class="hero-label">⛳ NEW RELEASE · GOLF RUSH V1</div>
     </div>
   </section>
 
   <section class="quick-stats" aria-label="Your arcade stats">
-    <div class="stat"><span class="emoji">🎮</span><div><strong>7</strong><small>Playable games</small></div></div>
+    <div class="stat"><span class="emoji">🎮</span><div><strong>8</strong><small>Playable games</small></div></div>
     <div class="stat"><span class="emoji">❤️</span><div><strong id="favStat">0</strong><small>Your favorites</small></div></div>
     <div class="stat"><span class="emoji">🏆</span><div><strong id="triedStat">0</strong><small>Games you've tried here</small></div></div>
   </section>
 
   <section class="continue" id="continueBox" aria-label="Continue playing">
     <div><strong id="continueTitle">🕹️ Continue Playing</strong><small id="continueNote">Jump back into your last game.</small></div>
-    <a class="play-button" id="continueLink" href="games/space-rush/">▶ KEEP PLAYING</a>
+    <a class="play-button" id="continueLink" href="games/golf-rush/">▶ KEEP PLAYING</a>
   </section>
 
   <section id="games" aria-label="All games">
     <div class="section-head">
-      <div><h2>🎮 Choose Your Game</h2><p>Search, filter, or ❤️ your favorites. All seven are ready to play.</p></div>
-      <span class="small-note" id="results" aria-live="polite">7 games shown</span>
+      <div><h2>🎮 Choose Your Game</h2><p>Search, filter, or ❤️ your favorites. All eight are ready to play.</p></div>
+      <span class="small-note" id="results" aria-live="polite">8 games shown</span>
     </div>
     <div class="toolbar">
       <label class="search-wrap"><span aria-hidden="true">🔎</span><input id="search" type="search" placeholder="Search games…" aria-label="Search games" autocomplete="off"></label>
@@ -202,6 +217,10 @@ body.light .game-info .play-button{color:#071d34}
     </div>
 
     <div class="game-grid" id="gameGrid">
+      <article class="game-card" data-id="golf" data-category="sports" data-search="golf rush mini golf putting golf ball golf balls holes putting green par birdie eagle hole in one coins sand water ice neon desert sunny sports new release">
+        <div class="game-art golf"><span class="version">V1</span><span class="new">⛳ JUST RELEASED</span><span class="art-icon" aria-hidden="true">⛳</span><button type="button" class="favorite" aria-label="Favorite Golf Rush" aria-pressed="false">♡</button></div>
+        <div class="game-info"><span class="game-type">Sports · Mini Golf</span><h3>Golf Rush</h3><p>Play 9 tricky holes across 3 worlds, collect coins, and unlock stylish golf balls!</p><a class="play-button" href="games/golf-rush/" data-game="golf">▶ PLAY NOW</a></div>
+      </article>
       <article class="game-card" data-id="target" data-category="action" data-search="target rush reflexes tap speed combo gold targets classic">
         <div class="game-art target"><span class="version">V7</span><span class="art-icon" aria-hidden="true">🎯</span><button type="button" class="favorite" aria-label="Favorite Target Rush" aria-pressed="false">♡</button></div>
         <div class="game-info"><span class="game-type">Action · Reflexes</span><h3>Target Rush</h3><p>Hit targets, build massive combos, and beat your personal best in 30 seconds!</p><a class="play-button" href="games/target-rush/" data-game="target">▶ PLAY NOW</a></div>
@@ -227,7 +246,7 @@ body.light .game-info .play-button{color:#071d34}
         <div class="game-info"><span class="game-type">Adventure · Mining</span><h3>Mining Rush</h3><p>Explore 200 meters underground, find secret vaults, and adopt mining pets.</p><a class="play-button" href="games/mining-rush/" data-game="mining">▶ PLAY NOW</a></div>
       </article>
       <article class="game-card" data-id="space" data-category="action" data-search="space rush spaceships aliens asteroid invasion boss galactic galaxy mission coins">
-        <div class="game-art space"><span class="version">V2</span><span class="new">🚀 NEW INVASION</span><span class="art-icon" aria-hidden="true">🚀</span><button type="button" class="favorite" aria-label="Favorite Space Rush" aria-pressed="false">♡</button></div>
+        <div class="game-art space"><span class="version">V2</span><span class="new">👾 V2 UPDATE</span><span class="art-icon" aria-hidden="true">🚀</span><button type="button" class="favorite" aria-label="Favorite Space Rush" aria-pressed="false">♡</button></div>
         <div class="game-info"><span class="game-type">Action · Space</span><h3>Space Rush</h3><p>Fight alien drones, defeat the giant mothership, and unlock eight spaceships!</p><a class="play-button" href="games/space-rush/" data-game="space">▶ PLAY NOW</a></div>
       </article>
     </div>
@@ -237,12 +256,13 @@ body.light .game-info .play-button{color:#071d34}
   <section id="updates">
     <div class="section-head"><div><h2>✨ What's New</h2><p>New adventures have landed at Luxton Arcade.</p></div></div>
     <div class="updates">
+      <article class="update-card release-feature"><div class="icon">⛳</div><div><h3>JUST RELEASED: Golf Rush V1!</h3><p>Game #8 is live! Play 9 mini-golf holes across Sunny Greens, Desert Dunes, and Neon Nights. Collect coins, upgrade your gear, and aim for a hole-in-one.</p><a href="games/golf-rush/" data-game="golf">Play the newest game →</a></div></article>
       <article class="update-card"><div class="icon">🚀</div><div><h3>Space Rush V2 — Alien Invasion</h3><p>Alien drones, a giant mothership, eight unlockable ships, and a gear lab.</p><a href="games/space-rush/" data-game="space">Launch Space Rush →</a></div></article>
       <article class="update-card"><div class="icon">⛏️</div><div><h3>Mining Rush V2.1 — Secret Treasures</h3><p>Hidden vaults, three mining pets, new headquarters, and more upgrades.</p><a href="games/mining-rush/" data-game="mining">Explore the caves →</a></div></article>
     </div>
   </section>
 </main>
-<footer>🎮 <strong>LUXTON ARCADE V2</strong> · 7 free games · Built for fun<br>Favorites and the Continue Playing shortcut save locally in this browser. Your game saves stay inside each individual game.</footer>
+<footer>🎮 <strong>LUXTON ARCADE V2</strong> · 8 free games · Built for fun<br>Favorites and the Continue Playing shortcut save locally in this browser. Your game saves stay inside each individual game.</footer>
 <script>
 (()=>{
   "use strict";
