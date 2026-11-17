@@ -3,374 +3,1205 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#070c1c">
-<meta name="description" content="Luxton Arcade: eight free browser games! Just updated: Golf Rush V2, with 18 holes, 6 worlds and tournaments. Play Space Rush, Mining Rush and more!">
-<title>Luxton Arcade V2 | Golf Rush V2 Tournament Tour · 8 Games</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#091329">
+<meta name="description" content="Luxton Arcade: eight free browser games, Golf Rush V2, and a brand-new arcade trophy room!">
+<title>Luxton Arcade | Golf Rush V2 + Achievements</title>
 <style>
-:root{
-  color-scheme:dark;
-  --bg:#070c1c;--bg2:#101a38;--panel:#111e3b;--panel2:#192a4e;
-  --line:#34496f;--text:#f4f8ff;--muted:#bbcae3;--cyan:#6be9f3;
-  --gold:#ffdc85;--blue:#729aff;--shadow:#02071299;
-}
+:root{--bg:#081126;--panel:#142647;--panel2:#1b3459;--line:#42618d;--text:#f6faff;--muted:#bfd1eb;--cyan:#76f0e7;--gold:#ffdf87}
 *{box-sizing:border-box}
-[hidden]{display:none!important}
 html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at 50% -10%,#24447a 0%,#0e1836 36%,var(--bg) 75%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}
-button,input,a{font:inherit}
+[hidden]{display:none!important}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#2a497f 0%,#102043 43%,var(--bg) 78%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}
 a{color:inherit;text-decoration:none}
+button,input{font:inherit}
 button{cursor:pointer}
-button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
-.skip{position:absolute;left:12px;top:-100px;background:var(--gold);color:#101a32;padding:10px;z-index:30}
-.skip:focus{top:12px}
-.container{width:min(1160px,calc(100% - 30px));margin:auto}
-.site-header{position:relative;z-index:10;border-bottom:1px solid #99bbff24;background:#080f20b8;backdrop-filter:blur(12px)}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:81px}
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
-.brand-icon{display:grid;place-items:center;width:52px;height:52px;flex-shrink:0;border-radius:17px;background:linear-gradient(140deg,#59f5f0,#718aff 60%,#bf7aff);font-size:29px;box-shadow:0 0 24px #7a9dff55}
-.brand b{display:block;font-size:clamp(19px,3vw,27px);letter-spacing:-1px;line-height:1}
-.brand b span{color:var(--gold)}
-.brand small{display:block;color:#a6caff;font-size:10px;letter-spacing:2px;font-weight:900;margin-top:6px}
-.nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.nav a,.nav button{border:1px solid transparent;background:transparent;color:var(--muted);font-weight:800;padding:10px 12px;border-radius:11px}
-.nav a:hover,.nav button:hover{background:#5fa7ff1c;border-color:#87beff42;color:var(--text)}
-.nav .random-top{color:#051b28;background:linear-gradient(110deg,#6debe6,#91a3ff);border:0}
-.hero{position:relative;overflow:hidden;border-radius:27px;margin:24px 0 14px;min-height:390px;display:grid;grid-template-columns:1.13fr .87fr;align-items:center;background:linear-gradient(118deg,#11294b 0%,#16385c 52%,#165344 100%);border:1px solid #8eeec477;box-shadow:0 20px 60px #0006}
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 80% 20%,#9dfbc128,transparent 45%),radial-gradient(circle at 7% 12%,#9ef6d51a,transparent 30%)}
-.hero-copy{position:relative;z-index:2;padding:clamp(24px,4vw,53px)}
-.kicker{display:inline-flex;align-items:center;gap:8px;border:1px solid #b7f7c085;background:#5bd88e2a;border-radius:30px;padding:8px 13px;font-size:11px;font-weight:950;letter-spacing:1.5px;color:#caffdb}
-h1{font-size:clamp(38px,5.4vw,66px);letter-spacing:-2.8px;line-height:1.05;margin:19px 0 12px}
-h1 em{font-style:normal;background:linear-gradient(90deg,#9df7c7,#90defa 64%,#ffe5a2);background-clip:text;color:transparent}
-.hero p{color:#d3ecf4;line-height:1.65;max-width:535px;margin:0 0 22px;font-size:clamp(14px,1.6vw,16px)}
-.hero-buttons{display:flex;gap:11px;flex-wrap:wrap}
-.play-button,.outline-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;min-height:48px;padding:12px 19px;font-weight:950;font-size:14px;transition:transform .2s,filter .2s;white-space:nowrap}
-.play-button{background:linear-gradient(110deg,#6beded,#91a7ff);color:#071d34;border:0;box-shadow:0 7px 17px #161d436e}
-.outline-button{border:1px solid #82a7de99;background:#203960a8;color:#fff}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.container{width:min(1160px,calc(100% - 26px));margin:auto}
+header{background:#08152bdc;border-bottom:1px solid #8ba9f12e;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;min-height:72px;padding:9px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:1000;font-size:clamp(18px,3vw,26px);letter-spacing:-.8px}
+.brand span{color:var(--gold)}
+.logo{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:linear-gradient(140deg,#6af8ef,#7e90ff);font-size:25px}
+.navlinks{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.navlinks a,.navlinks button{border:1px solid #55759b77;background:#193154;color:#eef9ff;padding:9px 11px;border-radius:10px;font-size:12px;font-weight:900}
+.navlinks a:hover,.navlinks button:hover{background:#2f517e}
+.hero{margin:22px 0 14px;background:linear-gradient(115deg,#153258,#17486a 62%,#256e57);border:1px solid #91eac488;border-radius:23px;overflow:hidden;display:grid;grid-template-columns:1.15fr .85fr;min-height:337px;box-shadow:0 15px 42px #0006}
+.hero-copy{padding:clamp(24px,4vw,48px);z-index:1}
+.kicker{display:inline-block;background:#1a765c88;border:1px solid #a2ffc8a3;border-radius:22px;padding:7px 12px;font-weight:950;font-size:11px;letter-spacing:1px;color:#ddffe8}
+h1{font-size:clamp(36px,5vw,61px);letter-spacing:-2px;line-height:1.06;margin:16px 0}
+h1 span{color:#b5ffde}
+.hero-copy p{max-width:540px;color:#d0edee;line-height:1.6;font-size:14px}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
+.play-button,.outline-button{display:inline-flex;align-items:center;justify-content:center;text-align:center;border-radius:11px;padding:12px 17px;min-height:47px;font-size:13px;font-weight:950;transition:transform .15s}
+.play-button{background:linear-gradient(120deg,#74f2e5,#9aabff);color:#0b2540;border:0}
+.outline-button{border:1px solid #9ec9db;background:#2048669c;color:white}
 .play-button:hover,.outline-button:hover{transform:translateY(-2px);filter:brightness(1.07)}
-.hero .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;color:#d1eae5;font-weight:750;font-size:12px}
-.hero .tags span{background:#ffffff13;border:1px solid #ffffff1e;padding:6px 10px;border-radius:30px}
-.hero-art{height:100%;position:relative;min-height:320px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,#7dccd7 0%,#a4e4d7 46%,#56ac85 100%);border-left:1px solid #ffffff25}
-.golf-sun{position:absolute;width:115px;height:115px;right:16%;top:10%;border-radius:50%;background:radial-gradient(circle,#fff8cf 20%,#ffeda5 67%,#fff0b000 70%);box-shadow:0 0 65px #fff9a9aa}
-.golf-cloud{position:absolute;width:100px;height:26px;border-radius:35px;background:#e6fff3e0;box-shadow:18px -13px 0 6px #e6fff3d9,-21px -6px 0 3px #e6fff3d3;opacity:.7}
-.golf-cloud.one{top:17%;left:14%}
-.golf-cloud.two{top:32%;right:-4%;transform:scale(.7);opacity:.45}
-.golf-hill-back{position:absolute;left:-15%;bottom:11%;width:135%;height:55%;border-radius:50% 50% 0 0;background:linear-gradient(140deg,#61a88e,#2d907b)}
-.golf-hill-front{position:absolute;left:-18%;bottom:-34%;width:146%;height:74%;border-radius:50% 50% 0 0;background:linear-gradient(155deg,#a2e588,#4fb56f 60%,#1c866c);box-shadow:inset 0 12px 20px #d2ffaf66}
-.golf-fairway{position:absolute;bottom:7%;left:-5%;width:111%;height:23%;transform:rotate(-8deg);border-radius:50%;background:#b9ef88a0;box-shadow:0 0 0 15px #b5ec8033}
-.golf-sand{position:absolute;bottom:8%;right:6%;width:125px;height:42px;transform:rotate(12deg);border-radius:50%;background:#ffe4a5;box-shadow:inset 0 4px 9px #c1a66d55}
-.golf-water{position:absolute;bottom:16%;left:-6%;width:34%;height:35px;border-radius:50%;background:#5fdde3b9;transform:rotate(-17deg);box-shadow:inset 0 7px 8px #6ef6ff7a}
-.golf-cup{position:absolute;left:calc(73% - 32px);bottom:18%;width:70px;height:17px;border-radius:50%;background:#175d4c;box-shadow:inset 0 4px 6px #042e2c8c}
-.golf-pin{position:absolute;left:73%;bottom:21%;height:184px;width:5px;background:linear-gradient(90deg,#fff,#cfe2f7);border-radius:5px;box-shadow:0 0 5px #fff8}
-.golf-flag{position:absolute;left:73%;bottom:calc(21% + 130px);width:85px;height:55px;background:linear-gradient(125deg,#ffec9e,#ffc56f);clip-path:polygon(0 0,100% 14%,80% 51%,100% 90%,0 79%);filter:drop-shadow(0 4px 3px #164b3b40)}
-.golf-ball{position:absolute;left:25%;bottom:25%;width:83px;height:83px;border-radius:50%;background:radial-gradient(circle at 33% 27%,#ffffff,#f7ffff 34%,#c4e0eb 77%,#6d979e 100%);box-shadow:0 17px 12px #0d503d6b,0 0 30px #ffffff40;animation:ball-bob 3.5s ease-in-out infinite}
-.golf-ball::after{content:"";position:absolute;inset:13px;border-radius:50%;opacity:.45;background:radial-gradient(circle at 10px 10px,#8eaebf 2px,transparent 3px),radial-gradient(circle at 30px 16px,#8eaebf 2px,transparent 3px),radial-gradient(circle at 16px 33px,#8eaebf 2px,transparent 3px),radial-gradient(circle at 40px 37px,#8eaebf 2px,transparent 3px)}
-.golf-sparkle{position:absolute;left:11%;top:23%;color:#fff5a1;font-size:35px;text-shadow:0 0 14px #fffbd1}
-.hero-label{position:absolute;bottom:20px;right:20px;color:#e7fff3;background:#102e35d9;border:1px solid #d6ffcd78;padding:8px 11px;border-radius:10px;font-size:12px;font-weight:850}
-@keyframes ball-bob{50%{transform:translate(11px,-7px) rotate(20deg)}}
-.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:15px 0 29px}
-.stat{border:1px solid var(--line);background:linear-gradient(120deg,#17294b,#10203e);border-radius:16px;padding:15px 19px;display:flex;align-items:center;gap:12px;min-width:0}
-.stat .emoji{font-size:27px}
-.stat strong{display:block;font-size:24px;line-height:1.1;color:var(--gold)}
-.stat small{font-size:12px;color:var(--muted);display:block;margin-top:3px}
-.section-head{display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:25px 0 15px}
-.section-head h2{font-size:clamp(23px,3vw,31px);margin:0;letter-spacing:-1px}
-.section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
-.small-note{font-size:12px;color:var(--muted)}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:15px 0 19px}
-.search-wrap{position:relative;flex:1 1 260px;min-width:0}
-.search-wrap span{position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:#b8d2fa}
-.search-wrap input{height:49px;width:100%;border:1px solid #6481b0;background:#101e39;color:var(--text);border-radius:12px;padding:12px 14px 12px 43px;outline:none}
-.search-wrap input::placeholder{color:#a9bddb}
-.search-wrap input:focus{border-color:#9eebff;box-shadow:0 0 0 3px #8cf0f729}
-.filters{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.filter{height:42px;border-radius:11px;padding:8px 13px;background:#152542;border:1px solid #4c6691;color:#c8d8f1;font-size:12px;font-weight:850}
-.filter.active{border-color:#8bf3f2;background:linear-gradient(120deg,#80e6e8,#9aaaff);color:#092438}
-.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
-.game-card{display:flex;flex-direction:column;min-width:0;background:linear-gradient(150deg,var(--panel2),var(--panel));border:1px solid #5b77aa75;border-radius:18px;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
-.game-card:hover{transform:translateY(-4px);border-color:#95e9ffad;box-shadow:0 13px 29px #0006}
-.game-art{height:170px;position:relative;display:grid;place-items:center;isolation:isolate;overflow:hidden}
-.game-art::before{content:"";position:absolute;z-index:-1;width:220px;height:220px;border:2px solid #ffffff26;border-radius:32%;transform:rotate(28deg);box-shadow:0 0 0 28px #ffffff06,0 0 0 57px #ffffff05}
-.game-art::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 55%,#ffffff2a,transparent 65%)}
-.game-art .art-icon{font-size:91px;filter:drop-shadow(0 12px 13px #0008);transform:rotate(-8deg);transition:transform .25s}
-.game-card:hover .art-icon{transform:rotate(0) scale(1.08)}
-.game-art.target{background:linear-gradient(135deg,#174f71,#2c4e9a)}
-.game-art.bike{background:linear-gradient(135deg,#bd5e48,#632f70)}
-.game-art.basketball{background:linear-gradient(135deg,#f09840,#aa4954)}
-.game-art.castle{background:linear-gradient(135deg,#776dba,#263a7c)}
-.game-art.fishing{background:linear-gradient(135deg,#30a9b4,#184e93)}
-.game-art.mining{background:linear-gradient(135deg,#9c6845,#504079)}
-.game-art.space{background:linear-gradient(135deg,#31378f,#51266d)}
-.game-art.golf{background:linear-gradient(135deg,#259c71,#277ea1)}
-.game-art .version{position:absolute;top:12px;left:12px;font-size:11px;font-weight:950;color:#fff;background:#06152eb9;padding:6px 9px;border:1px solid #ffffff45;border-radius:30px}
-.game-art .new{position:absolute;bottom:12px;left:12px;font-size:10px;font-weight:950;letter-spacing:.8px;color:#172342;background:#ffde84;padding:6px 9px;border-radius:30px}
-.favorite{position:absolute;top:10px;right:11px;display:grid;place-items:center;border-radius:10px;border:1px solid #ffffff7d;background:#08132a9c;color:#fff;font-size:22px;width:41px;height:39px;line-height:1;z-index:2}
-.favorite[aria-pressed="true"]{background:#ffe6a7;color:#d75a69}
-.favorite:hover{filter:brightness(1.1)}
-.game-info{padding:17px;display:flex;flex:1;flex-direction:column;align-items:flex-start}
-.game-type{font-size:10px;color:#8febfc;letter-spacing:1.2px;text-transform:uppercase;font-weight:950}
-.game-info h3{font-size:22px;margin:7px 0 7px;letter-spacing:-.5px}
-.game-info p{margin:0 0 16px;color:#c4d3ed;font-size:13px;line-height:1.55;flex:1}
-.game-info .play-button{width:100%}
-.empty{display:none;text-align:center;border:1px dashed #6688bd;border-radius:16px;padding:33px;margin-top:15px;color:var(--muted)}
-.empty button{padding:10px 18px;background:#8becec;border:0;border-radius:9px;font-weight:900;margin-top:10px;color:#0d2335}
-.continue{display:none;margin-top:18px;background:linear-gradient(125deg,#122e4c,#2c3161);border:1px solid #6d9cc3;border-radius:15px;padding:15px 18px;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
-.continue.visible{display:flex}
-.continue strong{display:block;font-size:17px}
-.continue small{display:block;color:#b9d4ed;font-size:12px;margin-top:4px}
-.updates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0 35px}
-.update-card.release-feature{grid-column:1/-1;border-color:#7ce9bb91;background:linear-gradient(100deg,#123f44,#172d53)}
-.update-card{background:#132441;border:1px solid #456691;border-radius:14px;padding:19px;display:flex;align-items:center;gap:13px}
-.update-card .icon{font-size:36px}
-.update-card h3{margin:0 0 5px;font-size:16px}
-.update-card p{margin:0;font-size:12px;line-height:1.5;color:var(--muted)}
-.update-card a{color:#9ceaf0;font-size:12px;font-weight:900;display:inline-block;margin-top:8px}
-footer{border-top:1px solid #6680aa44;text-align:center;padding:23px 10px 33px;color:#aebedc;font-size:12px;line-height:1.8}
-body.light{color-scheme:light;--bg:#e8efff;--panel:#f3f7ff;--panel2:#e6edff;--line:#abbadd;--text:#152747;--muted:#50637f;--shadow:#6676a544;background:radial-gradient(ellipse at top,#d8e9ff,var(--bg))}
-body.light .site-header{background:#f5f9ffdb;border-color:#abbbdd}
-body.light .nav a,body.light .nav button:not(.random-top){color:#35466b}
-body.light .stat,body.light .game-card,body.light .update-card{background:linear-gradient(120deg,#f2f7ff,#dfe9ff)}
-body.light .game-info p,body.light .update-card p{color:#4b617e}
-body.light .game-type{color:#266e9b}
-body.light .filter{background:#eaf0ff;color:#2d4672}
-body.light .filter.active{background:#a7ecf3;color:#11263e}
-body.light .search-wrap input{background:#fff;color:#233a5a}
-body.light .section-head p{color:#5a6d8a}
-body.light .continue{background:#e5efff;color:#213454}
-body.light .continue small{color:#4d6480}
-body.light .hero,body.light .hero *{color:#fff}
-body.light .hero h1 em{color:transparent}
-body.light .hero .play-button,body.light .hero .outline-button{color:#101f38}
-body.light .hero .outline-button{color:#fff}
-body.light .quick-stats strong{color:#8c5c1a}
-body.light .game-info .play-button{color:#071d34}
-@media(max-width:950px){.hero{grid-template-columns:1.2fr .8fr}.golf-flag{width:65px}.golf-ball{left:19%}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:680px){.topbar{align-items:flex-start;flex-direction:column;padding:14px 0;gap:10px}.nav{width:100%;justify-content:space-between}.nav a,.nav button{padding:8px 9px;font-size:12px}.hero{display:block;min-height:0}.hero-copy{padding:28px 23px}.hero-art{height:205px;min-height:205px}.golf-sun{width:80px;height:80px;top:-8%}.golf-pin{height:120px}.golf-flag{bottom:calc(21% + 78px);width:62px;height:42px}.golf-ball{width:60px;height:60px;left:30%}.golf-hill-back{bottom:4%}.golf-hill-front{bottom:-52%}.hero-label{bottom:14px}.quick-stats{gap:6px}.stat{padding:10px;gap:5px}.stat .emoji{font-size:20px}.stat strong{font-size:18px}.stat small{font-size:10px}.updates{grid-template-columns:1fr}.update-card.release-feature{grid-column:auto}.game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-art{height:123px}.game-art .art-icon{font-size:68px}.game-info{padding:12px}.game-info h3{font-size:17px}.game-info p{font-size:12px}.game-info .play-button{font-size:12px;padding:9px;min-height:41px}.filter{font-size:11px;padding:7px 10px}.toolbar{align-items:stretch}}
-@media(max-width:430px){.container{width:min(100% - 18px,1160px)}.brand-icon{width:45px;height:45px}.brand b{font-size:23px}.hero-buttons .play-button,.hero-buttons .outline-button{flex:1 1 auto}.game-grid{grid-template-columns:1fr}.game-art{height:154px}.game-info{padding:16px}.game-info h3{font-size:20px}.game-info p{font-size:13px}.nav .random-top{margin-left:auto}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+.hero-art{min-height:265px;position:relative;overflow:hidden;background:linear-gradient(#8bcce4,#c4e9bc 53%,#429b7b 54%,#146f66)}
+.hero-art:before{content:"";position:absolute;width:115%;height:80%;left:-8%;bottom:-48%;border-radius:50%;background:linear-gradient(135deg,#c0efa5,#54bd6d 70%,#268f61)}
+.hero-art:after{content:"";position:absolute;width:70px;height:70px;left:26%;bottom:20%;border-radius:50%;background:radial-gradient(circle at 30% 30%,white 10%,#f5ffff 35%,#a3cbd6 92%);box-shadow:0 12px 9px #145b4b88;animation:roll 3s ease-in-out infinite}
+.sun{position:absolute;right:12%;top:8%;width:90px;height:90px;border-radius:50%;background:#ffefb2;box-shadow:0 0 45px #ffefa5}
+.flag-pole{position:absolute;left:74%;bottom:23%;height:180px;width:5px;background:#f5faff}
+.flag{position:absolute;left:74%;bottom:calc(23% + 121px);width:83px;height:55px;background:#ffd77f;clip-path:polygon(0 0,100% 15%,82% 50%,100% 85%,0 78%)}
+.cup{position:absolute;left:calc(74% - 25px);bottom:21%;width:55px;height:12px;background:#1a6554;border-radius:50%}
+.scene-tag{position:absolute;bottom:15px;right:14px;background:#183b48c9;border:1px solid #d2fff19c;padding:7px 12px;border-radius:9px;font-weight:900;font-size:11px}
+@keyframes roll{50%{transform:translate(12px,-7px) rotate(18deg)}}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0 26px}
+.stat{padding:14px;border-radius:14px;border:1px solid var(--line);background:#162a4a;display:flex;align-items:center;gap:10px}
+.stat .emoji{font-size:26px}
+.stat b{display:block;font-size:23px;color:var(--gold)}
+.stat small{color:var(--muted);font-size:11px}
+.section-head{margin:26px 0 14px;display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h2{font-size:clamp(23px,3vw,31px);margin:0}
+.section-head p{font-size:13px;color:var(--muted);margin:5px 0 0}
+.small{font-size:12px;color:var(--muted)}
+.continue{display:none;margin-bottom:17px;padding:14px;border:1px solid #6995b6;border-radius:14px;background:linear-gradient(110deg,#173754,#302b60);justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.continue.show{display:flex}
+.continue b{display:block}
+.continue small{color:#c8dcf0}
+.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:14px 0 16px}
+.search{flex:1 1 235px;min-width:0}
+.search input{height:45px;width:100%;padding:10px 13px;border-radius:11px;border:1px solid #7d97ba;background:#0d1d36;color:#fff}
+.filter-group{display:flex;gap:6px;flex-wrap:wrap}
+.filter,.award-filter{background:#1b3456;border:1px solid #57749a;color:#e4f2ff;border-radius:10px;padding:10px 11px;font-size:12px;font-weight:850}
+.filter.active,.award-filter.active{background:#91e9e5;color:#102b42;border-color:#91e9e5}
+.game-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.game-card{background:linear-gradient(135deg,#1c3459,#111f38);border:1px solid #5d7ead;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s}
+.game-card:hover{transform:translateY(-3px);border-color:#a3eafa}
+.game-art{height:139px;display:grid;place-items:center;position:relative;font-size:69px}
+.game-art.target{background:linear-gradient(135deg,#176a95,#383e89)}
+.game-art.bike{background:linear-gradient(135deg,#aa6143,#63316e)}
+.game-art.basketball{background:linear-gradient(135deg,#e8a443,#99455f)}
+.game-art.castle{background:linear-gradient(135deg,#7771ba,#263973)}
+.game-art.fishing{background:linear-gradient(135deg,#32adb8,#204e9b)}
+.game-art.mining{background:linear-gradient(135deg,#98724c,#4b3e78)}
+.game-art.space{background:linear-gradient(135deg,#3b438f,#51276f)}
+.game-art.golf{background:linear-gradient(135deg,#1c9b69,#317db2)}
+.version,.new{position:absolute;left:9px;background:#071a32cc;border:1px solid #ffffff4f;color:white;font-size:10px;font-weight:900;border-radius:9px;padding:5px 8px}
+.version{top:9px}
+.new{bottom:9px;background:#ffe6a0;color:#332640}
+.favorite{position:absolute;right:9px;top:9px;border:1px solid #ffffff88;background:#102440dd;color:white;border-radius:10px;font-size:22px;width:38px;height:38px}
+.favorite[aria-pressed="true"]{color:#b02857;background:#ffe6ad}
+.game-info{padding:14px;display:flex;flex-direction:column;flex:1}
+.category{font-size:10px;font-weight:900;color:#8fe7fa;text-transform:uppercase;letter-spacing:1px}
+.game-info h3{margin:6px 0;font-size:19px}
+.game-info p{flex:1;font-size:12px;color:var(--muted);line-height:1.55;margin:0 0 13px}
+.game-info .play-button{width:100%;min-height:42px;font-size:12px}
+.empty{text-align:center;border:1px dashed #7d97ba;padding:23px;margin-top:10px;border-radius:13px;color:var(--muted)}
+.trophy-section{margin-top:36px;padding:23px;background:linear-gradient(155deg,#1c2e52,#10203e);border:1px solid #738fbc;border-radius:20px}
+.trophy-top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.trophy-top p{color:var(--muted);font-size:13px;margin:6px 0}
+.rank{display:inline-flex;align-items:center;gap:9px;background:#2c3755;border:1px solid #b7a173;border-radius:13px;padding:12px;font-weight:950;color:#ffe9ae}
+.progress{height:12px;border-radius:30px;background:#09142a;overflow:hidden;margin:15px 0 7px}
+.progress-bar{height:100%;background:linear-gradient(90deg,#74eedb,#8eaaff,#ffd789);width:0;transition:width .3s}
+.trophy-meta{display:flex;justify-content:space-between;gap:7px;flex-wrap:wrap;font-size:12px;color:#dceafd;margin-bottom:18px}
+.trophy-tools{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.achievement-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.achievement{background:#1c3455;border:1px solid #57749a;border-radius:13px;padding:14px;min-height:183px}
+.achievement.unlocked{border-color:#cfb773;background:linear-gradient(155deg,#35415b,#1e3755);box-shadow:inset 0 0 0 1px #eddaa025}
+.achievement.locked{opacity:.7}
+.achievement .medal{font-size:36px;line-height:1.2;display:block;margin-bottom:9px}
+.achievement b{font-size:13px}
+.achievement small{display:block;font-size:11px;line-height:1.5;color:var(--muted);margin:5px 0}
+.achievement .points{color:var(--gold);font-size:11px;font-weight:900}
+.achievement .meter{height:5px;border-radius:8px;background:#0a1931;overflow:hidden;margin-top:10px}
+.achievement .meter>div{height:100%;background:#8ef0c9}
+.updates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 32px}
+.update{background:#162b4b;border:1px solid var(--line);border-radius:14px;padding:16px}
+.update .emoji{font-size:30px}
+.update h3{font-size:15px;margin:8px 0 5px}
+.update p{font-size:12px;line-height:1.6;color:var(--muted)}
+.update a{color:#9ff2f5;font-size:12px;font-weight:900}
+.toast{position:fixed;right:15px;bottom:15px;z-index:20;background:#163a50;border:2px solid #ffe4a2;color:white;border-radius:15px;padding:13px 18px;box-shadow:0 12px 35px #0009;max-width:310px;font-weight:800;transform:translateY(160%);transition:transform .35s;pointer-events:none}
+.toast.show{transform:translateY(0)}
+footer{text-align:center;border-top:1px solid #6487ae65;padding:25px 12px;color:#abc5e0;font-size:12px;line-height:1.7}
+body.light{--bg:#eaf1ff;--panel:#f3f8ff;--panel2:#e9f1ff;--text:#182c4d;--muted:#536783;--line:#b0c2dd;background:linear-gradient(#e2eeff,#f3f8ff)}
+body.light header{background:#f5faffed}
+body.light .navlinks a,body.light .navlinks button{background:#e1ecfc;color:#203756}
+body.light .stat,body.light .game-card,body.light .trophy-section,body.light .achievement,body.light .update{background:#f5f9ff;color:#203353}
+body.light .game-info p,body.light .achievement small,body.light .update p{color:#506684}
+body.light .filter,body.light .award-filter{background:#e0ebff;color:#283e62}
+body.light .filter.active,body.light .award-filter.active{background:#8ce6e5;color:#102942}
+body.light .search input{background:white;color:#1c3556}
+body.light .continue{color:white}
+body.light .trophy-meta{color:#274566}
+body.light .achievement .meter{background:#d1def0}
+body.light .stat b{color:#80520d}
+body.light .hero,body.light .hero *{color:white}
+body.light .hero h1 span{color:#bcffde}
+body.light .hero .play-button{color:#102942}
+body.light .hero .kicker{color:#eaffec}
+body.light .game-info .play-button{color:#0b2540}
+@media(max-width:950px){
+.game-grid,.achievement-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:720px){
+header{position:static}
+.hero{grid-template-columns:1fr}
+.hero-art{min-height:185px}
+.hero-art .flag-pole{height:130px}
+.flag{bottom:calc(23% + 72px)}
+.game-grid,.achievement-grid{grid-template-columns:repeat(2,1fr)}
+.stat-row{grid-template-columns:repeat(2,1fr)}
+.updates{grid-template-columns:1fr}
+.trophy-section{padding:15px}
+}
+@media(max-width:440px){
+.game-grid{grid-template-columns:1fr}
+.game-art{height:155px}
+.achievement-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.achievement{padding:10px;min-height:172px}
+.hero-copy{padding:23px}
+.navlinks{width:100%}
+.navlinks a,.navlinks button{padding:8px;font-size:11px}
+.hero h1{letter-spacing:-1px}
+}
+@media(prefers-reduced-motion:reduce){
+*,*:before,*:after{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 <body>
-<a class="skip" href="#games">Skip to games</a>
-<header class="site-header">
-  <div class="container topbar">
-    <a class="brand" href="./" aria-label="Luxton Arcade homepage">
-      <span class="brand-icon" aria-hidden="true">🎮</span>
-      <span><b>LUXTON <span>ARCADE</span></b><small>LEVEL UP YOUR PLAY</small></span>
+<header>
+  <nav class="container" aria-label="Main navigation">
+    <a class="brand" href="./">
+      <div class="logo">🎮</div>
+      LUXTON <span>ARCADE</span>
     </a>
-    <nav class="nav" aria-label="Main navigation">
+    <div class="navlinks">
       <a href="#games">🎮 Games</a>
-      <a href="#updates">✨ What's New</a>
-      <button id="themeBtn" type="button" aria-label="Change light or dark theme">☀️ Theme</button>
-      <button id="randomTop" class="random-top" type="button">🎲 Surprise Me</button>
-    </nav>
-  </div>
+      <a href="#achievements">🏆 Achievements</a>
+      <a href="#updates">✨ Updates</a>
+      <button id="themeBtn" type="button">☀️ Theme</button>
+      <button id="randomBtn" type="button">🎲 Surprise Me</button>
+    </div>
+  </nav>
 </header>
+
 <main class="container">
-  <section class="hero" aria-label="Featured game: Golf Rush V2, our latest update">
+  <section class="hero" aria-label="Golf Rush V2 spotlight">
     <div class="hero-copy">
       <span class="kicker">⛳ JUST UPDATED · GAME #8</span>
-      <h1>GOLF RUSH<br><em>V2 IS HERE!</em></h1>
-      <p>The newest Golf Rush update has arrived! Take on <strong>18 mini-golf holes across 6 worlds</strong>, enter tournaments, win trophies, master trick shots, and unlock new golf balls. Golf Rush V2 is now live in Luxton Arcade!</p>
-      <div class="hero-buttons">
-        <a class="play-button" href="games/golf-rush/" data-game="golf">⛳ PLAY GOLF RUSH</a>
-        <a class="outline-button" href="#games">EXPLORE ALL 8 GAMES ↓</a>
+      <h1>GOLF RUSH<br><span>V2 IS HERE!</span></h1>
+      <p>
+        Play <strong>18 holes across 6 worlds</strong>,
+        enter tournaments, win trophies, and unlock
+        new golf balls. Plus, our brand-new
+        <strong>Arcade Achievements</strong> system is here!
+      </p>
+      <div class="actions">
+        <a class="play-button" href="games/golf-rush/" data-game="golf">
+          ⛳ PLAY GOLF RUSH
+        </a>
+        <a class="outline-button" href="#achievements">
+          🏆 VIEW TROPHY ROOM
+        </a>
       </div>
-      <div class="tags"><span>🆕 JUST UPDATED</span><span>⛳ 18 HOLES · 6 WORLDS</span><span>🎮 8 FREE GAMES</span></div>
     </div>
     <div class="hero-art" aria-hidden="true">
-      <div class="golf-sun"></div>
-      <div class="golf-cloud one"></div><div class="golf-cloud two"></div>
-      <div class="golf-hill-back"></div><div class="golf-hill-front"></div>
-      <div class="golf-fairway"></div><div class="golf-water"></div><div class="golf-sand"></div>
-      <div class="golf-cup"></div><div class="golf-pin"></div><div class="golf-flag"></div>
-      <div class="golf-ball"></div><div class="golf-sparkle">✦</div>
-      <div class="hero-label">⛳ JUST UPDATED · GOLF RUSH V2</div>
+      <div class="sun"></div>
+      <div class="cup"></div>
+      <div class="flag-pole"></div>
+      <div class="flag"></div>
+      <div class="scene-tag">🏆 NEW ACHIEVEMENTS UPDATE</div>
     </div>
   </section>
 
-  <section class="quick-stats" aria-label="Your arcade stats">
-    <div class="stat"><span class="emoji">🎮</span><div><strong>8</strong><small>Playable games</small></div></div>
-    <div class="stat"><span class="emoji">❤️</span><div><strong id="favStat">0</strong><small>Your favorites</small></div></div>
-    <div class="stat"><span class="emoji">🏆</span><div><strong id="triedStat">0</strong><small>Games you've tried here</small></div></div>
-  </section>
+  <div class="stat-row" aria-label="Arcade statistics">
+    <div class="stat">
+      <span class="emoji">🎮</span>
+      <div><b>8</b><small>Playable games</small></div>
+    </div>
+    <div class="stat">
+      <span class="emoji">🏆</span>
+      <div><b id="statAchievements">0</b><small>Achievements earned</small></div>
+    </div>
+    <div class="stat">
+      <span class="emoji">✨</span>
+      <div><b id="statXP">0</b><small>Arcade XP</small></div>
+    </div>
+    <div class="stat">
+      <span class="emoji">❤️</span>
+      <div><b id="statFavorites">0</b><small>Favorite games</small></div>
+    </div>
+  </div>
 
-  <section class="continue" id="continueBox" aria-label="Continue playing">
-    <div><strong id="continueTitle">🕹️ Continue Playing</strong><small id="continueNote">Jump back into your last game.</small></div>
-    <a class="play-button" id="continueLink" href="games/golf-rush/">▶ KEEP PLAYING</a>
-  </section>
+  <div class="continue" id="continueBox">
+    <div>
+      <b id="continueTitle">🕹️ Continue Playing</b>
+      <small>Jump back into your last game.</small>
+    </div>
+    <a id="continueLink" href="games/golf-rush/"
+       class="play-button" data-game="golf">
+      ▶ CONTINUE
+    </a>
+  </div>
 
-  <section id="games" aria-label="All games">
+  <section id="games">
     <div class="section-head">
-      <div><h2>🎮 Choose Your Game</h2><p>Search, filter, or ❤️ your favorites. All eight are ready to play.</p></div>
-      <span class="small-note" id="results" aria-live="polite">8 games shown</span>
+      <div>
+        <h2>🎮 Choose Your Game</h2>
+        <p>Launch games to earn their special achievements!</p>
+      </div>
+      <span id="gameCount" class="small">8 games shown</span>
     </div>
+
     <div class="toolbar">
-      <label class="search-wrap"><span aria-hidden="true">🔎</span><input id="search" type="search" placeholder="Search games…" aria-label="Search games" autocomplete="off"></label>
-      <div class="filters" role="group" aria-label="Filter games">
-        <button type="button" class="filter active" data-filter="all" aria-pressed="true">All</button>
-        <button type="button" class="filter" data-filter="action" aria-pressed="false">⚡ Action</button>
-        <button type="button" class="filter" data-filter="sports" aria-pressed="false">🏀 Sports</button>
-        <button type="button" class="filter" data-filter="adventure" aria-pressed="false">🧭 Adventure</button>
-        <button type="button" class="filter" data-filter="relax" aria-pressed="false">🌊 Relax</button>
-        <button type="button" class="filter" data-filter="favorites" aria-pressed="false">❤️ Favorites</button>
+      <label class="search">
+        <input id="search" type="search"
+               placeholder="🔎 Search games…"
+               aria-label="Search games">
+      </label>
+      <div class="filter-group" role="group"
+           aria-label="Game categories">
+        <button class="filter active" data-filter="all"
+                aria-pressed="true">All</button>
+        <button class="filter" data-filter="action"
+                aria-pressed="false">⚡ Action</button>
+        <button class="filter" data-filter="sports"
+                aria-pressed="false">🏀 Sports</button>
+        <button class="filter" data-filter="adventure"
+                aria-pressed="false">🧭 Adventure</button>
+        <button class="filter" data-filter="relax"
+                aria-pressed="false">🌊 Relax</button>
+        <button class="filter" data-filter="favorites"
+                aria-pressed="false">❤️ Favorites</button>
       </div>
     </div>
 
     <div class="game-grid" id="gameGrid">
-      <article class="game-card" data-id="golf" data-category="sports" data-search="golf rush mini golf putting golf ball golf balls holes putting green par birdie eagle hole in one coins sand water ice neon desert sunny sports tournament trophies new update">
-        <div class="game-art golf"><span class="version">V2</span><span class="new">⛳ JUST UPDATED</span><span class="art-icon" aria-hidden="true">⛳</span><button type="button" class="favorite" aria-label="Favorite Golf Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Sports · Mini Golf</span><h3>Golf Rush</h3><p>Play 18 holes, enter six tournaments, win trophies, and unlock awesome golf balls!</p><a class="play-button" href="games/golf-rush/" data-game="golf">▶ PLAY NOW</a></div>
+
+      <!-- GOLF RUSH -->
+      <article class="game-card" data-id="golf"
+        data-category="sports"
+        data-search="golf rush putting tournament trophy holes balls courses">
+        <div class="game-art golf">
+          ⛳
+          <span class="version">V2</span>
+          <span class="new">🆕 SPOTLIGHT</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Golf Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Sports · Mini Golf</span>
+          <h3>Golf Rush</h3>
+          <p>Play 18 holes, win six tournaments, collect trophies, and unlock golf balls!</p>
+          <a class="play-button" href="games/golf-rush/" data-game="golf">▶ PLAY NOW</a>
+        </div>
       </article>
-      <article class="game-card" data-id="target" data-category="action" data-search="target rush reflexes tap speed combo gold targets classic">
-        <div class="game-art target"><span class="version">V7</span><span class="art-icon" aria-hidden="true">🎯</span><button type="button" class="favorite" aria-label="Favorite Target Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Action · Reflexes</span><h3>Target Rush</h3><p>Hit targets, build massive combos, and beat your personal best in 30 seconds!</p><a class="play-button" href="games/target-rush/" data-game="target">▶ PLAY NOW</a></div>
+
+      <!-- TARGET RUSH -->
+      <article class="game-card" data-id="target"
+        data-category="action"
+        data-search="target rush reflex combos gold fast targets">
+        <div class="game-art target">
+          🎯
+          <span class="version">V7</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Target Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Action · Reflexes</span>
+          <h3>Target Rush</h3>
+          <p>Hit targets, build combos, and chase a new personal best!</p>
+          <a class="play-button" href="games/target-rush/" data-game="target">▶ PLAY NOW</a>
+        </div>
       </article>
-      <article class="game-card" data-id="bike" data-category="action" data-search="bike rush ramps coins tricks riding platformer racing obstacles shop">
-        <div class="game-art bike"><span class="version">V3</span><span class="art-icon" aria-hidden="true">🚴</span><button type="button" class="favorite" aria-label="Favorite Bike Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Action · Racing</span><h3>Bike Rush</h3><p>Ride ramps, dodge obstacles, earn coins, and customize your bike.</p><a class="play-button" href="games/bike-rush/" data-game="bike">▶ PLAY NOW</a></div>
+
+      <!-- BIKE RUSH -->
+      <article class="game-card" data-id="bike"
+        data-category="action"
+        data-search="bike rush ramps cycling obstacles racing">
+        <div class="game-art bike">
+          🚴
+          <span class="version">V3</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Bike Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Action · Racing</span>
+          <h3>Bike Rush</h3>
+          <p>Race, ride ramps, dodge obstacles, and upgrade your bike!</p>
+          <a class="play-button" href="games/bike-rush/" data-game="bike">▶ PLAY NOW</a>
+        </div>
       </article>
-      <article class="game-card" data-id="basketball" data-category="sports" data-search="basketball rush hoops shoot first person arcade machine basketball coins">
-        <div class="game-art basketball"><span class="version">V4.2</span><span class="art-icon" aria-hidden="true">🏀</span><button type="button" class="favorite" aria-label="Favorite Basketball Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Sports · Arcade</span><h3>Basketball Rush</h3><p>Swipe to shoot, rack up combos, unlock basketballs, and score big!</p><a class="play-button" href="games/basketball-rush/" data-game="basketball">▶ PLAY NOW</a></div>
+
+      <!-- BASKETBALL RUSH -->
+      <article class="game-card" data-id="basketball"
+        data-category="sports"
+        data-search="basketball rush shooting hoops combos coins">
+        <div class="game-art basketball">
+          🏀
+          <span class="version">V4.2</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Basketball Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Sports · Arcade</span>
+          <h3>Basketball Rush</h3>
+          <p>Swipe to shoot, earn combos, and unlock basketballs!</p>
+          <a class="play-button" href="games/basketball-rush/" data-game="basketball">▶ PLAY NOW</a>
+        </div>
       </article>
-      <article class="game-card" data-id="castle" data-category="adventure" data-search="castle rush castles cannon strategy battle upgrades defend kingdom">
-        <div class="game-art castle"><span class="version">V2</span><span class="art-icon" aria-hidden="true">🏰</span><button type="button" class="favorite" aria-label="Favorite Castle Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Strategy · Adventure</span><h3>Castle Rush</h3><p>Launch cannonballs, upgrade your castle, and take on tricky opponents.</p><a class="play-button" href="games/castle-rush/" data-game="castle">▶ PLAY NOW</a></div>
+
+      <!-- CASTLE RUSH -->
+      <article class="game-card" data-id="castle"
+        data-category="adventure"
+        data-search="castle rush cannon strategy battle castle">
+        <div class="game-art castle">
+          🏰
+          <span class="version">V2</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Castle Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Adventure · Strategy</span>
+          <h3>Castle Rush</h3>
+          <p>Launch cannonballs and upgrade your castle for battle!</p>
+          <a class="play-button" href="games/castle-rush/" data-game="castle">▶ PLAY NOW</a>
+        </div>
       </article>
-      <article class="game-card" data-id="fishing" data-category="relax" data-search="fishing rush ocean relaxing fish boats rods aquarium collection shop">
-        <div class="game-art fishing"><span class="version">V3.5</span><span class="art-icon" aria-hidden="true">🎣</span><button type="button" class="favorite" aria-label="Favorite Fishing Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Relax · Collection</span><h3>Fishing Rush</h3><p>Catch rare fish, upgrade your gear, cruise in boats, and build an aquarium.</p><a class="play-button" href="games/fishing-rush/" data-game="fishing">▶ PLAY NOW</a></div>
+
+      <!-- FISHING RUSH -->
+      <article class="game-card" data-id="fishing"
+        data-category="relax"
+        data-search="fishing rush boats fish ocean aquarium">
+        <div class="game-art fishing">
+          🎣
+          <span class="version">V3.5</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Fishing Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Relax · Collection</span>
+          <h3>Fishing Rush</h3>
+          <p>Catch rare fish, explore the water, and build an aquarium!</p>
+          <a class="play-button" href="games/fishing-rush/" data-game="fishing">▶ PLAY NOW</a>
+        </div>
       </article>
-      <article class="game-card" data-id="mining" data-category="adventure" data-search="mining rush cave treasure minerals minecart pets forge headquarters relics">
-        <div class="game-art mining"><span class="version">V2.1</span><span class="new">✨ SECRET TREASURES</span><span class="art-icon" aria-hidden="true">⛏️</span><button type="button" class="favorite" aria-label="Favorite Mining Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Adventure · Mining</span><h3>Mining Rush</h3><p>Explore 200 meters underground, find secret vaults, and adopt mining pets.</p><a class="play-button" href="games/mining-rush/" data-game="mining">▶ PLAY NOW</a></div>
+
+      <!-- MINING RUSH -->
+      <article class="game-card" data-id="mining"
+        data-category="adventure"
+        data-search="mining rush ore relic museum cave pets treasure">
+        <div class="game-art mining">
+          ⛏️
+          <span class="version">V2.1</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Mining Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Adventure · Mining</span>
+          <h3>Mining Rush</h3>
+          <p>Explore deep caves, find secret vaults, and adopt mining pets!</p>
+          <a class="play-button" href="games/mining-rush/" data-game="mining">▶ PLAY NOW</a>
+        </div>
       </article>
-      <article class="game-card" data-id="space" data-category="action" data-search="space rush spaceships aliens asteroid invasion boss galactic galaxy mission coins">
-        <div class="game-art space"><span class="version">V2</span><span class="new">👾 V2 UPDATE</span><span class="art-icon" aria-hidden="true">🚀</span><button type="button" class="favorite" aria-label="Favorite Space Rush" aria-pressed="false">♡</button></div>
-        <div class="game-info"><span class="game-type">Action · Space</span><h3>Space Rush</h3><p>Fight alien drones, defeat the giant mothership, and unlock eight spaceships!</p><a class="play-button" href="games/space-rush/" data-game="space">▶ PLAY NOW</a></div>
+
+      <!-- SPACE RUSH -->
+      <article class="game-card" data-id="space"
+        data-category="action"
+        data-search="space rush aliens spaceship asteroids boss galaxy">
+        <div class="game-art space">
+          🚀
+          <span class="version">V2</span>
+          <button class="favorite" type="button"
+            aria-label="Favorite Space Rush"
+            aria-pressed="false">♡</button>
+        </div>
+        <div class="game-info">
+          <span class="category">Action · Space</span>
+          <h3>Space Rush</h3>
+          <p>Defeat aliens, face the mothership, and unlock better ships!</p>
+          <a class="play-button" href="games/space-rush/" data-game="space">▶ PLAY NOW</a>
+        </div>
       </article>
+
     </div>
-    <div class="empty" id="empty" role="status"><div style="font-size:38px">🪐</div><h3>No games found</h3><p>Try a different search or filter.</p><button type="button" id="reset">SHOW ALL GAMES</button></div>
+    <div class="empty" id="noGames" hidden>
+      No games found. Try another search or filter.
+    </div>
   </section>
 
+  <!-- NEW ACHIEVEMENTS SECTION -->
+  <section class="trophy-section" id="achievements">
+    <div class="trophy-top">
+      <div>
+        <h2>🏆 Arcade Trophy Room</h2>
+        <p>Complete challenges across Luxton Arcade and become an Arcade Legend!</p>
+      </div>
+      <div class="rank" id="rank">🥉 Rookie</div>
+    </div>
+
+    <div class="progress">
+      <div id="xpBar" class="progress-bar"></div>
+    </div>
+    <div class="trophy-meta">
+      <span id="xpProgress">0 XP</span>
+      <span id="trophyProgress">0 of 22 trophies unlocked</span>
+    </div>
+
+    <div class="trophy-tools" role="group"
+         aria-label="Filter achievements">
+      <button class="award-filter active"
+              data-award-filter="all" aria-pressed="true">
+        All Trophies
+      </button>
+      <button class="award-filter"
+              data-award-filter="earned" aria-pressed="false">
+        ✅ Earned
+      </button>
+      <button class="award-filter"
+              data-award-filter="locked" aria-pressed="false">
+        🔒 Locked
+      </button>
+    </div>
+
+    <div id="achievementGrid" class="achievement-grid"></div>
+
+    <p class="small" style="margin:17px 0 0">
+      Achievements track games launched from this homepage,
+      favorites, and arcade milestones. They save in this browser.
+      Your individual game scores and saves are not changed.
+    </p>
+  </section>
+
+  <!-- WHAT'S NEW -->
   <section id="updates">
-    <div class="section-head"><div><h2>✨ What's New</h2><p>New adventures have landed at Luxton Arcade.</p></div></div>
+    <div class="section-head">
+      <div>
+        <h2>✨ What's New</h2>
+        <p>More ways to have fun at Luxton Arcade!</p>
+      </div>
+    </div>
     <div class="updates">
-      <article class="update-card release-feature"><div class="icon">⛳</div><div><h3>JUST UPDATED: Golf Rush V2!</h3><p>Game #8 just got bigger! Play 18 holes across six worlds, compete in tournaments, master trick shots, and collect championship trophies.</p><a href="games/golf-rush/" data-game="golf">Play the newest update →</a></div></article>
-      <article class="update-card"><div class="icon">🚀</div><div><h3>Space Rush V2 — Alien Invasion</h3><p>Alien drones, a giant mothership, eight unlockable ships, and a gear lab.</p><a href="games/space-rush/" data-game="space">Launch Space Rush →</a></div></article>
-      <article class="update-card"><div class="icon">⛏️</div><div><h3>Mining Rush V2.1 — Secret Treasures</h3><p>Hidden vaults, three mining pets, new headquarters, and more upgrades.</p><a href="games/mining-rush/" data-game="mining">Explore the caves →</a></div></article>
+      <div class="update">
+        <div class="emoji">🏆</div>
+        <h3>NEW: Arcade Achievements</h3>
+        <p>Earn 22 trophies, collect XP, and work your way from Rookie to Arcade Legend!</p>
+        <a href="#achievements">Visit the trophy room →</a>
+      </div>
+      <div class="update">
+        <div class="emoji">⛳</div>
+        <h3>Golf Rush V2</h3>
+        <p>Eighteen holes, six worlds, tournaments, and a new trophy collection.</p>
+        <a href="games/golf-rush/" data-game="golf">Play Golf Rush →</a>
+      </div>
+      <div class="update">
+        <div class="emoji">🚀</div>
+        <h3>Space Rush V2 + Mining Rush V2.1</h3>
+        <p>Battle alien ships or explore secret treasure rooms underground.</p>
+        <a href="games/space-rush/" data-game="space">Explore Space Rush →</a>
+      </div>
     </div>
   </section>
 </main>
-<footer>🎮 <strong>LUXTON ARCADE V2</strong> · 8 free games · Built for fun<br>Favorites and the Continue Playing shortcut save locally in this browser. Your game saves stay inside each individual game.</footer>
+
+<div class="toast" id="toast" role="status"
+     aria-live="polite"></div>
+
+<footer>
+  🎮 <b>Luxton Arcade</b> · 8 free games · 22 arcade achievements
+  <br>
+  All arcade trophies, favorites, and game visits
+  are stored locally in this browser.
+</footer>
+
 <script>
 (()=>{
-  "use strict";
-  const $=s=>document.querySelector(s);
-  const $$=s=>[...document.querySelectorAll(s)];
-  const cards=$$(".game-card");
-  const byId=Object.fromEntries(cards.map(c=>[c.dataset.id,c]));
-  const names=Object.fromEntries(cards.map(c=>[c.dataset.id,c.querySelector("h3").textContent]));
-  const storage={favorites:"luxton_arcade_v2_favorites",recent:"luxton_arcade_v2_recent",tried:"luxton_arcade_v2_tried",theme:"luxton_arcade_v2_theme"};
-  function read(key,fallback){try{const value=JSON.parse(localStorage.getItem(key));return value===null?fallback:value;}catch{return fallback;}}
-  function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{}}
-  let favorites=read(storage.favorites,[]);
-  let tried=read(storage.tried,[]);
-  let recent=read(storage.recent,null);
-  let filter="all";
-  if(!Array.isArray(favorites))favorites=[];
-  if(!Array.isArray(tried))tried=[];
-  favorites=favorites.filter(id=>byId[id]);
-  tried=tried.filter(id=>byId[id]);
+"use strict";
 
-  function updateStats(){
-    $("#favStat").textContent=favorites.length;
-    $("#triedStat").textContent=tried.length;
-  }
-  function updateContinue(){
-    const box=$("#continueBox");
-    if(!recent||!byId[recent]){box.classList.remove("visible");return;}
-    box.classList.add("visible");
-    $("#continueTitle").textContent="🕹️ Continue Playing "+names[recent];
-    $("#continueNote").textContent="Jump back into "+names[recent]+" where you left off.";
-    const link=$("#continueLink");
-    link.href=byId[recent].querySelector("a.play-button").getAttribute("href");
-    link.dataset.game=recent;
-  }
-  function saveVisit(id){
-    if(!byId[id])return;
-    recent=id;
-    if(!tried.includes(id))tried.push(id);
-    write(storage.recent,recent);
-    write(storage.tried,tried);
-    updateStats();updateContinue();
-  }
-  $$('a[data-game]').forEach(link=>link.addEventListener("click",()=>saveVisit(link.dataset.game)));
-  $("#continueLink").addEventListener("click",()=>saveVisit($("#continueLink").dataset.game));
+const $=id=>document.getElementById(id);
+const cards=[...document.querySelectorAll(".game-card")];
+const byId=Object.fromEntries(
+  cards.map(c=>[c.dataset.id,c])
+);
+const ids=cards.map(c=>c.dataset.id);
+const names=Object.fromEntries(
+  cards.map(c=>[
+    c.dataset.id,
+    c.querySelector("h3").textContent
+  ])
+);
 
-  function paintFavorites(){
-    for(const card of cards){
-      const active=favorites.includes(card.dataset.id);
-      const button=card.querySelector(".favorite");
-      button.textContent=active?"♥":"♡";
-      button.setAttribute("aria-pressed",String(active));
-      button.setAttribute("aria-label",(active?"Remove ":"Favorite ")+names[card.dataset.id]+(active?" from favorites":""));
-      button.title=active?"Remove favorite":"Add favorite";
+// SAME KEYS AS YOUR PREVIOUS HOMEPAGE
+const K={
+  favorites:"luxton_arcade_v2_favorites",
+  tried:"luxton_arcade_v2_tried",
+  recent:"luxton_arcade_v2_recent",
+  theme:"luxton_arcade_v2_theme",
+  launches:"luxton_arcade_achievements_launches",
+  awards:"luxton_arcade_achievements_awards"
+};
+
+function read(key,fallback){
+  try{
+    const x=JSON.parse(localStorage.getItem(key));
+    return x===null?fallback:x;
+  }catch{
+    return fallback;
+  }
+}
+
+function save(key,value){
+  try{
+    localStorage.setItem(key,JSON.stringify(value));
+  }catch{}
+}
+
+let favorites=read(K.favorites,[]);
+let tried=read(K.tried,[]);
+let recent=read(K.recent,null);
+let launches=read(K.launches,{});
+let unlocked=read(K.awards,{});
+
+if(!Array.isArray(favorites))favorites=[];
+if(!Array.isArray(tried))tried=[];
+
+if(
+  !launches||
+  typeof launches!=="object"||
+  Array.isArray(launches)
+){
+  launches={};
+}
+
+if(
+  !unlocked||
+  typeof unlocked!=="object"||
+  Array.isArray(unlocked)
+){
+  unlocked={};
+}
+
+favorites=[
+  ...new Set(favorites.filter(id=>ids.includes(id)))
+];
+
+tried=[
+  ...new Set(tried.filter(id=>ids.includes(id)))
+];
+
+const totalLaunches=()=>
+  Object.values(launches).reduce(
+    (sum,n)=>sum+(
+      Number.isFinite(n)?Math.max(0,n):0
+    ),0
+  );
+
+const countPlayed=category=>
+  cards.filter(
+    c=>
+      c.dataset.category===category&&
+      tried.includes(c.dataset.id)
+  ).length;
+
+const countCategory=category=>
+  cards.filter(
+    c=>c.dataset.category===category
+  ).length;
+
+// ALL 22 ACHIEVEMENTS
+const A=[
+
+  {
+    id:"welcome",
+    icon:"🎟️",
+    title:"Welcome to the Arcade",
+    desc:"Open the new Arcade Trophy Room.",
+    group:"Arcade",
+    goal:1,
+    xp:15,
+    count:()=>1
+  },
+
+  // ONE TROPHY FOR EVERY GAME
+
+  {
+    id:"golf",
+    icon:"⛳",
+    title:"First Putt",
+    desc:"Launch Golf Rush from the homepage.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("golf")
+  },
+  {
+    id:"target",
+    icon:"🎯",
+    title:"Sharpshooter",
+    desc:"Launch Target Rush.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("target")
+  },
+  {
+    id:"bike",
+    icon:"🚴",
+    title:"Pedal Power",
+    desc:"Launch Bike Rush.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("bike")
+  },
+  {
+    id:"basketball",
+    icon:"🏀",
+    title:"Hoop Dreams",
+    desc:"Launch Basketball Rush.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("basketball")
+  },
+  {
+    id:"castle",
+    icon:"🏰",
+    title:"Royal Explorer",
+    desc:"Launch Castle Rush.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("castle")
+  },
+  {
+    id:"fishing",
+    icon:"🎣",
+    title:"Gone Fishing",
+    desc:"Launch Fishing Rush.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("fishing")
+  },
+  {
+    id:"mining",
+    icon:"⛏️",
+    title:"Deep Explorer",
+    desc:"Launch Mining Rush.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("mining")
+  },
+  {
+    id:"space",
+    icon:"🚀",
+    title:"Space Cadet",
+    desc:"Launch Space Rush.",
+    group:"Games",
+    goal:1,
+    xp:50,
+    count:()=>+tried.includes("space")
+  },
+
+  // EXPLORER TROPHIES
+
+  {
+    id:"explorer1",
+    icon:"🥉",
+    title:"First Adventure",
+    desc:"Try one different game.",
+    group:"Explorer",
+    goal:1,
+    xp:30,
+    count:()=>tried.length
+  },
+  {
+    id:"explorer3",
+    icon:"🥈",
+    title:"Game Hopper",
+    desc:"Try three different games.",
+    group:"Explorer",
+    goal:3,
+    xp:75,
+    count:()=>tried.length
+  },
+  {
+    id:"explorer5",
+    icon:"🥇",
+    title:"Arcade Veteran",
+    desc:"Try five different games.",
+    group:"Explorer",
+    goal:5,
+    xp:130,
+    count:()=>tried.length
+  },
+  {
+    id:"explorer8",
+    icon:"👑",
+    title:"Eight-Game Champion",
+    desc:"Try all eight games!",
+    group:"Explorer",
+    goal:8,
+    xp:250,
+    count:()=>tried.length
+  },
+
+  // FAVORITES TROPHIES
+
+  {
+    id:"fav1",
+    icon:"❤️",
+    title:"New Favorite",
+    desc:"Favorite one game.",
+    group:"Favorites",
+    goal:1,
+    xp:25,
+    count:()=>favorites.length
+  },
+  {
+    id:"fav3",
+    icon:"💗",
+    title:"Arcade Fan",
+    desc:"Favorite three games.",
+    group:"Favorites",
+    goal:3,
+    xp:75,
+    count:()=>favorites.length
+  },
+  {
+    id:"fav5",
+    icon:"💖",
+    title:"Super Fan",
+    desc:"Favorite five games.",
+    group:"Favorites",
+    goal:5,
+    xp:125,
+    count:()=>favorites.length
+  },
+
+  // COMPLETE EACH GAME CATEGORY
+
+  {
+    id:"action",
+    icon:"⚡",
+    title:"Action Hero",
+    desc:"Try every Action game.",
+    group:"Collections",
+    goal:countCategory("action"),
+    xp:60,
+    count:()=>countPlayed("action")
+  },
+  {
+    id:"sports",
+    icon:"🏅",
+    title:"Sports Star",
+    desc:"Try every Sports game.",
+    group:"Collections",
+    goal:countCategory("sports"),
+    xp:60,
+    count:()=>countPlayed("sports")
+  },
+  {
+    id:"adventure",
+    icon:"🗺️",
+    title:"Adventurer",
+    desc:"Try every Adventure game.",
+    group:"Collections",
+    goal:countCategory("adventure"),
+    xp:60,
+    count:()=>countPlayed("adventure")
+  },
+  {
+    id:"relax",
+    icon:"🌊",
+    title:"Take It Easy",
+    desc:"Try the Relax game.",
+    group:"Collections",
+    goal:countCategory("relax"),
+    xp:60,
+    count:()=>countPlayed("relax")
+  },
+
+  // FREQUENT PLAYER TROPHIES
+
+  {
+    id:"launch10",
+    icon:"🔥",
+    title:"Arcade Regular",
+    desc:"Launch games ten times from the homepage.",
+    group:"Arcade",
+    goal:10,
+    xp:75,
+    count:totalLaunches
+  },
+  {
+    id:"launch25",
+    icon:"🌟",
+    title:"Arcade Superstar",
+    desc:"Launch games twenty-five times.",
+    group:"Arcade",
+    goal:25,
+    xp:125,
+    count:totalLaunches
+  }
+
+];
+
+let awardFilter="all";
+let gameFilter="all";
+let toastTimer;
+
+// ACHIEVEMENT POP-UP
+function announce(text){
+  const t=$("toast");
+  t.textContent=text;
+  t.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(
+    ()=>t.classList.remove("show"),
+    4000
+  );
+}
+
+// AWARD ACHIEVEMENTS
+function checkAwards(notify=false){
+  const fresh=[];
+
+  for(const a of A){
+    if(!unlocked[a.id]&&a.count()>=a.goal){
+      unlocked[a.id]=Date.now();
+      fresh.push(a);
     }
-    updateStats();
   }
-  for(const card of cards){
-    card.querySelector(".favorite").addEventListener("click",()=>{
-      const id=card.dataset.id;
-      if(favorites.includes(id))favorites=favorites.filter(x=>x!==id);
-      else favorites.push(id);
-      write(storage.favorites,favorites);
-      paintFavorites();applyFilter();
+
+  if(fresh.length){
+    save(K.awards,unlocked);
+
+    if(notify){
+      announce(
+        "🏆 ACHIEVEMENT UNLOCKED: "+
+        fresh.map(a=>a.title).join(" + ")+"!"
+      );
+    }
+  }
+
+  renderAwards();
+}
+
+// DRAW TROPHY ROOM
+function renderAwards(){
+  const earned=A.filter(a=>unlocked[a.id]);
+
+  const xp=earned.reduce(
+    (sum,a)=>sum+a.xp,
+    0
+  );
+
+  const ranks=[
+    {at:0,name:"🥉 Rookie"},
+    {at:150,name:"🥈 Explorer"},
+    {at:400,name:"🥇 Pro Gamer"},
+    {at:850,name:"💎 Champion"},
+    {at:1300,name:"👑 Arcade Legend"}
+  ];
+
+  let index=ranks.findIndex(
+    (r,i)=>
+      xp>=r.at&&
+      (
+        i===ranks.length-1||
+        xp<ranks[i+1].at
+      )
+  );
+
+  if(index<0)index=0;
+
+  const current=ranks[index];
+  const next=ranks[index+1];
+
+  $("statAchievements").textContent=earned.length;
+  $("statXP").textContent=xp.toLocaleString();
+  $("statFavorites").textContent=favorites.length;
+
+  $("rank").textContent=current.name;
+
+  $("trophyProgress").textContent=
+    earned.length+" of "+A.length+" trophies unlocked";
+
+  $("xpProgress").textContent=next
+    ?xp+" / "+next.at+" XP toward "+next.name
+    :xp+" XP — MAX RANK ACHIEVED!";
+
+  $("xpBar").style.width=next
+    ?Math.max(
+      0,
+      Math.min(
+        100,
+        (xp-current.at)/(next.at-current.at)*100
+      )
+    )+"%"
+    :"100%";
+
+  const grid=$("achievementGrid");
+  grid.replaceChildren();
+
+  for(const a of A){
+    const has=!!unlocked[a.id];
+
+    if(
+      awardFilter==="earned"&&!has||
+      awardFilter==="locked"&&has
+    ){
+      continue;
+    }
+
+    const count=Math.min(
+      a.goal,
+      Math.max(0,a.count())
+    );
+
+    const el=document.createElement("article");
+
+    el.className=
+      "achievement "+(has?"unlocked":"locked");
+
+    const icon=document.createElement("span");
+    icon.className="medal";
+    icon.textContent=has?a.icon:"🔒";
+
+    const title=document.createElement("b");
+    title.textContent=a.title;
+
+    const desc=document.createElement("small");
+    desc.textContent=a.desc;
+
+    const meta=document.createElement("span");
+    meta.className="points";
+
+    meta.textContent=has
+      ?"✅ UNLOCKED · "+a.xp+" XP"
+      :count+" / "+a.goal+" · "+a.xp+" XP";
+
+    const meter=document.createElement("div");
+    meter.className="meter";
+
+    const bar=document.createElement("div");
+    bar.style.width=
+      (has?100:count/a.goal*100)+"%";
+
+    meter.append(bar);
+    el.append(icon,title,desc,meta,meter);
+
+    grid.append(el);
+  }
+
+  if(!grid.children.length){
+    const msg=document.createElement("p");
+    msg.textContent=
+      "No trophies in this filter yet. Keep playing!";
+    grid.append(msg);
+  }
+}
+
+// FAVORITES SYSTEM
+function refreshFavorites(){
+  for(const c of cards){
+    const b=c.querySelector(".favorite");
+    const on=favorites.includes(c.dataset.id);
+
+    b.textContent=on?"♥":"♡";
+    b.setAttribute("aria-pressed",String(on));
+
+    b.setAttribute(
+      "aria-label",
+      (on?"Remove ":"Favorite ")+names[c.dataset.id]
+    );
+  }
+
+  $("statFavorites").textContent=favorites.length;
+}
+
+// CONTINUE PLAYING
+function updateContinue(){
+  const box=$("continueBox");
+
+  if(!recent||!byId[recent]){
+    box.classList.remove("show");
+    return;
+  }
+
+  box.classList.add("show");
+
+  $("continueTitle").textContent=
+    "🕹️ Continue Playing "+names[recent];
+
+  $("continueLink").href=
+    byId[recent]
+    .querySelector(".play-button")
+    .getAttribute("href");
+
+  $("continueLink").dataset.game=recent;
+}
+
+// TRACK GAME LAUNCHES
+function launch(id){
+  if(!byId[id])return;
+
+  recent=id;
+
+  if(!tried.includes(id)){
+    tried.push(id);
+  }
+
+  launches[id]=(Number(launches[id])||0)+1;
+
+  save(K.recent,recent);
+  save(K.tried,tried);
+  save(K.launches,launches);
+
+  updateContinue();
+  checkAwards(false);
+}
+
+// TRACK EVERY PLAY BUTTON
+for(const a of document.querySelectorAll("a[data-game]")){
+  a.addEventListener(
+    "click",
+    ()=>launch(a.dataset.game)
+  );
+}
+
+// TRACK FAVORITES
+for(const c of cards){
+  c.querySelector(".favorite")
+    .addEventListener("click",()=>{
+      const id=c.dataset.id;
+
+      favorites=favorites.includes(id)
+        ?favorites.filter(x=>x!==id)
+        :[...favorites,id];
+
+      save(K.favorites,favorites);
+
+      refreshFavorites();
+      filterGames();
+      checkAwards(true);
     });
-  }
-  function applyFilter(){
-    const search=$("#search").value.toLowerCase().trim();
-    let shown=0;
-    for(const card of cards){
-      const text=(card.querySelector("h3").textContent+" "+card.dataset.search+" "+card.querySelector("p").textContent).toLowerCase();
-      const categoryMatches=filter==="all"||(filter==="favorites"?favorites.includes(card.dataset.id):card.dataset.category===filter);
-      const visible=categoryMatches&&text.includes(search);
-      card.hidden=!visible;
-      if(visible)shown++;
-    }
-    $("#results").textContent=shown+" game"+(shown===1?"":"s")+" shown";
-    $("#empty").style.display=shown?"none":"block";
-  }
-  function chooseFilter(value){
-    filter=value;
-    for(const b of $$(".filter")){
-      const selected=b.dataset.filter===value;
-      b.classList.toggle("active",selected);
-      b.setAttribute("aria-pressed",String(selected));
-    }
-    applyFilter();
-  }
-  $("#search").addEventListener("input",applyFilter);
-  $$(".filter").forEach(b=>b.addEventListener("click",()=>chooseFilter(b.dataset.filter)));
-  $("#reset").addEventListener("click",()=>{$("#search").value="";chooseFilter("all");});
+}
 
-  function randomGame(){
-    const visible=cards.filter(c=>!c.hidden);
-    const candidates=visible.length?visible:cards;
-    const card=candidates[Math.floor(Math.random()*candidates.length)];
-    saveVisit(card.dataset.id);
-    window.location.assign(card.querySelector("a.play-button").getAttribute("href"));
+// GAME SEARCH AND CATEGORY FILTERS
+function filterGames(){
+  const search=$("search")
+    .value.toLowerCase().trim();
+
+  let shown=0;
+
+  for(const c of cards){
+    const ok=gameFilter==="all"||
+      (
+        gameFilter==="favorites"
+          ?favorites.includes(c.dataset.id)
+          :c.dataset.category===gameFilter
+      );
+
+    const text=(
+      names[c.dataset.id]+" "+
+      c.dataset.search+" "+
+      c.querySelector("p").textContent
+    ).toLowerCase();
+
+    c.hidden=!(ok&&text.includes(search));
+
+    if(!c.hidden)shown++;
   }
-  $("#randomTop").addEventListener("click",randomGame);
-  function setTheme(theme){
-    document.body.classList.toggle("light",theme==="light");
-    $("#themeBtn").textContent=theme==="light"?"🌙 Dark Mode":"☀️ Theme";
-    write(storage.theme,theme);
-  }
-  $("#themeBtn").addEventListener("click",()=>setTheme(document.body.classList.contains("light")?"dark":"light"));
-  setTheme(read(storage.theme,"dark"));
-  paintFavorites();updateContinue();applyFilter();
+
+  $("gameCount").textContent=
+    shown+" game"+(shown===1?"":"s")+" shown";
+
+  $("noGames").hidden=shown>0;
+}
+
+for(const b of document.querySelectorAll(".filter")){
+  b.addEventListener("click",()=>{
+    gameFilter=b.dataset.filter;
+
+    for(const other of document.querySelectorAll(".filter")){
+      const active=other===b;
+      other.classList.toggle("active",active);
+      other.setAttribute("aria-pressed",String(active));
+    }
+
+    filterGames();
+  });
+}
+
+$("search").addEventListener("input",filterGames);
+
+// ACHIEVEMENT FILTERS
+for(const b of document.querySelectorAll(".award-filter")){
+  b.addEventListener("click",()=>{
+    awardFilter=b.dataset.awardFilter;
+
+    for(const other of document.querySelectorAll(".award-filter")){
+      const active=other===b;
+
+      other.classList.toggle("active",active);
+      other.setAttribute("aria-pressed",String(active));
+    }
+
+    renderAwards();
+  });
+}
+
+// SURPRISE ME BUTTON
+$("randomBtn").addEventListener("click",()=>{
+  const choices=cards.filter(c=>!c.hidden);
+
+  const list=choices.length?choices:cards;
+
+  const c=list[
+    Math.floor(Math.random()*list.length)
+  ];
+
+  launch(c.dataset.id);
+
+  window.location.assign(
+    c.querySelector(".play-button").getAttribute("href")
+  );
+});
+
+// THEME SWITCHER
+function theme(value){
+  document.body.classList.toggle(
+    "light",
+    value==="light"
+  );
+
+  $("themeBtn").textContent=
+    value==="light"?"🌙 Dark":"☀️ Theme";
+
+  save(K.theme,value);
+}
+
+$("themeBtn").addEventListener("click",()=>{
+  theme(
+    document.body.classList.contains("light")
+      ?"dark"
+      :"light"
+  );
+});
+
+// START THE ARCADE
+theme(read(K.theme,"dark"));
+refreshFavorites();
+updateContinue();
+filterGames();
+checkAwards(false);
+
 })();
 </script>
 </body>
