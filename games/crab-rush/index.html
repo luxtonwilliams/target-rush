@@ -1,0 +1,2418 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b2337">
+<meta name="description" content="Crab Rush: a free beach arcade game. Jump, pinch, collect shells, and customize your crab!">
+<title>Crab Rush V1 | Luxton Arcade</title>
+<style>
+:root{
+  --navy:#091c32;
+  --panel:#123451;
+  --line:#386f91;
+  --aqua:#8af6ea;
+  --sand:#ffe7b0;
+  --text:#f4fcff;
+  --muted:#bfdbe9;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(ellipse at top,#235b7a,#0c2541 56%,#07182b);
+  font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+  color:var(--text);
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible,a:focus-visible{
+  outline:3px solid var(--sand);
+  outline-offset:3px;
+}
+.wrap{
+  width:min(1090px,calc(100% - 22px));
+  margin:16px auto 36px;
+}
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:13px;
+  flex-wrap:wrap;
+  margin:0 0 17px;
+}
+h1{
+  margin:0;
+  font-size:clamp(29px,5vw,48px);
+  letter-spacing:-1.7px;
+  color:#ffe5a3;
+  line-height:1.06;
+}
+h1 small{
+  display:block;
+  font-size:12px;
+  color:#96f5e7;
+  letter-spacing:2px;
+  font-weight:900;
+  margin-top:8px;
+}
+.lead{color:#bfdeea;font-size:13px;margin:7px 0 0}
+.back{
+  border:1px solid #70a5c2;
+  background:#1c4865;
+  border-radius:12px;
+  padding:12px 15px;
+  font-weight:850;
+  white-space:nowrap;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:8px;
+  margin:12px 0;
+}
+.stat{
+  min-width:0;
+  background:linear-gradient(135deg,#20506f,#102d4c);
+  border:1px solid #4e8aa6;
+  border-radius:13px;
+  padding:10px 5px;
+  text-align:center;
+}
+.stat small{
+  display:block;
+  font-weight:900;
+  letter-spacing:.6px;
+  color:#a9d8e7;
+  font-size:10px;
+}
+.stat strong{
+  display:block;
+  font-size:clamp(14px,2.3vw,25px);
+  white-space:nowrap;
+  margin-top:3px;
+  color:#fff3c5;
+}
+.arena{
+  position:relative;
+  border-radius:19px;
+  overflow:hidden;
+  border:3px solid #86e9e4;
+  box-shadow:0 20px 50px #0007;
+  isolation:isolate;
+  background:#5eb3dc;
+}
+canvas{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:960/540;
+  touch-action:manipulation;
+}
+.zone{
+  position:absolute;
+  left:13px;
+  top:12px;
+  pointer-events:none;
+  font-size:11px;
+  font-weight:950;
+  color:#faffff;
+  background:#0d3554bb;
+  border:1px solid #e8fff46b;
+  padding:8px 11px;
+  border-radius:22px;
+}
+.progress-track{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:7px;
+  background:#003c5780;
+  pointer-events:none;
+}
+.progress-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#a2ffe6,#ffed96);
+}
+.overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px;
+  background:#061c2d7c;
+  backdrop-filter:blur(3px);
+  overflow-y:auto;
+}
+.modal{
+  width:min(620px,100%);
+  max-height:100%;
+  overflow-y:auto;
+  background:linear-gradient(145deg,#173f5fef,#102b4af5);
+  border:1px solid #b5eee2c4;
+  box-shadow:0 15px 50px #001326a6;
+  border-radius:20px;
+  padding:clamp(16px,3vw,28px);
+  text-align:center;
+}
+.modal h2{
+  font-size:clamp(23px,4vw,36px);
+  margin:7px 0 9px;
+  line-height:1.1;
+  color:#fff0b9;
+}
+.modal p{
+  color:#d6eefa;
+  font-size:13px;
+  line-height:1.6;
+  margin:8px 0 13px;
+}
+.big-crab{
+  font-size:clamp(43px,8vw,67px);
+  line-height:1.05;
+}
+.modal-actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:15px 0 0;
+}
+.btn{
+  border:0;
+  border-radius:11px;
+  padding:12px 17px;
+  min-height:46px;
+  font-weight:950;
+  font-size:13px;
+  color:#0c3147;
+  background:linear-gradient(115deg,#87ffdc,#9cbcff);
+}
+.btn.alt{
+  color:white;
+  background:#2c5c7c;
+  border:1px solid #8fbdda;
+}
+.btn.gold{
+  background:linear-gradient(115deg,#ffe18b,#ffb979);
+  color:#46321d;
+}
+.btn:disabled{opacity:.45;cursor:default}
+.pills{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:14px 0 8px;
+}
+.pills span{
+  background:#ffffff13;
+  border:1px solid #ffffff32;
+  border-radius:18px;
+  padding:5px 8px;
+  font-size:11px;
+  font-weight:800;
+  color:#e5faff;
+}
+.shop-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  text-align:left;
+  max-height:225px;
+  overflow:auto;
+  padding-right:3px;
+  margin-top:12px;
+}
+.shop-item{
+  background:#285576;
+  border:1px solid #6595b0;
+  border-radius:12px;
+  padding:9px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  min-width:0;
+}
+.shop-item b{font-size:12px;display:block}
+.shop-item small{
+  display:block;
+  font-size:10px;
+  color:#d1e4f0;
+  margin-top:3px;
+}
+.shop-item button{
+  padding:9px 10px;
+  min-height:37px;
+  font-size:11px;
+  white-space:nowrap;
+  border-radius:8px;
+  border:0;
+  font-weight:900;
+  background:#a2f3e0;
+  color:#143448;
+}
+.shop-item button:disabled{opacity:.48}
+.instructions{
+  border:1px solid #83d7d34e;
+  background:#0630477b;
+  border-radius:12px;
+  padding:10px 13px;
+  margin-top:14px;
+  color:#deebf5;
+  font-size:12px;
+  line-height:1.65;
+  text-align:left;
+}
+.controls{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:13px 0;
+  flex-wrap:wrap;
+  background:#163a5a;
+  border:1px solid #4e8aa6;
+  border-radius:15px;
+  padding:12px;
+}
+.control-hint{
+  color:#b9d8e8;
+  font-size:12px;
+  line-height:1.6;
+  flex:1 1 300px;
+}
+.touch{
+  display:flex;
+  gap:9px;
+  flex:1 1 280px;
+  justify-content:flex-end;
+}
+.touch button{
+  min-height:67px;
+  flex:1;
+  max-width:190px;
+  padding:10px;
+  border:0;
+  border-radius:12px;
+  font-weight:950;
+  color:#133b54;
+  background:linear-gradient(115deg,#ffdf8c,#ffad86);
+  font-size:16px;
+  user-select:none;
+}
+.touch .pinch{
+  background:linear-gradient(115deg,#8df6e0,#83baff);
+}
+.under{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  color:#9dcce0;
+  font-size:12px;
+}
+.under button{
+  background:#254b6e;
+  border:1px solid #7dacbf;
+  color:white;
+  padding:9px 12px;
+  border-radius:9px;
+  font-weight:850;
+}
+.toast{
+  position:absolute;
+  bottom:23px;
+  left:50%;
+  transform:translate(-50%,60px);
+  max-width:90%;
+  opacity:0;
+  pointer-events:none;
+  background:#0e3b50df;
+  border:1px solid #fff3ab9c;
+  color:#fff4bd;
+  font-weight:950;
+  font-size:15px;
+  text-align:center;
+  padding:8px 13px;
+  border-radius:12px;
+  transition:transform .2s,opacity .2s;
+}
+.toast.visible{
+  transform:translate(-50%,0);
+  opacity:1;
+}
+@media(max-width:720px){
+  .overlay{
+    position:fixed;
+    inset:0;
+    z-index:30;
+    background:#08192aee;
+    padding:12px;
+  }
+  .modal{
+    max-height:calc(100dvh - 24px);
+    width:min(510px,100%);
+  }
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .stat{padding:7px 4px}
+  .controls{justify-content:center}
+  .touch{justify-content:center}
+  .control-hint{text-align:center;flex-basis:100%}
+  .shop-list{grid-template-columns:1fr}
+  .modal{padding:14px}
+  .modal p{font-size:11px}
+  .modal h2{font-size:23px}
+  .modal-actions{gap:6px}
+  .modal .btn{min-height:41px;padding:10px 13px}
+  .top{margin-bottom:10px}
+  .zone{font-size:9px;padding:6px}
+}
+@media(max-width:480px){
+  .wrap{width:calc(100% - 10px);margin:8px auto 24px}
+  .arena{border-width:2px;border-radius:12px}
+  .stat strong{font-size:16px}
+  .stat small{font-size:8px}
+  .touch button{min-height:59px}
+  .modal{border-radius:13px}
+  .shop-list{max-height:160px}
+  .pills{margin:7px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top">
+  <div>
+    <h1>🦀 CRAB RUSH <small>V1 · BEACH BLITZ</small></h1>
+    <p class="lead">
+      Jump the tide, pinch trouble, and become the king of the beach!
+    </p>
+  </div>
+  <a class="back" href="../../">← Luxton Arcade</a>
+</header>
+
+<section class="stats" aria-label="Game stats">
+  <div class="stat"><small>⭐ SCORE</small><strong id="score">0</strong></div>
+  <div class="stat"><small>🏆 BEST</small><strong id="best">0</strong></div>
+  <div class="stat"><small>⏱️ TIME</small><strong id="time">60s</strong></div>
+  <div class="stat"><small>❤️ HEALTH</small><strong id="health">❤️❤️❤️</strong></div>
+  <div class="stat"><small>🐚 THIS RUN</small><strong id="shells">0</strong></div>
+  <div class="stat"><small>🪙 WALLET</small><strong id="wallet">0</strong></div>
+</section>
+
+<div class="arena" id="arena">
+  <canvas id="game" width="960" height="540"
+    aria-label="Crab Rush side-scrolling beach game"></canvas>
+
+  <div class="zone" id="zone">☀️ Sunny Shore</div>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+
+  <div class="toast" id="toast"
+    role="status" aria-live="polite"></div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal" id="modal"></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="control-hint">
+    <b>💻 Chromebook:</b>
+    SPACE / ↑ / W = Jump · J / F = Pinch · P = Pause
+    <br>
+    <b>📱 Phone:</b>
+    Tap the big buttons. Survive 60 seconds across three beach zones!
+  </div>
+  <div class="touch">
+    <button type="button" id="jumpBtn">⬆️ JUMP</button>
+    <button type="button" id="pinchBtn" class="pinch">🦀 PINCH!</button>
+  </div>
+</div>
+
+<div class="under">
+  <span>
+    🐚 Collect shells · 💎 Grab pearls · 🛡️ Find bubble shields
+    · 💾 Autosaves your shop & best score
+  </span>
+  <div>
+    <button type="button" id="pauseBtn">⏸ PAUSE</button>
+    <button type="button" id="menuBtn">🏠 MENU</button>
+  </div>
+</div>
+</main>
+
+<script>
+(()=>{
+"use strict";
+
+const $=id=>document.getElementById(id);
+const C=$("game");
+const ctx=C.getContext("2d");
+
+const W=960;
+const H=540;
+const G=428;
+const DURATION=60;
+const PLAYER_X=187;
+const SAVE_KEY="luxton_crab_rush_v1";
+
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const rand=(a,b)=>a+Math.random()*(b-a);
+
+// SIX UNLOCKABLE CRAB COLORS
+const skins=[
+  {id:"coral",name:"🦀 Coral Red",color:"#f57757",cost:0},
+  {id:"ocean",name:"🔵 Ocean Blue",color:"#65b9fb",cost:18},
+  {id:"mint",name:"🌱 Minty Green",color:"#62cfa1",cost:28},
+  {id:"violet",name:"💜 Purple Pop",color:"#a88df4",cost:38},
+  {id:"gold",name:"👑 Golden Crab",color:"#ffd15b",cost:55},
+  {id:"lava",name:"🔥 Lava Crab",color:"#f46c85",cost:70}
+];
+
+// FOUR PERMANENT UPGRADES
+const gear=[
+  {
+    id:"double",
+    name:"🪽 Double Jump",
+    detail:"Jump again while in the air",
+    cost:45
+  },
+  {
+    id:"claws",
+    name:"💪 Power Claws",
+    detail:"Pinch farther and more often",
+    cost:38
+  },
+  {
+    id:"magnet",
+    name:"🧲 Shell Magnet",
+    detail:"Collect shells from farther away",
+    cost:32
+  },
+  {
+    id:"shield",
+    name:"🫧 Bubble Starter",
+    detail:"Start every run with one bubble shield",
+    cost:48
+  }
+];
+
+// SAVE SYSTEM
+function defaultSave(){
+  return {
+    wallet:0,
+    best:0,
+    runs:0,
+    wins:0,
+    totalShells:0,
+    owned:["coral"],
+    upgrades:[],
+    equipped:"coral"
+  };
+}
+
+function load(){
+  try{
+    return {
+      ...defaultSave(),
+      ...JSON.parse(localStorage.getItem(SAVE_KEY))
+    };
+  }catch{
+    return defaultSave();
+  }
+}
+
+let save=load();
+
+save.wallet=Math.max(0,Number(save.wallet)||0);
+save.best=Math.max(0,Number(save.best)||0);
+save.runs=Math.max(0,Number(save.runs)||0);
+save.wins=Math.max(0,Number(save.wins)||0);
+
+if(!Array.isArray(save.owned)){
+  save.owned=["coral"];
+}
+
+if(!Array.isArray(save.upgrades)){
+  save.upgrades=[];
+}
+
+save.owned=[
+  ...new Set([
+    "coral",
+    ...save.owned.filter(id=>skins.some(s=>s.id===id))
+  ])
+];
+
+save.upgrades=[
+  ...new Set(
+    save.upgrades.filter(id=>gear.some(g=>g.id===id))
+  )
+];
+
+if(!save.owned.includes(save.equipped)){
+  save.equipped="coral";
+}
+
+function persist(){
+  try{
+    localStorage.setItem(SAVE_KEY,JSON.stringify(save));
+  }catch{}
+}
+
+const has=id=>save.upgrades.includes(id);
+const skin=()=>skins.find(s=>s.id===save.equipped)||skins[0];
+
+let state="menu";
+let previous="menu";
+let lastResult=null;
+
+let run=null;
+let objects=[];
+let particles=[];
+let clouds=[];
+let stars=[];
+let anim=0;
+let spawnTimer=1;
+let toastTimer=0;
+let shopTab="skins";
+
+for(let i=0;i<14;i++){
+  clouds.push({
+    x:rand(0,W),
+    y:rand(35,185),
+    s:rand(.5,1.5)
+  });
+}
+
+for(let i=0;i<35;i++){
+  stars.push({
+    x:rand(0,W),
+    y:rand(10,275),
+    r:rand(.5,2)
+  });
+}
+
+const num=v=>Math.floor(v).toLocaleString();
+
+const sector=t=>t<20?0:t<40?1:2;
+
+const sectorName=[
+  "☀️ SUNNY SHORE",
+  "🌊 TIDE POOLS",
+  "🌅 SUNSET REEF"
+];
+
+// GAME STATS
+function hud(){
+  $("score").textContent=num(run?run.score:0);
+  $("best").textContent=num(save.best);
+
+  $("time").textContent=run
+    ?Math.max(0,Math.ceil(DURATION-run.elapsed))+"s"
+    :"60s";
+
+  $("health").textContent=run
+    ?"❤️".repeat(run.hp)+"♡".repeat(3-run.hp)
+    :"❤️❤️❤️";
+
+  $("shells").textContent=run?run.shells:0;
+  $("wallet").textContent=num(save.wallet);
+
+  $("progress").style.width=
+    (run?Math.min(100,run.elapsed/DURATION*100):0)+"%";
+
+  $("zone").textContent=run
+    ?sectorName[sector(run.elapsed)]
+    :"☀️ SUNNY SHORE";
+
+  $("pauseBtn").disabled=
+    state!=="playing"&&state!=="paused";
+
+  $("jumpBtn").disabled=state!=="playing";
+  $("pinchBtn").disabled=state!=="playing";
+}
+
+function toast(text){
+  $("toast").textContent=text;
+  $("toast").classList.add("visible");
+  toastTimer=2.2;
+}
+
+// MENUS
+function modal(html){
+  $("modal").innerHTML=html;
+  $("overlay").hidden=false;
+}
+
+function hideModal(){
+  $("overlay").hidden=true;
+}
+
+function commonButtons(){
+  return `
+    <div class="modal-actions">
+      <button class="btn" data-act="start">
+        🚀 START RUN
+      </button>
+      <button class="btn gold" data-act="shop">
+        🛒 CRAB SHOP
+      </button>
+      <button class="btn alt" data-act="help">
+        ❔ HOW TO PLAY
+      </button>
+    </div>
+  `;
+}
+
+function showMenu(){
+  state="menu";
+  run=null;
+  objects=[];
+  particles=[];
+  hud();
+
+  modal(`
+    <div class="big-crab">🦀🌊🐚</div>
+    <h2>WELCOME TO CRAB RUSH!</h2>
+    <p>
+      Race through a colorful beach, hop over sea urchins,
+      PINCH open clams, grab shiny pearls, and survive a
+      <b>60-second adventure!</b>
+      Earn shells to unlock awesome crab colors and
+      permanent abilities.
+    </p>
+
+    <div class="pills">
+      <span>🏝️ 3 BEACH ZONES</span>
+      <span>🐚 SHELL SHOP</span>
+      <span>🦀 PINCH ATTACK</span>
+      <span>🏆 HIGH SCORES</span>
+    </div>
+
+    <p>
+      🏆 Personal Best: <b>${num(save.best)}</b>
+      &nbsp; · &nbsp;
+      🐚 Wallet: <b>${num(save.wallet)}</b>
+    </p>
+
+    ${commonButtons()}
+
+    <div class="instructions">
+      💻 <b>SPACE</b> to jump,
+      <b>J</b> to pinch,
+      <b>P</b> to pause.
+      <br>
+      📱 Tap <b>JUMP</b> and <b>PINCH</b>
+      below the game.
+      Pinch sea urchins, jellyfish, and golden clams—but
+      jump over driftwood!
+    </div>
+  `);
+}
+
+function showHelp(){
+  previous=state;
+  state="help";
+
+  modal(`
+    <div class="big-crab">🦀🎮</div>
+    <h2>HOW TO PLAY</h2>
+
+    <div class="instructions">
+      <b>⬆️ JUMP:</b>
+      Press Space, W, or ↑.
+      Buy Double Jump to jump twice!
+      <br>
+      <b>🦀 PINCH:</b>
+      Press J or F to break sea urchins,
+      defeat jellyfish, and open golden clams.
+      <br>
+      <b>🐚 COLLECT:</b>
+      Shells become currency after each run.
+      Pearls add bonus points.
+      <br>
+      <b>🛡️ BUBBLES:</b>
+      Grab a bubble shield to block one hit.
+      <br>
+      <b>❤️ SURVIVE:</b>
+      You have three hearts.
+      Avoid driftwood, sea urchins, and jellyfish
+      for 60 seconds!
+      <br>
+      <b>⏸️ PAUSE:</b>
+      Press P or use the Pause button.
+      <br>
+      <b>🛒 SHOP:</b>
+      Buy crab colors and permanent equipment.
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" data-act="back">← BACK</button>
+      <button class="btn gold" data-act="start">
+        🦀 PLAY NOW
+      </button>
+    </div>
+  `);
+}
+
+// CRAB SHOP
+function showShop(){
+  previous=state==="shop"?previous:state;
+  state="shop";
+  renderShop();
+}
+
+function renderShop(){
+  const shown=shopTab==="skins"?skins:gear;
+
+  const cards=shown.map(s=>{
+    const isSkin=shopTab==="skins";
+
+    const owned=isSkin
+      ?save.owned.includes(s.id)
+      :has(s.id);
+
+    const equipped=isSkin&&save.equipped===s.id;
+
+    const label=equipped
+      ?"✓ EQUIPPED"
+      :owned
+        ?(isSkin?"EQUIP":"✓ OWNED")
+        :"🐚 "+s.cost;
+
+    const action=
+      equipped||(!isSkin&&owned)
+        ?""
+        :isSkin?"equip":"buy";
+
+    const disabled=
+      equipped||
+      (!isSkin&&owned)||
+      (!owned&&save.wallet<s.cost);
+
+    return `
+      <div class="shop-item">
+        <div>
+          <b>${s.name}</b>
+          <small>
+            ${isSkin?"Customize your crab":s.detail}
+          </small>
+        </div>
+        <button
+          data-item="${s.id}"
+          data-purchase="${action}"
+          ${disabled?"disabled":""}
+        >
+          ${label}
+        </button>
+      </div>
+    `;
+  }).join("");
+
+  modal(`
+    <div class="big-crab">🛒🦀</div>
+    <h2>CRAB SHOP</h2>
+    <p>
+      🐚 Your wallet:
+      <b>${num(save.wallet)}</b>
+      · All purchases are permanent!
+    </p>
+
+    <div class="modal-actions">
+      <button
+        class="btn ${shopTab==="skins"?"":"alt"}"
+        data-tab="skins"
+      >
+        🎨 CRAB COLORS
+      </button>
+      <button
+        class="btn ${shopTab==="gear"?"":"alt"}"
+        data-tab="gear"
+      >
+        ⚡ UPGRADES
+      </button>
+    </div>
+
+    <div class="shop-list">${cards}</div>
+
+    <div class="modal-actions">
+      <button class="btn alt" data-act="back">
+        ← BACK
+      </button>
+      <button class="btn gold" data-act="start">
+        ▶ PLAY NOW
+      </button>
+    </div>
+  `);
+}
+
+function buy(id){
+  const s=skins.find(x=>x.id===id);
+  const item=s||gear.find(x=>x.id===id);
+
+  if(!item)return;
+
+  const owned=s
+    ?save.owned.includes(id)
+    :has(id);
+
+  if(owned){
+    if(s){
+      save.equipped=id;
+      persist();
+      renderShop();
+    }
+    return;
+  }
+
+  if(save.wallet<item.cost)return;
+
+  save.wallet-=item.cost;
+
+  if(s){
+    save.owned.push(id);
+    save.equipped=id;
+  }else{
+    save.upgrades.push(id);
+  }
+
+  persist();
+  hud();
+  renderShop();
+
+  toast("✅ UNLOCKED "+item.name+"!");
+}
+
+// START A NEW RUN
+function startRun(){
+  run={
+    elapsed:0,
+    score:0,
+    hp:3,
+    shells:0,
+    pearls:0,
+    pinches:0,
+    combo:0,
+    comboTime:0,
+    shield:has("shield")?1:0,
+    invuln:0,
+
+    p:{
+      y:G,
+      vy:0,
+      ground:true,
+      jumps:0,
+      attack:0,
+      cooldown:0
+    }
+  };
+
+  objects=[];
+  particles=[];
+  spawnTimer=1;
+  toastTimer=0;
+
+  state="playing";
+  hideModal();
+  hud();
+}
+
+// PAUSE GAME
+function pause(){
+  if(state!=="playing")return;
+
+  state="paused";
+
+  modal(`
+    <div class="big-crab">⏸️🦀</div>
+    <h2>CRAB BREAK!</h2>
+    <p>Your beach adventure is paused.</p>
+
+    <div class="modal-actions">
+      <button class="btn" data-act="resume">
+        ▶ RESUME
+      </button>
+      <button class="btn alt" data-act="restart">
+        ↻ RESTART
+      </button>
+      <button class="btn alt" data-act="menu">
+        🏠 MENU
+      </button>
+    </div>
+  `);
+
+  hud();
+}
+
+function resume(){
+  if(state!=="paused")return;
+
+  state="playing";
+  hideModal();
+  hud();
+}
+
+// END GAME + REWARDS
+function endRun(won){
+  if(state!=="playing")return;
+
+  state="end";
+
+  const score=Math.floor(run.score);
+  const best=score>save.best;
+
+  const bonus=
+    Math.floor(run.elapsed/12)+(won?10:0);
+
+  const earned=run.shells+bonus;
+
+  save.wallet+=earned;
+
+  save.totalShells=
+    (Number(save.totalShells)||0)+earned;
+
+  save.runs++;
+
+  if(won)save.wins++;
+  if(best)save.best=score;
+
+  persist();
+
+  lastResult={
+    won,
+    score,
+    best,
+    earned,
+    runShells:run.shells,
+    bonus,
+    pearls:run.pearls,
+    pinches:run.pinches
+  };
+
+  const heading=won
+    ?"🏆 CRAB CHAMPION!"
+    :"🌊 WAVE WIPEOUT!";
+
+  modal(`
+    <div class="big-crab">
+      ${won?"👑🦀":"🦀💦"}
+    </div>
+
+    <h2>${heading}</h2>
+
+    <p>
+      ${
+        won
+          ?"You survived all 60 seconds and conquered the beach!"
+          :"The beach got you this time. Your shells are safe!"
+      }
+    </p>
+
+    <div class="pills">
+      <span>⭐ SCORE ${num(score)}</span>
+      <span>🐚 +${earned} SHELLS</span>
+      <span>💎 ${run.pearls} PEARLS</span>
+      <span>🦀 ${run.pinches} PINCHES</span>
+    </div>
+
+    <p>
+      ${
+        best
+          ?"🌟 <b>NEW PERSONAL BEST!</b> 🌟"
+          :"🏆 Best Score: "+num(save.best)
+      }
+      <br>
+      Wallet: <b>${num(save.wallet)} shells</b>
+    </p>
+
+    <div class="modal-actions">
+      <button class="btn" data-act="start">
+        ↻ PLAY AGAIN
+      </button>
+      <button class="btn gold" data-act="shop">
+        🛒 SHOP
+      </button>
+      <button class="btn alt" data-act="menu">
+        🏠 MENU
+      </button>
+    </div>
+  `);
+
+  hud();
+}
+
+// MENU BUTTON HANDLING
+$("modal").addEventListener("click",e=>{
+  const b=e.target.closest("button");
+  if(!b)return;
+
+  if(b.dataset.tab){
+    shopTab=b.dataset.tab;
+    renderShop();
+    return;
+  }
+
+  if(b.dataset.purchase){
+    buy(b.dataset.item);
+    return;
+  }
+
+  const act=b.dataset.act;
+
+  if(act==="start"||act==="restart"){
+    startRun();
+  }
+
+  if(act==="menu"){
+    showMenu();
+  }
+
+  if(act==="shop"){
+    showShop();
+  }
+
+  if(act==="help"){
+    showHelp();
+  }
+
+  if(act==="resume"){
+    resume();
+  }
+
+  if(act==="back"){
+    if(previous==="end"&&lastResult){
+      state="end";
+
+      const r=lastResult;
+
+      modal(`
+        <div class="big-crab">
+          ${r.won?"👑🦀":"🦀💦"}
+        </div>
+
+        <h2>
+          ${r.won?"CRAB CHAMPION!":"WAVE WIPEOUT!"}
+        </h2>
+
+        <p>
+          ⭐ Score ${num(r.score)}
+          · 🐚 Earned ${r.earned} shells
+          · Wallet ${num(save.wallet)}
+        </p>
+
+        <div class="modal-actions">
+          <button class="btn" data-act="start">
+            ↻ PLAY AGAIN
+          </button>
+          <button class="btn gold" data-act="shop">
+            🛒 SHOP
+          </button>
+          <button class="btn alt" data-act="menu">
+            🏠 MENU
+          </button>
+        </div>
+      `);
+    }else{
+      showMenu();
+    }
+  }
+});
+
+// CONTROLS
+$("pauseBtn").onclick=()=>
+  state==="playing"?pause():resume();
+
+$("menuBtn").onclick=()=>{
+  if(state==="playing"){
+    pause();
+  }else if(state!=="menu"){
+    showMenu();
+  }
+};
+
+// JUMP
+function jump(){
+  if(state!=="playing")return;
+
+  const p=run.p;
+  const limit=has("double")?2:1;
+
+  if(p.jumps>=limit)return;
+
+  p.vy=p.jumps===0?-700:-640;
+  p.ground=false;
+  p.jumps++;
+
+  puff(PLAYER_X,G-6,"#fff4cf",10);
+}
+
+// PINCH ATTACK
+function pinch(){
+  if(state!=="playing")return;
+
+  const p=run.p;
+
+  if(p.cooldown>0)return;
+
+  p.attack=.24;
+  p.cooldown=has("claws")?.34:.56;
+
+  performPinch();
+}
+
+function performPinch(){
+  if(state!=="playing"||run.p.attack<=0)return;
+
+  const p=run.p;
+  const maxX=has("claws")?120:92;
+
+  for(const obj of objects){
+    if(
+      obj.dead||
+      !["urchin","jelly","clam"].includes(obj.type)
+    ){
+      continue;
+    }
+
+    const dx=obj.x-PLAYER_X;
+    const dy=obj.y-(p.y-38);
+
+    if(
+      dx>-8&&
+      dx<maxX&&
+      Math.abs(dy)<(obj.type==="jelly"?79:58)
+    ){
+      obj.dead=true;
+      run.pinches++;
+
+      run.combo=run.comboTime>0
+        ?Math.min(run.combo+1,5)
+        :1;
+
+      run.comboTime=2.5;
+
+      const pts=
+        (obj.type==="clam"?55:35)*run.combo;
+
+      run.score+=pts;
+
+      if(obj.type==="clam"){
+        run.shells+=3;
+      }else{
+        run.shells+=1;
+      }
+
+      puff(
+        obj.x,
+        obj.y,
+        obj.type==="clam"?"#ffe18a":"#86f5ed",
+        17
+      );
+
+      toast(
+        obj.type==="clam"
+          ?"🦪 GOLDEN CLAM! +3 SHELLS"
+          :`🦀 PINCH! ${run.combo}× COMBO +${pts}`
+      );
+    }
+  }
+}
+
+$("jumpBtn").onclick=jump;
+$("pinchBtn").onclick=pinch;
+
+// KEYBOARD
+window.addEventListener("keydown",e=>{
+  const tag=document.activeElement.tagName;
+
+  if(tag==="INPUT"||tag==="TEXTAREA"){
+    return;
+  }
+
+  const key=e.key.toLowerCase();
+
+  if(
+    [" ","arrowup","w","j","f","p","escape"]
+      .includes(key)
+  ){
+    e.preventDefault();
+  }
+
+  if(e.repeat)return;
+
+  if(
+    key===" "||
+    key==="arrowup"||
+    key==="w"
+  ){
+    jump();
+  }
+
+  if(key==="j"||key==="f"){
+    pinch();
+  }
+
+  if(key==="p"||key==="escape"){
+    if(state==="playing"){
+      pause();
+    }else if(state==="paused"){
+      resume();
+    }
+  }
+
+  if(
+    key==="enter"&&
+    (state==="menu"||state==="end")
+  ){
+    startRun();
+  }
+});
+
+// AUTOMATICALLY PAUSE WHEN LEAVING THE TAB
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden&&state==="playing"){
+    pause();
+  }
+});
+
+// PARTICLE EFFECTS
+function puff(x,y,color,n=9){
+  for(let i=0;i<n;i++){
+    particles.push({
+      x,
+      y,
+      vx:rand(-135,135),
+      vy:rand(-185,5),
+      life:rand(.35,.8),
+      max:.8,
+      size:rand(3,7),
+      color
+    });
+  }
+}
+
+// OBJECT SPAWNING
+function spawn(){
+  const x=W+65;
+  const s=sector(run.elapsed);
+  const roll=Math.random();
+
+  const type=
+    roll<.33
+      ?"urchin"
+      :roll<.58
+        ?"driftwood"
+        :roll<.8&&s>0
+          ?"jelly"
+          :roll<.86
+            ?"clam"
+            :"urchin";
+
+  const y=
+    type==="jelly"
+      ?G-104
+      :type==="urchin"
+        ?G-23
+        :type==="driftwood"
+          ?G-23
+          :G-19;
+
+  objects.push({
+    type,
+    x,
+    y,
+    phase:rand(0,7),
+    dead:false,
+    hit:false
+  });
+
+  const high=Math.random()<.46;
+  const amount=1+Math.floor(Math.random()*3);
+
+  for(let i=0;i<amount;i++){
+    objects.push({
+      type:Math.random()<.2?"pearl":"shell",
+      x:x+85+i*46,
+      y:G-(high?135:67)+(i%2)*9,
+      dead:false,
+      phase:rand(0,7)
+    });
+  }
+
+  if(Math.random()<.085){
+    objects.push({
+      type:"bubble",
+      x:x+130,
+      y:G-116,
+      dead:false,
+      phase:rand(0,7)
+    });
+  }
+
+  if(Math.random()<.04&&run.elapsed>18){
+    objects.push({
+      type:"heart",
+      x:x+170,
+      y:G-98,
+      dead:false,
+      phase:rand(0,7)
+    });
+  }
+}
+
+// HIT DETECTION
+function collide(obj){
+  const p=run.p;
+  const y=p.y;
+
+  if(obj.type==="urchin"){
+    return (
+      Math.abs(obj.x-PLAYER_X)<34&&
+      Math.abs(obj.y-(y-28))<36
+    );
+  }
+
+  if(obj.type==="driftwood"){
+    return (
+      Math.abs(obj.x-PLAYER_X)<53&&
+      y>G-47
+    );
+  }
+
+  if(obj.type==="jelly"){
+    return (
+      Math.abs(obj.x-PLAYER_X)<37&&
+      Math.abs(obj.y-(y-36))<45
+    );
+  }
+
+  return false;
+}
+
+// COLLECT SHELLS, PEARLS AND POWER-UPS
+function collect(obj){
+  obj.dead=true;
+
+  if(obj.type==="shell"){
+    run.shells++;
+    run.score+=12;
+    puff(obj.x,obj.y,"#ffe59c",5);
+  }
+
+  if(obj.type==="pearl"){
+    run.pearls++;
+    run.score+=65;
+    run.shells++;
+
+    puff(obj.x,obj.y,"#d4faff",12);
+    toast("💎 PEARL! +65 POINTS");
+  }
+
+  if(obj.type==="bubble"){
+    run.shield=1;
+
+    toast("🫧 BUBBLE SHIELD READY!");
+    puff(obj.x,obj.y,"#adfaff",12);
+  }
+
+  if(obj.type==="heart"){
+    run.hp=Math.min(3,run.hp+1);
+
+    toast("❤️ EXTRA HEART!");
+    puff(obj.x,obj.y,"#ffc2c8",12);
+  }
+}
+
+// TAKE DAMAGE
+function damage(obj){
+  if(run.invuln>0)return;
+
+  obj.hit=true;
+  run.invuln=1.15;
+  run.combo=0;
+  run.comboTime=0;
+
+  puff(PLAYER_X,run.p.y-27,"#fff0c6",15);
+
+  if(run.shield){
+    run.shield=0;
+    toast("🛡️ BUBBLE BLOCKED A HIT!");
+    return;
+  }
+
+  run.hp--;
+
+  toast("💔 OUCH! WATCH OUT!");
+
+  if(run.hp<=0){
+    endRun(false);
+  }
+}
+
+// UPDATE THE GAME
+function update(dt){
+  if(state!=="playing")return;
+
+  run.elapsed=Math.min(
+    DURATION,
+    run.elapsed+dt
+  );
+
+  run.score+=dt*(11+run.elapsed*.17);
+
+  const p=run.p;
+
+  // GRAVITY AND JUMP PHYSICS
+  p.vy+=1790*dt;
+  p.y+=p.vy*dt;
+
+  if(p.y>=G){
+    p.y=G;
+    p.vy=0;
+    p.ground=true;
+    p.jumps=0;
+  }
+
+  p.cooldown=Math.max(0,p.cooldown-dt);
+  p.attack=Math.max(0,p.attack-dt);
+
+  run.invuln=Math.max(0,run.invuln-dt);
+  run.comboTime=Math.max(0,run.comboTime-dt);
+
+  if(run.comboTime===0){
+    run.combo=0;
+  }
+
+  // INCREASE DIFFICULTY OVER TIME
+  const speed=300+run.elapsed*2.5;
+
+  spawnTimer-=dt;
+
+  if(spawnTimer<=0){
+    spawn();
+
+    spawnTimer=
+      rand(1.07,1.56)-run.elapsed*.003;
+  }
+
+  for(const o of objects){
+    o.x-=speed*dt;
+
+    if(o.type==="jelly"){
+      o.y+=Math.sin(
+        run.elapsed*5+o.phase
+      )*10*dt;
+    }
+  }
+
+  if(p.attack>0){
+    performPinch();
+  }
+
+  // COLLISIONS
+  for(const o of objects){
+    if(o.dead)continue;
+
+    const collectable=[
+      "shell","pearl","bubble","heart"
+    ].includes(o.type);
+
+    if(collectable){
+      const reach=has("magnet")?74:44;
+
+      if(
+        Math.hypot(
+          o.x-PLAYER_X,
+          o.y-(p.y-30)
+        )<reach
+      ){
+        collect(o);
+      }
+    }else if(
+      o.type!=="clam"&&
+      !o.hit&&
+      collide(o)
+    ){
+      damage(o);
+
+      if(state!=="playing"){
+        break;
+      }
+    }
+  }
+
+  objects=objects.filter(
+    o=>!o.dead&&o.x>-90
+  );
+
+  // ANIMATE PARTICLES
+  for(const q of particles){
+    q.x+=q.vx*dt;
+    q.y+=q.vy*dt;
+    q.vy+=300*dt;
+    q.life-=dt;
+  }
+
+  particles=particles.filter(
+    q=>q.life>0
+  );
+
+  hud();
+
+  if(
+    run.elapsed>=DURATION&&
+    state==="playing"
+  ){
+    endRun(true);
+  }
+}
+
+// CANVAS DRAWING HELPERS
+function round(x,y,w,h,r,color){
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,h,r);
+  ctx.fill();
+}
+
+function circle(x,y,r,color){
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fill();
+}
+
+function ellipse(x,y,rx,ry,color){
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.ellipse(
+    x,y,rx,ry,0,0,Math.PI*2
+  );
+  ctx.fill();
+}
+
+// BEACH BACKGROUND
+function backdrop(t){
+  const s=run?sector(run.elapsed):0;
+
+  const sky=[
+    ["#7cdaf7","#e6fbde"],
+    ["#64b7e3","#bff8ed"],
+    ["#5354a0","#fab58d"]
+  ][s];
+
+  let grad=ctx.createLinearGradient(
+    0,0,0,G
+  );
+
+  grad.addColorStop(0,sky[0]);
+  grad.addColorStop(1,sky[1]);
+
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,W,G);
+
+  // SUNSET STARS
+  if(s===2){
+    for(const star of stars){
+      ctx.globalAlpha=
+        .3+.3*Math.sin(t*2+star.x);
+
+      circle(
+        star.x,
+        star.y,
+        star.r,
+        "#fff7db"
+      );
+    }
+
+    ctx.globalAlpha=1;
+  }
+
+  // SUN
+  circle(
+    788,
+    105,
+    s===2?53:58,
+    s===2?"#ffb17f":"#fff1a7"
+  );
+
+  ctx.shadowBlur=50;
+
+  ctx.shadowColor=
+    s===2?"#ffe0b8":"#fff3a8";
+
+  circle(
+    788,105,46,
+    s===2?"#ffd08d":"#fff7c6"
+  );
+
+  ctx.shadowBlur=0;
+
+  // CLOUDS
+  for(const c of clouds){
+    let x=(
+      (
+        (c.x-t*(run?12:3)*c.s)%(W+230)
+        +W+230
+      )%(W+230)
+    )-105;
+
+    ellipse(
+      x,c.y,
+      42*c.s,14*c.s,
+      "#ffffff8a"
+    );
+
+    circle(
+      x+15*c.s,
+      c.y-10*c.s,
+      19*c.s,
+      "#ffffff9b"
+    );
+
+    circle(
+      x-15*c.s,
+      c.y-5*c.s,
+      19*c.s,
+      "#ffffff9b"
+    );
+  }
+
+  // DISTANT ISLANDS
+  ellipse(
+    170,278,225,80,
+    "#78bca2"
+  );
+
+  ellipse(
+    720,264,305,83,
+    "#69bba9"
+  );
+
+  // OCEAN
+  const sea=ctx.createLinearGradient(
+    0,260,0,G
+  );
+
+  sea.addColorStop(
+    0,
+    s===2?"#45598e":"#45bfcf"
+  );
+
+  sea.addColorStop(
+    1,
+    s===2?"#36788b":"#178ba5"
+  );
+
+  ctx.fillStyle=sea;
+  ctx.fillRect(0,294,W,G-294);
+
+  // WAVES
+  for(let i=0;i<9;i++){
+    const xx=(
+      (
+        (i*150-t*(run?25:6))%(W+170)
+        +W+170
+      )%(W+170)
+    )-70;
+
+    ctx.strokeStyle="#c5fff795";
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+    ctx.moveTo(xx,321+i%3*28);
+
+    ctx.quadraticCurveTo(
+      xx+25,
+      314+i%3*28,
+      xx+55,
+      322+i%3*28
+    );
+
+    ctx.stroke();
+  }
+
+  // BEACH SAND
+  grad=ctx.createLinearGradient(
+    0,G,0,H
+  );
+
+  grad.addColorStop(0,"#fce4a0");
+  grad.addColorStop(1,"#dfab6d");
+
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,G,W,H-G);
+
+  ctx.fillStyle="#ffffff9f";
+  ctx.fillRect(0,G,W,5);
+
+  const scroll=t*(run?140:24);
+
+  // MOVING SAND DETAILS
+  for(let i=0;i<24;i++){
+    const x=(
+      (
+        (i*80-scroll)%(W+120)
+        +W+120
+      )%(W+120)
+    )-25;
+
+    const y=G+24+(i%4)*23;
+
+    ellipse(
+      x,y,
+      16+(i%3)*4,
+      2,
+      i%2?"#a8664766":"#ffeec47a"
+    );
+
+    if(i%5===0){
+      ctx.strokeStyle="#bc8a6c";
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.arc(
+        x+25,y+5,5,0,Math.PI
+      );
+      ctx.stroke();
+    }
+  }
+
+  // BEACH PLANTS
+  for(let i=0;i<5;i++){
+    const x=(
+      (
+        (i*255-scroll*.24)%(W+200)
+        +W+200
+      )%(W+200)
+    )-70;
+
+    ctx.strokeStyle="#3caa84";
+    ctx.lineWidth=5;
+    ctx.beginPath();
+
+    ctx.moveTo(x,G+3);
+    ctx.quadraticCurveTo(
+      x-15,G-16,x-7,G-30
+    );
+
+    ctx.moveTo(x,G+3);
+    ctx.quadraticCurveTo(
+      x+17,G-15,x+12,G-25
+    );
+
+    ctx.stroke();
+  }
+}
+
+// DRAW YOUR CRAB
+function crab(x,y,t){
+  const color=skin().color;
+  const p=run?.p||{attack:0};
+  const active=p.attack>0;
+
+  const blink=
+    run?.invuln>0&&
+    Math.sin(t*34)>0.3;
+
+  if(blink)return;
+
+  ctx.save();
+
+  ctx.translate(
+    x,
+    y+Math.sin(t*14)*(
+      (state==="playing"&&p.ground)
+        ?1.5:0
+    )
+  );
+
+  ctx.lineCap="round";
+
+  // CRAB SHADOW
+  ellipse(
+    0,G-y+5,39,7,
+    "#784c4570"
+  );
+
+  // SIX WALKING LEGS
+  for(const side of [-1,1]){
+    for(let i=0;i<3;i++){
+      ctx.strokeStyle=color;
+      ctx.lineWidth=7;
+      ctx.beginPath();
+
+      const x0=side*(18+i*6);
+      const x1=side*(40+i*7);
+
+      const fy=
+        (i===1?0:3)+
+        Math.sin(t*16+i*2+side)*3;
+
+      ctx.moveTo(
+        x0,-22+i*5
+      );
+
+      ctx.lineTo(
+        x1,-12+i*5
+      );
+
+      ctx.lineTo(
+        x1+side*7,-2+fy
+      );
+
+      ctx.stroke();
+    }
+  }
+
+  // EYE STALKS
+  ctx.strokeStyle=color;
+  ctx.lineWidth=8;
+  ctx.beginPath();
+
+  ctx.moveTo(-12,-38);
+  ctx.lineTo(-12,-59);
+
+  ctx.moveTo(13,-38);
+  ctx.lineTo(13,-59);
+
+  ctx.stroke();
+
+  // EYES
+  circle(-12,-60,11,"#fffdf4");
+  circle(13,-60,11,"#fffdf4");
+
+  circle(-8,-59,5,"#203249");
+  circle(17,-59,5,"#203249");
+
+  // CLAWS
+  for(const side of [-1,1]){
+    const reach=
+      side===1&&active
+        ?75:44;
+
+    ctx.strokeStyle=color;
+    ctx.lineWidth=9;
+
+    ctx.beginPath();
+    ctx.moveTo(
+      side*18,-30
+    );
+
+    ctx.lineTo(
+      side*(reach-8),
+      side===1&&active?-38:-44
+    );
+
+    ctx.stroke();
+
+    ellipse(
+      side*reach,
+      side===1&&active?-38:-45,
+      17+(side===1&&active?6:0),
+      13,
+      color
+    );
+
+    ctx.strokeStyle="#ffe1cb";
+    ctx.lineWidth=5;
+    ctx.beginPath();
+
+    const cx=side*reach;
+    const cy=
+      side===1&&active?-38:-45;
+
+    ctx.moveTo(cx,cy);
+
+    ctx.lineTo(
+      cx+side*19,
+      cy-11-(active?8:0)
+    );
+
+    ctx.moveTo(cx,cy);
+
+    ctx.lineTo(
+      cx+side*19,
+      cy+10+(active?5:0)
+    );
+
+    ctx.stroke();
+  }
+
+  // SHELL BODY
+  const body=ctx.createLinearGradient(
+    -30,-39,30,-13
+  );
+
+  body.addColorStop(
+    0,"#ffffff65"
+  );
+
+  body.addColorStop(
+    .2,color
+  );
+
+  body.addColorStop(
+    1,color
+  );
+
+  ellipse(
+    0,-24,31,23,body
+  );
+
+  ctx.strokeStyle="#ffffff7b";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+
+  ctx.arc(
+    0,-25,23,
+    Math.PI*1.15,
+    Math.PI*1.8
+  );
+
+  ctx.stroke();
+
+  // HAPPY FACE
+  ctx.strokeStyle="#6a3e3e";
+  ctx.lineWidth=2.7;
+  ctx.beginPath();
+
+  ctx.arc(
+    0,-22,11,
+    .2,Math.PI-.2
+  );
+
+  ctx.stroke();
+
+  circle(-10,-28,3,"#ffc2a2");
+  circle(15,-28,3,"#ffc2a2");
+
+  // GOLDEN CRAB CROWN
+  if(save.equipped==="gold"){
+    ctx.fillStyle="#ffe8a1";
+    ctx.beginPath();
+
+    ctx.moveTo(-17,-69);
+    ctx.lineTo(-12,-82);
+    ctx.lineTo(-3,-71);
+    ctx.lineTo(6,-84);
+    ctx.lineTo(15,-69);
+
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // SHIELD BUBBLE
+  if(run?.shield){
+    ctx.strokeStyle="#b9ffffbd";
+    ctx.lineWidth=4;
+    ctx.beginPath();
+
+    ctx.ellipse(
+      0,-32,69,64,
+      0,0,Math.PI*2
+    );
+
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+// DRAW OBSTACLES AND ITEMS
+function obstacle(o,t){
+  const x=o.x;
+  const y=o.y;
+
+  ctx.save();
+
+  if(o.type==="urchin"){
+    ctx.translate(x,y);
+    ctx.rotate(t*.3+o.phase);
+    ctx.fillStyle="#45336b";
+
+    for(let i=0;i<14;i++){
+      const a=i*Math.PI/7;
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        Math.cos(a-.16)*12,
+        Math.sin(a-.16)*12
+      );
+
+      ctx.lineTo(
+        Math.cos(a)*29,
+        Math.sin(a)*29
+      );
+
+      ctx.lineTo(
+        Math.cos(a+.16)*12,
+        Math.sin(a+.16)*12
+      );
+
+      ctx.fill();
+    }
+
+    circle(0,0,19,"#71589e");
+
+    circle(-6,-3,3,"white");
+    circle(7,-3,3,"white");
+
+    circle(-5,-2,1.6,"#142638");
+    circle(8,-2,1.6,"#142638");
+
+  }else if(o.type==="driftwood"){
+    ctx.translate(x,y);
+    ctx.rotate(-.1);
+
+    round(
+      -41,-19,82,37,14,
+      "#895840"
+    );
+
+    round(
+      -38,-16,78,12,9,
+      "#b88152"
+    );
+
+    ctx.strokeStyle="#55372e";
+    ctx.lineWidth=3;
+
+    ctx.beginPath();
+    ctx.arc(
+      -24,2,9,0,Math.PI*2
+    );
+
+    ctx.moveTo(8,-10);
+    ctx.lineTo(19,10);
+
+    ctx.stroke();
+
+  }else if(o.type==="jelly"){
+    ctx.translate(
+      x,
+      y+Math.sin(t*4+o.phase)*5
+    );
+
+    ctx.shadowColor="#d4b4ff";
+    ctx.shadowBlur=15;
+
+    // JELLYFISH TENTACLES
+    for(let i=-2;i<=2;i++){
+      ctx.strokeStyle="#a38cdf";
+      ctx.lineWidth=4;
+      ctx.beginPath();
+
+      ctx.moveTo(i*8,5);
+
+      ctx.quadraticCurveTo(
+        i*10+Math.sin(t*5+i)*6,
+        21,
+        i*8,
+        33
+      );
+
+      ctx.stroke();
+    }
+
+    ctx.fillStyle="#c39af3";
+    ctx.beginPath();
+
+    ctx.ellipse(
+      0,0,28,22,0,
+      Math.PI,Math.PI*2
+    );
+
+    ctx.lineTo(28,8);
+
+    ctx.quadraticCurveTo(
+      0,15,-28,8
+    );
+
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    circle(-9,-3,3,"#34365c");
+    circle(9,-3,3,"#34365c");
+
+  }else if(o.type==="clam"){
+    ctx.translate(x,y);
+
+    ellipse(
+      0,8,28,12,
+      "#b67670"
+    );
+
+    ctx.fillStyle="#ffc988";
+    ctx.beginPath();
+
+    ctx.moveTo(-30,3);
+    ctx.quadraticCurveTo(
+      -13,-26,0,-21
+    );
+
+    ctx.quadraticCurveTo(
+      18,-28,30,3
+    );
+
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle="#fff2bc";
+    ctx.lineWidth=2;
+    ctx.beginPath();
+
+    ctx.moveTo(-21,2);
+    ctx.lineTo(-12,-12);
+
+    ctx.moveTo(0,2);
+    ctx.lineTo(0,-17);
+
+    ctx.moveTo(20,2);
+    ctx.lineTo(12,-13);
+
+    ctx.stroke();
+
+    circle(0,1,8,"#f7fcf2");
+
+  }else if(o.type==="shell"){
+    ctx.translate(
+      x,
+      y+Math.sin(t*5+o.phase)*3
+    );
+
+    ctx.shadowBlur=10;
+    ctx.shadowColor="#ffe49a";
+
+    ellipse(
+      0,0,17,14,
+      "#ffd98d"
+    );
+
+    ctx.strokeStyle="#c38d5c";
+    ctx.lineWidth=2;
+
+    for(let i=-2;i<=2;i++){
+      ctx.beginPath();
+      ctx.moveTo(0,11);
+      ctx.lineTo(i*6,-10);
+      ctx.stroke();
+    }
+
+    ctx.shadowBlur=0;
+
+  }else if(o.type==="pearl"){
+    ctx.shadowBlur=18;
+    ctx.shadowColor="#d0fbff";
+
+    circle(
+      x,
+      y+Math.sin(t*5+o.phase)*3,
+      17,
+      "#edfeff"
+    );
+
+    circle(
+      x-6,y-6,5,
+      "#fff"
+    );
+
+    ctx.shadowBlur=0;
+
+  }else if(o.type==="bubble"){
+    const cy=
+      y+Math.sin(t*4+o.phase)*5;
+
+    ctx.strokeStyle="#d3ffff";
+    ctx.lineWidth=3;
+    ctx.shadowColor="#8dfaff";
+    ctx.shadowBlur=15;
+
+    ctx.beginPath();
+    ctx.arc(
+      x,cy,21,0,Math.PI*2
+    );
+
+    ctx.stroke();
+
+    circle(
+      x-6,cy-6,5,
+      "#ffffff99"
+    );
+
+    ctx.shadowBlur=0;
+
+  }else if(o.type==="heart"){
+    ctx.font="33px system-ui";
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+
+    ctx.fillText(
+      "❤️",
+      x,
+      y+Math.sin(t*4)*4
+    );
+  }
+
+  ctx.restore();
+}
+
+// DRAW GAME
+function draw(t){
+  ctx.clearRect(0,0,W,H);
+
+  backdrop(t);
+
+  for(const obj of objects){
+    if(!obj.dead){
+      obstacle(obj,t);
+    }
+  }
+
+  // PARTICLES
+  for(const q of particles){
+    ctx.globalAlpha=Math.min(
+      1,
+      q.life/q.max
+    );
+
+    circle(
+      q.x,q.y,
+      q.size,q.color
+    );
+  }
+
+  ctx.globalAlpha=1;
+
+  // PLAYER
+  crab(
+    PLAYER_X,
+    run?run.p.y:G,
+    t
+  );
+
+  // COMBO DISPLAY
+  if(
+    run&&
+    run.combo>1&&
+    run.comboTime>0
+  ){
+    round(
+      17,57,134,37,10,
+      "#123e59bb"
+    );
+
+    ctx.font="bold 21px system-ui";
+    ctx.fillStyle="#ffebb2";
+
+    ctx.fillText(
+      run.combo+"× COMBO!",
+      30,82
+    );
+  }
+
+  // SHIELD STATUS
+  if(run&&run.shield){
+    round(
+      785,16,147,32,16,
+      "#15536fc5"
+    );
+
+    ctx.font="bold 15px system-ui";
+    ctx.fillStyle="#bbffff";
+
+    ctx.fillText(
+      "🫧 SHIELD ON",
+      795,38
+    );
+  }
+
+  // FINAL SECONDS COUNTDOWN
+  if(
+    run&&
+    state==="playing"
+  ){
+    const left=Math.max(
+      0,
+      Math.ceil(
+        DURATION-run.elapsed
+      )
+    );
+
+    if(left>0&&left<=5){
+      ctx.font="900 54px system-ui";
+      ctx.textAlign="center";
+      ctx.fillStyle="#fff4bd";
+      ctx.shadowColor="#294566";
+      ctx.shadowBlur=15;
+
+      ctx.fillText(
+        left,480,109
+      );
+
+      ctx.textAlign="left";
+      ctx.shadowBlur=0;
+    }
+  }
+}
+
+// GAME LOOP
+let last=performance.now();
+
+function frame(timestamp){
+  const dt=Math.min(
+    .04,
+    Math.max(
+      0,
+      (timestamp-last)/1000
+    )
+  );
+
+  last=timestamp;
+  anim+=dt;
+
+  if(state==="playing"){
+    update(dt);
+  }
+
+  if(toastTimer>0){
+    toastTimer-=dt;
+
+    if(toastTimer<=0){
+      $("toast").classList.remove(
+        "visible"
+      );
+    }
+  }
+
+  draw(anim);
+
+  requestAnimationFrame(frame);
+}
+
+// START CRAB RUSH
+showMenu();
+requestAnimationFrame(frame);
+
+})();
+</script>
+</body>
+</html>
