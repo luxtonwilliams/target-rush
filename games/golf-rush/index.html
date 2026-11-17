@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#102239">
-<title>Golf Rush V1 | Luxton Arcade</title>
+<title>Golf Rush V2 | Luxton Arcade</title>
 <style>
 :root{--bg:#101d34;--panel:#1a3151;--line:#4f779d;--ink:#f1fbff;--muted:#bad0e5;--mint:#86f0c2;--gold:#ffe093}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(ellipse at 50% -30%,#295781,#111e35 64%,#0b1327);color:var(--ink)}
@@ -14,7 +14,7 @@ button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus
 h1{margin:0;color:#ffeb9e;font-size:clamp(29px,5vw,49px);letter-spacing:-1.4px;line-height:1.1;text-shadow:0 3px 0 #142e48}
 .sub{font-weight:900;font-size:11px;color:#a4f5df;letter-spacing:3px;margin:7px 0 0}
 a.back{background:#284566;color:#dff9ff;border:1px solid #6899b8;border-radius:12px;padding:10px 15px;text-decoration:none;font-weight:850}
-.hud{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:16px 0 11px}
+.hud{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin:16px 0 11px}
 .stat{min-width:0;text-align:center;border-radius:12px;border:1px solid #5379a0;background:linear-gradient(155deg,#223e61,#152a48);padding:9px 4px;box-shadow:0 3px 0 #091529}
 .stat span{display:block;color:#bcd3e5;text-transform:uppercase;letter-spacing:1px;font-size:10px;font-weight:900}
 .stat strong{display:block;font-size:clamp(16px,2.5vw,26px);margin-top:4px;white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -48,24 +48,35 @@ canvas{display:block;width:100%;height:auto;aspect-ratio:960/540;touch-action:no
 .shop-section{color:#ffe6a1;letter-spacing:1px;text-align:left;margin:16px 0 5px;font-size:14px}
 .result{font-size:38px;font-weight:1000;color:#9cf8cf;text-shadow:0 4px 0 #0c3752}.course-dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:11px 0}
 .dot{width:25px;height:9px;border-radius:50px;background:#3b5a7c;border:1px solid #597ea2}.dot.done{background:#8de9bc}.dot.current{background:#ffdb8d}
-@media(max-width:760px){.hud{grid-template-columns:repeat(3,minmax(0,1fr))}.controls{grid-template-columns:1fr auto auto}.controls .shoot{grid-column:1/-1;width:100%}}
+@media(max-width:760px){.hud{grid-template-columns:repeat(4,minmax(0,1fr))}.controls{grid-template-columns:1fr auto auto}.controls .shoot{grid-column:1/-1;width:100%}}
 @media(max-width:640px){.stage{overflow:visible}.overlay{position:fixed;inset:0;z-index:1000;overflow-y:auto;align-items:center;justify-content:center;padding:15px 10px;background:#08142bec}.sheet{width:min(100%,520px);max-height:88dvh;overflow:auto}}
 @media(max-width:510px){.wrap{width:calc(100% - 12px);padding-top:8px}.top{padding:2px 5px}.hud{gap:5px;margin:10px 0}.stat{padding:7px 2px}.stat span{font-size:8px}.stat strong{font-size:17px}.stage{border-width:2px}.course-header{padding:8px;font-size:12px}.course-header b{font-size:13px}.course-header small{font-size:10px}.controls{gap:7px}.btn{font-size:12px;padding:8px 10px}.sheet{padding:14px}.sheet h2{font-size:25px}.sheet p{font-size:12px}.mini-tags{margin:7px 0}.mini-tags span{font-size:10px;padding:5px 7px}.shop-grid{gap:6px}}
+.tourney-progress{padding:10px;margin:10px 0;background:#142c48;border:1px solid #5988ad;border-radius:12px;text-align:center;font-weight:900;color:#ffe2a0}
+.trophy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.trophy-card{display:grid;gap:4px;border:1px solid #668aab;border-radius:12px;background:linear-gradient(145deg,#29486e,#192d4c);padding:13px 8px;text-align:center}
+.trophy-card.locked{opacity:.48;filter:grayscale(.8)}
+.trophy-card .cup{font-size:31px}.trophy-card b{font-size:13px}.trophy-card small{font-size:11px;color:#c6dceb}
+.score-row{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:12px 0;font-weight:900;color:#fceab3}
+.score-row span{background:#2d4966;border:1px solid #537ca4;padding:8px;border-radius:10px}
+@media(max-width:640px){.holes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.trophy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="top">
-<div><h1>⛳ GOLF RUSH <span style="color:#9de9fb;font-size:.33em;letter-spacing:1px">V1</span></h1><div class="sub">LUXTON ARCADE · MINI GOLF ADVENTURE</div></div>
+<div><h1>⛳ GOLF RUSH <span style="color:#9de9fb;font-size:.33em;letter-spacing:1px">V2</span></h1><div class="sub">LUXTON ARCADE · TOURNAMENT TOUR</div></div>
 <a class="back" href="../../">← Luxton Arcade</a>
 </header>
 <div class="hud">
-<div class="stat"><span>⛳ Hole</span><strong id="holeStat">1 / 9</strong></div>
+<div class="stat"><span>⛳ Hole</span><strong id="holeStat">1 / 18</strong></div>
 <div class="stat"><span>🏌️ Strokes</span><strong id="strokesStat">0</strong></div>
 <div class="stat"><span>🎯 Par</span><strong id="parStat">2</strong></div>
 <div class="stat"><span>🪙 Coins</span><strong id="coinsStat">0</strong></div>
 <div class="stat"><span>🏆 Hole Best</span><strong id="bestStat">—</strong></div>
-<div class="stat"><span>🌟 Stars</span><strong id="starsStat">0 / 27</strong></div>
+<div class="stat"><span>🌟 Stars</span><strong id="starsStat">0 / 54</strong></div>
+<div class="stat"><span>🏆 Trophies</span><strong id="trophyStat">0 / 6</strong></div>
+<div class="stat"><span>🎯 Banks</span><strong id="trickStat">0</strong></div>
 </div>
 <div class="course-header"><b id="courseName">🌿 Hole 1 — First Putt</b><small id="courseSubtitle">Sunny Greens · Learn to putt</small></div>
 <div class="stage" id="stage">
@@ -84,13 +95,15 @@ canvas{display:block;width:100%;height:auto;aspect-ratio:960/540;touch-action:no
 <div class="buttonrow">
 <button class="btn secondary" id="retry">↻ Restart Hole</button>
 <button class="btn secondary" id="holes">🗺️ Courses</button>
+<button class="btn secondary" id="tournaments">🏆 Tournaments</button>
+<button class="btn secondary" id="trophies">🏅 Trophy Room</button>
 <button class="btn secondary" id="shop">🛒 Ball Shop</button>
 <button class="btn secondary" id="home">🏠 Menu</button>
 <button class="btn secondary" id="sound">🔇 Sound Off</button>
 </div>
-<div class="hint">💻 <b>Chromebook:</b> drag backward from the ball, or use ← → to aim and Space to shoot. 📱 <b>Phone:</b> drag the ball backward and release, or use the aim buttons and SHOOT. 🌊 Water costs a penalty stroke; sand slows the ball. ⭐ Finish under par for more stars!</div>
+<div class="hint">💻 <b>Chromebook:</b> drag backward from the ball, or use ← → to aim and Space to shoot. 📱 <b>Phone:</b> drag the ball backward and release, or use the aim buttons and SHOOT. 🌊 Water costs a penalty stroke; sand slows the ball. ⭐ Finish under par for more stars! 🎱 Bounce off a wall or bumper and sink your ball for a trick-shot coin bonus.</div>
 </div>
-<footer class="panel-footer">💾 Coins, unlocked holes, bought balls, upgrades, and records save automatically in this browser.<br>🌿 Sunny Greens · 🏜️ Desert Dunes · 🌌 Neon Nights — 9 playable holes.</footer>
+<footer class="panel-footer">💾 Coins, unlocked holes, bought balls, upgrades, and records save automatically in this browser.<br>🌿 Sunny Greens · 🏜️ Desert Dunes · 🌌 Neon Nights · ❄️ Snow Peaks · 🍭 Candy Cove · 🌋 Volcano Valley — 18 holes.</footer>
 </div>
 <script>
 (()=>{
@@ -112,12 +125,27 @@ const C=[
  {name:'Desert Zigzag',world:1,par:5,tag:'Navigate the winding walls',start:[141,424],cup:[821,113],zones:[z('sand',427,356,129,88)],walls:[rect(332,58,27,292),rect(606,222,27,260)],bumpers:[b(475,238,22,'y',55,1.2)],coins:[[245,427],[474,407],[528,174],[753,157]]},
  {name:'Ice Drive',world:2,par:3,tag:'Slippery ice means long shots',start:[148,263],cup:[808,266],zones:[z('ice',238,144,462,247)],walls:[rect(470,61,23,99),rect(470,383,23,99)],bumpers:[b(474,263,27)],coins:[[300,264],[580,194],[715,268]]},
  {name:'Bridge to Glory',world:2,par:4,tag:'Cross between the ponds',start:[146,118],cup:[805,414],zones:[z('water',165,243,255,73),z('water',544,243,257,73),z('ice',443,235,77,90)],walls:[rect(306,65,20,128),rect(651,350,20,121)],bumpers:[b(477,280,14)],coins:[[210,135],[477,208],[769,374]]},
- {name:'The Final Flag',world:2,par:5,tag:'The ultimate mini-golf challenge!',start:[139,430],cup:[820,116],zones:[z('sand',230,173,117,103),z('water',628,284,130,90),z('ice',421,76,157,84)],walls:[rect(333,257,26,222),rect(588,62,26,145)],bumpers:[b(463,294,31,'y',85,1.4),b(733,209,24,'x',39,1.9)],coins:[[249,427],[412,398],[544,230],[777,161]]}
+ {name:'The Final Flag',world:2,par:5,tag:'The ultimate mini-golf challenge!',start:[139,430],cup:[820,116],zones:[z('sand',230,173,117,103),z('water',628,284,130,90),z('ice',421,76,157,84)],walls:[rect(333,257,26,222),rect(588,62,26,145)],bumpers:[b(463,294,31,'y',85,1.4),b(733,209,24,'x',39,1.9)],coins:[[249,427],[412,398],[544,230],[777,161]]},
+ // WORLD 4 — SNOW PEAKS
+ {name:'Frosty Fairway',world:3,par:3,tag:'A slick introduction to snow',start:[146,268],cup:[809,268],zones:[z('ice',255,185,444,172)],walls:[rect(440,70,23,108),rect(440,363,23,110)],bumpers:[],coins:[[305,265],[592,264],[758,266]]},
+ {name:'Glacier Bend',world:3,par:4,tag:'Ice and snow make every bounce count',start:[146,410],cup:[807,126],zones:[z('ice',209,317,275,120),z('water',545,175,180,120)],walls:[rect(374,66,26,228),rect(660,354,26,112)],bumpers:[b(518,242,21,'y',48,1.2)],coins:[[243,402],[497,431],[763,196]]},
+ {name:'Snowball Showdown',world:3,par:5,tag:'A moving snowball guards the flag',start:[140,113],cup:[816,423],zones:[z('ice',230,101,197,133),z('ice',547,289,174,132)],walls:[rect(405,258,25,204),rect(625,66,25,148)],bumpers:[b(515,256,33,'x',73,1.7)],coins:[[242,124],[476,141],[767,390]]},
+ // WORLD 5 — CANDY COVE
+ {name:'Candy Hop',world:4,par:3,tag:'Bounce around the candy bumpers',start:[142,275],cup:[808,269],zones:[z('sand',376,90,130,82),z('sand',532,364,135,80)],walls:[],bumpers:[b(355,240,30),b(540,300,28)],coins:[[236,275],[468,196],[721,269]]},
+ {name:'Sugar Switchback',world:4,par:4,tag:'Bank shots around lollipop gates',start:[146,425],cup:[807,108],zones:[z('sand',445,308,125,96)],walls:[rect(310,74,23,285),rect(610,236,23,230)],bumpers:[b(478,222,20,'x',40,1.6)],coins:[[235,423],[472,402],[740,155]]},
+ {name:'The Sprinkle Spiral',world:4,par:5,tag:'Get past three spinning candies',start:[140,117],cup:[817,415],zones:[z('ice',370,155,168,206),z('water',698,207,110,103)],walls:[rect(296,257,26,206),rect(609,65,26,159)],bumpers:[b(412,162,28,'y',52,1.2),b(564,344,24,'x',35,1.6),b(726,391,19)],coins:[[233,125],[466,414],[766,389]]},
+ // WORLD 6 — VOLCANO VALLEY
+ {name:'Magma Maze',world:5,par:4,tag:'Avoid the scorching lava pools',start:[146,410],cup:[810,129],zones:[z('lava',350,233,240,104),z('sand',663,323,128,82)],walls:[rect(433,70,26,122)],bumpers:[b(677,197,27)],coins:[[234,404],[520,401],[770,220]]},
+ {name:'Fireball Run',world:5,par:4,tag:'Hot lava and bouncing fireballs',start:[149,259],cup:[810,268],zones:[z('lava',348,80,135,151),z('lava',561,327,128,157)],walls:[rect(333,340,23,139),rect(675,70,23,113)],bumpers:[b(473,263,31,'y',79,1.7),b(733,265,27,'x',42,2.0)],coins:[[263,265],[531,122],[746,268]]},
+ {name:'Volcano Championship',world:5,par:5,tag:'The ultimate V2 tournament finale',start:[141,426],cup:[820,117],zones:[z('lava',234,183,145,130),z('lava',602,270,155,93),z('ice',444,95,104,92)],walls:[rect(350,319,28,154),rect(566,61,27,160)],bumpers:[b(489,311,27,'y',66,1.8),b(733,191,25,'x',46,2.2)],coins:[[252,424],[469,412],[559,253],[784,157]]}
 ];
 const worlds=[
  {name:'Sunny Greens',emoji:'🌿',sky:'#80d7ef',grass:'#59b879',field:'#3d9d65',edge:'#287b51',stripe:'#84d8a1'},
  {name:'Desert Dunes',emoji:'🏜️',sky:'#ffa65f',grass:'#b5c36e',field:'#8dba68',edge:'#7d9e51',stripe:'#c2d68c'},
- {name:'Neon Nights',emoji:'🌌',sky:'#172f60',grass:'#348f91',field:'#247f83',edge:'#175f73',stripe:'#4eb1a2'}
+ {name:'Neon Nights',emoji:'🌌',sky:'#172f60',grass:'#348f91',field:'#247f83',edge:'#175f73',stripe:'#4eb1a2'},
+ {name:'Snow Peaks',emoji:'❄️',sky:'#80b6dd',grass:'#b9e5e8',field:'#87bbc8',edge:'#4b8ca7',stripe:'#dcfaff'},
+ {name:'Candy Cove',emoji:'🍭',sky:'#ff9cba',grass:'#d7a8dd',field:'#ac80c9',edge:'#8665ac',stripe:'#fff0fa'},
+ {name:'Volcano Valley',emoji:'🌋',sky:'#d66c55',grass:'#7e5268',field:'#674057',edge:'#472c49',stripe:'#ff9a81'}
 ];
 const ballItems=[
  {id:'classic',icon:'⚪',name:'Classic',cost:0,desc:'The perfect starter ball.',color:'#f5faff',perk:'None'},
@@ -126,28 +154,46 @@ const ballItems=[
  {id:'ocean',icon:'🔵',name:'Ocean',cost:52,desc:'Glides better through sand.',color:'#73d7ff',perk:'Sand grip'},
  {id:'comet',icon:'☄️',name:'Comet',cost:78,desc:'Long glowing ball trail.',color:'#c3a0ff',perk:'Visual trail'},
  {id:'gold',icon:'🟡',name:'Golden',cost:110,desc:'+2 coins from every pickup.',color:'#ffe087',perk:'Coin bonus'},
- {id:'rainbow',icon:'🌈',name:'Rainbow Legend',cost:150,desc:'More speed and +2 pickup coins.',color:'#fface6',perk:'Speed + coins'}
+ {id:'rainbow',icon:'🌈',name:'Rainbow Legend',cost:150,desc:'More speed and +2 pickup coins.',color:'#fface6',perk:'Speed + coins'},
+ {id:'frost',icon:'❄️',name:'Frostbite',cost:88,desc:'Better control on slippery ice.',color:'#a5f3fc',perk:'Ice control'},
+ {id:'candy',icon:'🍬',name:'Candy Swirl',cost:125,desc:'+5 coins after each completed hole.',color:'#ffa0dc',perk:'Finish bonus'},
+ {id:'meteor',icon:'☄️',name:'Meteor Pro',cost:175,desc:'A stronger shot and fiery trail.',color:'#ff9c77',perk:'Power + trail'}
 ];
 const gear=[
  {id:'aim',icon:'🎯',name:'Pro Aim Line',cost:22,desc:'Longer shot prediction.'},
  {id:'putter',icon:'🏌️',name:'Power Putter',cost:34,desc:'15% more launch power.'},
  {id:'grip',icon:'👟',name:'Sand Grip',cost:44,desc:'Lose less speed in sand.'},
- {id:'magnet',icon:'🧲',name:'Coin Magnet',cost:60,desc:'Collect coins from farther away.'}
+ {id:'magnet',icon:'🧲',name:'Coin Magnet',cost:60,desc:'Collect coins from farther away.'},
+ {id:'trick',icon:'🎱',name:'Bank Shot Bonus',cost:48,desc:'+8 coins for finishing a hole with a bank shot.'},
+ {id:'shield',icon:'🛟',name:'Hazard Insurance',cost:55,desc:'First water or lava splash each hole has no penalty stroke.'},
+ {id:'caddy',icon:'🪙',name:'Championship Caddy',cost:68,desc:'+5 coins on every completed hole.'}
 ];
-const blank=()=>({coins:0,unlocked:1,bestTour:null,bests:{},stars:{},owned:['classic'],equipped:'classic',upgrades:[],runScores:{},sound:false});
+const blank=()=>({coins:0,unlocked:1,bestTour:null,bestTour18:null,bests:{},stars:{},owned:['classic'],equipped:'classic',upgrades:[],runScores:{},sound:false,trophies:{},tournamentBests:{},tournamentRun:null,trickShots:0});
 let saveData=blank();
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&typeof s==='object')saveData={...saveData,...s};}catch(e){}
 saveData.coins=Math.max(0,Math.floor(Number(saveData.coins)||0));
-saveData.unlocked=clamp(Math.floor(Number(saveData.unlocked)||1),1,9);
+saveData.unlocked=clamp(Math.floor(Number(saveData.unlocked)||1),1,18);
 saveData.owned=Array.isArray(saveData.owned)?[...new Set(['classic',...saveData.owned.filter(id=>ballItems.some(x=>x.id===id))])]:['classic'];
 saveData.upgrades=Array.isArray(saveData.upgrades)?[...new Set(saveData.upgrades.filter(id=>gear.some(x=>x.id===id)))]:[];
 if(!saveData.owned.includes(saveData.equipped))saveData.equipped='classic';
-for(const k of ['bests','stars','runScores'])if(!saveData[k]||typeof saveData[k]!=='object')saveData[k]={};
+for(const k of ['bests','stars','runScores','trophies','tournamentBests'])if(!saveData[k]||typeof saveData[k]!=='object'||Array.isArray(saveData[k]))saveData[k]={};
+saveData.trickShots=Math.max(0,Math.floor(Number(saveData.trickShots)||0));
+// The V1 save key is intentionally unchanged. V1 hole records are preserved.
+if(saveData.tournamentRun){
+ const t=saveData.tournamentRun;
+ if(!Number.isInteger(t.world)||t.world<0||t.world>=worlds.length||!Number.isInteger(t.stage)||t.stage<0||t.stage>2||!Array.isArray(t.scores)||t.scores.length!==t.stage)saveData.tournamentRun=null;
+}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(saveData));}catch(e){say('⚠️ Browser storage is full, progress may not save.');}};
 const owns=id=>saveData.upgrades.includes(id);
 const ballItem=()=>ballItems.find(x=>x.id===saveData.equipped)||ballItems[0];
 let index=0,course=C[0],mode='menu',strokes=0,ball={x:150,y:271,vx:0,vy:0},lastSafe={x:150,y:271};
 let taken=new Set(),aiming=false,aimPointer={x:0,y:0},aimAngle=0,power=.65,elapsed=0,shots=0,fx=[],trail=[],messageExpire=0;
+let tournament=saveData.tournamentRun,bankHits=0,lastBankAt=-10,usedInsurance=false,lastTournamentResult=null;
+function bankHit(){if(elapsed-lastBankAt>.23&&Math.hypot(ball.vx,ball.vy)>65){bankHits++;lastBankAt=elapsed;}}
+function totalStars(){return Object.values(saveData.stars).reduce((a,x)=>a+(Number(x)||0),0);}
+function trophyGrade(diff){return diff<=-1?'🥇 GOLD':diff<=3?'🥈 SILVER':'🥉 BRONZE';}
+function trophyEmoji(g){return g==='🥇 GOLD'?'🥇':g==='🥈 SILVER'?'🥈':'🥉';}
+function gradeRank(g){return g==='🥇 GOLD'?3:g==='🥈 SILVER'?2:g==='🥉 BRONZE'?1:0;}
 const overlay=$('overlay'),sheet=$('sheet');
 function say(s){$('message').textContent=s;messageExpire=performance.now()+4000;}
 function sound(f=440,d=.07,type='sine'){
@@ -160,21 +206,25 @@ function sound(f=440,d=.07,type='sine'){
  }catch(e){}
 }
 function update(){
- $('holeStat').textContent=(index+1)+' / 9';$('strokesStat').textContent=strokes;
+ $('holeStat').textContent=(index+1)+' / 18';$('strokesStat').textContent=strokes;
  $('parStat').textContent=course.par;$('coinsStat').textContent=saveData.coins;
  $('bestStat').textContent=saveData.bests[index]||'—';
- const total=Object.values(saveData.stars).reduce((a,x)=>a+(Number(x)||0),0);
- $('starsStat').textContent=total+' / 27';
+ const total=totalStars();
+ $('starsStat').textContent=total+' / 54';
+ $('trophyStat').textContent=Object.keys(saveData.trophies).length+' / 6';
+ $('trickStat').textContent=bankHits;
  const w=worlds[course.world];$('courseName').textContent=w.emoji+' Hole '+(index+1)+' — '+course.name;
- $('courseSubtitle').textContent=w.name+' · '+course.tag;
+ $('courseSubtitle').textContent=w.name+' · '+course.tag+(tournament&&index===tournament.world*3+tournament.stage?' · 🏆 CUP ROUND '+(tournament.stage+1)+'/3':'');
  $('powerText').textContent=Math.round(power*100)+'%';$('power').value=Math.round(power*100);
  $('shoot').disabled=mode!=='play'||!still();
  $('retry').disabled=mode!=='play';
 }
 function still(){return Math.hypot(ball.vx,ball.vy)<12;}
-function loadHole(n,play=true){
+function loadHole(n,play=true,keepTournament=false){
  if(n<0||n>=C.length||n>=saveData.unlocked)return;
+ if(tournament&&!keepTournament){tournament=null;saveData.tournamentRun=null;persist();}
  index=n;course=C[index];strokes=0;shots=0;elapsed=0;
+ bankHits=0;lastBankAt=-10;usedInsurance=false;
  ball={x:course.start[0],y:course.start[1],vx:0,vy:0};lastSafe={x:ball.x,y:ball.y};
  taken.clear();aiming=false;trail=[];fx=[];
  aimAngle=Math.atan2(course.cup[1]-ball.y,course.cup[0]-ball.x);
@@ -191,18 +241,103 @@ function showOverlay(title,body,actions=[],eyebrow='GOLF RUSH'){mode=mode==='pla
  sheet.append(eyebrowEl,h,p,buttons);
  return sheet;
 }
-function showMenu(){mode='menu';const el=showOverlay('WELCOME TO GOLF RUSH! ⛳','9 colorful mini-golf courses. Drag backward from your ball and release to launch! Earn coins, unlock new balls, and chase hole-in-ones.',[
-  {label:'⛳ START GOLFING',action:()=>loadHole(Math.min(saveData.unlocked-1,8))},
-  {label:'🗺️ CHOOSE HOLE',kind:'secondary',action:showHoles},
-  {label:'🛒 BALL SHOP',kind:'gold',action:showShop}
- ],'LUXTON ARCADE · GAME #8');
+function showMenu(){mode='menu';const el=showOverlay('GOLF RUSH V2 — TOURNAMENT TOUR! ⛳','18 mini-golf holes across six worlds! Sink trick shots, collect coins, earn trophies and battle for six tournament cups.',[
+  {label:'⛳ PLAY NEXT HOLE',action:()=>loadHole(Math.min(saveData.unlocked-1,17))},
+  ...(tournament?[{label:'🏆 RESUME TOURNAMENT',kind:'gold',action:resumeTournament}]:[]),
+  {label:'🏆 TOURNAMENTS',kind:'gold',action:showTournaments},
+  {label:'🗺️ ALL 18 HOLES',kind:'secondary',action:showHoles},
+  {label:'🛒 BALL SHOP',kind:'secondary',action:showShop},
+  {label:'🏅 TROPHY ROOM',kind:'secondary',action:showTrophies}
+ ],'LUXTON ARCADE · GAME #8 · V2');
  const tags=document.createElement('div');tags.className='mini-tags';
- ['⛳ 9 holes','🌿 3 worlds','🪙 Cheap shop','🏆 Personal best','💾 Auto-save'].forEach(t=>{const s=document.createElement('span');s.textContent=t;tags.append(s);});
+ ['⛳ 18 holes','🌎 6 worlds','🏆 6 tournaments','🎱 Trick shots','💾 V1 saves kept'].forEach(t=>{const sp=document.createElement('span');sp.textContent=t;tags.append(sp);});
  el.insertBefore(tags,el.lastElementChild);
- if(saveData.bestTour!==null){const p=document.createElement('p');p.textContent='🏆 Best 9-hole tour: '+saveData.bestTour+' strokes';el.insertBefore(p,el.lastElementChild);}
+ if(saveData.bestTour18!==null){const p=document.createElement('p');p.textContent='🏆 Best 18-hole collection: '+saveData.bestTour18+' strokes';el.insertBefore(p,el.lastElementChild);}
  update();
 }
-function showHoles(){const e=showOverlay('CHOOSE YOUR HOLE 🗺️','Clear a course to unlock the next one. Replaying unlocked holes can improve your best score.',[{label:'← BACK TO MENU',kind:'secondary',action:showMenu}],'9 COURSES · 3 WORLDS');
+function startTournament(w){
+ if(saveData.unlocked<=w*3)return;
+ tournament={world:w,stage:0,scores:[]};saveData.tournamentRun=tournament;persist();
+ loadHole(w*3,true,true);
+ say('🏆 '+worlds[w].name+' Cup — Round 1 of 3. Good luck!');
+}
+function resumeTournament(){
+ if(!tournament)return showTournaments();
+ loadHole(tournament.world*3+tournament.stage,true,true);
+ say('🏆 Tournament resumed — round '+(tournament.stage+1)+'/3!');
+}
+function advanceTournament(){
+ if(!tournament)return showMenu();
+ loadHole(tournament.world*3+tournament.stage,true,true);
+ say('🏆 Next tournament round — '+(tournament.stage+1)+'/3!');
+}
+function showTournaments(){
+ mode='tournaments';const el=showOverlay('🏆 WORLD TOURNAMENTS','Each cup is 3 holes in a row. Finish all 3 to earn a bronze, silver or gold trophy and bonus coins. Your rounds save automatically.',[
+ {label:'🏠 MAIN MENU',kind:'secondary',action:showMenu},
+ ...(tournament?[{label:'▶ RESUME CUP',kind:'gold',action:resumeTournament}]:[])
+ ],'6 TOURNAMENT CUPS');
+ const grid=document.createElement('div');grid.className='shop-grid';
+ worlds.forEach((w,i)=>{
+  const best=saveData.tournamentBests[i];const held=saveData.trophies[i];
+  const item=document.createElement('div');item.className='shop-card';
+  const title=document.createElement('b');title.textContent=w.emoji+' '+w.name+' Cup';
+  const desc=document.createElement('small');desc.textContent='Holes '+(i*3+1)+'–'+(i*3+3)+' · '+(held||'No trophy yet')+(best!==undefined?' · Best '+best+' strokes':'');
+  const btn=document.createElement('button');btn.className='btn';
+  btn.textContent=saveData.unlocked<=i*3?'🔒 CLEAR PREVIOUS HOLES':'🏆 ENTER CUP';
+  btn.disabled=saveData.unlocked<=i*3;
+  btn.onclick=()=>startTournament(i);
+  item.append(title,desc,btn);grid.append(item);
+ });
+ el.insertBefore(grid,el.lastElementChild);
+}
+function showTrophies(){
+ mode='trophies';const el=showOverlay('🏅 TROPHY ROOM','Win a tournament trophy in each of the six worlds. Replay cups for better medals. Trophies and records stay saved!',[
+ {label:'🏆 ENTER TOURNAMENT',action:showTournaments},
+ {label:'🏠 MAIN MENU',kind:'secondary',action:showMenu}
+ ],'YOUR CHAMPIONSHIP COLLECTION');
+ const grid=document.createElement('div');grid.className='trophy-grid';
+ worlds.forEach((w,i)=>{
+  const grade=saveData.trophies[i];
+  const card=document.createElement('div');card.className='trophy-card'+(grade?'':' locked');
+  const icon=document.createElement('div');icon.className='cup';icon.textContent=grade?trophyEmoji(grade):'🔒';
+  const name=document.createElement('b');name.textContent=w.emoji+' '+w.name;
+  const result=document.createElement('small');result.textContent=grade||'Not won yet';
+  card.append(icon,name,result);grid.append(card);
+ });
+ el.insertBefore(grid,el.lastElementChild);
+ const summary=document.createElement('p');summary.textContent='🏆 Won '+Object.keys(saveData.trophies).length+'/6 cups · 🎱 '+saveData.trickShots+' trick-shot holes · ⭐ '+totalStars()+'/54 stars';
+ el.insertBefore(summary,el.lastElementChild);
+}
+function completeTournamentHole(){
+ if(!tournament||index!==tournament.world*3+tournament.stage)return null;
+ tournament.scores.push(strokes);
+ tournament.stage++;
+ if(tournament.stage<3){saveData.tournamentRun=tournament;return {next:true};}
+ const w=tournament.world,score=tournament.scores.reduce((a,n)=>a+n,0);
+ const par=C.slice(w*3,w*3+3).reduce((a,c)=>a+c.par,0);
+ const grade=trophyGrade(score-par);
+ const old=saveData.trophies[w];
+ if(!old||gradeRank(grade)>gradeRank(old))saveData.trophies[w]=grade;
+ if(saveData.tournamentBests[w]===undefined||score<saveData.tournamentBests[w])saveData.tournamentBests[w]=score;
+ const reward=35+10*w+(grade==='🥇 GOLD'?25:grade==='🥈 SILVER'?15:5);
+ saveData.coins+=reward;
+ lastTournamentResult={w,score,par,grade,reward};
+ tournament=null;saveData.tournamentRun=null;
+ return {finished:true};
+}
+function showTournamentResults(outcome=lastTournamentResult){
+ if(!outcome)return showTrophies();
+ mode='trophy';const w=worlds[outcome.w];
+ const el=showOverlay('🏆 '+outcome.grade+' TROPHY!','You finished the '+w.name+' Cup in '+outcome.score+' strokes (par '+outcome.par+'). Earned +'+outcome.reward+' coins! The trophy is yours forever.',[
+ {label:'🏅 SEE TROPHY ROOM',action:showTrophies},
+ {label:'🏆 MORE TOURNAMENTS',kind:'gold',action:showTournaments},
+ {label:'🏠 MAIN MENU',kind:'secondary',action:showMenu}
+ ],w.emoji+' '+w.name.toUpperCase()+' CHAMPIONSHIP');
+ const row=document.createElement('div');row.className='score-row';
+ for(const str of ['Your strokes '+outcome.score,'Course par '+outcome.par,'Prize +'+outcome.reward+' 🪙']){const span=document.createElement('span');span.textContent=str;row.append(span);}
+ el.insertBefore(row,el.lastElementChild);
+}
+function showHoles(){const e=showOverlay('CHOOSE YOUR HOLE 🗺️','18 holes across 6 worlds. Clear each course to unlock the next; replay to improve your personal best.',[{label:'← BACK TO MENU',kind:'secondary',action:showMenu}],'18 COURSES · 6 WORLDS');
  const grid=document.createElement('div');grid.className='holes-grid';
  C.forEach((c,n)=>{
   const btn=document.createElement('button');btn.className='hole-tile';btn.disabled=n>=saveData.unlocked;
@@ -243,7 +378,7 @@ function showShop(){const wasPlaying=mode==='play'||mode==='paused';const e=show
 }
 function shoot(angle=aimAngle,force=power){
  if(mode!=='play'||!still()||aiming)return;
- const item=ballItem(),boost=(owns('putter')?1.15:1)*(item.id==='sunset'?1.05:item.id==='rainbow'?1.07:1);
+ const item=ballItem(),boost=(owns('putter')?1.15:1)*(item.id==='sunset'?1.05:item.id==='rainbow'?1.07:item.id==='meteor'?1.2:1);
  const speed=(135+820*clamp(force,.08,1))*boost;
  ball.vx=Math.cos(angle)*speed;ball.vy=Math.sin(angle)*speed;
  strokes++;shots++;lastSafe={x:ball.x,y:ball.y};
@@ -259,20 +394,27 @@ function finish(){if(mode!=='play')return;mode='complete';ball.vx=ball.vy=0;
  else if(diff===0)scoreText='PAR! ⛳';
  else if(diff===1)scoreText='BOGEY!';
  if(diff<=-1)stars=3;else if(diff===0)stars=2;
- const bonus=9+Math.max(0,course.par-strokes)*7+(strokes===1?18:0)+(ballItem().id==='lime'?3:0);
+ const trickBonus=bankHits>0?(6+(owns('trick')?8:0)):0;
+ if(bankHits>0)saveData.trickShots++;
+ const bonus=9+Math.max(0,course.par-strokes)*7+(strokes===1?18:0)+(ballItem().id==='lime'?3:0)+(ballItem().id==='candy'?5:0)+(owns('caddy')?5:0)+trickBonus;
  saveData.coins+=bonus;
  const old=Number(saveData.bests[index])||Infinity;
  if(strokes<old)saveData.bests[index]=strokes;
  saveData.stars[index]=Math.max(saveData.stars[index]||0,stars);
  saveData.runScores[index]=strokes;
- saveData.unlocked=Math.min(9,Math.max(saveData.unlocked,index+2));
- const tourDone=C.every((_,n)=>Number.isInteger(saveData.runScores[n]));
- if(tourDone){const total=Object.values(saveData.runScores).reduce((a,v)=>a+v,0);
+ saveData.unlocked=Math.min(18,Math.max(saveData.unlocked,index+2));
+ const nineDone=C.slice(0,9).every((_,n)=>Number.isInteger(saveData.runScores[n]));
+ if(nineDone){const total=C.slice(0,9).reduce((a,_,n)=>a+saveData.runScores[n],0);
  if(saveData.bestTour===null||total<saveData.bestTour)saveData.bestTour=total;}
+ const allDone=C.every((_,n)=>Number.isInteger(saveData.runScores[n]));
+ if(allDone){const total=C.reduce((a,_,n)=>a+saveData.runScores[n],0);
+ if(saveData.bestTour18===null||total<saveData.bestTour18)saveData.bestTour18=total;}
+ const cupProgress=completeTournamentHole();
  persist();sound(780,.13);setTimeout(()=>sound(1050,.13),120);
  sparks(course.cup[0],course.cup[1],'#ffeb9e',30);
- const e=showOverlay(scoreText,'You finished Hole '+(index+1)+' in '+strokes+' stroke'+(strokes===1?'':'s')+' (par '+course.par+'). Earned +'+bonus+' coins! '+ '⭐'.repeat(stars),[
-  {label:index===8?'🏆 TOUR RESULTS':'⛳ NEXT HOLE',action:()=>index===8?showTour():loadHole(index+1)},
+ const e=showOverlay(scoreText,'You finished Hole '+(index+1)+' in '+strokes+' stroke'+(strokes===1?'':'s')+' (par '+course.par+'). Earned +'+bonus+' coins! '+ (trickBonus?'🎱 BANK SHOT BONUS +'+trickBonus+'! ':'')+'⭐'.repeat(stars),[
+  ...(cupProgress?[{label:cupProgress.finished?'🏆 CLAIM TROPHY':'🏆 NEXT CUP ROUND',action:()=>cupProgress.finished?showTournamentResults():advanceTournament()}]:[
+   {label:index===17?'🏆 18-HOLE RESULTS':'⛳ NEXT HOLE',action:()=>index===17?showTour():loadHole(index+1)}]),
   {label:'🔁 REPLAY HOLE',kind:'secondary',action:()=>loadHole(index)},
   {label:'🛒 SHOP',kind:'gold',action:showShop}
  ],'GREAT PUTT · PERSONAL BEST: '+saveData.bests[index]);
@@ -280,11 +422,11 @@ function finish(){if(mode!=='play')return;mode='complete';ball.vx=ball.vy=0;
  C.forEach((_,n)=>{const s=document.createElement('span');s.className='dot'+(saveData.bests[n]?' done':'')+(n===index?' current':'');dots.append(s);});
  e.insertBefore(dots,e.lastElementChild);update();
 }
-function showTour(){mode='tour';const scores=Object.values(saveData.runScores).map(Number);const total=scores.reduce((a,v)=>a+v,0);
- const allNine=C.every((_,n)=>Number.isInteger(saveData.runScores[n]));
- showOverlay(allNine?'TOUR COMPLETE! 🏆':'KEEP GOLFING! ⛳',allNine?'You conquered all nine courses! Total: '+total+' strokes. Personal best: '+saveData.bestTour+' strokes.':'You finished the final hole! Replay the other courses to fill your scorecard.',[
-  {label:'⛳ PLAY AGAIN',action:()=>{saveData.runScores={};persist();loadHole(0);}},
-  {label:'🛒 BALL SHOP',kind:'gold',action:showShop},
+function showTour(){mode='tour';const scores=C.map((_,n)=>Number(saveData.runScores[n])||0);const total=scores.reduce((a,v)=>a+v,0);
+ const complete=C.every((_,n)=>Number.isInteger(saveData.runScores[n]));
+ showOverlay(complete?'18 HOLES COMPLETE! 🏆':'KEEP GOLFING! ⛳',complete?'You played all 18 courses! Total strokes on your current scorecard: '+total+'. Best collected score: '+saveData.bestTour18+'.':'Keep going to complete all 18 holes. Your old 9-hole records are saved too.',[
+  {label:'🏆 TOURNAMENTS',action:showTournaments},
+  {label:'🏅 TROPHY ROOM',kind:'gold',action:showTrophies},
   {label:'🏠 MAIN MENU',kind:'secondary',action:showMenu}
  ],'LUXTON ARCADE · GOLF CHAMPION');
 }
@@ -301,9 +443,13 @@ function updatePhysics(dt){elapsed+=dt;
   if(ball.y<64){ball.y=64;ball.vy=Math.abs(ball.vy)*.73;}if(ball.y>476){ball.y=476;ball.vy=-Math.abs(ball.vy)*.73;}
   for(const wall of course.walls)collideRect(wall);
   for(const obj of course.bumpers){const p=bumpPos(obj);collideCircle(p.x,p.y,obj.r);}
-  if(onCourseZone('water',ball.x,ball.y)){
-    strokes++;ball.x=lastSafe.x;ball.y=lastSafe.y;ball.vx=ball.vy=0;
-    say('🌊 SPLASH! +1 penalty stroke. Back to your last shot.');sound(115,.24,'sawtooth');sparks(ball.x,ball.y,'#84eeff',15);update();break;
+  if(onCourseZone('water',ball.x,ball.y)||onCourseZone('lava',ball.x,ball.y)){
+    const lava=onCourseZone('lava',ball.x,ball.y);
+    const free=owns('shield')&&!usedInsurance;
+    if(!free)strokes++;else usedInsurance=true;
+    ball.x=lastSafe.x;ball.y=lastSafe.y;ball.vx=ball.vy=0;
+    say((lava?'🌋 LAVA! ':'🌊 SPLASH! ')+(free?'🛟 Insurance saved your penalty!':'+1 penalty stroke.')+' Back to your last shot.');
+    sound(115,.24,'sawtooth');sparks(ball.x,ball.y,lava?'#ff7a58':'#84eeff',15);update();break;
   }
   course.coins.forEach(([x,y],i)=>{
     if(taken.has(i)||distance(ball.x,ball.y,x,y)>(owns('magnet')?39:22))return;
@@ -314,7 +460,7 @@ function updatePhysics(dt){elapsed+=dt;
   if(cupDist<20&&Math.hypot(ball.vx,ball.vy)<330){finish();break;}
   let drag=.982;
   if(onCourseZone('sand',ball.x,ball.y))drag=(owns('grip')||ballItem().id==='ocean')?.970:.944;
-  if(onCourseZone('ice',ball.x,ball.y))drag=.994;
+  if(onCourseZone('ice',ball.x,ball.y))drag=ballItem().id==='frost'?.985:.994;
   const p=Math.pow(drag,tick*60);ball.vx*=p;ball.vy*=p;
  }
  if(Math.hypot(ball.vx,ball.vy)<11){ball.vx=ball.vy=0;update();}
@@ -324,23 +470,23 @@ function collideRect(w){
  const x=clamp(ball.x,w.x,w.x+w.w),y=clamp(ball.y,w.y,w.y+w.h);
  let dx=ball.x-x,dy=ball.y-y,dist=Math.hypot(dx,dy);
  if(dist>=R||dist===0&&!(ball.x>=w.x&&ball.x<=w.x+w.w&&ball.y>=w.y&&ball.y<=w.y+w.h))return;
- if(dist<.001){const sides=[{d:Math.abs(ball.x-w.x),nx:-1,ny:0},{d:Math.abs(w.x+w.w-ball.x),nx:1,ny:0},{d:Math.abs(ball.y-w.y),nx:0,ny:-1},{d:Math.abs(w.y+w.h-ball.y),nx:0,ny:1}].sort((a,b)=>a.d-b.d);const n=sides[0];ball.x+=n.nx*(n.d+R);ball.y+=n.ny*(n.d+R);const proj=ball.vx*n.nx+ball.vy*n.ny;if(proj<0){ball.vx-=1.65*proj*n.nx;ball.vy-=1.65*proj*n.ny;}return;}
+ if(dist<.001){const sides=[{d:Math.abs(ball.x-w.x),nx:-1,ny:0},{d:Math.abs(w.x+w.w-ball.x),nx:1,ny:0},{d:Math.abs(ball.y-w.y),nx:0,ny:-1},{d:Math.abs(w.y+w.h-ball.y),nx:0,ny:1}].sort((a,b)=>a.d-b.d);const n=sides[0];ball.x+=n.nx*(n.d+R);ball.y+=n.ny*(n.d+R);const proj=ball.vx*n.nx+ball.vy*n.ny;if(proj<0){bankHit();ball.vx-=1.65*proj*n.nx;ball.vy-=1.65*proj*n.ny;}return;}
  const nx=dx/dist,ny=dy/dist;ball.x+=nx*(R-dist);ball.y+=ny*(R-dist);
- const proj=ball.vx*nx+ball.vy*ny;if(proj<0){ball.vx-=1.70*proj*nx;ball.vy-=1.70*proj*ny;}
+ const proj=ball.vx*nx+ball.vy*ny;if(proj<0){bankHit();ball.vx-=1.70*proj*nx;ball.vy-=1.70*proj*ny;}
 }
 function bumpPos(o){const s=Math.sin(elapsed*o.speed+o.x*.021)*o.amp;return{x:o.x+(o.axis==='x'?s:0),y:o.y+(o.axis==='y'?s:0)};}
 function collideCircle(x,y,r){
  const dx=ball.x-x,dy=ball.y-y,dist=Math.hypot(dx,dy);if(dist>=r+R)return;
  const nx=dist>0?dx/dist:1,ny=dist>0?dy/dist:0;
  ball.x=x+nx*(r+R+.5);ball.y=y+ny*(r+R+.5);
- const proj=ball.vx*nx+ball.vy*ny;if(proj<0){ball.vx-=1.85*proj*nx;ball.vy-=1.85*proj*ny;}
+ const proj=ball.vx*nx+ball.vy*ny;if(proj<0){bankHit();ball.vx-=1.85*proj*nx;ball.vy-=1.85*proj*ny;}
 }
 // CANVAS DRAWING
 function box(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();}
 function circle(x,y,r,c){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
 function label(text,x,y,font,color,align='center'){ctx.font=font;ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(text,x,y);}
 function bg(time){const w=worlds[course.world];let gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,w.sky);gr.addColorStop(1,w.edge);ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
- if(course.world===2){for(let i=0;i<60;i++){const x=(i*127+17)%960,y=(i*83+39)%540;circle(x,y,1.4+Math.sin(time*2+i)*.45,'#bfe9ff99');}}
+ if(course.world===2||course.world===5){for(let i=0;i<60;i++){const x=(i*127+17)%960,y=(i*83+39)%540;circle(x,y,1.4+Math.sin(time*2+i)*.45,'#bfe9ff99');}}
  else{for(let i=0;i<16;i++){const x=i*71+26;circle(x,23,12+Math.sin(time+i)*2,'#ffffff30');}}
  box(38,30,884,484,29,'#0f463bc0');box(44,36,872,472,25,w.edge);box(50,42,860,460,21,w.field);
  ctx.save();ctx.beginPath();ctx.roundRect(50,42,860,460,21);ctx.clip();
@@ -356,18 +502,23 @@ function zones(time){for(const a of course.zones){
   box(a.x-5,a.y-5,a.w+10,a.h+10,14,'#d6eec0');box(a.x,a.y,a.w,a.h,12,'#318fd0');
   ctx.save();ctx.beginPath();ctx.roundRect(a.x,a.y,a.w,a.h,12);ctx.clip();
   for(let i=0;i<7;i++){ctx.beginPath();const yy=a.y+14+i*24;ctx.moveTo(a.x-25,yy);for(let x=a.x-25;x<a.x+a.w+30;x+=13){ctx.lineTo(x,yy+Math.sin(x*.028+time*2+i)*5);}ctx.strokeStyle='#a3eafa65';ctx.lineWidth=3;ctx.stroke();}ctx.restore();
+ }else if(a.type==='lava'){
+  box(a.x-5,a.y-5,a.w+10,a.h+10,14,'#3e172d');box(a.x,a.y,a.w,a.h,12,'#e85b3c');
+  ctx.save();ctx.beginPath();ctx.roundRect(a.x,a.y,a.w,a.h,12);ctx.clip();
+  for(let i=0;i<9;i++){const px=a.x+12+(i*79)%(Math.max(18,a.w-24)),py=a.y+12+(i*41)%(Math.max(18,a.h-24));circle(px,py,5+Math.sin(time*3+i)*2,'#ffba5f99');}
+  ctx.restore();
  }else if(a.type==='ice'){
   box(a.x-3,a.y-3,a.w+6,a.h+6,13,'#c5f7ff');box(a.x,a.y,a.w,a.h,10,'#77dcefc9');
   ctx.strokeStyle='#edffff80';ctx.lineWidth=3;
   for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(a.x+17+i*63,a.y+8);ctx.lineTo(a.x+40+i*63,a.y+a.h-7);ctx.stroke();}
  }
 }}
-function walls(){for(const w of course.walls){box(w.x+5,w.y+6,w.w,w.h,7,'#15382386');box(w.x,w.y,w.w,w.h,6,course.world===2?'#526388':'#d4b88a');box(w.x+3,w.y+3,w.w-6,6,2,course.world===2?'#b5c2f6':'#ffe5b1');}}
-function bumpers(time){for(const o of course.bumpers){const p=bumpPos(o);circle(p.x+4,p.y+5,o.r+4,'#1b26379d');circle(p.x,p.y,o.r+3,course.world===2?'#ae92ff':'#e6f1ff');circle(p.x,p.y,o.r-5,course.world===2?'#6354b2':'#f68368');circle(p.x-5,p.y-6,5,'#ffffffa8');}}
+function walls(){for(const w of course.walls){box(w.x+5,w.y+6,w.w,w.h,7,'#15382386');box(w.x,w.y,w.w,w.h,6,[2,3,5].includes(course.world)?'#526388':'#d4b88a');box(w.x+3,w.y+3,w.w-6,6,2,[2,3,5].includes(course.world)?'#b5c2f6':'#ffe5b1');}}
+function bumpers(time){for(const o of course.bumpers){const p=bumpPos(o);circle(p.x+4,p.y+5,o.r+4,'#1b26379d');circle(p.x,p.y,o.r+3,[2,3,5].includes(course.world)?'#ae92ff':'#e6f1ff');circle(p.x,p.y,o.r-5,[2,3,5].includes(course.world)?'#6354b2':'#f68368');circle(p.x-5,p.y-6,5,'#ffffffa8');}}
 function cup(time){const [x,y]=course.cup;circle(x,y,27,'#ebf7d651');circle(x,y,18,'#1d5835');circle(x,y,13,'#071e22');circle(x+3,y+3,5,'#0009');
  ctx.lineWidth=3;ctx.strokeStyle='#fdf4dd';ctx.beginPath();ctx.moveTo(x,y-3);ctx.lineTo(x,y-54);ctx.stroke();ctx.fillStyle='#ff8a81';ctx.beginPath();ctx.moveTo(x,y-52);ctx.lineTo(x+32,y-44);ctx.lineTo(x,y-33);ctx.fill();}
 function coins(time){course.coins.forEach(([x,y],i)=>{if(taken.has(i))return;const pulse=Math.sin(time*4+i);circle(x,y,15,'#fff0ae50');ctx.save();ctx.translate(x,y);ctx.scale(.7+.27*Math.abs(pulse),1);circle(0,0,11,'#ffcd51');circle(0,0,8,'#ffeb99');label('★',0,5,'bold 14px system-ui','#b57a24');ctx.restore();});}
-function ballDraw(time){const item=ballItem();if((item.id==='comet'||item.id==='rainbow')&&trail.length){trail.forEach((p,i)=>{ctx.globalAlpha=(i+1)/trail.length*.4;circle(p.x,p.y,2+(i+1)/trail.length*6,item.color);});ctx.globalAlpha=1;}
+function ballDraw(time){const item=ballItem();if((item.id==='comet'||item.id==='rainbow'||item.id==='meteor')&&trail.length){trail.forEach((p,i)=>{ctx.globalAlpha=(i+1)/trail.length*.4;circle(p.x,p.y,2+(i+1)/trail.length*6,item.color);});ctx.globalAlpha=1;}
  circle(ball.x+2,ball.y+4,R+3,'#0a2f2880');const gradient=ctx.createRadialGradient(ball.x-4,ball.y-5,1,ball.x,ball.y,R+3);gradient.addColorStop(0,'#ffffff');gradient.addColorStop(.3,item.color);gradient.addColorStop(1,item.id==='classic'?'#9ab1ce':'#417ca2');circle(ball.x,ball.y,R,gradient);
  if(item.id==='rainbow'){ctx.strokeStyle='#ffe0fc';ctx.lineWidth=2;ctx.beginPath();ctx.arc(ball.x,ball.y,13,0,Math.PI*2);ctx.stroke();}circle(ball.x-3,ball.y-4,2.6,'#ffffffbf');}
 function guides(){if(mode!=='play'||!still())return;
@@ -383,7 +534,7 @@ function guides(){if(mode!=='play'||!still())return;
 function particles(dt){fx.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.98;p.vy*=.98;p.life-=dt;});fx=fx.filter(p=>p.life>0);trail.forEach(p=>p.t-=dt);trail=trail.filter(p=>p.t>0);}
 function paint(time){bg(time);zones(time);walls();bumpers(time);cup(time);coins(time);guides();ballDraw(time);
  fx.forEach(p=>{ctx.globalAlpha=clamp(p.life,0,1);circle(p.x,p.y,3.8,p.color);});ctx.globalAlpha=1;
- label(worlds[course.world].emoji+' '+worlds[course.world].name,70,73,'900 15px system-ui',course.world===2?'#d4fcff':'#e2ffe4','left');
+ label(worlds[course.world].emoji+' '+worlds[course.world].name,70,73,'900 15px system-ui',[2,5].includes(course.world)?'#d4fcff':'#e2ffe4','left');
 }
 function canvasXY(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};}
 canvas.addEventListener('pointerdown',e=>{if(mode!=='play'||!still())return;const p=canvasXY(e);
@@ -399,6 +550,8 @@ $('rotateRight').onclick=()=>{aimAngle+=Math.PI/12;say('↷ Aim adjusted right')
 $('shoot').onclick=()=>shoot();
 $('retry').onclick=()=>{if(mode==='play')loadHole(index);};
 $('holes').onclick=showHoles;
+$('tournaments').onclick=showTournaments;
+$('trophies').onclick=showTrophies;
 $('shop').onclick=showShop;
 $('home').onclick=showMenu;
 $('sound').onclick=()=>{saveData.sound=!saveData.sound;$('sound').textContent=saveData.sound?'🔊 Sound On':'🔇 Sound Off';persist();if(saveData.sound)sound(440,.08);};
@@ -414,7 +567,7 @@ window.addEventListener('keydown',e=>{if(e.target instanceof HTMLInputElement)re
 });
 let last=performance.now();function frame(t){const dt=Math.min(.04,Math.max(0,(t-last)/1000));last=t;
  updatePhysics(dt);particles(dt);paint(t/1000);requestAnimationFrame(frame);}
-loadHole(0,false);showMenu();requestAnimationFrame(frame);
+loadHole(0,false,true);showMenu();requestAnimationFrame(frame);
 })();
 </script>
 </body>
