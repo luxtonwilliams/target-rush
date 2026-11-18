@@ -476,14 +476,20 @@ const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const rand=(a,b)=>a+Math.random()*(b-a);
 
 // SIX UNLOCKABLE CRAB COLORS
+
 const skins=[
   {id:"coral",name:"🦀 Coral Red",color:"#f57757",cost:0},
   {id:"ocean",name:"🔵 Ocean Blue",color:"#65b9fb",cost:18},
   {id:"mint",name:"🌱 Minty Green",color:"#62cfa1",cost:28},
   {id:"violet",name:"💜 Purple Pop",color:"#a88df4",cost:38},
   {id:"gold",name:"👑 Golden Crab",color:"#ffd15b",cost:55},
-  {id:"lava",name:"🔥 Lava Crab",color:"#f46c85",cost:70}
+  {id:"lava",name:"🔥 Lava Crab",color:"#f46c85",cost:70},
+
+  // SECRET CODE-ONLY CRABS
+  {id:"royal",name:"👑 Royal Tide Crab",color:"#75f4ff",cost:0,secret:true},
+  {id:"neon",name:"🌈 Neon Wave Crab",color:"#fc87f7",cost:0,secret:true}
 ];
+
 
 // FOUR PERMANENT UPGRADES
 const gear=[
@@ -510,6 +516,15 @@ const gear=[
     name:"🫧 Bubble Starter",
     detail:"Start every run with one bubble shield",
     cost:48
+ 
+{
+  id:"tidal",
+  name:"🌊 Tidal Claws",
+  detail:"SECRET! Super-long pinch range and faster attacks",
+  cost:0,
+  secret:true
+}
+
   }
 ];
 
@@ -780,7 +795,14 @@ function showShop(){
 }
 
 function renderShop(){
-  const shown=shopTab==="skins"?skins:gear;
+ 
+const shown=(shopTab==="skins"?skins:gear).filter(
+  item=>!item.secret||
+  (shopTab==="skins"
+    ?save.owned.includes(item.id)
+    :save.upgrades.includes(item.id))
+);
+
 
   const cards=shown.map(s=>{
     const isSkin=shopTab==="skins";
@@ -1172,7 +1194,9 @@ function pinch(){
   if(p.cooldown>0)return;
 
   p.attack=.24;
-  p.cooldown=has("claws")?.34:.56;
+ 
+p.cooldown=has("tidal")?.22:has("claws")?.34:.56;
+
 
   performPinch();
 }
