@@ -3,2128 +3,1274 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#091329">
-<meta name="description" content="Luxton Arcade: nine free games, a trophy room, and secret reward codes!">
-<title>Luxton Arcade | Secret Codes + 9 Games</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luxton Arcade | Nine Games & Secret Codes</title>
+<meta name="theme-color" content="#081529">
 <style>
 :root{
-  --bg:#091229;
-  --panel:#142849;
-  --line:#45648d;
-  --text:#f5faff;
-  --muted:#bdd1e8;
-  --gold:#ffe29a;
-  --mint:#82efe1
+--bg:#0a1630;--panel:#183052;--stroke:#5075aa;
+--text:#f7faff;--muted:#c4d5eb;--gold:#ffe29a
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-[hidden]{display:none!important}
 body{
-  margin:0;
-  color:var(--text);
-  font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;
-  background:radial-gradient(ellipse at top,#2c4a7f,#0d1a36 53%,var(--bg));
-  min-height:100vh
+margin:0;
+background:radial-gradient(at top,#2e477e,#081529 60%);
+color:var(--text);
+font-family:system-ui,Arial
 }
 a{color:inherit;text-decoration:none}
 button,input{font:inherit}
 button{cursor:pointer}
 a:focus-visible,button:focus-visible,input:focus-visible{
-  outline:3px solid var(--gold);
-  outline-offset:3px
+outline:3px solid #ffdd83;outline-offset:3px
 }
-.container{width:min(1160px,calc(100% - 24px));margin:auto}
-header{
-  background:#09172bdb;
-  border-bottom:1px solid #80b0e738;
-  backdrop-filter:blur(12px)
-}
+.container{max-width:1150px;width:calc(100% - 22px);margin:auto}
+header{background:#081429dc;border-bottom:1px solid #6a95be66}
 nav{
-  min-height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-  padding:9px 0
+display:flex;justify-content:space-between;gap:12px;
+align-items:center;flex-wrap:wrap;padding:14px 0
 }
-.brand{
-  font-size:clamp(20px,3vw,27px);
-  font-weight:1000;
-  display:flex;
-  align-items:center;
-  gap:9px;
-  letter-spacing:-.6px
-}
-.brand em{color:var(--gold);font-style:normal}
-.logo{
-  background:linear-gradient(135deg,#62f0df,#8f9aff);
-  padding:10px;
-  border-radius:14px
-}
+.brand{font-weight:1000;font-size:clamp(21px,4vw,29px)}
+.brand span{color:var(--gold)}
 .links{display:flex;gap:6px;flex-wrap:wrap}
 .links a,.links button{
-  background:#183454;
-  border:1px solid #5681ad;
-  border-radius:10px;
-  padding:9px 11px;
-  color:#f1f9ff;
-  font-weight:800;
-  font-size:12px
+border:1px solid #597b9d;border-radius:9px;
+background:#22395d;color:white;padding:9px 11px;
+font-size:12px;font-weight:850
 }
 .codebar{
-  margin:17px 0;
-  padding:17px;
-  border:1px solid #f4d38e8c;
-  border-radius:17px;
-  background:linear-gradient(105deg,#443765,#173d60 65%,#18544e);
-  box-shadow:0 9px 25px #0711247a
+margin:18px 0;padding:18px;border:1px solid #ebd090;
+border-radius:17px;
+background:linear-gradient(120deg,#4b3974,#19476d 62%,#1b655a)
 }
-.codebar-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap
-}
-.codebar h2{font-size:19px;margin:0 0 4px}
-.codebar p{color:#e0e6f8;font-size:12px;margin:0}
-.codeform{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.codebar h2{margin:0;font-size:20px}
+.codebar p{margin:5px 0;color:#e4f0f9;font-size:13px}
+.codeform{display:flex;gap:9px;flex-wrap:wrap;margin:13px 0 8px}
 .codeform input{
-  flex:1 1 185px;
-  min-width:0;
-  border-radius:10px;
-  border:1px solid #a1c1d7;
-  background:#081b35;
-  color:white;
-  padding:12px 13px;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase
+flex:1 1 220px;min-width:0;padding:12px;
+border-radius:9px;background:#102340;color:#fff;
+border:1px solid #94bacd;
+text-transform:uppercase;letter-spacing:1.5px
 }
 .codeform button{
-  border:0;
-  border-radius:10px;
-  background:linear-gradient(120deg,#ffe599,#ffbd82);
-  color:#34291f;
-  font-weight:950;
-  padding:12px 19px
+background:#ffe197;color:#3a2a2b;border:0;
+border-radius:9px;padding:12px 18px;font-weight:950
 }
-.code-status{
-  min-height:22px;
-  margin-top:10px;
-  font-size:13px;
-  font-weight:850;
-  color:#e5ffec
-}
-.code-status.bad{color:#ffbaba}
-.code-collection{
-  font-size:11px;
-  color:#c7eeed;
-  margin-top:7px
-}
-.vip{
-  background:#ffd98f;
-  color:#4a2e11;
-  border-radius:8px;
-  padding:5px 9px;
-  font-size:11px;
-  font-weight:950
+.status{
+font-size:12px;font-weight:850;
+color:#d8ffe6;min-height:18px
 }
 .hero{
-  margin:18px 0 13px;
-  min-height:320px;
-  border-radius:22px;
-  overflow:hidden;
-  border:1px solid #90eccd;
-  background:linear-gradient(110deg,#18325c,#164c5f 58%,#20705d);
-  display:grid;
-  grid-template-columns:1.12fr .88fr;
-  box-shadow:0 15px 38px #0005
+display:grid;grid-template-columns:1.2fr .8fr;
+min-height:310px;overflow:hidden;
+border:1px solid #99ebd4;border-radius:19px;
+background:linear-gradient(120deg,#19335b,#1a5c66);
+margin:13px 0
 }
-.hero-copy{padding:clamp(23px,4vw,47px)}
-.kicker{
-  color:#d9ffe4;
-  background:#1e795e91;
-  border:1px solid #96e6b5;
-  border-radius:22px;
-  font-weight:950;
-  padding:7px 11px;
-  font-size:11px
+.hero-copy{padding:clamp(21px,4vw,47px)}
+.hero h1{
+font-size:clamp(38px,5vw,59px);line-height:1.05;
+margin:13px 0;letter-spacing:-1.7px
 }
-h1{
-  font-size:clamp(38px,5.6vw,62px);
-  margin:20px 0 10px;
-  line-height:1.05;
-  letter-spacing:-2px
-}
-h1 span{color:#b8ffe0}
-.hero p{
-  font-size:14px;
-  line-height:1.6;
-  color:#ddf4f1;
-  max-width:480px
+.hero h1 span{color:#bdffe0}
+.hero p{font-size:14px;line-height:1.65;color:#dbf0f0}
+.feature{
+display:inline-block;background:#2376529c;
+border:1px solid #a0ffdc;border-radius:20px;
+padding:6px 9px;font-size:11px;font-weight:950
 }
 .hero-art{
-  position:relative;
-  min-height:265px;
-  overflow:hidden;
-  background:linear-gradient(#92d5e5,#b7edc9 57%,#52af8d 58%,#1c806a)
+position:relative;
+background:linear-gradient(#8bcde4,#abe6be 55%,#368e73);
+min-height:200px;overflow:hidden
 }
 .hero-art:before{
-  content:"";
-  position:absolute;
-  bottom:-42%;
-  left:-10%;
-  width:124%;
-  height:83%;
-  background:#94df82;
-  border-radius:50%
+content:'';position:absolute;left:-10%;bottom:-40%;
+width:130%;height:83%;border-radius:50%;background:#a3e48d
 }
 .hero-art:after{
-  content:"";
-  position:absolute;
-  bottom:23%;
-  left:28%;
-  width:77px;
-  height:77px;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 25%,#fff,#e2f6fa 58%,#87aebd);
-  box-shadow:0 10px 10px #155c4e6b
+content:'';position:absolute;width:74px;height:74px;
+border-radius:50%;
+background:radial-gradient(circle at 28% 25%,white,#e6faff 55%,#82aab9);
+left:28%;bottom:24%;box-shadow:0 10px 13px #185b4b77
 }
-.pin{
-  position:absolute;
-  left:73%;
-  bottom:22%;
-  height:170px;
-  width:5px;
-  background:#fff;
-  z-index:1
+.flag{
+position:absolute;bottom:21%;left:75%;
+width:5px;height:175px;background:#fff
 }
-.pin:after{
-  content:"";
-  position:absolute;
-  left:4px;
-  top:0;
-  width:73px;
-  height:51px;
-  background:#ffe398;
-  clip-path:polygon(0 0,100% 17%,79% 55%,100% 88%,0 78%)
-}
-.cup{
-  position:absolute;
-  left:calc(73% - 25px);
-  bottom:19%;
-  width:55px;
-  height:13px;
-  background:#1d6351;
-  border-radius:50%
+.flag:after{
+content:'';position:absolute;top:0;left:5px;
+width:72px;height:55px;background:#ffe69a;
+clip-path:polygon(0 0,100% 17%,83% 55%,100% 89%,0 78%)
 }
 .sun{
-  position:absolute;
-  top:12%;
-  right:12%;
-  width:84px;
-  height:84px;
-  border-radius:50%;
-  background:#fff0aa;
-  box-shadow:0 0 50px #fff6ba
+position:absolute;top:15%;right:13%;
+width:89px;height:89px;border-radius:50%;
+background:#fff4bd;box-shadow:0 0 40px #fff3a8
 }
-.scene-label{
-  position:absolute;
-  right:14px;
-  bottom:14px;
-  background:#123b4cce;
-  border:1px solid #ffffff8a;
-  border-radius:9px;
-  padding:7px;
-  font-weight:850;
-  font-size:11px
-}
-.play-button,.outline-button{
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  border:0;
-  border-radius:11px;
-  padding:12px 16px;
-  min-height:45px;
-  font-weight:950;
-  font-size:13px;
-  text-align:center
+.play-button,.outline{
+display:inline-flex;justify-content:center;align-items:center;
+border-radius:10px;padding:12px 16px;min-height:45px;
+font-weight:950;font-size:13px
 }
 .play-button{
-  background:linear-gradient(115deg,#70f2df,#9cadff);
-  color:#0e2a40
+background:linear-gradient(115deg,#86f6dd,#9aafff);color:#112842
 }
-.outline-button{
-  border:1px solid #a7cddc;
-  background:#163957;
-  color:white
+.outline{
+border:1px solid #b1dddb;background:#294c68;color:#fff
 }
-.play-button:hover,.outline-button:hover{filter:brightness(1.12)}
-.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
 .stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
-  margin:15px 0 25px
+display:grid;grid-template-columns:repeat(4,1fr);
+gap:9px;margin:16px 0 29px
 }
 .stat{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  padding:13px;
-  background:#172c4d;
-  border:1px solid var(--line);
-  border-radius:13px
+padding:14px;background:#1a3153;
+border:1px solid #547aaa;border-radius:12px
 }
-.stat .emoji{font-size:26px}
-.stat b{display:block;font-size:22px;color:var(--gold)}
-.stat small{font-size:11px;color:var(--muted)}
+.stat b{display:block;color:#ffe19a;font-size:23px}
+.stat small{color:#b9d2e9;font-size:11px}
 .section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:28px 0 14px
+display:flex;justify-content:space-between;
+align-items:center;gap:9px;flex-wrap:wrap;margin:30px 0 13px
 }
-.section-head h2{font-size:clamp(23px,3vw,31px);margin:0}
-.section-head p{font-size:13px;color:var(--muted);margin:4px 0 0}
-.small{font-size:12px;color:var(--muted)}
-.continue{
-  display:none;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  background:#173b59;
-  border:1px solid #71a5c9;
-  border-radius:12px;
-  padding:12px;
-  margin:16px 0
-}
-.continue.show{display:flex}
-.continue small{color:#c3d9ec}
-.toolbar{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin:12px 0
-}
+.section-head h2{margin:0}
+.section-head p{color:var(--muted);font-size:12px;margin:4px 0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
 .toolbar input{
-  flex:1 1 190px;
-  min-width:0;
-  border:1px solid #7895b9;
-  border-radius:10px;
-  background:#10233e;
-  color:white;
-  padding:10px
+padding:11px;border-radius:10px;background:#142943;
+border:1px solid #7695bc;color:white;flex:1 1 180px
 }
 .filters{display:flex;gap:5px;flex-wrap:wrap}
 .filter,.award-filter{
-  border-radius:10px;
-  border:1px solid #5a7fa8;
-  background:#223b5b;
-  color:white;
-  padding:9px 11px;
-  font-weight:850;
-  font-size:12px
+background:#253e60;border:1px solid #5e80ae;
+border-radius:9px;padding:9px 10px;color:white;
+font-size:12px;font-weight:850
 }
 .filter.active,.award-filter.active{
-  background:#87efe2;
-  color:#13304b
+background:#99eee0;color:#10314a
 }
-.game-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:13px
+.games{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:12px
 }
-.game-card{
-  background:linear-gradient(145deg,#1e385e,#11223d);
-  border:1px solid #547a9f;
-  border-radius:15px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column
+.card{
+background:linear-gradient(135deg,#233b62,#12213d);
+border:1px solid #587cad;border-radius:14px;
+overflow:hidden;display:flex;flex-direction:column
 }
-.game-art{
-  height:150px;
-  position:relative;
-  display:grid;
-  place-items:center;
-  font-size:76px
+.art{
+display:grid;place-items:center;height:145px;
+font-size:75px;position:relative
 }
-.game-art.golf{
-  background:linear-gradient(135deg,#299f79,#337bb3)
-}
-.game-art.crab{
-  background:linear-gradient(135deg,#ff946f,#39b3cc)
-}
-.game-art.target{
-  background:linear-gradient(135deg,#167aa0,#42529b)
-}
-.game-art.bike{
-  background:linear-gradient(135deg,#c87f50,#663775)
-}
-.game-art.basketball{
-  background:linear-gradient(135deg,#dd933f,#9f4d5f)
-}
-.game-art.castle{
-  background:linear-gradient(135deg,#7e73bf,#2c427b)
-}
-.game-art.fishing{
-  background:linear-gradient(135deg,#34adb8,#22549a)
-}
-.game-art.mining{
-  background:linear-gradient(135deg,#996e4c,#5b4476)
-}
-.game-art.space{
-  background:linear-gradient(135deg,#434397,#592879)
-}
+.art.golf{background:linear-gradient(125deg,#2ba16e,#438ab5)}
+.art.crab{background:linear-gradient(125deg,#ff9d76,#30a9c8)}
+.art.bike{background:linear-gradient(125deg,#cf8051,#7146a2)}
+.art.space{background:linear-gradient(125deg,#2e4cab,#653b99)}
+.art.castle{background:linear-gradient(125deg,#717bc4,#405488)}
+.art.mining{background:linear-gradient(125deg,#9b754b,#584a84)}
+.art.target{background:linear-gradient(125deg,#318db9,#4c64b0)}
+.art.basketball{background:linear-gradient(125deg,#f0a447,#b15a63)}
+.art.fishing{background:linear-gradient(125deg,#40b8b2,#2873b8)}
 .version,.new{
-  position:absolute;
-  left:10px;
-  font-size:10px;
-  font-weight:900;
-  padding:5px 8px;
-  border-radius:10px;
-  background:#07172fc4;
-  border:1px solid #ffffff5f;
-  color:white
+position:absolute;left:10px;background:#0c1e39d9;
+border-radius:8px;padding:5px 8px;font-size:10px;font-weight:900
 }
-.version{top:9px}
-.new{
-  bottom:9px;
-  background:#ffe49f;
-  color:#35314e
+.version{top:10px}
+.new{bottom:10px;background:#ffe7a1;color:#2a3255}
+.fav{
+position:absolute;right:10px;top:10px;
+background:#142745d9;color:white;
+border:1px solid #ffffff8b;border-radius:9px;
+padding:4px;width:36px;height:36px;font-size:20px
 }
-.favorite{
-  position:absolute;
-  top:9px;
-  right:9px;
-  border:1px solid #fff8;
-  background:#10213fd9;
-  color:white;
-  font-size:22px;
-  width:38px;
-  height:38px;
-  border-radius:9px
+.fav[aria-pressed=true]{
+color:#ca426f;background:#ffe8bb
 }
-.favorite[aria-pressed="true"]{
-  color:#c34162;
-  background:#ffebc0
+.info{
+padding:15px;display:flex;flex:1;flex-direction:column
 }
-.game-info{
-  padding:15px;
-  display:flex;
-  flex-direction:column;
-  flex:1
+.info small{
+color:#9debf8;font-size:10px;
+text-transform:uppercase;letter-spacing:1px
 }
-.category{
-  font-size:10px;
-  color:#9df2f7;
-  font-weight:950;
-  letter-spacing:1px;
-  text-transform:uppercase
+.info h3{font-size:20px;margin:6px 0}
+.info p{
+font-size:12px;line-height:1.5;
+color:var(--muted);flex:1
 }
-.game-info h3{margin:7px 0;font-size:20px}
-.game-info p{
-  font-size:12px;
-  color:var(--muted);
-  line-height:1.6;
-  flex:1;
-  margin:0 0 14px
+.info .play-button{width:100%}
+.continue{
+margin:14px 0;background:#234265;
+border:1px solid #7ab2d4;border-radius:12px;
+padding:12px;display:flex;justify-content:space-between;
+align-items:center;gap:10px
 }
-.game-info .play-button{width:100%}
-.empty{
-  text-align:center;
-  padding:25px;
-  border:1px dashed #799bc0;
-  border-radius:12px;
-  margin-top:12px
-}
-.trophy-section{
-  margin:34px 0;
-  padding:21px;
-  background:#152947;
-  border:1px solid #6089b6;
-  border-radius:19px
-}
-.trophy-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:10px
-}
-.trophy-top p{
-  color:var(--muted);
-  font-size:12px;
-  margin:5px 0
-}
-.rank{
-  border:1px solid #c5ad72;
-  border-radius:11px;
-  padding:11px;
-  font-weight:950;
-  color:var(--gold);
-  background:#273551
+.trophies{
+margin:36px 0;background:#172c4b;
+border:1px solid #5b80b1;border-radius:18px;padding:18px
 }
 .progress{
-  height:11px;
-  border-radius:22px;
-  background:#0b1930;
-  margin:14px 0 5px;
-  overflow:hidden
+height:11px;background:#091831;border-radius:30px;
+overflow:hidden;margin:13px 0
 }
-.progress-bar{
-  height:100%;
-  background:linear-gradient(90deg,#82f6dd,#8da8ff,#ffe19a);
-  width:0
+.bar{
+height:100%;
+background:linear-gradient(90deg,#86ecca,#a4afff,#ffdc8f);
+width:0
 }
-.trophy-meta{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:9px;
-  font-size:11px;
-  color:#d6e6f7;
-  margin-bottom:14px
+.trophy-head{
+display:flex;justify-content:space-between;
+align-items:center;gap:12px;flex-wrap:wrap
 }
-.trophy-tools{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  margin-bottom:15px
+.rank{
+padding:10px;background:#304263;
+border:1px solid #d0ae73;border-radius:9px;
+color:#ffe4a4;font-weight:900
 }
-.achievement-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:9px
+.award-grid{
+display:grid;grid-template-columns:repeat(4,1fr);
+gap:9px;margin-top:13px
 }
-.achievement{
-  background:#1e395b;
-  border:1px solid #587fa2;
-  border-radius:12px;
-  padding:12px;
-  min-height:160px
+.award{
+border:1px solid #607fa7;background:#243c5e;
+border-radius:12px;padding:11px;
+font-size:12px;min-height:155px
 }
-.achievement.unlocked{
-  border-color:#f4cc78;
-  background:#314660
-}
-.achievement.locked{opacity:.75}
-.medal{
-  font-size:31px;
-  display:block;
-  margin-bottom:9px
-}
-.achievement b{font-size:13px}
-.achievement small{
-  font-size:11px;
-  display:block;
-  color:#c5d9ef;
-  margin:4px 0;
-  line-height:1.5
-}
-.points{
-  font-size:11px;
-  color:#ffe2a1;
-  font-weight:900
-}
-.mini-meter{
-  height:5px;
-  border-radius:10px;
-  background:#071831;
-  margin-top:10px;
-  overflow:hidden
-}
-.mini-meter div{height:100%;background:#89eac9}
+.award.locked{opacity:.6}
+.award.earned{border-color:#ffd99e}
+.award .medal{font-size:29px}
+.award b,.award small{display:block;margin:6px 0}
+.award small{color:#c3d8ed;line-height:1.4}
+.award .xp{color:#ffe3a0;font-weight:900}
 .updates{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin:15px 0 32px
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:9px;margin:14px 0 30px
 }
 .update{
-  background:#192e4e;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:15px
+background:#1e3557;border:1px solid #5c85ad;
+border-radius:11px;padding:14px
 }
-.update h3{font-size:15px}
-.update p{
-  font-size:12px;
-  color:var(--muted);
-  line-height:1.6
-}
-.update a{
-  color:#a1f5ed;
-  font-size:12px;
-  font-weight:900
-}
+.update h3{font-size:16px}
+.update p{color:#bdd1e8;font-size:12px}
 footer{
-  text-align:center;
-  padding:24px 10px 36px;
-  border-top:1px solid #567bad66;
-  color:#b5c8e0;
-  font-size:12px;
-  line-height:1.65
+text-align:center;color:#b7cde5;font-size:12px;
+border-top:1px solid #6a8dba66;padding:24px
+}
+.toast{
+position:fixed;bottom:15px;right:15px;
+background:#183e56;border:2px solid #ffe49a;
+border-radius:11px;padding:12px;z-index:30;max-width:330px
 }
 body.light{
-  --bg:#eaf2ff;
-  --panel:#f4f8ff;
-  --text:#183154;
-  --muted:#536a8a;
-  --line:#aec3df;
-  background:linear-gradient(#e4f0ff,#f9fbff)
+--text:#1a3152;--muted:#536b88;background:#e8f1ff
 }
-body.light header{background:#f0f8ffed}
-body.light .links a,body.light .links button{
-  color:#173251;
-  background:#deeafa
+body.light header,body.light .card,
+body.light .stat,body.light .trophies,
+body.light .award,body.light .update{
+background:#f4f9ff;color:#1c3655
 }
-body.light .stat,
-body.light .game-card,
-body.light .trophy-section,
-body.light .achievement,
-body.light .update{
-  color:#1e3658;
-  background:#f3f8ff
-}
-body.light .game-info p,
-body.light .achievement small,
-body.light .update p{color:#526a87}
+body.light .info p,body.light .section-head p{color:#546b86}
+body.light .hero,body.light .hero *,
+body.light .codebar,body.light .codebar *{color:#fff}
+body.light .hero .play-button,
+body.light .codeform button{color:#173450}
+body.light .stat b{color:#89621a}
 body.light .filter,body.light .award-filter{
-  color:#173453;
-  background:#d7e9fb
+color:#1a3250;background:#d9eafa
 }
-body.light .filter.active,
-body.light .award-filter.active{background:#8ceadd}
+body.light .filter.active,body.light .award-filter.active{
+background:#9be9d8
+}
 body.light .toolbar input{
-  color:#173453;
-  background:white
+background:white;color:#173451
 }
-body.light .trophy-meta{color:#405b77}
-body.light .codebar,
-body.light .hero,
-body.light .codebar *,
-body.light .hero *{color:#fff}
-body.light .codeform button,
-body.light .hero .play-button{color:#13304b}
-body.light .codebar input{color:#fff}
-body.light .stat b{color:#866018}
-@media(max-width:950px){
-  .game-grid,.achievement-grid{
-    grid-template-columns:repeat(3,1fr)
-  }
+@media(max-width:870px){
+.games,.award-grid{grid-template-columns:repeat(2,1fr)}
 }
-@media(max-width:720px){
-  .hero{grid-template-columns:1fr}
-  .hero-art{height:185px;min-height:185px}
-  .pin{height:130px}
-  .game-grid,.achievement-grid{
-    grid-template-columns:repeat(2,1fr)
-  }
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .updates{grid-template-columns:1fr}
+@media(max-width:640px){
+.hero{grid-template-columns:1fr}
+.hero-art{height:185px;min-height:185px}
+.stats{grid-template-columns:repeat(2,1fr)}
+.updates{grid-template-columns:1fr}
+.section-head h2{font-size:23px}
 }
-@media(max-width:440px){
-  .game-grid{grid-template-columns:1fr}
-  .achievement-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr))
-  }
-  .achievement{padding:10px}
-  .game-art{height:160px}
-  .hero-copy{padding:22px}
-  .links{width:100%}
-  .links a,.links button{font-size:11px;padding:8px}
-  .codeform button{width:100%}
+@media(max-width:420px){
+.games{grid-template-columns:1fr}
+.award-grid{grid-template-columns:repeat(2,1fr)}
+.links a,.links button{font-size:11px;padding:7px}
+.codeform button{width:100%}
 }
-@media(prefers-reduced-motion:reduce){
-  *,*:before,*:after{
-    animation:none!important;
-    transition:none!important
-  }
-}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
 
 <header>
-  <nav class="container">
-    <a class="brand" href="./">
-      <span class="logo">🎮</span>
-      LUXTON <em>ARCADE</em>
-    </a>
-    <div class="links">
-      <a href="#games">🎮 Games</a>
-      <a href="#achievements">🏆 Trophies</a>
-      <a href="#codes">🎟️ Codes</a>
-      <button type="button" id="themeBtn">☀️ Theme</button>
-      <button type="button" id="randomBtn">🎲 Surprise Me</button>
-    </div>
-  </nav>
+<nav class="container">
+<a class="brand" href="./">🎮 LUXTON <span>ARCADE</span></a>
+<div class="links">
+<a href="#codes">🎟️ Codes</a>
+<a href="#games">🎮 Games</a>
+<a href="#achievements">🏆 Trophies</a>
+<button id="theme">☀️ Theme</button>
+<button id="random">🎲 Surprise Me</button>
+</div>
+</nav>
 </header>
 
 <main class="container">
 
-<!-- SECRET CODE BOX AT THE TOP -->
-<section id="codes" class="codebar" aria-labelledby="codeTitle">
-  <div class="codebar-top">
-    <div>
-      <h2 id="codeTitle">🎟️ Have a secret arcade code?</h2>
-      <p>
-        Enter a code to unlock a special reward
-        for one of your games!
-      </p>
-    </div>
-    <span id="badge" class="vip" hidden>
-      👑 ARCADE VIP
-    </span>
-  </div>
+<section class="codebar" id="codes">
+<h2>🎟️ Enter a secret arcade code!</h2>
+<p>Unlock exclusive vehicles, abilities, crab colors, and coins. Each code works once in this browser.</p>
 
-  <form id="codeForm" class="codeform">
-    <input
-      id="codeInput"
-      type="text"
-      maxlength="30"
-      autocomplete="off"
-      spellcheck="false"
-      placeholder="ENTER SECRET CODE"
-      aria-label="Secret reward code"
-      required
-    >
-    <button type="submit">🎁 REDEEM CODE</button>
-  </form>
+<form class="codeform" id="redeem">
+<input id="code" placeholder="ENTER SECRET CODE"
+ maxlength="30" autocomplete="off" spellcheck="false" required>
+<button>🎁 REDEEM CODE</button>
+</form>
 
-  <div id="codeStatus" class="code-status"
-       role="status" aria-live="polite">
-    Some codes unlock skins, abilities, coins, or trophies!
-  </div>
-
-  <div id="codeCollection" class="code-collection">
-    🎁 0 codes redeemed in this browser
-  </div>
+<div id="message" class="status" role="status">
+Ask a friend if they know a secret code!
+</div>
+<small id="codeCount">0 codes redeemed</small>
+<strong id="vip" hidden> 👑 ARCADE VIP</strong>
 </section>
 
-<!-- FEATURED GOLF RUSH -->
 <section class="hero">
-  <div class="hero-copy">
-    <span class="kicker">⛳ GOLF RUSH V2 · FEATURED</span>
-    <h1>GOLF RUSH<br><span>V2 IS HERE!</span></h1>
-    <p>
-      Play 18 holes across six worlds, earn trophies,
-      and unlock new golf balls! Plus, Crab Rush has
-      joined the arcade as Game #9.
-    </p>
-    <div class="hero-actions">
-      <a class="play-button" href="games/golf-rush/"
-         data-game="golf">
-        ⛳ PLAY GOLF RUSH
-      </a>
-      <a class="outline-button" href="#games">
-        🎮 ALL 9 GAMES
-      </a>
-    </div>
-  </div>
-  <div class="hero-art" aria-hidden="true">
-    <div class="sun"></div>
-    <div class="cup"></div>
-    <div class="pin"></div>
-    <div class="scene-label">⛳ TOURNAMENT TOUR</div>
-  </div>
+<div class="hero-copy">
+<span class="feature">⛳ FEATURED · GOLF RUSH V2</span>
+<h1>GOLF RUSH<br><span>V2 IS HERE!</span></h1>
+<p>
+Play 18 holes across six worlds, compete in tournaments
+and earn trophies! Plus: nine games, secret codes,
+and special exclusive rewards!
+</p>
+<div class="buttons">
+<a class="play-button" href="games/golf-rush/" data-game="golf">
+⛳ PLAY GOLF RUSH
+</a>
+<a class="outline" href="#games">🎮 ALL NINE GAMES</a>
+</div>
+</div>
+<div class="hero-art">
+<div class="sun"></div>
+<div class="flag"></div>
+</div>
 </section>
 
-<!-- ARCADE STATS -->
 <div class="stats">
-  <div class="stat">
-    <span class="emoji">🎮</span>
-    <div><b>9</b><small>Playable games</small></div>
-  </div>
-  <div class="stat">
-    <span class="emoji">🏆</span>
-    <div>
-      <b id="statAchievements">0</b>
-      <small>Achievements</small>
-    </div>
-  </div>
-  <div class="stat">
-    <span class="emoji">✨</span>
-    <div>
-      <b id="statXP">0</b>
-      <small>Arcade XP</small>
-    </div>
-  </div>
-  <div class="stat">
-    <span class="emoji">❤️</span>
-    <div>
-      <b id="statFavorites">0</b>
-      <small>Favorites</small>
-    </div>
-  </div>
+<div class="stat">🎮<b>9</b><small>Playable games</small></div>
+<div class="stat">🏆<b id="achieved">0</b><small>Achievements</small></div>
+<div class="stat">✨<b id="xp">0</b><small>Arcade XP</small></div>
+<div class="stat">❤️<b id="favCount">0</b><small>Favorites</small></div>
 </div>
 
-<div class="continue" id="continueBox">
-  <div>
-    <b id="continueTitle">🕹️ Continue Playing</b>
-    <small>Jump back into your last game.</small>
-  </div>
-  <a class="play-button" id="continueLink"
-     data-game="golf" href="games/golf-rush/">
-    ▶ CONTINUE
-  </a>
+<div id="continue" class="continue" hidden>
+<b id="continueText">Continue playing</b>
+<a id="continueLink" class="play-button"
+ data-game="golf" href="games/golf-rush/">▶ CONTINUE</a>
 </div>
 
-<!-- ALL NINE GAMES -->
 <section id="games">
-  <div class="section-head">
-    <div>
-      <h2>🎮 Choose Your Game</h2>
-      <p>Nine free Rush games! Search, favorite, or launch one.</p>
-    </div>
-    <span class="small" id="gameCount">9 games shown</span>
-  </div>
+<div class="section-head">
+<div>
+<h2>🎮 Choose Your Game</h2>
+<p>All nine games are free to play!</p>
+</div>
+<small id="gameCount">9 games shown</small>
+</div>
 
-  <div class="toolbar">
-    <input id="search" type="search"
-           aria-label="Search games"
-           placeholder="🔎 Search games…">
-    <div class="filters" role="group" aria-label="Game filters">
-      <button class="filter active"
-              data-filter="all" type="button">All</button>
-      <button class="filter" data-filter="action"
-              type="button">⚡ Action</button>
-      <button class="filter" data-filter="sports"
-              type="button">🏀 Sports</button>
-      <button class="filter" data-filter="adventure"
-              type="button">🧭 Adventure</button>
-      <button class="filter" data-filter="relax"
-              type="button">🌊 Relax</button>
-      <button class="filter" data-filter="favorites"
-              type="button">❤️ Favorites</button>
-    </div>
-  </div>
+<div class="toolbar">
+<input id="search" placeholder="🔍 Search games" type="search"
+ aria-label="Search games">
+<div class="filters">
+<button data-filter="all" class="filter active">All</button>
+<button data-filter="action" class="filter">⚡ Action</button>
+<button data-filter="sports" class="filter">🏀 Sports</button>
+<button data-filter="adventure" class="filter">🧭 Adventure</button>
+<button data-filter="relax" class="filter">🌊 Relax</button>
+<button data-filter="favorites" class="filter">❤️ Favorites</button>
+</div>
+</div>
 
-  <div class="game-grid" id="gameGrid">
+<div class="games" id="gameGrid">
 
-    <!-- CRAB RUSH -->
-    <article class="game-card" data-id="crab"
-      data-category="action"
-      data-search="crab beach ocean shells pinch jump secret skin">
-      <div class="game-art crab">
-        🦀
-        <span class="version">V1 · CODES</span>
-        <span class="new">🆕 GAME #9</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Crab Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Action · Beach Arcade</span>
-        <h3>Crab Rush</h3>
-        <p>
-          Jump obstacles, pinch enemies, collect shells,
-          and discover code-only crab skins!
-        </p>
-        <a class="play-button" href="games/crab-rush/"
-           data-game="crab">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="crab" data-category="action"
+ data-search="beach shells jump pinch colors">
+<div class="art crab">
+🦀
+<span class="version">V1.1</span>
+<span class="new">🆕 CODE SKINS</span>
+<button class="fav" aria-label="Favorite Crab Rush">♡</button>
+</div>
+<div class="info">
+<small>Action · Beach</small>
+<h3>Crab Rush</h3>
+<p>Jump obstacles, pinch enemies, collect shells, and unlock secret colors!</p>
+<a class="play-button" href="games/crab-rush/" data-game="crab">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- GOLF RUSH -->
-    <article class="game-card" data-id="golf"
-      data-category="sports"
-      data-search="golf putting tournaments trophies holes ball">
-      <div class="game-art golf">
-        ⛳
-        <span class="version">V2</span>
-        <span class="new">⛳ SPOTLIGHT</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Golf Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Sports · Mini Golf</span>
-        <h3>Golf Rush</h3>
-        <p>Play 18 holes, win tournaments, and collect golf trophies!</p>
-        <a class="play-button" href="games/golf-rush/"
-           data-game="golf">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="golf" data-category="sports"
+ data-search="golf putt holes trophies">
+<div class="art golf">
+⛳
+<span class="version">V2</span>
+<span class="new">⛳ SPOTLIGHT</span>
+<button class="fav" aria-label="Favorite Golf Rush">♡</button>
+</div>
+<div class="info">
+<small>Sports · Mini Golf</small>
+<h3>Golf Rush</h3>
+<p>18 holes, six worlds, championships, and golf trophies.</p>
+<a class="play-button" href="games/golf-rush/" data-game="golf">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- TARGET RUSH -->
-    <article class="game-card" data-id="target"
-      data-category="action"
-      data-search="target reflex combos gold">
-      <div class="game-art target">
-        🎯
-        <span class="version">V7</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Target Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Action · Reflexes</span>
-        <h3>Target Rush</h3>
-        <p>Hit targets, build combos, and chase your personal best!</p>
-        <a class="play-button" href="games/target-rush/"
-           data-game="target">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="bike" data-category="action"
+ data-search="bike triples jump ramps neon">
+<div class="art bike">
+🚴
+<span class="version">V4.1</span>
+<span class="new">🎟️ TRIPLE BIKE</span>
+<button class="fav" aria-label="Favorite Bike Rush">♡</button>
+</div>
+<div class="info">
+<small>Action · Racing</small>
+<h3>Bike Rush</h3>
+<p>Ride auto-flip ramps and discover a code-exclusive triple-jump bike!</p>
+<a class="play-button" href="games/bike-rush/" data-game="bike">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- BIKE RUSH -->
-    <article class="game-card" data-id="bike"
-      data-category="action"
-      data-search="bike racing jumps obstacles">
-      <div class="game-art bike">
-        🚴
-        <span class="version">V3</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Bike Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Action · Racing</span>
-        <h3>Bike Rush</h3>
-        <p>Ride ramps, dodge obstacles, and upgrade your bike!</p>
-        <a class="play-button" href="games/bike-rush/"
-           data-game="bike">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="space" data-category="action"
+ data-search="spaceships alien ship galaxy boss">
+<div class="art space">
+🚀
+<span class="version">V2.3</span>
+<span class="new">👽 SECRET SHIP</span>
+<button class="fav" aria-label="Favorite Space Rush">♡</button>
+</div>
+<div class="info">
+<small>Action · Space</small>
+<h3>Space Rush</h3>
+<p>Fly through space, face the boss, and unlock an alien ship!</p>
+<a class="play-button" href="games/space-rush/" data-game="space">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- BASKETBALL RUSH -->
-    <article class="game-card" data-id="basketball"
-      data-category="sports"
-      data-search="basketball hoops shooting combos">
-      <div class="game-art basketball">
-        🏀
-        <span class="version">V4.2</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Basketball Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Sports · Arcade</span>
-        <h3>Basketball Rush</h3>
-        <p>Shoot hoops, earn combos, and unlock basketballs!</p>
-        <a class="play-button" href="games/basketball-rush/"
-           data-game="basketball">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="castle" data-category="adventure"
+ data-search="castle magical sky storm fantasy">
+<div class="art castle">
+🏰
+<span class="version">V2.3</span>
+<span class="new">🌈 SKY STORM</span>
+<button class="fav" aria-label="Favorite Castle Rush">♡</button>
+</div>
+<div class="info">
+<small>Adventure · Strategy</small>
+<h3>Castle Rush</h3>
+<p>Compete in magical castle battles and unlock Sky Storm!</p>
+<a class="play-button" href="games/castle-rush/" data-game="castle">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- CASTLE RUSH -->
-    <article class="game-card" data-id="castle"
-      data-category="adventure"
-      data-search="castle cannons battle strategy">
-      <div class="game-art castle">
-        🏰
-        <span class="version">V2</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Castle Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Adventure · Strategy</span>
-        <h3>Castle Rush</h3>
-        <p>Launch cannonballs and upgrade your castle!</p>
-        <a class="play-button" href="games/castle-rush/"
-           data-game="castle">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="mining" data-category="adventure"
+ data-search="ore cave mining pets relics">
+<div class="art mining">
+⛏️
+<span class="version">V2.1</span>
+<button class="fav" aria-label="Favorite Mining Rush">♡</button>
+</div>
+<div class="info">
+<small>Adventure · Mining</small>
+<h3>Mining Rush</h3>
+<p>Explore a 200m cave, find hidden vaults, collect relics.</p>
+<a class="play-button" href="games/mining-rush/" data-game="mining">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- FISHING RUSH -->
-    <article class="game-card" data-id="fishing"
-      data-category="relax"
-      data-search="fishing ocean fish aquarium boats">
-      <div class="game-art fishing">
-        🎣
-        <span class="version">V3.5</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Fishing Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Relax · Collection</span>
-        <h3>Fishing Rush</h3>
-        <p>Catch rare fish, upgrade gear, and build an aquarium!</p>
-        <a class="play-button" href="games/fishing-rush/"
-           data-game="fishing">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="target" data-category="action"
+ data-search="targets reflex scores combos">
+<div class="art target">
+🎯
+<span class="version">V7</span>
+<button class="fav" aria-label="Favorite Target Rush">♡</button>
+</div>
+<div class="info">
+<small>Action · Reflexes</small>
+<h3>Target Rush</h3>
+<p>Tap targets, chain combos, and beat your record!</p>
+<a class="play-button" href="games/target-rush/" data-game="target">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- MINING RUSH -->
-    <article class="game-card" data-id="mining"
-      data-category="adventure"
-      data-search="mining cave ore treasure pets relics">
-      <div class="game-art mining">
-        ⛏️
-        <span class="version">V2.1</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Mining Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Adventure · Mining</span>
-        <h3>Mining Rush</h3>
-        <p>Explore caves, find treasure rooms, and adopt mining pets!</p>
-        <a class="play-button" href="games/mining-rush/"
-           data-game="mining">▶ PLAY NOW</a>
-      </div>
-    </article>
+<article class="card" data-id="basketball" data-category="sports"
+ data-search="basketball hoop shots">
+<div class="art basketball">
+🏀
+<span class="version">V4.2</span>
+<button class="fav" aria-label="Favorite Basketball Rush">♡</button>
+</div>
+<div class="info">
+<small>Sports · Arcade</small>
+<h3>Basketball Rush</h3>
+<p>Swipe to shoot, build combos, and unlock basketballs.</p>
+<a class="play-button" href="games/basketball-rush/" data-game="basketball">▶ PLAY NOW</a>
+</div>
+</article>
 
-    <!-- SPACE RUSH -->
-    <article class="game-card" data-id="space"
-      data-category="action"
-      data-search="spaceship alien boss asteroid galaxy">
-      <div class="game-art space">
-        🚀
-        <span class="version">V2</span>
-        <button type="button" class="favorite"
-          aria-pressed="false"
-          aria-label="Favorite Space Rush">♡</button>
-      </div>
-      <div class="game-info">
-        <span class="category">Action · Space</span>
-        <h3>Space Rush</h3>
-        <p>Battle alien drones, defeat bosses, and upgrade your spaceship!</p>
-        <a class="play-button" href="games/space-rush/"
-           data-game="space">▶ PLAY NOW</a>
-      </div>
-    </article>
-  </div>
+<article class="card" data-id="fishing" data-category="relax"
+ data-search="fish boats aquarium peaceful">
+<div class="art fishing">
+🎣
+<span class="version">V3.5</span>
+<button class="fav" aria-label="Favorite Fishing Rush">♡</button>
+</div>
+<div class="info">
+<small>Relax · Collect</small>
+<h3>Fishing Rush</h3>
+<p>Catch rare fish, visit new waters, and build an aquarium.</p>
+<a class="play-button" href="games/fishing-rush/" data-game="fishing">▶ PLAY NOW</a>
+</div>
+</article>
 
-  <div id="noGames" class="empty" hidden>
-    No games found! Try another search.
-  </div>
+</div>
+
+<p id="empty" hidden>No games matched your search.</p>
 </section>
 
-<!-- ARCADE ACHIEVEMENTS -->
-<section class="trophy-section" id="achievements">
-  <div class="trophy-top">
-    <div>
-      <h2>🏆 Arcade Trophy Room</h2>
-      <p>
-        Earn XP and trophies by trying games,
-        favoriting, and redeeming codes!
-      </p>
-    </div>
-    <div id="rank" class="rank">🥉 Rookie</div>
-  </div>
+<section class="trophies" id="achievements">
+<div class="trophy-head">
+<div>
+<h2>🏆 Arcade Trophy Room</h2>
+<p>Explore games, collect favorites, redeem secret codes, and become an Arcade Legend!</p>
+</div>
+<b class="rank" id="rank">🥉 Rookie</b>
+</div>
 
-  <div class="progress">
-    <div class="progress-bar" id="xpBar"></div>
-  </div>
+<div class="progress">
+<div id="xpBar" class="bar"></div>
+</div>
 
-  <div class="trophy-meta">
-    <span id="xpProgress">0 XP</span>
-    <span id="trophyProgress">0 / 28 trophies</span>
-  </div>
+<p id="xpProgress" style="font-size:12px"></p>
 
-  <div class="trophy-tools">
-    <button type="button" class="award-filter active"
-      data-award-filter="all">All Trophies</button>
-    <button type="button" class="award-filter"
-      data-award-filter="earned">✅ Earned</button>
-    <button type="button" class="award-filter"
-      data-award-filter="locked">🔒 Locked</button>
-  </div>
+<div class="buttons">
+<button class="award-filter active" data-award="all">All Trophies</button>
+<button class="award-filter" data-award="earned">✅ Earned</button>
+<button class="award-filter" data-award="locked">🔒 Locked</button>
+</div>
 
-  <div class="achievement-grid" id="achievementGrid"></div>
+<div class="award-grid" id="awardGrid"></div>
 
-  <p class="small">
-    Trophies, codes, and favorites save locally in this browser.
-    Game trophies currently track launches from the homepage
-    rather than scores inside individual games.
-  </p>
+<p style="font-size:12px">
+Game achievements currently count visits launched from this homepage,
+not in-game scores. Progress stays in this browser.
+</p>
 </section>
 
-<!-- WHAT'S NEW -->
-<section id="updates">
-  <div class="section-head">
-    <div>
-      <h2>✨ What's New</h2>
-      <p>The latest Luxton Arcade updates!</p>
-    </div>
-  </div>
+<section>
+<div class="section-head">
+<div>
+<h2>✨ What's New</h2>
+<p>Fresh discoveries for Luxton Arcade!</p>
+</div>
+</div>
 
-  <div class="updates">
-    <div class="update">
-      <h3>🎟️ Secret Reward Codes</h3>
-      <p>
-        Enter codes at the top to unlock rare crab skins,
-        game currency, and trophies.
-      </p>
-      <a href="#codes">Redeem a code ↑</a>
-    </div>
-    <div class="update">
-      <h3>🦀 Crab Rush — Game #9</h3>
-      <p>
-        Race across the beach and unlock colorful crabs—
-        some only through special codes.
-      </p>
-      <a href="games/crab-rush/" data-game="crab">
-        Play Crab Rush →
-      </a>
-    </div>
-    <div class="update">
-      <h3>⛳ Golf Rush V2</h3>
-      <p>Six worlds, 18 courses, and tournament trophies.</p>
-      <a href="games/golf-rush/" data-game="golf">
-        Play Golf Rush →
-      </a>
-    </div>
-  </div>
+<div class="updates">
+<div class="update">
+<h3>🎟️ Legendary Secret Codes</h3>
+<p>Unlock a Triple-Jump Bike, an Alien Ship, and magical Sky Storm!</p>
+<a href="#codes">Redeem a code</a>
+</div>
+
+<div class="update">
+<h3>🦀 Crab Rush</h3>
+<p>Beach adventures with code-only crab colors!</p>
+<a href="games/crab-rush/">Play Crab Rush</a>
+</div>
+
+<div class="update">
+<h3>⛳ Golf Rush V2</h3>
+<p>18 holes, six worlds, tournaments, and trophies.</p>
+<a href="games/golf-rush/">Play Golf Rush</a>
+</div>
+</div>
 </section>
 </main>
 
 <footer>
-  🎮 <b>Luxton Arcade</b> · Nine free games · Secret codes
-  · Arcade achievements
-  <br>
-  All codes and rewards are saved locally in your browser.
-  Codes are not accounts or online one-time vouchers.
+🎮 Luxton Arcade · Nine games · Secret codes ·
+29 arcade achievements · All progress is local to this browser.
 </footer>
+
+<div class="toast" id="toast" hidden></div>
 
 <script>
 (()=>{
-"use strict";
+'use strict';
 
 const $=id=>document.getElementById(id);
-
-const cards=[
-  ...document.querySelectorAll(".game-card")
-];
-
-const byId=Object.fromEntries(
-  cards.map(c=>[c.dataset.id,c])
-);
-
+const cards=[...document.querySelectorAll('.card')];
+const ids=cards.map(c=>c.dataset.id);
+const byId=Object.fromEntries(cards.map(c=>[c.dataset.id,c]));
 const names=Object.fromEntries(
-  cards.map(c=>[
-    c.dataset.id,
-    c.querySelector("h3").textContent
-  ])
+ cards.map(c=>[c.dataset.id,c.querySelector('h3').textContent])
 );
 
-const ids=Object.keys(byId);
-
-// EXISTING SAVE KEYS — DO NOT CHANGE
 const K={
-  favorites:"luxton_arcade_v2_favorites",
-  tried:"luxton_arcade_v2_tried",
-  recent:"luxton_arcade_v2_recent",
-  theme:"luxton_arcade_v2_theme",
-  launches:"luxton_arcade_achievements_launches",
-  awards:"luxton_arcade_achievements_awards",
-
-  // NEW CODE SYSTEM
-  codes:"luxton_arcade_codes_v1",
-  badge:"luxton_arcade_vip_badge_v1"
+ favorites:'luxton_arcade_v2_favorites',
+ tried:'luxton_arcade_v2_tried',
+ recent:'luxton_arcade_v2_recent',
+ theme:'luxton_arcade_v2_theme',
+ launches:'luxton_arcade_achievements_launches',
+ awards:'luxton_arcade_achievements_awards',
+ codes:'luxton_arcade_codes_v1',
+ vip:'luxton_arcade_vip_badge_v1'
 };
 
-function read(k,fallback){
-  try{
-    const v=JSON.parse(localStorage.getItem(k));
-    return v===null?fallback:v;
-  }catch{
-    return fallback;
-  }
+function read(k,def){
+ try{
+  const x=JSON.parse(localStorage.getItem(k));
+  return x===null?def:x;
+ }catch{return def}
 }
 
 function store(k,v){
-  try{
-    localStorage.setItem(k,JSON.stringify(v));
-    return true;
-  }catch{
-    return false;
-  }
+ try{
+  localStorage.setItem(k,JSON.stringify(v));
+  return true;
+ }catch{return false}
 }
 
-// LOAD EXISTING ARCADE PROGRESS
 let favorites=read(K.favorites,[]);
 let tried=read(K.tried,[]);
 let recent=read(K.recent,null);
 let launches=read(K.launches,{});
-let unlocked=read(K.awards,{});
+let awards=read(K.awards,{});
 let used=read(K.codes,{});
+let filter='all',awardFilter='all';
 
 if(!Array.isArray(favorites))favorites=[];
 if(!Array.isArray(tried))tried=[];
 
-favorites=[
-  ...new Set(
-    favorites.filter(x=>ids.includes(x))
-  )
-];
+favorites=[...new Set(favorites.filter(x=>ids.includes(x)))];
+tried=[...new Set(tried.filter(x=>ids.includes(x)))];
 
-tried=[
-  ...new Set(
-    tried.filter(x=>ids.includes(x))
-  )
-];
+if(!launches||typeof launches!=='object')launches={};
+if(!awards||typeof awards!=='object')awards={};
+if(!used||typeof used!=='object')used={};
 
-if(
-  !launches||
-  typeof launches!=="object"||
-  Array.isArray(launches)
-){
-  launches={};
-}
 
-if(
-  !unlocked||
-  typeof unlocked!=="object"||
-  Array.isArray(unlocked)
-){
-  unlocked={};
-}
-
-if(
-  !used||
-  typeof used!=="object"||
-  Array.isArray(used)
-){
-  used={};
-}
-
-// =====================================================
-// 🎟️ SECRET REWARD CODES — EDIT THIS SECTION!
-// =====================================================
+// ===================================================
+// 🎟️ ADD OR CHANGE YOUR SECRET CODES HERE!
+// LEFT SIDE: What classmates type in.
+// RIGHT SIDE: The reward they unlock.
 //
-// LEFT SIDE = the code your classmates enter.
-//
-// RIGHT SIDE = the reward.
-//
-// You can change these codes or add more later.
-//
-// Supported reward types:
-//
-// crabSkin     = exclusive crab skin
-// crabAbility  = exclusive crab ability
-// crabShells   = Crab Rush shells
-// spaceCoins   = Space Rush coins
-// golfCoins    = Golf Rush coins
-// miningCoins  = Mining Rush coins
-// badge        = special Arcade VIP badge
-//
-// IMPORTANT:
-// Exclusive Crab Rush items must also be defined
-// in the Crab Rush game code.
-// =====================================================
+// IMPORTANT: Each code is redeemable once per browser.
+// ===================================================
 
 const PROMO_CODES={
 
-  "CRABROYAL":{
-    type:"crabSkin",
-    id:"royal",
-    label:"👑 Secret Royal Tide Crab skin"
-  },
+ CRABROYAL:{
+  type:'crabSkin',
+  id:'royal',
+  label:'👑 Royal Tide Crab'
+ },
 
-  "CRABNEON":{
-    type:"crabSkin",
-    id:"neon",
-    label:"🌈 Secret Neon Wave Crab skin"
-  },
+ CRABNEON:{
+  type:'crabSkin',
+  id:'neon',
+  label:'🌈 Neon Wave Crab'
+ },
 
-  "CRABTIDE":{
-    type:"crabAbility",
-    id:"tidal",
-    label:"🌊 Secret Tidal Claws ability"
-  },
+ CRABTIDE:{
+  type:'crabAbility',
+  id:'tidal',
+  label:'🌊 Tidal Claws'
+ },
 
-  "CRABSHELLS":{
-    type:"crabShells",
-    amount:35,
-    label:"🐚 35 shells in Crab Rush"
-  },
+ CRABSUNSET:{
+  type:'crabSkin',
+  id:'sunset',
+  label:'🌅 Sunset Crab'
+ },
 
-  "STARSHIP":{
-    type:"spaceCoins",
-    amount:60,
-    label:"🚀 60 Space Rush coins"
-  },
+ CRABPEARL:{
+  type:'crabSkin',
+  id:'pearl',
+  label:'🤍 Pearl Crab'
+ },
 
-  "PUTTPARTY":{
-    type:"golfCoins",
-    amount:50,
-    label:"⛳ 50 Golf Rush coins"
-  },
+ CRABSHELLS:{
+  type:'currency',
+  game:'crab',
+  amount:35,
+  label:'🐚 35 Crab Rush shells'
+ },
 
-  "DIGDEEP":{
-    type:"miningCoins",
-    amount:80,
-    label:"⛏️ 80 Mining Rush coins"
-  },
+ STARSHIP:{
+  type:'currency',
+  game:'space',
+  amount:60,
+  label:'🚀 60 Space Rush coins'
+ },
 
-  "ARCADEVIP":{
-    type:"badge",
-    label:"👑 Exclusive Arcade VIP badge"
-  }
+ PUTTPARTY:{
+  type:'currency',
+  game:'golf',
+  amount:50,
+  label:'⛳ 50 Golf Rush coins'
+ },
+
+ DIGDEEP:{
+  type:'currency',
+  game:'mining',
+  amount:80,
+  label:'⛏️ 80 Mining Rush coins'
+ },
+
+ ARCADEVIP:{
+  type:'vip',
+  label:'👑 Arcade VIP badge'
+ },
+
+ // 🚴 NEW: EXCLUSIVE TRIPLE-JUMP BIKE
+ TRIPLEBIKE:{
+  type:'bikeSkin',
+  id:'triple',
+  label:'🚴 Exclusive Triple-Jump Bike'
+ },
+
+ // 👽 NEW: EXCLUSIVE ALIEN SPACESHIP
+ ALIENSHIP:{
+  type:'spaceShip',
+  id:'alien',
+  label:'👽 Pilot the Alien Explorer Ship'
+ },
+
+ // 🌈 NEW: EXCLUSIVE CASTLE ABILITY
+ SKYSTORM:{
+  type:'castleAbility',
+  id:'skyStorm',
+  label:'🌈 Castle Rush Sky Storm'
+ },
+
+ // BONUS CODES!
+ BIKEBONUS:{
+  type:'currency',
+  game:'bike',
+  amount:40,
+  label:'🚴 40 Bike Rush coins'
+ },
+
+ CASTLECOINS:{
+  type:'currency',
+  game:'castle',
+  amount:60,
+  label:'🏰 60 Castle Rush coins'
+ }
 
 };
-
-// EXAMPLE OF CREATING YOUR OWN CODE:
-// Remove the // at the start to activate this example.
-//
-// PROMO_CODES["MYCLASSCODE"]={
-//   type:"crabShells",
-//   amount:20,
-//   label:"🐚 20 Crab Rush shells"
-// };
-
-// GAME SAVE KEYS
-// These match the existing Rush games.
 
 const gameSaves={
-  crab:["luxton_crab_rush_v1","wallet"],
-  space:["luxton_space_rush_v1","wallet"],
-  golf:["luxton_golf_rush_v1","coins"],
-  mining:["luxton_mining_rush_v1","coins"]
+ crab:['luxton_crab_rush_v1','wallet'],
+ bike:['luxton_bike_rush_v1','wallet'],
+ space:['luxton_space_rush_v1','wallet'],
+ golf:['luxton_golf_rush_v1','coins'],
+ mining:['luxton_mining_rush_v1','coins'],
+ castle:['luxton_castle_rush_v2','coins']
 };
 
-// UPDATE A GAME'S LOCAL SAVE
-function modifyGame(game,edit){
+function updateGame(game,callback){
+ const key=gameSaves[game][0];
+ const old=read(key,{});
+ const data=old&&typeof old==='object'&&!Array.isArray(old)
+  ?old:{};
 
-  const key=gameSaves[game][0];
-
-  const data=read(key,{});
-
-  const safe=(
-    data&&
-    typeof data==="object"&&
-    !Array.isArray(data)
-  )?data:{};
-
-  edit(safe);
-
-  return store(key,safe);
+ callback(data);
+ return store(key,data);
 }
 
-// GIVE THE REWARD
-function grant(reward){
+function grant(r){
 
-  // SPECIAL CRAB SKIN
-  if(reward.type==="crabSkin"){
+ if(r.type==='vip'){
+  return store(K.vip,true);
+ }
 
-    return modifyGame("crab",s=>{
+ if(r.type==='currency'){
+  if(!gameSaves[r.game])return false;
 
-      if(!Array.isArray(s.owned)){
-        s.owned=["coral"];
-      }
+  return updateGame(r.game,s=>{
+   const field=gameSaves[r.game][1];
+   s[field]=Math.max(
+    0,
+    Math.floor(Number(s[field])||0)
+   )+r.amount;
+  });
+ }
 
-      if(!s.owned.includes(reward.id)){
-        s.owned.push(reward.id);
-      }
+ const game=
+  r.type==='crabSkin'||r.type==='crabAbility'?'crab':
+  r.type==='bikeSkin'?'bike':
+  r.type==='spaceShip'?'space':
+  r.type==='castleAbility'?'castle':
+  null;
 
-      // Automatically equip the secret skin.
-      s.equipped=reward.id;
-    });
+ if(!game)return false;
+
+ return updateGame(game,s=>{
+
+  const field=
+   r.type==='crabAbility'||r.type==='castleAbility'
+    ?'upgrades'
+    :r.type==='spaceShip'||r.type==='bikeSkin'||r.type==='crabSkin'
+     ?'owned':'owned';
+
+  const dest=r.type==='castleAbility'?'owned':field;
+
+  if(!Array.isArray(s[dest])){
+   s[dest]=
+    r.type==='crabSkin'?['coral']:
+    r.type==='bikeSkin'?['cyan']:
+    r.type==='spaceShip'?['scout']:[];
   }
 
-  // SPECIAL CRAB ABILITY
-  if(reward.type==="crabAbility"){
-
-    return modifyGame("crab",s=>{
-
-      if(!Array.isArray(s.upgrades)){
-        s.upgrades=[];
-      }
-
-      if(!s.upgrades.includes(reward.id)){
-        s.upgrades.push(reward.id);
-      }
-
-    });
+  if(!s[dest].includes(r.id)){
+   s[dest].push(r.id);
   }
 
-  // CURRENCY REWARDS
-  const map={
-    crabShells:"crab",
-    spaceCoins:"space",
-    golfCoins:"golf",
-    miningCoins:"mining"
-  };
+  if(r.type==='spaceShip')s.equipped=r.id;
+  if(r.type==='bikeSkin')s.selected=r.id;
+  if(r.type==='crabSkin')s.equipped=r.id;
 
-  if(map[reward.type]){
-
-    const game=map[reward.type];
-    const field=gameSaves[game][1];
-
-    return modifyGame(game,s=>{
-
-      const existing=Math.max(
-        0,
-        Math.floor(Number(s[field])||0)
-      );
-
-      const bonus=Math.max(
-        0,
-        Math.floor(Number(reward.amount)||0)
-      );
-
-      s[field]=existing+bonus;
-    });
-  }
-
-  // SPECIAL ARCADE BADGE
-  if(reward.type==="badge"){
-    return store(K.badge,true);
-  }
-
-  return false;
+ });
 }
 
-// COUNT CODES ALREADY REDEEMED
-function codeCount(){
-  return Object.keys(used).length;
+function countCodes(){
+ return Object.keys(used).length;
 }
 
-// SHOW REDEEMED REWARDS
 function showCodes(){
+ $('codeCount').textContent=
+  '🎁 '+countCodes()+' code(s) redeemed on this browser';
 
-  const count=codeCount();
-
-  $("codeCollection").textContent=
-    "🎁 "+count+
-    " code"+(count===1?"":"s")+
-    " redeemed here"+
-    (
-      count
-      ?" · "+
-       Object.values(used)
-       .map(x=>x.label)
-       .join(" · ")
-      :""
-    );
-
-  $("badge").hidden=!read(K.badge,false);
+ $('vip').hidden=!read(K.vip,false);
 }
 
-// REDEEM A SECRET CODE
-$("codeForm").addEventListener("submit",e=>{
+$('redeem').addEventListener('submit',e=>{
+ e.preventDefault();
 
-  e.preventDefault();
+ const code=$('code')
+  .value.toUpperCase()
+  .replace(/\s+/g,'')
+  .trim();
 
-  const code=$("codeInput")
-    .value
-    .toUpperCase()
-    .replace(/\s+/g,"")
-    .trim();
+ if(used[code]){
+  $('message').textContent=
+   '✅ Already redeemed in this browser!';
+  return;
+ }
 
-  const status=$("codeStatus");
+ if(!Object.prototype.hasOwnProperty.call(PROMO_CODES,code)){
+  $('message').textContent=
+   '❌ Invalid code. Check spelling!';
+  return;
+ }
 
-  status.classList.remove("bad");
+ const r=PROMO_CODES[code];
 
-  // ALREADY REDEEMED?
-  if(
-    Object.prototype.hasOwnProperty.call(used,code)
-  ){
-    status.textContent=
-      "✅ You've already redeemed that code in this browser!";
-    return;
-  }
+ if(!grant(r)){
+  $('message').textContent=
+   '⚠️ Could not save reward. Allow browser storage.';
+  return;
+ }
 
-  // INVALID CODE?
-  if(
-    !Object.prototype.hasOwnProperty.call(
-      PROMO_CODES,
-      code
-    )
-  ){
-    status.classList.add("bad");
+ used[code]={
+  label:r.label,
+  when:Date.now()
+ };
 
-    status.textContent=
-      "❌ That code isn't valid. Check the spelling!";
+ if(!store(K.codes,used)){
+  $('message').textContent=
+   '⚠️ Reward saved, but code history could not save.';
+  return;
+ }
 
-    return;
-  }
+ $('message').textContent=
+  '🎉 UNLOCKED: '+r.label+'! Open the game to use it.';
 
-  // APPLY REWARD
-  const reward=PROMO_CODES[code];
-
-  if(!grant(reward)){
-
-    status.classList.add("bad");
-
-    status.textContent=
-      "⚠️ Couldn't save the reward. Check browser storage settings.";
-
-    return;
-  }
-
-  // SAVE REDEMPTION HISTORY
-  const next={
-    ...used,
-    [code]:{
-      label:reward.label,
-      when:Date.now()
-    }
-  };
-
-  if(!store(K.codes,next)){
-
-    status.classList.add("bad");
-
-    status.textContent=
-      "⚠️ Reward saved, but code history didn't save. Check browser storage.";
-
-    return;
-  }
-
-  used=next;
-
-  status.textContent=
-    "🎉 SUCCESS! You unlocked: "+
-    reward.label+"!";
-
-  $("codeInput").value="";
-
-  showCodes();
-
-  // CHECK FOR NEW CODE ACHIEVEMENTS
-  checkAwards(true);
-
+ $('code').value='';
+ showCodes();
+ checkAwards(true);
 });
 
-// =====================================================
-// ARCADE ACHIEVEMENTS — OLD PROGRESS IS PRESERVED
-// =====================================================
+// ===================================================
+// ARCADE ACHIEVEMENTS
+// ===================================================
 
-const totalLaunches=()=>
-  Object.values(launches).reduce(
-    (n,v)=>n+Math.max(0,Number(v)||0),
-    0
-  );
+const launchesTotal=()=>Object.values(launches)
+ .reduce((n,x)=>n+Math.max(0,Number(x)||0),0);
 
-const categoryTotal=cat=>
-  cards.filter(
-    c=>c.dataset.category===cat
-  ).length;
+const countCat=cat=>cards
+ .filter(c=>c.dataset.category===cat).length;
 
-const categoryPlayed=cat=>
-  cards.filter(
-    c=>
-      c.dataset.category===cat&&
-      tried.includes(c.dataset.id)
-  ).length;
+const playedCat=cat=>cards
+ .filter(c=>
+  c.dataset.category===cat&&tried.includes(c.dataset.id)
+ ).length;
 
 const A=[
 
-  // ORIGINAL WELCOME TROPHY
-  {
-    id:"welcome",
-    icon:"🎟️",
-    title:"Welcome to the Arcade",
-    desc:"Visit the arcade trophy room",
-    goal:1,
-    xp:15,
-    count:()=>1
-  },
+ {
+  id:'welcome',
+  icon:'🎟️',
+  title:'Welcome to the Arcade',
+  goal:1,
+  xp:15,
+  count:()=>1,
+  desc:'Open the trophy room'
+ },
 
-  // ORIGINAL GAME TROPHIES
-  ...[
-    ["golf","⛳","First Putt"],
-    ["target","🎯","Sharpshooter"],
-    ["bike","🚴","Pedal Power"],
-    ["basketball","🏀","Hoop Dreams"],
-    ["castle","🏰","Royal Explorer"],
-    ["fishing","🎣","Gone Fishing"],
-    ["mining","⛏️","Deep Explorer"],
-    ["space","🚀","Space Cadet"]
-  ].map(([id,icon,title])=>({
-    id,
-    icon,
-    title,
-    desc:"Launch "+names[id]+" from this homepage",
-    goal:1,
-    xp:50,
-    count:()=>Number(tried.includes(id))
-  })),
+ ...[
+  ['golf','⛳','First Putt'],
+  ['target','🎯','Sharpshooter'],
+  ['bike','🚴','Pedal Power'],
+  ['basketball','🏀','Hoop Dreams'],
+  ['castle','🏰','Royal Explorer'],
+  ['fishing','🎣','Gone Fishing'],
+  ['mining','⛏️','Deep Explorer'],
+  ['space','🚀','Space Cadet'],
+  ['crab','🦀','Crab Commander']
+ ].map(([id,icon,title])=>({
+  id,icon,title,
+  goal:1,
+  xp:50,
+  desc:'Launch '+names[id],
+  count:()=>Number(tried.includes(id))
+ })),
 
-  // EXPLORER TROPHIES
-  {
-    id:"explorer1",
-    icon:"🥉",
-    title:"First Adventure",
-    desc:"Try one different game",
-    goal:1,
-    xp:30,
-    count:()=>tried.length
-  },
-  {
-    id:"explorer3",
-    icon:"🥈",
-    title:"Game Hopper",
-    desc:"Try three different games",
-    goal:3,
-    xp:75,
-    count:()=>tried.length
-  },
-  {
-    id:"explorer5",
-    icon:"🥇",
-    title:"Arcade Veteran",
-    desc:"Try five different games",
-    goal:5,
-    xp:130,
-    count:()=>tried.length
-  },
-  {
-    id:"explorer8",
-    icon:"👑",
-    title:"Eight-Game Champion",
-    desc:"Try eight different games",
-    goal:8,
-    xp:250,
-    count:()=>tried.length
-  },
+ ...[1,3,5,8,9].map((goal,i)=>({
+  id:['explorer1','explorer3','explorer5','explorer8','explorer9'][i],
+  icon:['🥉','🥈','🥇','👑','🎮'][i],
+  title:[
+   'First Adventure','Game Hopper','Arcade Veteran',
+   'Eight-Game Champion','Nine-Game Explorer'
+  ][i],
+  goal,
+  xp:[30,75,130,250,280][i],
+  desc:'Try '+goal+' different games',
+  count:()=>tried.length
+ })),
 
-  // FAVORITES
-  {
-    id:"fav1",
-    icon:"❤️",
-    title:"New Favorite",
-    desc:"Favorite one game",
-    goal:1,
-    xp:25,
-    count:()=>favorites.length
-  },
-  {
-    id:"fav3",
-    icon:"💗",
-    title:"Arcade Fan",
-    desc:"Favorite three games",
-    goal:3,
-    xp:75,
-    count:()=>favorites.length
-  },
-  {
-    id:"fav5",
-    icon:"💖",
-    title:"Super Fan",
-    desc:"Favorite five games",
-    goal:5,
-    xp:125,
-    count:()=>favorites.length
-  },
+ ...[1,3,5].map((goal,i)=>({
+  id:'fav'+goal,
+  icon:'❤️',
+  title:['New Favorite','Arcade Fan','Super Fan'][i],
+  goal,
+  xp:[25,75,125][i],
+  desc:'Favorite '+goal+' games',
+  count:()=>favorites.length
+ })),
 
-  // CATEGORY TROPHIES
-  ...[
-    ["action","⚡","Action Hero"],
-    ["sports","🏅","Sports Star"],
-    ["adventure","🗺️","Adventurer"],
-    ["relax","🌊","Take It Easy"]
-  ].map(([id,icon,title])=>({
-    id,
-    icon,
-    title,
-    desc:"Try every "+id+" game",
-    goal:categoryTotal(id),
-    xp:60,
-    count:()=>categoryPlayed(id)
-  })),
+ ...['action','sports','adventure','relax'].map((id,i)=>({
+  id,
+  icon:['⚡','🏅','🗺️','🌊'][i],
+  title:['Action Hero','Sports Star','Adventurer','Take It Easy'][i],
+  goal:countCat(id),
+  xp:60,
+  desc:'Try every '+id+' game',
+  count:()=>playedCat(id)
+ })),
 
-  // REGULAR PLAYER TROPHIES
-  {
-    id:"launch10",
-    icon:"🔥",
-    title:"Arcade Regular",
-    desc:"Launch games ten times",
-    goal:10,
-    xp:75,
-    count:totalLaunches
-  },
-  {
-    id:"launch25",
-    icon:"🌟",
-    title:"Arcade Superstar",
-    desc:"Launch games 25 times",
-    goal:25,
-    xp:125,
-    count:totalLaunches
-  },
+ ...[10,25].map((goal,i)=>({
+  id:'launch'+goal,
+  icon:'🔥',
+  title:['Arcade Regular','Arcade Superstar'][i],
+  goal,
+  xp:[75,125][i],
+  desc:'Launch games '+goal+' times',
+  count:launchesTotal
+ })),
 
-  // NEW: CRAB RUSH TROPHY
-  {
-    id:"crab",
-    icon:"🦀",
-    title:"Crab Commander",
-    desc:"Launch Crab Rush",
-    goal:1,
-    xp:50,
-    count:()=>Number(tried.includes("crab"))
-  },
+ ...[1,3,5].map((goal,i)=>({
+  id:'code'+goal,
+  icon:'🎁',
+  title:[
+   'Secret Code Explorer',
+   'Code Collector',
+   'Secret Code Master'
+  ][i],
+  goal,
+  xp:[100,150,200][i],
+  desc:'Redeem '+goal+' codes',
+  count:countCodes
+ })),
 
-  // NEW: ALL NINE GAMES
-  {
-    id:"explorer9",
-    icon:"🎮",
-    title:"Nine-Game Explorer",
-    desc:"Try all nine games",
-    goal:9,
-    xp:280,
-    count:()=>tried.length
-  },
+ {
+  id:'vip',
+  icon:'👑',
+  title:'Arcade VIP',
+  goal:1,
+  xp:125,
+  desc:'Redeem the VIP code',
+  count:()=>Number(read(K.vip,false))
+ },
 
-  // NEW: FIRST SECRET CODE
-  {
-    id:"code1",
-    icon:"🎟️",
-    title:"Secret Code Explorer",
-    desc:"Redeem your first code",
-    goal:1,
-    xp:100,
-    count:codeCount
-  },
-
-  // NEW: THREE SECRET CODES
-  {
-    id:"code3",
-    icon:"🎁",
-    title:"Code Collector",
-    desc:"Redeem three different codes",
-    goal:3,
-    xp:150,
-    count:codeCount
-  },
-
-  // NEW: FIVE SECRET CODES
-  {
-    id:"code5",
-    icon:"🔐",
-    title:"Secret Code Master",
-    desc:"Redeem five different codes",
-    goal:5,
-    xp:200,
-    count:codeCount
-  },
-
-  // NEW: VIP BADGE
-  {
-    id:"vip",
-    icon:"👑",
-    title:"Arcade VIP",
-    desc:"Unlock the special VIP badge",
-    goal:1,
-    xp:125,
-    count:()=>Number(read(K.badge,false))
-  }
-
+ {
+  id:'legendCodes',
+  icon:'🌈',
+  title:'Legendary Code Collector',
+  goal:3,
+  xp:180,
+  desc:'Unlock the bike, alien ship and Sky Storm',
+  count:()=>['TRIPLEBIKE','ALIENSHIP','SKYSTORM']
+   .filter(x=>used[x]).length
+ }
 ];
 
-let awardFilter="all";
-let gameFilter="all";
+function checkAwards(notify=false){
+ const fresh=[];
 
-// AWARD TROPHIES
-function checkAwards(notify){
+ for(const a of A){
+  if(!awards[a.id]&&a.count()>=a.goal){
+   awards[a.id]=Date.now();
+   fresh.push(a.title);
+  }
+ }
 
-  const fresh=[];
+ if(fresh.length){
+  store(K.awards,awards);
 
-  for(const a of A){
+  if(notify){
+   $('toast').textContent=
+    '🏆 Achievement: '+fresh.join(', ');
+   $('toast').hidden=false;
 
-    if(
-      !unlocked[a.id]&&
-      a.count()>=a.goal
-    ){
-      unlocked[a.id]=Date.now();
-      fresh.push(a);
-    }
+   setTimeout(()=>{
+    $('toast').hidden=true;
+   },3500);
+  }
+ }
+
+ renderAwards();
+}
+
+let awardFilter='all';
+
+function renderAwards(){
+ const earned=A.filter(a=>awards[a.id]);
+ const xp=earned.reduce((n,a)=>n+a.xp,0);
+
+ const ranks=[
+  [0,'🥉 Rookie'],
+  [150,'🥈 Explorer'],
+  [400,'🥇 Pro'],
+  [850,'💎 Champion'],
+  [1300,'👑 Arcade Legend']
+ ];
+
+ let i=0;
+ while(i<ranks.length-1&&xp>=ranks[i+1][0])i++;
+
+ $('rank').textContent=ranks[i][1];
+ $('achieved').textContent=earned.length;
+ $('xp').textContent=xp;
+ $('favCount').textContent=favorites.length;
+
+ $('xpProgress').textContent=
+  earned.length+' / '+A.length+' trophies · '+xp+' XP';
+
+ $('xpBar').style.width=ranks[i+1]
+  ?Math.min(
+    100,
+    (xp-ranks[i][0])/
+    (ranks[i+1][0]-ranks[i][0])*100
+   )+'%'
+  :'100%';
+
+ const root=$('awardGrid');
+ root.replaceChildren();
+
+ for(const a of A){
+  const done=!!awards[a.id];
+
+  if(
+   awardFilter==='earned'&&!done||
+   awardFilter==='locked'&&done
+  )continue;
+
+  const el=document.createElement('div');
+  el.className='award '+(done?'earned':'locked');
+
+  const medal=document.createElement('div');
+  medal.className='medal';
+  medal.textContent=done?a.icon:'🔒';
+
+  const name=document.createElement('b');
+  name.textContent=a.title;
+
+  const desc=document.createElement('small');
+  desc.textContent=a.desc;
+
+  const xpEl=document.createElement('div');
+  xpEl.className='xp';
+  xpEl.textContent=done
+   ?'✅ '+a.xp+' XP'
+   :Math.min(a.goal,a.count())+'/'+a.goal+' · '+a.xp+' XP';
+
+  el.append(medal,name,desc,xpEl);
+  root.append(el);
+ }
+}
+
+// ===================================================
+// FAVORITES, SEARCH, RECENT GAMES
+// ===================================================
+
+function favoritesUI(){
+ for(const c of cards){
+  const b=c.querySelector('.fav');
+  const on=favorites.includes(c.dataset.id);
+
+  b.textContent=on?'♥':'♡';
+  b.setAttribute('aria-pressed',String(on));
+ }
+
+ $('favCount').textContent=favorites.length;
+}
+
+function continueUI(){
+ if(!recent||!byId[recent])return;
+
+ $('continue').hidden=false;
+ $('continueText').textContent=
+  '🕹️ Continue Playing '+names[recent];
+
+ $('continueLink').dataset.game=recent;
+ $('continueLink').href=byId[recent]
+  .querySelector('a.play-button')
+  .getAttribute('href');
+}
+
+function launch(id){
+ if(!byId[id])return;
+
+ recent=id;
+ if(!tried.includes(id))tried.push(id);
+ launches[id]=(Number(launches[id])||0)+1;
+
+ store(K.tried,tried);
+ store(K.recent,recent);
+ store(K.launches,launches);
+
+ continueUI();
+ checkAwards();
+}
+
+for(const a of document.querySelectorAll('a[data-game]')){
+ a.addEventListener('click',()=>launch(a.dataset.game));
+}
+
+for(const c of cards){
+ c.querySelector('.fav').addEventListener('click',()=>{
+  const id=c.dataset.id;
+
+  favorites=favorites.includes(id)
+   ?favorites.filter(x=>x!==id)
+   :[...favorites,id];
+
+  store(K.favorites,favorites);
+  favoritesUI();
+  applyFilter();
+  checkAwards(true);
+ });
+}
+
+let filter='all';
+
+function applyFilter(){
+ const q=$('search').value.toLowerCase().trim();
+ let count=0;
+
+ for(const c of cards){
+  const good=(
+   filter==='all'||
+   filter==='favorites'&&favorites.includes(c.dataset.id)||
+   c.dataset.category===filter
+  )&&(
+   c.querySelector('h3').textContent+' '+
+   c.dataset.search+' '+
+   c.querySelector('p').textContent
+  ).toLowerCase().includes(q);
+
+  c.hidden=!good;
+  if(good)count++;
+ }
+
+ $('gameCount').textContent=count+' games shown';
+ $('empty').hidden=count>0;
+}
+
+for(const b of document.querySelectorAll('.filter')){
+ b.onclick=()=>{
+  filter=b.dataset.filter;
+
+  for(const x of document.querySelectorAll('.filter')){
+   x.classList.toggle('active',b===x);
   }
 
-  if(fresh.length){
+  applyFilter();
+ };
+}
 
-    store(K.awards,unlocked);
+$('search').oninput=applyFilter;
 
-    if(notify){
+for(const b of document.querySelectorAll('.award-filter')){
+ b.onclick=()=>{
+  awardFilter=b.dataset.award;
 
-      $("codeStatus").textContent+=
-        " 🏆 New trophy: "+
-        fresh.map(a=>a.title).join(", ")+
-        "!";
-
-    }
+  for(const x of document.querySelectorAll('.award-filter')){
+   x.classList.toggle('active',b===x);
   }
 
   renderAwards();
+ };
 }
 
-// DRAW THE TROPHY ROOM
-function renderAwards(){
+$('random').onclick=()=>{
+ const list=cards.filter(c=>!c.hidden);
+ const choices=list.length?list:cards;
+ const c=choices[Math.floor(Math.random()*choices.length)];
 
-  const earned=A.filter(
-    a=>unlocked[a.id]
-  );
+ launch(c.dataset.id);
+ location.href=c.querySelector('a.play-button').getAttribute('href');
+};
 
-  const xp=earned.reduce(
-    (n,a)=>n+a.xp,
-    0
-  );
-
-  const ranks=[
-    [0,"🥉 Rookie"],
-    [150,"🥈 Explorer"],
-    [400,"🥇 Pro Gamer"],
-    [850,"💎 Champion"],
-    [1300,"👑 Arcade Legend"]
-  ];
-
-  let i=0;
-
-  while(
-    i<ranks.length-1&&
-    xp>=ranks[i+1][0]
-  ){
-    i++;
-  }
-
-  $("rank").textContent=ranks[i][1];
-
-  $("statAchievements").textContent=earned.length;
-
-  $("statXP").textContent=xp.toLocaleString();
-
-  $("statFavorites").textContent=favorites.length;
-
-  $("trophyProgress").textContent=
-    earned.length+" of "+A.length+
-    " trophies earned";
-
-  const next=ranks[i+1];
-
-  $("xpProgress").textContent=next
-    ?xp+" / "+next[0]+" XP toward "+next[1]
-    :xp+" XP · MAX RANK!";
-
-  $("xpBar").style.width=next
-    ?Math.min(
-      100,
-      Math.max(
-        0,
-        (xp-ranks[i][0])/
-        (next[0]-ranks[i][0])*100
-      )
-    )+"%"
-    :"100%";
-
-  const grid=$("achievementGrid");
-
-  grid.replaceChildren();
-
-  for(const a of A){
-
-    const has=!!unlocked[a.id];
-
-    if(
-      awardFilter==="earned"&&!has||
-      awardFilter==="locked"&&has
-    ){
-      continue;
-    }
-
-    const el=document.createElement("article");
-
-    el.className=
-      "achievement "+(has?"unlocked":"locked");
-
-    const emoji=document.createElement("span");
-    emoji.className="medal";
-    emoji.textContent=has?a.icon:"🔒";
-
-    const title=document.createElement("b");
-    title.textContent=a.title;
-
-    const desc=document.createElement("small");
-    desc.textContent=a.desc;
-
-    const points=document.createElement("div");
-    points.className="points";
-
-    points.textContent=has
-      ?"✅ UNLOCKED · "+a.xp+" XP"
-      :Math.min(a.goal,a.count())+
-       " / "+a.goal+" · "+a.xp+" XP";
-
-    const meter=document.createElement("div");
-    meter.className="mini-meter";
-
-    const fill=document.createElement("div");
-
-    fill.style.width=(
-      has
-      ?100
-      :Math.min(100,a.count()/a.goal*100)
-    )+"%";
-
-    meter.append(fill);
-
-    el.append(
-      emoji,
-      title,
-      desc,
-      points,
-      meter
-    );
-
-    grid.append(el);
-  }
-
-  if(!grid.children.length){
-
-    const p=document.createElement("p");
-
-    p.textContent=
-      "No trophies in this filter yet!";
-
-    grid.append(p);
-  }
+function theme(t){
+ document.body.classList.toggle('light',t==='light');
+ $('theme').textContent=t==='light'?'🌙 Dark':'☀️ Theme';
+ store(K.theme,t);
 }
 
-// FAVORITES
-function refreshFavorites(){
-
-  for(const c of cards){
-
-    const selected=favorites.includes(
-      c.dataset.id
-    );
-
-    const b=c.querySelector(".favorite");
-
-    b.textContent=selected?"♥":"♡";
-
-    b.setAttribute(
-      "aria-pressed",
-      String(selected)
-    );
-
-    b.setAttribute(
-      "aria-label",
-      (
-        selected
-          ?"Remove favorite: "
-          :"Favorite: "
-      )+names[c.dataset.id]
-    );
-  }
-
-  $("statFavorites").textContent=favorites.length;
-}
-
-// CONTINUE PLAYING
-function updateContinue(){
-
-  const el=$("continueBox");
-
-  if(!recent||!byId[recent]){
-
-    el.classList.remove("show");
-    return;
-  }
-
-  el.classList.add("show");
-
-  $("continueTitle").textContent=
-    "🕹️ Continue Playing "+
-    names[recent];
-
-  $("continueLink").href=
-    byId[recent]
-    .querySelector(".play-button")
-    .getAttribute("href");
-
-  $("continueLink").dataset.game=recent;
-}
-
-// RECORD A GAME LAUNCH
-function launch(id){
-
-  if(!byId[id])return;
-
-  recent=id;
-
-  if(!tried.includes(id)){
-    tried.push(id);
-  }
-
-  launches[id]=(Number(launches[id])||0)+1;
-
-  store(K.recent,recent);
-  store(K.tried,tried);
-  store(K.launches,launches);
-
-  updateContinue();
-  checkAwards(false);
-}
-
-// LINK TRACKING
-for(const a of document.querySelectorAll("a[data-game]")){
-
-  a.addEventListener(
-    "click",
-    ()=>launch(a.dataset.game)
-  );
-}
-
-// FAVORITE BUTTONS
-for(const c of cards){
-
-  c.querySelector(".favorite")
-    .addEventListener("click",()=>{
-
-      const id=c.dataset.id;
-
-      favorites=favorites.includes(id)
-        ?favorites.filter(x=>x!==id)
-        :[...favorites,id];
-
-      store(K.favorites,favorites);
-
-      refreshFavorites();
-      filterGames();
-      checkAwards(false);
-
-    });
-}
-
-// GAME SEARCH
-function filterGames(){
-
-  const term=$("search")
-    .value.toLowerCase().trim();
-
-  let shown=0;
-
-  for(const c of cards){
-
-    const ok=gameFilter==="all"||
-      (
-        gameFilter==="favorites"
-          ?favorites.includes(c.dataset.id)
-          :c.dataset.category===gameFilter
-      );
-
-    const text=(
-      names[c.dataset.id]+" "+
-      c.dataset.search+" "+
-      c.querySelector("p").textContent
-    ).toLowerCase();
-
-    c.hidden=!(ok&&text.includes(term));
-
-    if(!c.hidden)shown++;
-  }
-
-  $("gameCount").textContent=
-    shown+" game"+
-    (shown===1?"":"s")+
-    " shown";
-
-  $("noGames").hidden=shown!==0;
-}
-
-// CATEGORY FILTERS
-for(const btn of document.querySelectorAll(".filter")){
-
-  btn.addEventListener("click",()=>{
-
-    gameFilter=btn.dataset.filter;
-
-    document.querySelectorAll(".filter")
-      .forEach(b=>{
-        b.classList.toggle(
-          "active",
-          b===btn
-        );
-      });
-
-    filterGames();
-
-  });
-}
-
-$("search").addEventListener("input",filterGames);
-
-// ACHIEVEMENT FILTERS
-for(const btn of document.querySelectorAll(".award-filter")){
-
-  btn.addEventListener("click",()=>{
-
-    awardFilter=btn.dataset.awardFilter;
-
-    document.querySelectorAll(".award-filter")
-      .forEach(b=>{
-        b.classList.toggle(
-          "active",
-          b===btn
-        );
-      });
-
-    renderAwards();
-
-  });
-}
-
-// RANDOM GAME
-$("randomBtn").addEventListener("click",()=>{
-
-  const visible=cards.filter(
-    c=>!c.hidden
-  );
-
-  const list=visible.length?visible:cards;
-
-  const c=list[
-    Math.floor(Math.random()*list.length)
-  ];
-
-  launch(c.dataset.id);
-
-  location.assign(
-    c.querySelector(".play-button")
-      .getAttribute("href")
-  );
-
-});
-
-// LIGHT / DARK THEME
-function theme(v){
-
-  document.body.classList.toggle(
-    "light",
-    v==="light"
-  );
-
-  $("themeBtn").textContent=
-    v==="light"
-      ?"🌙 Dark"
-      :"☀️ Theme";
-
-  store(K.theme,v);
-}
-
-$("themeBtn").addEventListener("click",()=>{
-
-  theme(
-    document.body.classList.contains("light")
-      ?"dark"
-      :"light"
-  );
-
-});
-
-// START
-theme(read(K.theme,"dark"));
-
-refreshFavorites();
-updateContinue();
-filterGames();
+$('theme').onclick=()=>{
+ theme(
+  document.body.classList.contains('light')
+   ?'dark':'light'
+ );
+};
+
+// START HOMEPAGE
+theme(read(K.theme,'dark'));
+favoritesUI();
+continueUI();
 showCodes();
-checkAwards(false);
+applyFilter();
+checkAwards();
 
 })();
 </script>
