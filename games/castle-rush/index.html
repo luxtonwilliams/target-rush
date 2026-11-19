@@ -3,1551 +3,807 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101b36">
-<title>Castle Rush V2.2 | Luxton Arcade</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Castle Rush V2.3 | Luxton Arcade</title>
 <style>
-:root{--panel:#18284d;--edge:#4c6da7;--cyan:#6feaff;--gold:#ffd76b}
 *{box-sizing:border-box}
-body{margin:0;overflow-x:hidden;color:#f5f9ff;background:radial-gradient(ellipse at top,#244474,#0b142c 72%);font-family:system-ui,Arial,sans-serif}
-main{width:min(1080px,96%);margin:15px auto 40px}
-a{color:#b5e9ff;text-decoration:none}
-header,.toolbar,.panel-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-h1{margin:7px 0 12px;font-size:clamp(26px,5vw,42px);color:var(--gold);text-shadow:0 0 18px #ffbf4166}
-.version{font-size:12px;color:#d5ecff}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:8px 0 12px}
-.stat{text-align:center;border:1px solid var(--edge);background:#152449;border-radius:12px;padding:11px 4px}
-.stat small{display:block;color:#a9c8ed;font-size:11px}
-.stat strong{font-size:clamp(14px,2.6vw,23px)}
-.notice{margin:0 0 9px;text-align:center;min-height:23px;color:#dff5ff;font-weight:750}
-.arena{position:relative;border:3px solid var(--cyan);border-radius:17px;overflow:hidden;box-shadow:0 0 28px #00d2ff44;background:#78aadc}
-canvas{display:block;width:100%;height:auto;aspect-ratio:960/540;touch-action:pan-y}
-.overlay{position:absolute;inset:0;background:#08142edc;display:flex;align-items:center;justify-content:center;padding:12px}
-[hidden]{display:none!important}
-.modal{text-align:center;width:min(455px,100%);background:linear-gradient(135deg,#1a3765,#34244e);border:1px solid #7ddaff;border-radius:18px;padding:22px;box-shadow:0 12px 50px #0007}
-.modal h2{font-size:clamp(22px,4vw,31px);color:#ffe083;margin:0 0 11px}
-.modal p{color:#d9eaff;line-height:1.6}
+body{margin:0;background:radial-gradient(at top,#244879,#0a1530 70%);color:#f7faff;font-family:system-ui,Arial}
+main{width:min(1080px,96%);margin:15px auto}
+header,.stats,.toolbar,.row{display:flex;justify-content:space-between;gap:9px;align-items:center;flex-wrap:wrap}
+h1{color:#ffdf85;margin:6px 0;font-size:clamp(27px,5vw,42px)}
+a{color:#b1f1ff;text-decoration:none}
+small,p{color:#c0d5ef}
+.stats{margin:9px 0;display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{background:#19345b;border:1px solid #5488b6;border-radius:11px;padding:10px;text-align:center}
+.stat small{display:block;font-size:10px}
+.stat b{font-size:clamp(14px,2.3vw,23px)}
+.arena{position:relative;border:3px solid #77e5f9;border-radius:15px;overflow:hidden;background:#82c6ed}
+canvas{width:100%;height:auto;display:block;aspect-ratio:960/540;touch-action:manipulation}
+.overlay{position:absolute;inset:0;background:#0c1a37d9;display:grid;place-items:center;padding:12px}
+.modal{max-height:90%;overflow:auto;width:min(500px,100%);background:linear-gradient(130deg,#1d4572,#28244e);border:1px solid #9ce5ff;border-radius:15px;padding:19px;text-align:center}
+.modal h2{color:#ffe4a8}
+.toolbar{background:#152f54;border:1px solid #658ebd;border-radius:12px;padding:12px;margin:12px 0}
+.row{justify-content:center}
 button,select,input{font:inherit}
-button{min-height:47px;padding:11px 16px;border:0;border-radius:11px;background:linear-gradient(115deg,#5ce5ff,#8088ff);color:#10213b;font-weight:850;cursor:pointer;touch-action:manipulation}
-button:hover:not(:disabled){filter:brightness(1.1)}
-button:disabled{opacity:.48;cursor:not-allowed}
-button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #ffe187;outline-offset:3px}
-.secondary{background:#263e68;border:1px solid #7193c3;color:white}
-.controls{display:grid;grid-template-columns:1fr 1fr 1fr 1.15fr;align-items:end;gap:13px;padding:15px;background:var(--panel);border:1px solid var(--edge);border-radius:15px;margin-top:13px}
-.controls label{display:block;font-weight:750}
-.value{color:#ffdf88;font-weight:900}
-input[type=range]{display:block;width:100%;height:32px;margin-top:9px;accent-color:#6ceaff;cursor:pointer;touch-action:pan-x}
-.controls select,.toolbar select{background:#1b3158;color:white;border:1px solid #6689b6;border-radius:9px;min-height:44px;padding:9px;width:100%}
-.fire{font-size:19px;min-height:61px;background:linear-gradient(115deg,#ffca5d,#ff785b)}
-.toolbar{margin-top:13px}
-.toolbar label{display:flex;align-items:center;gap:9px;color:#d8ecff;font-weight:750}
-.toolbar select{width:auto;max-width:240px}
-.help{text-align:center;font-size:13px;color:#b4d0ee;line-height:1.65;margin:15px 0}
-.shop{margin:17px 0;padding:17px;border:1px solid #6486b5;border-radius:16px;background:#15254a}
-.shop h2{margin:0 0 5px}
-.shop p{color:#bcd3f2;margin:4px 0 14px;line-height:1.5}
-.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
-.shop-item{background:#213660;border:1px solid #4b6eab;border-radius:12px;padding:13px}
-.shop-item b{display:block}
-.shop-item small{display:block;color:#c6d9f4;min-height:44px;margin:7px 0}
-.shop-item button{width:100%;font-size:13px}
-.pill{display:inline-block;font-size:12px;background:#234d62;color:#adf6e3;border-radius:20px;padding:5px 10px}
-@media(max-width:760px){
-.controls{grid-template-columns:1fr 1fr}
-.fire{grid-column:1/-1;min-height:68px}
-.controls label:nth-child(3){grid-column:1/-1}
-.stats{gap:5px}
-.stat{padding:9px 2px}
-.stat small{font-size:9px}
-.toolbar label{flex:1;justify-content:space-between}
-}
-@media(max-width:430px){
-main{width:100%;padding:0 9px}
-.modal{padding:17px}
-.arena{border-width:2px}
-.controls{gap:9px;padding:12px}
-.shop-grid{grid-template-columns:1fr 1fr}
-.shop-item{padding:9px}
-.shop-item button{padding:10px 5px}
-.shop-item small{font-size:11px}
+button{padding:11px 13px;border:0;border-radius:10px;background:linear-gradient(115deg,#74edfa,#9eabff);color:#102a46;font-weight:900;cursor:pointer;touch-action:manipulation}
+button.secondary{background:#29466e;border:1px solid #779bc4;color:white}
+button.gold{background:linear-gradient(115deg,#ffe6a4,#ffbc82)}
+button:disabled{opacity:.47;cursor:default}
+select{background:#263f63;color:white;padding:9px;border-radius:8px;border:1px solid #8fb8d6}
+.control{display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+label{font-size:12px;color:#d5e9fb}
+input[type=range]{width:125px;accent-color:#8fefee}
+.shop{background:#162c50;border:1px solid #648ec2;padding:15px;border-radius:12px;margin:12px 0}
+.shopgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.item{background:#253d66;border:1px solid #668bb5;border-radius:10px;padding:10px;font-size:12px}
+.item b{display:block}
+.item p{font-size:11px}
+.notice{text-align:center;color:#ffe6a4;font-weight:900;font-size:13px;min-height:18px}
+.storm{background:linear-gradient(115deg,#fde1a3,#c5a6ff)}
+[hidden]{display:none!important}
+footer{text-align:center;font-size:12px;color:#b4c9eb;margin:15px}
+@media(max-width:680px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.shopgrid{grid-template-columns:repeat(2,1fr)}
+.modal{padding:12px}
+.toolbar{justify-content:center}
+.control{justify-content:center}
 }
 </style>
 </head>
 <body>
 <main>
 <header>
-<h1>🏰 CASTLE RUSH <span class="version">V2.2 · SPECIAL AMMO</span></h1>
+<h1>🏰 CASTLE RUSH <small style="font-size:12px">V2.3 · SKY STORM</small></h1>
 <a href="../../">← Luxton Arcade</a>
 </header>
 
 <div class="stats">
-<div class="stat">
-<small>BLUE CASTLE</small>
-<strong id="blueHealth">20 / 20 🧱</strong>
-</div>
-<div class="stat">
-<small>TURN</small>
-<strong id="turnText">READY</strong>
-</div>
-<div class="stat">
-<small>RED CASTLE</small>
-<strong id="redHealth">20 / 20 🧱</strong>
-</div>
-<div class="stat">
-<small>WIND</small>
-<strong id="windText">🍃 —</strong>
-</div>
+<div class="stat"><small>🔵 BLUE CASTLE</small><b id="blue">20 / 20</b></div>
+<div class="stat"><small>🔴 RED CASTLE</small><b id="red">20 / 20</b></div>
+<div class="stat"><small>🪙 COINS</small><b id="coins">0</b></div>
+<div class="stat"><small>🏆 WINS</small><b id="wins">0</b></div>
 </div>
 
-<p id="notice" class="notice" role="status" aria-live="polite">
-Ready for Castle Wars?
-</p>
+<div class="notice" id="notice">Ready for a magical castle battle?</div>
 
 <div class="arena">
-<canvas id="game" width="960" height="540"
-aria-label="Two cartoon castles firing special cannonballs"></canvas>
-
+<canvas width="960" height="540" id="game"></canvas>
 <div id="overlay" class="overlay">
-<div class="modal">
-<h2 id="dialogTitle">🏰 CASTLE RUSH V2.2!</h2>
-<p id="dialogText">
-The Scatterball has been upgraded!
-Unlock Hot Shot, Frost Shot, and Piercing Shot
-in the Castle Workshop.
-Choose ammo, adjust your angle and power,
-and outsmart the other castle!
-</p>
-<button id="startBtn">⚔️ START BATTLE</button>
+<div id="modal" class="modal"></div>
 </div>
-</div>
-</div>
-
-<div class="controls">
-<label for="angle">
-🎯 Angle: <span class="value" id="angleValue">32°</span>
-<input id="angle" type="range" min="12" max="75" value="32">
-</label>
-
-<label for="power">
-⚡ Power: <span class="value" id="powerValue">62%</span>
-<input id="power" type="range" min="25" max="100" value="62">
-</label>
-
-<label for="ammo">
-💣 Cannonball
-<select id="ammo">
-<option value="normal">⚫ Standard · Unlimited</option>
-</select>
-</label>
-
-<button id="fireBtn" class="fire" disabled>💥 FIRE!</button>
 </div>
 
 <div class="toolbar">
-<label for="mode">
-Battle:
-<select id="mode">
-<option value="cpu">🤖 Computer</option>
-<option value="two">👥 2 Players</option>
+<div class="control">
+<label>ANGLE <b id="angleText">32°</b>
+<input id="angle" type="range" min="12" max="75" value="32">
+</label>
+<label>POWER <b id="powerText">62%</b>
+<input id="power" type="range" min="25" max="100" value="62">
+</label>
+<label>MAGIC BALL
+<select id="ammo">
+<option value="normal">⚫ Standard</option>
 </select>
 </label>
-
-<label for="difficulty">
-Difficulty:
-<select id="difficulty">
-<option value="balanced">🎯 Balanced</option>
-<option value="hard" selected>🔥 Hard</option>
-<option value="legend">💎 Legend</option>
-</select>
-</label>
-
-<button id="shopBtn" class="secondary">🛒 UPGRADES</button>
-<button id="restartBtn" class="secondary">↻ NEW BATTLE</button>
+</div>
+<div class="row">
+<button id="fire">✨ LAUNCH</button>
+<button id="skyStorm" class="storm" hidden>🌈 SKY STORM</button>
+<button id="shopToggle" class="secondary">🛒 UPGRADES</button>
+<button id="restart" class="secondary">↻ NEW BATTLE</button>
+</div>
 </div>
 
 <section id="shop" class="shop" hidden>
-<div class="panel-heading">
+<div class="row">
 <h2>🛒 Castle Workshop</h2>
-<span class="pill" id="coins">🪙 0 coins</span>
+<b id="wallet">0 coins</b>
 </div>
 <p>
-Every purchase is permanent. Special ammo refills
-every battle, and walls and shields activate on the
-next battle. Your old V2 coins and unlocks carry over!
+Your previous purchases remain unlocked! Sky Storm is a secret
+code-only fantasy flyover with one charge per battle.
 </p>
-<div id="shopGrid" class="shop-grid"></div>
+<div id="shopGrid" class="shopgrid"></div>
 </section>
 
-<p class="help">
-📱 Mobile: use the sliders, select ammo, and tap FIRE.
-💻 PC: ↑↓ angle, ←→ power, Space fires.
-🍃 Wind changes each turn. The aim guide shows only
-the beginning of your shot.
+<p class="notice">
+💻 ↑↓ changes angle, ←→ changes power, Space launches ·
+📱 Use sliders and buttons · Gentle cartoon fantasy effects only.
 </p>
+<footer>Luxton Arcade · Castle Rush · Same V2 save key, coins and wins.</footer>
 </main>
 
 <script>
 (()=>{
-"use strict";
+'use strict';
 
 const $=id=>document.getElementById(id);
-const canvas=$("game");
-const ctx=canvas.getContext("2d");
-const W=960,H=540,GROUND=466,G=460;
-
+const c=$('game'),g=c.getContext('2d');
+const W=960,H=540,GROUND=466;
+const KEY='luxton_castle_rush_v2';
+const OLD='luxton_castle_rush_wins_v1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-
-const STORE="luxton_castle_rush_v2";
-const OLD_WINS="luxton_castle_rush_wins_v1";
-
-const sides=[
-{x:95,dir:1,muzzle:244,color:"#45c7ff",dark:"#1b6da6"},
-{x:729,dir:-1,muzzle:716,color:"#ff7c91",dark:"#a63853"}
-];
+const rand=(a,b)=>a+Math.random()*(b-a);
 
 const products=[
-{
-id:"heavy",
-name:"💥 Heavy Cannonball",
-cost:10,
-desc:"Big explosion · 2 shots each battle."
-},
-{
-id:"scatter",
-name:"✨ Super Scatterball",
-cost:20,
-desc:"UPGRADED! Three bigger blasts · 2 shots each battle."
-},
-{
-id:"hot",
-name:"🔥 Hot Shot",
-cost:25,
-desc:"Impact plus a delayed heat burst that breaks nearby bricks · 2 shots."
-},
-{
-id:"frost",
-name:"❄️ Frost Shot",
-cost:25,
-desc:"Damages bricks and freezes the enemy cannon for one turn · 1 shot."
-},
-{
-id:"pierce",
-name:"💎 Piercing Shot",
-cost:35,
-desc:"Three narrow blasts that punch deeper through a wall · 2 shots."
-},
-{
-id:"walls",
-name:"🧱 Reinforced Walls",
-cost:30,
-desc:"Four extra castle bricks each battle."
-},
-{
-id:"shield",
-name:"🛡️ Castle Shield",
-cost:40,
-desc:"Blocks the first enemy blast each battle."
-}
+{id:'heavy',name:'💥 Heavy Magic Ball',cost:10,desc:'Wider sparkle burst, two per match'},
+{id:'scatter',name:'✨ Scatter Sparkles',cost:20,desc:'Three little bursts, two per match'},
+{id:'hot',name:'🔥 Fire Gem',cost:25,desc:'Shimmering burst with bonus bricks'},
+{id:'frost',name:'❄️ Frost Gem',cost:25,desc:'Pauses the rival for one turn'},
+{id:'pierce',name:'💎 Crystal Gem',cost:35,desc:'Three narrow glitter bursts'},
+{id:'walls',name:'🧱 Reinforced Walls',cost:30,desc:'Four extra castle bricks'},
+{id:'shield',name:'🛡️ Castle Shield',cost:40,desc:'Blocks the next incoming burst'},
+{id:'skyStorm',name:'🌈 Sky Storm · SECRET',cost:0,desc:'Code-only magical flyover · One use each match',secret:true}
 ];
 
 let save={coins:0,wins:0,owned:[]};
 
 try{
-const old=JSON.parse(localStorage.getItem(STORE)||"null");
-if(old&&typeof old==="object")save={...save,...old};
-}catch(e){}
+ const x=JSON.parse(localStorage.getItem(KEY)||'null');
+ if(x&&typeof x==='object')save={...save,...x};
+}catch{}
 
 try{
-save.wins=Math.max(
-Number(save.wins)||0,
-Number(localStorage.getItem(OLD_WINS))||0
-);
-}catch(e){}
-
-if(!Array.isArray(save.owned))save.owned=[];
-
-save.owned=save.owned.filter(id=>
-products.some(p=>p.id===id)
-);
+ save.wins=Math.max(
+  Number(save.wins)||0,
+  Number(localStorage.getItem(OLD))||0
+ );
+}catch{}
 
 save.coins=Math.max(0,Number(save.coins)||0);
-
-function persist(){
-try{
-localStorage.setItem(STORE,JSON.stringify(save));
-localStorage.setItem(OLD_WINS,String(save.wins));
-}catch(e){}
-}
+save.owned=Array.isArray(save.owned)
+ ?[...new Set(save.owned.filter(id=>products.some(p=>p.id===id)))]
+ :[];
 
 const owns=id=>save.owned.includes(id);
 
-let bricks=[[],[]];
-let totals=[20,20];
+function persist(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(save));
+  localStorage.setItem(OLD,save.wins);
+ }catch{}
+}
+
+const side=[
+ {x:95,dir:1,color:'#56c9ff',dark:'#2374aa'},
+ {x:729,dir:-1,color:'#ff8d9e',dark:'#aa4466'}
+];
+
+let blocks=[[],[]],total=[20,20];
+let supply=[{},{}],shields=[0,0],frozen=[0,0];
+let turn=0,phase='menu',mode='cpu',difficulty='hard',wind=0;
 let settings=[
-{angle:32,power:62},
-{angle:32,power:62}
+ {angle:32,power:62},
+ {angle:32,power:62}
 ];
-let supplies=[{},{}];
-let shields=[0,0];
-let frozen=[0,0];
+let ball=null,parts=[],storm=null,stormUsed=[false,false];
+let delay=0,session=0,selected='normal';
 
-let turn=0;
-let phase="menu";
-let mode="cpu";
-let difficulty="hard";
-let wind=0;
-let shot=null;
-let trail=[];
-let debris=[];
-let heatBursts=[];
-let shake=0;
-let cooldown=0;
-let session=0;
-let selectedAmmo="normal";
-let last=performance.now();
-let info="";
-
-function build(side,reinforce){
-const list=[];
-
-for(let r=0;r<4;r++){
-for(let c=0;c<4;c++){
-list.push({
-x:sides[side].x+c*34,
-y:GROUND-(r+1)*29,
-w:33,
-h:28
-});
-}
-}
-
-for(let r=4;r<6;r++){
-for(const c of [0,3]){
-list.push({
-x:sides[side].x+c*34,
-y:GROUND-(r+1)*29,
-w:33,
-h:28
-});
-}
+function makeBlocks(player){
+ const out=[];
+ for(let r=0;r<4;r++){
+  for(let k=0;k<4;k++){
+   out.push({
+    x:side[player].x+k*34,
+    y:GROUND-(r+1)*29,w:33,h:28
+   });
+  }
+ }
+ for(let r=4;r<6;r++){
+  for(const k of [0,3]){
+   out.push({
+    x:side[player].x+k*34,
+    y:GROUND-(r+1)*29,w:33,h:28
+   });
+  }
+ }
+ if(owns('walls')&&player===0){
+  for(let r=4;r<6;r++){
+   for(const k of [1,2]){
+    out.push({
+     x:side[player].x+k*34,
+     y:GROUND-(r+1)*29,w:33,h:28
+    });
+   }
+  }
+ }
+ return out;
 }
 
-if(reinforce){
-for(let r=4;r<6;r++){
-for(const c of [1,2]){
-list.push({
-x:sides[side].x+c*34,
-y:GROUND-(r+1)*29,
-w:33,
-h:28
-});
-}
-}
+function modal(html){
+ $('modal').innerHTML=html;
+ $('overlay').hidden=false;
 }
 
-return list;
+function menu(){
+ phase='menu';
+ modal(`
+ <h2>🏰 CASTLE RUSH</h2>
+ <p>Build castles out of colorful blocks, aim your magical gems,
+ and win a cartoon castle contest! Unlock a special
+ <b>Sky Storm flyover</b> with a secret homepage code.</p>
+
+ <label>Opponent
+ <select id="mode">
+ <option value="cpu">🤖 Computer</option>
+ <option value="pvp">👥 2 Players</option>
+ </select>
+ </label>
+
+ <p><label>Difficulty
+ <select id="difficulty">
+ <option value="easy">Easy</option>
+ <option value="normal">Normal</option>
+ <option selected value="hard">Hard</option>
+ <option value="legend">Legendary</option>
+ </select>
+ </label></p>
+
+ <button data-action="start">▶ START BATTLE</button>
+ <p>🪙 Wallet ${save.coins} · 🏆 Wins ${save.wins}</p>
+ `);
+ hud();
 }
 
-function newWind(){
-const range=
-difficulty==="legend"?100:
-difficulty==="hard"?78:54;
+function start(){
+ mode=$('mode')?.value||mode;
+ difficulty=$('difficulty')?.value||difficulty;
 
-wind=Math.round((Math.random()*2-1)*range);
+ blocks=[makeBlocks(0),makeBlocks(1)];
+ total=blocks.map(a=>a.length);
+ turn=0;
+ phase='ready';
+ ball=null;
+ parts=[];
+ storm=null;
+ stormUsed=[false,false];
+ shields=[owns('shield')?1:0,0];
+ frozen=[0,0];
 
-if(Math.abs(wind)<10){
-wind=wind<0?-14:14;
-}
-}
+ for(let t=0;t<2;t++){
+  supply[t]={};
+  for(const p of products){
+   if(!p.secret&&owns(p.id)){
+    supply[t][p.id]=
+     t===0||mode==='pvp'
+      ?(p.id==='frost'?1:2)
+      :0;
+   }
+  }
+ }
 
-const speed=p=>290+p*3.8;
-
-function velocity(side,a,p){
-const rad=a*Math.PI/180;
-const v=speed(p);
-
-return{
-vx:Math.cos(rad)*v*sides[side].dir,
-vy:-Math.sin(rad)*v
-};
-}
-
-// Different fictional ammo effects.
-function shape(type,x,y,side){
-if(type==="scatter"){
-return{
-radius:38,
-spots:[
-[x-55,y-9],
-[x,y],
-[x+55,y-9]
-]
-};
+ selected='normal';
+ wind=rand(-45,45);
+ session++;
+ $('overlay').hidden=true;
+ hud();
+ shopRender();
 }
 
-if(type==="pierce"){
-return{
-radius:23,
-spots:[
-[x,y],
-[x+sides[side].dir*38,y],
-[x+sides[side].dir*76,y]
-]
-};
-}
-
-if(type==="heavy"){
-return{radius:56,spots:[[x,y]]};
-}
-
-return{radius:37,spots:[[x,y]]};
-}
-
-function affected(b,x,y,type,side){
-const sh=shape(type,x,y,side);
-
-return sh.spots.some(([px,py])=>
-Math.hypot(
-px-clamp(px,b.x,b.x+b.w),
-py-clamp(py,b.y,b.y+b.h)
-)<=sh.radius
-);
-}
-
-function countHits(x,y,type,side){
-return bricks[1-side].filter(b=>
-affected(b,x,y,type,side)
-).length;
-}
-
-function ammoList(){
-const available=supplies[turn];
-
-const list=[
-{id:"normal",name:"⚫ Standard · Unlimited"}
-];
-
-for(const [id,name] of [
-["heavy","💥 Heavy"],
-["scatter","✨ Scatter"],
-["hot","🔥 Hot Shot"],
-["frost","❄️ Frost"],
-["pierce","💎 Piercing"]
-]){
-const unlocked=
-turn===1&&mode==="cpu"
-?["heavy","hot"].includes(id)
-:owns(id);
-
-if(unlocked){
-list.push({
-id,
-name:`${name} · ${available[id]||0} left`,
-disabled:!(available[id]>0)
-});
-}
-}
-
-return list;
-}
-
-function updateAmmo(){
-const input=$("ammo");
-const items=ammoList();
-
-input.replaceChildren();
-
-for(const item of items){
-const opt=document.createElement("option");
-opt.value=item.id;
-opt.textContent=item.name;
-opt.disabled=!!item.disabled;
-input.append(opt);
-}
-
-if(!items.some(item=>
-item.id===selectedAmmo&&!item.disabled
-)){
-selectedAmmo="normal";
-}
-
-input.value=selectedAmmo;
+function addPart(x,y,color,n=12){
+ for(let i=0;i<n;i++){
+  parts.push({
+   x,y,
+   vx:rand(-175,175),
+   vy:rand(-240,-40),
+   life:rand(.35,.95),
+   color
+  });
+ }
 }
 
 function hud(){
-$("blueHealth").textContent=
-`${bricks[0].length} / ${totals[0]} 🧱`;
+ for(const [id,v] of Object.entries({
+  blue:blocks[0].length+' / '+total[0],
+  red:blocks[1].length+' / '+total[1],
+  coins:save.coins,
+  wins:save.wins
+ }))$(id).textContent=v;
 
-$("redHealth").textContent=
-`${bricks[1].length} / ${totals[1]} 🧱`;
+ const my=settings[turn];
+ $('angle').value=my.angle;
+ $('power').value=my.power;
+ $('angleText').textContent=my.angle+'°';
+ $('powerText').textContent=my.power+'%';
 
-$("turnText").textContent=
-phase==="menu"?"READY":
-phase==="over"?"FINISHED":
-turn===0?"🔵 BLUE":"🔴 RED";
+ const options=[
+  {id:'normal',name:'⚫ Standard · Unlimited'},
+  ...products
+   .filter(p=>!p.secret&&
+    ['heavy','scatter','hot','frost','pierce'].includes(p.id)
+    &&owns(p.id))
+   .map(p=>({
+    id:p.id,
+    name:p.name+' · '+(supply[turn][p.id]||0)+' left',
+    disabled:!(supply[turn][p.id]>0)
+   }))
+ ];
 
-$("windText").textContent=
-phase==="menu"?"🍃 —":
-`${wind<0?"←":"→"} ${Math.abs(wind)}`;
+ $('ammo').replaceChildren();
 
-$("angle").value=settings[turn].angle;
-$("power").value=settings[turn].power;
+ for(const o of options){
+  const el=document.createElement('option');
+  el.value=o.id;
+  el.textContent=o.name;
+  el.disabled=o.disabled;
+  $('ammo').append(el);
+ }
 
-$("angleValue").textContent=
-settings[turn].angle+"°";
+ if(!options.some(o=>o.id===selected&&!o.disabled))
+  selected='normal';
 
-$("powerValue").textContent=
-settings[turn].power+"%";
+ $('ammo').value=selected;
 
-const can=
-phase==="ready"&&
-!(mode==="cpu"&&turn===1);
+ const allowed=phase==='ready'&&(turn===0||mode==='pvp');
+ $('fire').disabled=!allowed;
+ $('skyStorm').hidden=!owns('skyStorm');
+ $('skyStorm').disabled=!allowed||stormUsed[turn];
 
-$("angle").disabled=!can;
-$("power").disabled=!can;
-$("ammo").disabled=!can;
-$("fireBtn").disabled=!can;
-
-$("mode").disabled=
-phase==="flying"||phase==="settling";
-
-$("difficulty").disabled=
-phase==="flying"||phase==="settling";
-
-updateAmmo();
-
-$("notice").textContent=
-phase==="menu"
-?"Choose your settings and start!":
-phase==="flying"
-?"💥 Cannonball flying...":
-phase==="settling"
-?info||"🧱 Castle taking damage!":
-phase==="over"
-?"🏆 Battle complete!":
-turn===1&&mode==="cpu"
-?"🤖 Computer is taking aim...":
-`${turn===0?"🔵 BLUE":"🔴 RED"}: aim and fire! ${
-shields[1-turn]?"🛡️ Enemy shield is active!":""
-}`;
-
-$("coins").textContent=`🪙 ${save.coins} coins`;
+ $('notice').textContent=
+  phase==='ready'
+   ?`🎮 ${turn===0?'BLUE':'RED'} CASTLE · ${
+      mode==='cpu'&&turn===1?'Computer thinking':'Your turn'
+     } · Wind ${Math.round(wind)}`
+   :phase==='storm'?'🌈 MAGIC SKY STORM!'
+   :phase==='flight'?'✨ Flying sparkle!'
+   :phase==='over'?'🏆 Battle finished!'
+   :'Castles ready!';
 }
 
-function startBattle(){
-session++;
+function shopRender(){
+ const grid=$('shopGrid');
+ grid.replaceChildren();
+ $('wallet').textContent=save.coins+' coins';
 
-mode=$("mode").value;
-difficulty=$("difficulty").value;
+ for(const p of products){
+  if(p.secret&&!owns(p.id))continue;
+  const d=document.createElement('div');
+  d.className='item';
+  d.innerHTML=`<b>${p.name}</b><p>${p.desc}</p>`;
 
-const enemyFortified=
-difficulty!=="balanced"&&mode==="cpu";
+  const b=document.createElement('button');
+  b.textContent=owns(p.id)?'✓ OWNED':'BUY '+p.cost;
+  b.disabled=owns(p.id)||save.coins<p.cost;
+  b.onclick=()=>{
+   if(p.secret||owns(p.id)||save.coins<p.cost)return;
+   save.coins-=p.cost;
+   save.owned.push(p.id);
+   persist();shopRender();hud();
+  };
 
-bricks=[
-build(0,owns("walls")),
-build(1,enemyFortified)
-];
-
-totals=bricks.map(b=>b.length);
-
-shields=[
-owns("shield")?1:0,
-mode==="cpu"&&difficulty==="legend"?1:0
-];
-
-frozen=[0,0];
-
-supplies=[
-{
-heavy:owns("heavy")?2:0,
-scatter:owns("scatter")?2:0,
-hot:owns("hot")?2:0,
-frost:owns("frost")?1:0,
-pierce:owns("pierce")?2:0
-},
-{
-heavy:mode==="cpu"
-?(difficulty==="legend"?3:difficulty==="hard"?2:1)
-:owns("heavy")?2:0,
-scatter:mode==="two"&&owns("scatter")?2:0,
-hot:mode==="cpu"&&difficulty==="legend"
-?1:mode==="two"&&owns("hot")?2:0,
-frost:mode==="two"&&owns("frost")?1:0,
-pierce:mode==="two"&&owns("pierce")?2:0
-}
-];
-
-settings=[
-{angle:32,power:62},
-{angle:32,power:62}
-];
-
-turn=0;
-phase="ready";
-shot=null;
-trail=[];
-debris=[];
-heatBursts=[];
-shake=0;
-cooldown=0;
-info="";
-selectedAmmo="normal";
-
-newWind();
-
-$("overlay").hidden=true;
-hud();
-renderShop();
+  d.append(b);
+  grid.append(d);
+ }
 }
 
-function endBattle(winner){
-phase="over";
-shot=null;
-heatBursts=[];
-session++;
+function end(winner){
+ phase='over';
+ ball=null;
+ session++;
+ let earned=0;
 
-let reward=0;
+ if(mode==='cpu'){
+  earned=winner===0
+   ?(difficulty==='legend'?95:difficulty==='hard'?60:35)
+   :12;
+  save.coins+=earned;
+  if(winner===0)save.wins++;
+  persist();
+ }
 
-if(mode==="cpu"){
-if(winner===0){
-save.wins++;
-reward=
-difficulty==="legend"?95:
-difficulty==="hard"?60:35;
-}else{
-reward=12;
+ modal(`
+ <h2>${winner===0?'🏆 BLUE CASTLE WINS!':'🏆 RED CASTLE WINS!'}</h2>
+ <p>Magical castle match complete!
+ ${mode==='cpu'?'+ '+earned+' coins':''}</p>
+ <p>Wallet ${save.coins} · Wins ${save.wins}</p>
+ <button data-action="again">↻ NEW BATTLE</button>
+ <button data-action="menu">🏠 MENU</button>
+ `);
+ hud();
 }
 
-save.coins+=reward;
-persist();
+function next(){
+ if(!blocks[0].length)return end(1);
+ if(!blocks[1].length)return end(0);
+
+ turn=1-turn;
+ phase='ready';
+ selected='normal';
+ wind=rand(-60,60);
+
+ if(frozen[turn]){
+  frozen[turn]--;
+  turn=1-turn;
+ }
+
+ hud();
+
+ if(mode==='cpu'&&turn===1){
+  const token=++session;
+
+  setTimeout(()=>{
+   if(token!==session||phase!=='ready'||turn!==1)return;
+
+   const targets=blocks[0];
+   if(!targets.length)return;
+
+   const aim=targets[Math.floor(targets.length*.6)];
+   let best={a:42,p:65,error:1e9};
+
+   for(let a=19;a<=68;a+=3){
+    for(let p=33;p<=100;p+=4){
+     let vx=-Math.cos(a*Math.PI/180)*(245+p*3);
+     let vy=-Math.sin(a*Math.PI/180)*(245+p*3);
+     let x=716,y=365;
+
+     for(let i=0;i<140;i++){
+      x+=vx*.025;
+      y+=vy*.025;
+      vy+=450*.025;
+      vx+=wind*.025;
+
+      if(x<aim.x+25){
+       const error=Math.abs(y-(aim.y+15));
+       if(error<best.error)best={a,p,error};
+       break;
+      }
+      if(y>GROUND)break;
+     }
+    }
+   }
+
+   settings[1]={angle:best.a,power:best.p};
+   fire(1,best.a,best.p,'normal');
+
+  },difficulty==='easy'?1100:650);
+ }
 }
 
-$("dialogTitle").textContent=
-winner===0
-?"🏆 BLUE CASTLE WINS!"
-:"🏆 RED CASTLE WINS!";
+function fire(player,a,p,type){
+ if(phase!=='ready'||turn!==player)return;
 
-$("dialogText").textContent=
-mode==="cpu"
-?`${winner===0?"VICTORY!":"DEFEAT!"}
-+${reward} workshop coins.
-Total computer victories: ${save.wins}.
-Upgrade your castle before the next battle!`
-:"The opposing castle has fallen! Play again for a rematch!";
+ if(type!=='normal'){
+  if(!supply[player][type])type='normal';
+  else supply[player][type]--;
+ }
 
-$("startBtn").textContent="⚔️ PLAY AGAIN";
-$("overlay").hidden=false;
+ const v=245+p*3;
+ const rad=a*Math.PI/180;
 
-hud();
-renderShop();
+ ball={
+  x:player===0?244:716,
+  y:365,
+  vx:v*Math.cos(rad)*(player===0?1:-1),
+  vy:-v*Math.sin(rad),
+  type,
+  attacker:player
+ };
+
+ phase='flight';
+ hud();
 }
 
-function fire(side,a,p,type="normal"){
-if(phase!=="ready"||turn!==side)return;
+function impact(x,y,type,attacker){
+ const defender=1-attacker;
 
-if(type!=="normal"){
-if(!supplies[side][type]){
-type="normal";
-}else{
-supplies[side][type]--;
-}
-}
+ if(shields[defender]){
+  shields[defender]=0;
+  $('notice').textContent='🛡️ Shield blocked magic!';
+ }else{
+  const radius=type==='heavy'?70:
+   type==='scatter'?60:
+   type==='pierce'?48:49;
 
-const v=velocity(side,a,p);
+  const pts=
+   type==='scatter'
+    ?[[x-44,y],[x,y],[x+44,y]]
+    :type==='pierce'
+     ?[[x,y],[x+(attacker===0?38:-38),y]]
+     :[[x,y]];
 
-shot={
-x:sides[side].muzzle,
-y:368,
-vx:v.vx,
-vy:v.vy,
-side,
-type
-};
+  let removed=0;
 
-trail=[];
-phase="flying";
-hud();
-}
+  blocks[defender]=blocks[defender].filter(b=>{
+   const hit=pts.some(([a,z])=>
+    Math.hypot(
+     a-clamp(a,b.x,b.x+b.w),
+     z-clamp(z,b.y,b.y+b.h)
+    )<radius
+   );
 
-function particles(x,y,color,count=17){
-for(let i=0;i<count;i++){
-const a=Math.random()*Math.PI*2;
-const v=40+Math.random()*170;
+   if(hit){
+    removed++;
+    addPart(b.x+15,b.y+15,side[defender].color,6);
+   }
+   return !hit;
+  });
 
-debris.push({
-x,y,
-vx:Math.cos(a)*v,
-vy:Math.sin(a)*v-95,
-life:.35+Math.random()*.58,
-color,
-size:3+Math.random()*5
-});
-}
-}
+  if(type==='hot'&&removed){
+   let extra=Math.min(3,blocks[defender].length);
+   while(extra--){
+    const b=blocks[defender].splice(
+     Math.floor(rand(0,blocks[defender].length)),1
+    )[0];
+    if(b)addPart(b.x,b.y,'#ffd48a');
+   }
+  }
 
-function removeBlocks(target,accept){
-let removed=0;
+  if(type==='frost')frozen[defender]=1;
+ }
 
-bricks[target]=bricks[target].filter(b=>{
-if(!accept(b))return true;
-
-removed++;
-particles(
-b.x+16,b.y+14,
-sides[target].color,
-5
-);
-return false;
-});
-
-return removed;
+ $('notice').textContent='✨ Magic sparkle burst!';
+ ball=null;
+ phase='settle';
+ delay=.7;
+ hud();
 }
 
-function blast(x,y,target,type,attacker){
-shake=9;
+function sky(){
+ if(!owns('skyStorm')||phase!=='ready'||
+    stormUsed[turn]||mode==='cpu'&&turn===1)return;
 
-const sh=shape(type,x,y,attacker);
-
-for(const [px,py] of sh.spots){
-particles(
-px,py,
-type==="frost"?"#9cf5ff":
-type==="hot"?"#ff9a43":"#ffcf65",
-17
-);
-}
-
-if(shields[target]){
-shields[target]--;
-info="🛡️ Shield blocked the blast!";
-particles(x,y,"#75f7ff",25);
-}else{
-const removed=removeBlocks(
-target,
-b=>affected(b,x,y,type,attacker)
-);
-
-info=`💥 ${removed} bricks destroyed!`;
-
-if(type==="hot"){
-heatBursts.push({
-target,x,y,timer:.6
-});
-info="🔥 Hot Shot! The heat burst is coming...";
-}
-
-if(type==="frost"){
-frozen[target]=1;
-info="❄️ Enemy cannon frozen for its next turn!";
-}
-}
-
-shot=null;
-trail=[];
-
-if(!bricks[target].length){
-endBattle(1-target);
-return;
-}
-
-phase="settling";
-cooldown=type==="hot"?.95:.7;
-hud();
-}
-
-function miss(x,y){
-particles(x,y,"#daba88",13);
-
-info="💨 Missed!";
-shot=null;
-trail=[];
-phase="settling";
-cooldown=.6;
-
-hud();
-}
-
-// Arcade simulation used by the computer opponent.
-function predict(side,a,p,type){
-const v=velocity(side,a,p);
-
-const o={
-x:sides[side].muzzle,
-y:368,
-vx:v.vx,
-vy:v.vy
-};
-
-for(let i=0;i<380;i++){
-const dt=.014;
-
-o.x+=o.vx*dt;
-o.y+=o.vy*dt;
-o.vx+=wind*dt;
-o.vy+=G*dt;
-
-const enemy=1-side;
-
-if(bricks[enemy].some(b=>
-o.x+9>b.x&&
-o.x-9<b.x+b.w&&
-o.y+9>b.y&&
-o.y-9<b.y+b.h
-)){
-return countHits(o.x,o.y,type,side);
-}
-
-if(o.y>=GROUND-5){
-return countHits(
-o.x,GROUND-5,type,side
-);
-}
-
-if(
-o.x<-35||
-o.x>W+35||
-o.y>H+40
-)break;
-}
-
-return 0;
-}
-
-function computerFire(token){
-if(
-session!==token||
-phase!=="ready"||
-turn!==1||
-mode!=="cpu"
-)return;
-
-const type=
-supplies[1].heavy>0&&(
-difficulty==="legend"||
-difficulty==="hard"&&Math.random()<.65
-)
-?"heavy":
-supplies[1].hot>0&&difficulty==="legend"
-?"hot":"normal";
-
-const options=[];
-
-for(let a=12;a<=68;a+=3){
-for(let p=25;p<=100;p+=3){
-const n=predict(1,a,p,type);
-
-if(n>0){
-options.push({
-a,p,
-score:n+Math.random()*.7
-});
-}
-}
-}
-
-options.sort((a,b)=>b.score-a.score);
-
-let choice={a:31,p:67};
-
-if(options.length){
-const pool=
-difficulty==="balanced"?22:
-difficulty==="hard"?6:2;
-
-choice=options[
-Math.floor(
-Math.random()*Math.min(pool,options.length)
-)
-];
-}
-
-const jitter=
-difficulty==="legend"?.5:
-difficulty==="hard"?1.3:3.1;
-
-const a=clamp(
-Math.round(
-choice.a+(Math.random()-.5)*jitter*2
-),
-12,75
-);
-
-const p=clamp(
-Math.round(
-choice.p+(Math.random()-.5)*jitter*3
-),
-25,100
-);
-
-settings[1]={angle:a,power:p};
-fire(1,a,p,type);
-}
-
-function nextTurn(){
-turn=1-turn;
-selectedAmmo="normal";
-
-newWind();
-
-if(frozen[turn]>0){
-frozen[turn]--;
-
-info=`❄️ ${
-turn===0?"Blue":"Red"
-} cannon is frozen! Turn skipped.`;
-
-phase="settling";
-cooldown=1.05;
-hud();
-return;
-}
-
-phase="ready";
-info="";
-hud();
-
-if(turn===1&&mode==="cpu"){
-const token=session;
-
-setTimeout(
-()=>computerFire(token),
-650
-);
-}
+ stormUsed[turn]=true;
+ storm={time:0,side:turn,done:false};
+ phase='storm';
+ hud();
 }
 
 function update(dt){
-shake=Math.max(0,shake-dt*20);
+ for(const p of parts){
+  p.x+=p.vx*dt;
+  p.y+=p.vy*dt;
+  p.vy+=600*dt;
+  p.life-=dt;
+ }
+ parts=parts.filter(p=>p.life>0);
 
-for(const p of debris){
-p.x+=p.vx*dt;
-p.y+=p.vy*dt;
-p.vy+=420*dt;
-p.life-=dt;
+ if(phase==='flight'&&ball){
+  ball.x+=ball.vx*dt;
+  ball.y+=ball.vy*dt;
+  ball.vx+=wind*dt;
+  ball.vy+=450*dt;
+
+  const target=1-ball.attacker;
+
+  const hit=blocks[target].some(b=>
+   ball.x>b.x-10&&ball.x<b.x+b.w+10&&
+   ball.y>b.y-10&&ball.y<b.y+b.h+10
+  );
+
+  if(hit||ball.y>GROUND||ball.x<0||ball.x>W){
+   const b=ball;
+   impact(b.x,b.y,b.type,b.attacker);
+  }
+ }
+
+ if(phase==='settle'){
+  delay-=dt;
+  if(delay<=0)next();
+ }
+
+ if(phase==='storm'&&storm){
+  storm.time+=dt;
+  const defender=1-storm.side;
+
+  if(!storm.done&&storm.time>1.5){
+   storm.done=true;
+   const count=Math.min(6,blocks[defender].length);
+
+   for(let i=0;i<count;i++){
+    const j=Math.floor(rand(0,blocks[defender].length));
+    const b=blocks[defender].splice(j,1)[0];
+
+    if(b){
+     addPart(
+      b.x+15,b.y+12,
+      ['#ffe9a1','#bafee0','#cca9ff'][i%3],
+      17
+     );
+    }
+   }
+  }
+
+  if(storm.time>2.7){
+   storm=null;
+   phase='settle';
+   delay=.3;
+  }
+ }
 }
 
-debris=debris.filter(p=>p.life>0);
-
-// Hot Shot delayed effect.
-for(const h of heatBursts){
-h.timer-=dt;
-
-if(h.timer<=0){
-const near=bricks[h.target]
-.map(b=>({
-b,
-d:Math.hypot(
-h.x-(b.x+16),
-h.y-(b.y+14)
-)
-}))
-.filter(o=>o.d<110)
-.sort((a,b)=>a.d-b.d)
-.slice(0,2);
-
-const chosen=new Set(
-near.map(o=>o.b)
-);
-
-const removed=removeBlocks(
-h.target,
-b=>chosen.has(b)
-);
-
-particles(h.x,h.y,"#ff8938",30);
-info=`🔥 Heat burst broke ${removed} more bricks!`;
-
-h.done=true;
-
-if(!bricks[h.target].length){
-endBattle(1-h.target);
-return;
+function circle(x,y,r,c){
+ g.fillStyle=c;
+ g.beginPath();
+ g.arc(x,y,r,0,Math.PI*2);
+ g.fill();
 }
 
-hud();
-}
-}
+function drawCastle(t){
+ const base=side[t];
+ g.fillStyle=base.dark;
+ g.fillRect(base.x-6,GROUND-12,148,12);
 
-heatBursts=heatBursts.filter(h=>!h.done);
+ for(const b of blocks[t]){
+  g.fillStyle=base.color;
+  g.fillRect(b.x+1,b.y+1,b.w-2,b.h-2);
+  g.fillStyle='#ffffff44';
+  g.fillRect(b.x+3,b.y+3,b.w-6,5);
+  g.strokeStyle='#1e304a';
+  g.lineWidth=1;
+  g.strokeRect(b.x,b.y,b.w,b.h);
+ }
 
-if(phase==="settling"){
-cooldown-=dt;
-
-if(cooldown<=0&&heatBursts.length===0){
-nextTurn();
-}
-}
-
-if(!shot||phase!=="flying")return;
-
-for(let i=0;i<4;i++){
-const d=dt/4;
-
-shot.x+=shot.vx*d;
-shot.y+=shot.vy*d;
-shot.vx+=wind*d;
-shot.vy+=G*d;
-
-if(i===0){
-trail.push({
-x:shot.x,
-y:shot.y
-});
-
-if(trail.length>35)trail.shift();
-}
-
-const enemy=1-shot.side;
-
-if(bricks[enemy].some(b=>
-shot.x+9>b.x&&
-shot.x-9<b.x+b.w&&
-shot.y+9>b.y&&
-shot.y-9<b.y+b.h
-)){
-blast(
-shot.x,shot.y,
-enemy,shot.type,shot.side
-);
-return;
-}
-
-if(shot.y>=GROUND-5){
-if(countHits(
-shot.x,GROUND-5,
-shot.type,shot.side
-)>0){
-blast(
-shot.x,GROUND-5,
-enemy,shot.type,shot.side
-);
-}else{
-miss(shot.x,GROUND-5);
-}
-return;
-}
-
-if(
-shot.x<-35||
-shot.x>W+35||
-shot.y>H+40
-){
-miss(
-clamp(shot.x,0,W),
-clamp(shot.y,0,GROUND)
-);
-return;
-}
-}
-}
-
-function roundRect(x,y,w,h,r,color){
-ctx.beginPath();
-ctx.roundRect(x,y,w,h,r);
-ctx.fillStyle=color;
-ctx.fill();
-}
-
-function background(t){
-const g=ctx.createLinearGradient(
-0,0,0,GROUND
-);
-
-g.addColorStop(0,"#5d98d8");
-g.addColorStop(.75,"#b4d8ed");
-g.addColorStop(1,"#ffdab1");
-
-ctx.fillStyle=g;
-ctx.fillRect(0,0,W,H);
-
-ctx.fillStyle="#fff1bd";
-ctx.beginPath();
-ctx.arc(470,108,50,0,Math.PI*2);
-ctx.fill();
-
-for(let i=0;i<5;i++){
-const x=
-(i*233+t*(i%2?7:11))%1200-130;
-
-const y=70+(i%3)*59;
-
-ctx.fillStyle="#ffffffb9";
-
-for(const [dx,dy,r] of [
-[0,0,24],
-[24,2,28],
-[48,4,22]
-]){
-ctx.beginPath();
-ctx.arc(x+dx,y+dy,r,0,Math.PI*2);
-ctx.fill();
-}
-}
-
-ctx.fillStyle="#82b6ab";
-ctx.beginPath();
-ctx.moveTo(0,407);
-ctx.lineTo(185,309);
-ctx.lineTo(312,400);
-ctx.lineTo(493,318);
-ctx.lineTo(682,400);
-ctx.lineTo(817,332);
-ctx.lineTo(960,403);
-ctx.lineTo(960,GROUND);
-ctx.lineTo(0,GROUND);
-ctx.fill();
-
-ctx.fillStyle="#619b72";
-ctx.beginPath();
-ctx.moveTo(0,435);
-ctx.quadraticCurveTo(260,375,480,445);
-ctx.quadraticCurveTo(780,385,960,430);
-ctx.lineTo(960,GROUND);
-ctx.lineTo(0,GROUND);
-ctx.fill();
-
-ctx.fillStyle="#44845b";
-ctx.fillRect(
-0,GROUND,W,H-GROUND
-);
-
-ctx.fillStyle="#7c5941";
-ctx.fillRect(
-0,GROUND+19,
-W,H-GROUND-19
-);
-
-ctx.strokeStyle="#a1d07f";
-ctx.lineWidth=5;
-ctx.beginPath();
-ctx.moveTo(0,GROUND+2);
-ctx.lineTo(W,GROUND+2);
-ctx.stroke();
-}
-
-function castle(s){
-const c=sides[s];
-
-ctx.fillStyle="#0003";
-ctx.beginPath();
-ctx.ellipse(
-c.x+69,GROUND+10,
-95,15,0,0,Math.PI*2
-);
-ctx.fill();
-
-for(const b of bricks[s]){
-roundRect(
-b.x+1,b.y+1,
-b.w-2,b.h-2,
-2,
-s===0?"#469ace":"#d96e83"
-);
-
-ctx.fillStyle=c.dark;
-ctx.fillRect(
-b.x+2,
-b.y+b.h-6,
-b.w-4,5
-);
-
-ctx.strokeStyle="#ffffff65";
-ctx.lineWidth=1;
-ctx.strokeRect(
-b.x+2,b.y+2,
-b.w-4,b.h-4
-);
-}
-
-const poleX=c.x+68;
-const flagY=GROUND-116;
-
-ctx.strokeStyle="#f8f4e4";
-ctx.lineWidth=4;
-ctx.beginPath();
-ctx.moveTo(poleX,flagY);
-ctx.lineTo(poleX,flagY-83);
-ctx.stroke();
-
-ctx.fillStyle=c.color;
-ctx.beginPath();
-ctx.moveTo(poleX,flagY-84);
-ctx.lineTo(
-poleX+c.dir*52,
-flagY-67
-);
-ctx.lineTo(poleX,flagY-51);
-ctx.fill();
-
-if(shields[s]){
-ctx.strokeStyle="#a1fff1";
-ctx.lineWidth=5;
-ctx.shadowColor="#66f0ff";
-ctx.shadowBlur=18;
-
-ctx.beginPath();
-ctx.ellipse(
-c.x+69,GROUND-85,
-106,110,0,0,Math.PI*2
-);
-ctx.stroke();
-ctx.shadowBlur=0;
-}
-
-if(frozen[s]){
-ctx.fillStyle="#9ae8ff77";
-ctx.fillRect(
-c.x-5,GROUND-185,
-148,190
-);
-}
-
-ctx.fillStyle="#133d68";
-ctx.font="bold 15px system-ui";
-ctx.textAlign="center";
-ctx.fillText(
-s===0?"BLUE CASTLE":"RED CASTLE",
-c.x+68,
-GROUND+45
-);
-}
-
-function cannon(s){
-const c=sides[s];
-const a=settings[s].angle*Math.PI/180;
-const x=c.muzzle;
-const y=368;
-
-ctx.save();
-ctx.translate(x,y);
-ctx.rotate(
-c.dir===1?-a:Math.PI+a
-);
-
-roundRect(
--12,-12,63,24,5,
-"#36415b"
-);
-
-roundRect(
-31,-11,20,22,4,
-"#252a3e"
-);
-
-ctx.restore();
-
-ctx.fillStyle="#374862";
-ctx.beginPath();
-ctx.arc(x,y,24,0,Math.PI*2);
-ctx.fill();
-
-ctx.strokeStyle="#aabacc";
-ctx.lineWidth=7;
-ctx.beginPath();
-ctx.arc(x,y,17,0,Math.PI*2);
-ctx.stroke();
-
-ctx.fillStyle=c.color;
-ctx.beginPath();
-ctx.arc(x,y,8,0,Math.PI*2);
-ctx.fill();
-}
-
-function preview(){
-if(
-phase!=="ready"||
-mode==="cpu"&&turn===1
-)return;
-
-const v=velocity(
-turn,
-settings[turn].angle,
-settings[turn].power
-);
-
-ctx.fillStyle=
-turn===0?"#0a527ecc":"#953352cc";
-
-const length=
-difficulty==="legend"?.32:
-difficulty==="hard"?.45:.57;
-
-for(let t=.1;t<=length;t+=.08){
-const x=
-sides[turn].muzzle+
-v.vx*t+
-.5*wind*t*t;
-
-const y=
-368+
-v.vy*t+
-.5*G*t*t;
-
-if(
-x<0||
-x>W||
-y>GROUND
-)break;
-
-ctx.beginPath();
-ctx.arc(x,y,3.2,0,Math.PI*2);
-ctx.fill();
-}
+ g.fillStyle='#2b3e65';
+ g.fillRect(base.x+25,GROUND-105,80,12);
+ g.fillStyle=base.color;
+ g.beginPath();
+ g.moveTo(base.x+66,GROUND-105);
+ g.lineTo(base.x+86,GROUND-149);
+ g.lineTo(base.x+42,GROUND-149);
+ g.fill();
 }
 
 function draw(){
-ctx.save();
+ const sky=g.createLinearGradient(0,0,0,H);
+ sky.addColorStop(0,'#568bd2');
+ sky.addColorStop(1,'#c2e9d3');
+ g.fillStyle=sky;
+ g.fillRect(0,0,W,H);
 
-if(shake){
-ctx.translate(
-(Math.random()-.5)*shake,
-(Math.random()-.5)*shake
-);
+ circle(760,80,37,'#fff1b6');
+
+ for(let i=0;i<6;i++){
+  const x=(i*195+performance.now()/100)%(W+200)-100;
+  circle(x,140+i%3*35,20,'#ffffff8a');
+  circle(x+23,132+i%3*35,25,'#ffffff8a');
+ }
+
+ g.fillStyle='#7db887';
+ g.fillRect(0,GROUND,W,H-GROUND);
+ g.fillStyle='#3f9569';
+ g.fillRect(0,GROUND-7,W,9);
+
+ drawCastle(0);
+ drawCastle(1);
+
+ for(const p of parts){
+  g.globalAlpha=Math.min(1,p.life);
+  g.fillStyle=p.color;
+  g.fillRect(p.x,p.y,6,6);
+ }
+ g.globalAlpha=1;
+
+ if(ball){
+  circle(
+   ball.x,ball.y,11,
+   ball.type==='hot'?'#ffa55a':
+   ball.type==='frost'?'#9cf1ff':
+   '#f5dba7'
+  );
+ }
+
+ if(storm){
+  const x=storm.side===0
+   ?-115+storm.time*420
+   :W+115-storm.time*420;
+
+  g.save();
+  g.translate(x,85+Math.sin(storm.time*7)*5);
+  g.fillStyle='#bca6ff';
+  g.beginPath();
+  g.ellipse(0,0,62,17,0,0,Math.PI*2);
+  g.fill();
+
+  g.fillStyle='#7bebf1';
+  g.beginPath();
+  g.ellipse(0,-10,35,21,0,Math.PI,Math.PI*2);
+  g.fill();
+
+  g.font='26px Arial';
+  g.fillText('✨',-16,12);
+  g.restore();
+
+  if(storm.time>1.15&&storm.time<2.55){
+   for(let i=0;i<15;i++){
+    const target=1-storm.side;
+    const r=side[target];
+    const xx=r.x+rand(0,130);
+    const yy=rand(GROUND-150,GROUND);
+
+    circle(
+     xx,yy,rand(3,6),
+     ['#fff2a2','#a7ffed','#e0b4ff'][i%3]
+    );
+   }
+  }
+ }
+
+ if(phase==='ready'){
+  g.fillStyle='#ffffffee';
+  g.font='bold 18px system-ui';
+  g.fillText(
+   turn===0?'🔵 BLUE TURN':'🔴 RED TURN',
+   400,30
+  );
+ }
 }
 
-background(performance.now()/1000);
-castle(0);
-castle(1);
-cannon(0);
-cannon(1);
-preview();
-
-if(shot){
-for(let i=0;i<trail.length;i++){
-ctx.fillStyle=
-`rgba(255,242,184,${i/trail.length*.7})`;
-
-ctx.beginPath();
-ctx.arc(
-trail[i].x,
-trail[i].y,
-3,0,Math.PI*2
-);
-ctx.fill();
-}
-
-ctx.shadowColor=
-shot.type==="frost"?"#a0faff":
-shot.type==="hot"?"#ff8d35":
-"#ffe07a";
-
-ctx.shadowBlur=18;
-
-ctx.fillStyle=({
-heavy:"#c35332",
-scatter:"#9472e3",
-hot:"#ff7b26",
-frost:"#82ecff",
-pierce:"#c2a3ff",
-normal:"#242b43"
-})[shot.type];
-
-ctx.beginPath();
-ctx.arc(
-shot.x,shot.y,
-shot.type==="heavy"?14:11,
-0,Math.PI*2
-);
-ctx.fill();
-
-ctx.strokeStyle="#fff0c9";
-ctx.lineWidth=2.5;
-ctx.stroke();
-ctx.shadowBlur=0;
-}
-
-for(const h of heatBursts){
-ctx.globalAlpha=
-.5+.4*Math.sin(
-performance.now()/70
-);
-
-ctx.fillStyle="#ff832f";
-ctx.beginPath();
-ctx.arc(
-h.x,h.y,
-27,0,Math.PI*2
-);
-ctx.fill();
-}
-
-ctx.globalAlpha=1;
-
-for(const p of debris){
-ctx.globalAlpha=clamp(p.life,0,1);
-ctx.fillStyle=p.color;
-ctx.fillRect(
-p.x,p.y,
-p.size,p.size
-);
-}
-
-ctx.globalAlpha=1;
-ctx.restore();
-}
-
-function frame(now){
-const dt=Math.min(
-.032,
-Math.max(0,(now-last)/1000)
-);
-
-last=now;
-update(dt);
-draw();
-
-requestAnimationFrame(frame);
-}
-
-function readSliders(){
-settings[turn].angle=
-Number($("angle").value);
-
-settings[turn].power=
-Number($("power").value);
-
-$("angleValue").textContent=
-settings[turn].angle+"°";
-
-$("powerValue").textContent=
-settings[turn].power+"%";
-}
-
-function renderShop(){
-const root=$("shopGrid");
-root.replaceChildren();
-
-$("coins").textContent=
-`🪙 ${save.coins} coins`;
-
-for(const product of products){
-const card=document.createElement("div");
-card.className="shop-item";
-
-const name=document.createElement("b");
-name.textContent=product.name;
-
-const desc=document.createElement("small");
-desc.textContent=product.desc;
-
-const button=document.createElement("button");
-
-button.textContent=owns(product.id)
-?"✅ UNLOCKED"
-:`🪙 BUY · ${product.cost}`;
-
-button.disabled=
-owns(product.id)||
-save.coins<product.cost;
-
-button.onclick=()=>{
-if(
-owns(product.id)||
-save.coins<product.cost
-)return;
-
-save.coins-=product.cost;
-save.owned.push(product.id);
-
-persist();
-renderShop();
-hud();
-};
-
-card.append(name,desc,button);
-root.append(card);
-}
-}
-
-$("angle").addEventListener(
-"input",readSliders
-);
-
-$("power").addEventListener(
-"input",readSliders
-);
-
-$("ammo").addEventListener(
-"change",e=>{
-selectedAmmo=e.target.value;
-}
-);
-
-$("fireBtn").onclick=()=>{
-fire(
-turn,
-settings[turn].angle,
-settings[turn].power,
-selectedAmmo
-);
-};
-
-$("startBtn").onclick=startBattle;
-$("restartBtn").onclick=startBattle;
-
-$("mode").onchange=()=>{
-if(phase!=="menu"&&phase!=="over"){
-startBattle();
-}
-};
-
-$("difficulty").onchange=()=>{
-if(phase!=="menu"&&phase!=="over"){
-startBattle();
-}
-};
-
-$("shopBtn").onclick=()=>{
-$("shop").hidden=!$("shop").hidden;
-renderShop();
-};
-
-window.addEventListener("keydown",e=>{
-if(
-phase!=="ready"||
-mode==="cpu"&&turn===1||
-["INPUT","SELECT","TEXTAREA","BUTTON"].includes(
-document.activeElement.tagName
-)
-)return;
-
-const s=settings[turn];
-
-if(e.code==="Space"){
-e.preventDefault();
-
-fire(
-turn,
-s.angle,
-s.power,
-selectedAmmo
-);
-return;
-}
-
-if(e.code==="ArrowUp"){
-s.angle=clamp(s.angle+1,12,75);
-}else if(e.code==="ArrowDown"){
-s.angle=clamp(s.angle-1,12,75);
-}else if(e.code==="ArrowRight"){
-s.power=clamp(s.power+2,25,100);
-}else if(e.code==="ArrowLeft"){
-s.power=clamp(s.power-2,25,100);
-}else{
-return;
-}
-
-e.preventDefault();
-hud();
+$('modal').addEventListener('click',e=>{
+ const a=e.target.closest('[data-action]')?.dataset.action;
+ if(a==='start')start();
+ if(a==='again'){phase='menu';menu();}
+ if(a==='menu')menu();
 });
 
-bricks=[
-build(0,false),
-build(1,false)
-];
+$('angle').oninput=()=>{
+ settings[turn].angle=Number($('angle').value);
+ hud();
+};
+$('power').oninput=()=>{
+ settings[turn].power=Number($('power').value);
+ hud();
+};
+$('ammo').onchange=()=>selected=$('ammo').value;
 
-hud();
-renderShop();
+$('fire').onclick=()=>{
+ fire(
+  turn,
+  settings[turn].angle,
+  settings[turn].power,
+  selected
+ );
+};
+$('skyStorm').onclick=sky;
+
+$('shopToggle').onclick=()=>{
+ $('shop').hidden=!$('shop').hidden;
+ shopRender();
+};
+$('restart').onclick=()=>{
+ phase='menu';
+ menu();
+};
+
+window.addEventListener('keydown',e=>{
+ if(phase!=='ready'||mode==='cpu'&&turn===1||
+    ['INPUT','BUTTON','SELECT'].includes(
+     document.activeElement.tagName
+    ))return;
+
+ const s=settings[turn];
+
+ if(e.code==='Space'){
+  e.preventDefault();
+  fire(turn,s.angle,s.power,selected);
+ }else if(e.code==='ArrowUp'){
+  s.angle=clamp(s.angle+1,12,75);
+ }else if(e.code==='ArrowDown'){
+  s.angle=clamp(s.angle-1,12,75);
+ }else if(e.code==='ArrowRight'){
+  s.power=clamp(s.power+2,25,100);
+ }else if(e.code==='ArrowLeft'){
+  s.power=clamp(s.power-2,25,100);
+ }else return;
+
+ e.preventDefault();
+ hud();
+});
+
+let lastFrame=performance.now();
+function frame(ms){
+ const dt=Math.min(.033,Math.max(0,(ms-lastFrame)/1000));
+ lastFrame=ms;
+ update(dt);
+ draw();
+ requestAnimationFrame(frame);
+}
+
+blocks=[makeBlocks(0),makeBlocks(1)];
+total=blocks.map(a=>a.length);
+shopRender();
+menu();
 requestAnimationFrame(frame);
 
 })();
