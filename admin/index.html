@@ -1,0 +1,1668 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Luxton Arcade | Local Admin Dashboard</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{
+  --bg:#071326;
+  --panel:#13253e;
+  --alt:#1b3354;
+  --edge:#385777;
+  --text:#eff7ff;
+  --dim:#a7bfd5;
+  --mint:#7cebd5;
+  --gold:#ffdda0;
+  --pink:#ff9ea9
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,Arial,sans-serif;
+  background:radial-gradient(circle at 20% 0%,#15365d,#071326 57%);
+  color:var(--text);
+  min-height:100vh
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible{
+  outline:3px solid #ffdc87;
+  outline-offset:2px
+}
+a{color:var(--mint);text-decoration:none}
+[hidden]{display:none!important}
+.authWrap{
+  min-height:100dvh;
+  display:grid;
+  place-items:center;
+  padding:20px
+}
+.authCard{
+  background:#132b49;
+  border:1px solid #5b88a9;
+  border-radius:22px;
+  padding:26px;
+  width:min(460px,100%);
+  box-shadow:0 22px 70px #0008
+}
+.authCard h1{margin:0;font-size:28px}
+.muted{color:var(--dim)}
+.small{font-size:12px;line-height:1.6}
+.authCard label{
+  display:block;
+  margin:14px 0 6px;
+  font-weight:700;
+  font-size:13px
+}
+.input{
+  background:#0d2037;
+  color:#fff;
+  border:1px solid #6284a2;
+  border-radius:10px;
+  padding:11px;
+  width:100%;
+  min-height:44px
+}
+.btn{
+  border:0;
+  background:linear-gradient(110deg,#75edce,#9bb6ff);
+  color:#10263e;
+  font-weight:850;
+  padding:11px 14px;
+  border-radius:10px;
+  min-height:43px
+}
+.btn.alt{
+  background:#294566;
+  color:#fff;
+  border:1px solid #587a9b
+}
+.btn.danger{
+  background:#642c42;
+  color:#fff;
+  border:1px solid #aa657c
+}
+.authCard .btn{margin-top:16px;width:100%}
+.error{
+  color:#ffc1bf;
+  font-size:13px;
+  min-height:20px
+}
+.warning{
+  border:1px solid #a38544;
+  background:#4a3b224d;
+  border-radius:10px;
+  padding:11px;
+  color:#ffdfab;
+  font-size:12px;
+  line-height:1.6
+}
+#app{min-height:100vh}
+.layout{
+  display:grid;
+  grid-template-columns:218px minmax(0,1fr);
+  min-height:100vh
+}
+.sidebar{
+  background:#0a1a30;
+  border-right:1px solid #2d496b;
+  padding:18px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:9px
+}
+.logo{
+  font-size:18px;
+  font-weight:1000;
+  letter-spacing:-.5px;
+  margin:4px 8px 22px
+}
+.logo b{color:var(--mint)}
+.nav-btn{
+  width:100%;
+  text-align:left;
+  border:1px solid transparent;
+  background:transparent;
+  border-radius:11px;
+  color:#bcd3e9;
+  padding:12px;
+  font-weight:780
+}
+.nav-btn.active{
+  background:#204c68;
+  border-color:#558db1;
+  color:#fff
+}
+.sidebar .spacer{flex:1}
+.sidebar small{
+  color:#8ea8c0;
+  line-height:1.5;
+  padding:5px 9px
+}
+.content{
+  padding:21px clamp(13px,3vw,40px);
+  min-width:0;
+  max-width:1500px;
+  width:100%;
+  margin:0 auto
+}
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:15px
+}
+.top h1{
+  font-size:clamp(24px,3vw,33px);
+  margin:0
+}
+.tag{
+  font-size:11px;
+  padding:7px 10px;
+  border:1px solid #5c829f;
+  border-radius:999px;
+  color:#b9ebec;
+  background:#203e50;
+  font-weight:900
+}
+.headrow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:12px 0 19px
+}
+.headrow p{
+  color:var(--dim);
+  margin:4px 0;
+  font-size:13px
+}
+.tools{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center
+}
+.tools .input{
+  width:auto;
+  max-width:245px
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:11px
+}
+.kpi{
+  background:linear-gradient(150deg,#1d3757,#13243d);
+  border:1px solid #456785;
+  border-radius:15px;
+  padding:16px;
+  min-width:0
+}
+.kpi small{
+  color:#bfd2e6;
+  font-size:11px;
+  display:block
+}
+.kpi b{
+  font-size:clamp(23px,3vw,34px);
+  color:var(--gold);
+  display:block;
+  margin:9px 0 3px
+}
+.kpi span{
+  font-size:11px;
+  color:var(--dim)
+}
+.panel{
+  background:#13263f;
+  border:1px solid #3c5e7c;
+  border-radius:16px;
+  padding:16px;
+  margin:15px 0
+}
+.panel h2{
+  font-size:18px;
+  margin:0 0 11px
+}
+.panel p{
+  font-size:12px;
+  color:var(--dim);
+  line-height:1.5
+}
+.tableWrap{
+  overflow-x:auto;
+  border-radius:11px;
+  border:1px solid #385674
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:680px;
+  font-size:12px
+}
+th{
+  text-align:left;
+  background:#203d5c;
+  padding:12px;
+  color:#d9eeff;
+  white-space:nowrap
+}
+td{
+  border-top:1px solid #31516e;
+  padding:11px;
+  color:#dceafa
+}
+tr:hover td{background:#1b3854}
+td strong{color:#fff}
+.barrow{
+  display:grid;
+  grid-template-columns:155px 1fr 75px;
+  gap:9px;
+  align-items:center;
+  font-size:12px;
+  padding:8px 0;
+  border-bottom:1px solid #ffffff14
+}
+.bar-bg{
+  height:11px;
+  background:#0a1b2f;
+  border-radius:9px;
+  overflow:hidden
+}
+.bar-fill{
+  background:linear-gradient(90deg,#60d6e7,#8ff3d3);
+  height:100%;
+  border-radius:9px
+}
+.two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px
+}
+.callout{
+  background:#203e55;
+  border-left:3px solid var(--mint);
+  padding:12px;
+  color:#c9e5ed;
+  border-radius:7px;
+  font-size:12px;
+  line-height:1.6
+}
+.code{
+  font-family:ui-monospace,monospace;
+  color:#b7ffe3;
+  font-weight:850
+}
+.status{
+  color:#a2eed4;
+  font-weight:800
+}
+.empty{
+  padding:22px;
+  text-align:center;
+  color:#b3c8da
+}
+.mobile-nav{display:none}
+.narrow{max-width:430px}
+.section-title{
+  font-size:18px;
+  margin:18px 0 10px
+}
+.right{text-align:right}
+label.inline{
+  font-size:12px;
+  color:#d7e6f2;
+  display:flex;
+  align-items:center;
+  gap:7px
+}
+.footer-note{
+  font-size:11px;
+  color:#8faec6;
+  line-height:1.7;
+  margin-top:20px
+}
+@media(max-width:1000px){
+  .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  .two-col{grid-template-columns:1fr}
+  .layout{
+    grid-template-columns:170px minmax(0,1fr)
+  }
+  .barrow{
+    grid-template-columns:130px 1fr 65px
+  }
+}
+@media(max-width:650px){
+  .layout{display:block}
+  .sidebar{display:none}
+  .mobile-nav{
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    padding:10px;
+    background:#0b1b31;
+    position:sticky;
+    top:0;
+    z-index:10
+  }
+  .mobile-nav .nav-btn{
+    white-space:nowrap;
+    width:auto;
+    padding:9px;
+    font-size:12px
+  }
+  .content{padding:14px}
+  .grid{gap:7px}
+  .kpi{padding:11px}
+  .kpi b{font-size:25px}
+  .panel{padding:10px}
+  .barrow{
+    grid-template-columns:95px 1fr 55px;
+    gap:5px;
+    font-size:11px
+  }
+}
+</style>
+</head>
+<body>
+
+<section class="authWrap" id="authWrap">
+  <div class="authCard">
+    <h1>🎮 Luxton Arcade Admin</h1>
+    <p class="muted small">
+      Local dashboard preview · No external app required
+    </p>
+
+    <h2 id="authTitle">Admin sign in</h2>
+
+    <form id="loginForm">
+      <label for="password">
+        Your admin passphrase
+      </label>
+
+      <input
+        id="password"
+        class="input"
+        type="password"
+        autocomplete="current-password"
+        minlength="8"
+        required
+        placeholder="At least 8 characters"
+      >
+
+      <div id="confirmRow" hidden>
+        <label for="confirm">
+          Confirm passphrase
+        </label>
+
+        <input
+          id="confirm"
+          class="input"
+          type="password"
+          autocomplete="new-password"
+        >
+      </div>
+
+      <button
+        class="btn"
+        type="submit"
+        id="authButton"
+      >
+        🔐 Sign in
+      </button>
+
+      <p
+        id="authError"
+        class="error"
+        role="alert"
+      ></p>
+    </form>
+
+    <div class="warning">
+      <b>Important:</b>
+      This password protects the dashboard view
+      only in this browser. GitHub Pages has no
+      private server login, so this is
+      <b>not secure owner-only access</b>.
+      It can display only data stored on this
+      browser. Do not use it to store classmates'
+      personal information.
+    </div>
+
+    <p class="small">
+      <a href="../">← Return to arcade</a>
+    </p>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <div class="mobile-nav" id="mobileNav"></div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="logo">
+        🎮 LUXTON <b>ADMIN</b>
+      </div>
+
+      <div id="sideNav"></div>
+
+      <div class="spacer"></div>
+
+      <small>
+        🖥️ This browser only
+        <br>
+        Not a private online database
+      </small>
+
+      <button class="nav-btn" id="logout">
+        🔒 Log out
+      </button>
+
+      <a href="../" class="nav-btn">
+        ← Back to arcade
+      </a>
+    </aside>
+
+    <main class="content">
+      <div class="top">
+        <h1 id="pageTitle">Overview</h1>
+
+        <span class="tag">
+          LOCAL DATA · NOT SITE-WIDE
+        </span>
+      </div>
+
+      <div class="headrow">
+        <p id="pageDesc">
+          Your current browser's arcade activity.
+        </p>
+
+        <div class="tools">
+          <label class="inline" for="period">
+            Period
+          </label>
+
+          <select id="period" class="input">
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="all">All time</option>
+          </select>
+
+          <button class="btn alt" id="refresh">
+            ↻ Refresh
+          </button>
+        </div>
+      </div>
+
+      <section id="view"></section>
+
+      <p class="footer-note">
+        Luxton Arcade Local Admin V1 · Estimated
+        engaged time is foreground game-page time
+        with recent input, not verified in-game time.
+        Data never leaves this browser.
+      </p>
+    </main>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const PASS_KEY =
+    "luxton_local_admin_auth_v1";
+
+  const SESSION_KEY =
+    "luxton_local_admin_session_v1";
+
+  const DATA_KEY =
+    "luxton_arcade_local_analytics_v1";
+
+  const CODES_KEY =
+    "luxton_arcade_codes_v1";
+
+  // ====================================
+  // ADMIN MENU
+  // ====================================
+
+  const menu = [
+    ["overview", "🏠", "Overview"],
+    ["analytics", "📊", "Analytics"],
+    ["codes", "🎟️", "Codes"],
+    ["users", "👥", "Users"],
+    ["settings", "⚙️", "Settings"]
+  ];
+
+  // ====================================
+  // ALL NINE GAMES
+  // ====================================
+
+  const games = [
+    ["target-rush", "🎯 Target Rush"],
+    ["bike-rush", "🚴 Bike Rush"],
+    ["basketball-rush", "🏀 Basketball Rush"],
+    ["castle-rush", "🏰 Castle Rush"],
+    ["fishing-rush", "🎣 Fishing Rush"],
+    ["mining-rush", "⛏️ Mining Rush"],
+    ["space-rush", "🚀 Space Rush"],
+    ["golf-rush", "⛳ Golf Rush"],
+    ["crab-rush", "🦀 Crab Rush"]
+  ];
+
+  // ====================================
+  // EXISTING SECRET CODE CATALOG
+  // ====================================
+  // 8 original + 24 Rare Reward codes.
+
+  const catalog = [
+    ["CRABROYAL", "Crab Rush", "Royal Tide Crab skin"],
+    ["CRABNEON", "Crab Rush", "Neon Wave Crab skin"],
+    ["CRABTIDE", "Crab Rush", "Tidal Claws ability"],
+    ["CRABSHELLS", "Crab Rush", "35 shells"],
+    ["STARSHIP", "Space Rush", "60 coins"],
+    ["PUTTPARTY", "Golf Rush", "50 coins"],
+    ["DIGDEEP", "Mining Rush", "80 coins"],
+    ["ARCADEVIP", "Arcade", "VIP badge"],
+
+    ["PRISMRIDER", "Bike Rush", "Prism Bike"],
+    ["STARHELMET", "Bike Rush", "Star Rider Head"],
+    ["SOLARBIKE", "Bike Rush", "Solar Orange Bike"],
+
+    ["ALIENPILOT", "Space Rush", "Alien Explorer ship"],
+    ["GALAXYACE", "Space Rush", "Galaxy X ship"],
+    ["HYPERENGINE", "Space Rush", "Hyperdrive + Power Cell"],
+    ["LASERLAB", "Space Rush", "Star Amplifier"],
+
+    ["CRYSTALCANNON", "Castle Rush", "Piercing Cannonball"],
+    ["FROSTFORT", "Castle Rush", "Frost Shot + Castle Shield"],
+    ["IRONFORT", "Castle Rush", "Reinforced Walls"],
+
+    ["COSMICDUNK", "Basketball Rush", "Cosmic Basketball"],
+    ["FLAMEHOOPS", "Basketball Rush", "Fire Basketball"],
+
+    ["CRYSTALROD", "Fishing Rush", "Crystal Fishing Rod"],
+    ["SAILAWAY", "Fishing Rush", "Little Sailboat"],
+    ["LEGENDLURE", "Fishing Rush", "Legendary Lure + Lucky Bait"],
+    ["MOONLAGOON", "Fishing Rush", "Moonlight Lagoon"],
+
+    ["METEORPUTT", "Golf Rush", "Meteor Pro Ball"],
+    ["RAINBOWPUTT", "Golf Rush", "Rainbow Legend Ball"],
+    ["PROGOLF", "Golf Rush", "Pro Aim + Power Putter"],
+    ["HAZARDSAFE", "Golf Rush", "Hazard Insurance"],
+
+    ["ROBOPET", "Mining Rush", "Robo-Miner Pet"],
+    ["GEMMOLE", "Mining Rush", "Gem Mole Pet"],
+    ["MEGADRILL", "Mining Rush", "Mega Drill"],
+    ["VAULTVISION", "Mining Rush", "Vault Detector + Compass"]
+  ];
+
+  // ====================================
+  // HELPERS
+  // ====================================
+
+  const esc = v => String(v ?? "").replace(
+    /[&<>"']/g,
+    c => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[c]
+  );
+
+  function get(key) {
+    try {
+      const value = JSON.parse(
+        localStorage.getItem(key) || "null"
+      );
+
+      return value &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+        ? value
+        : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function fmtTime(value) {
+    const seconds = Math.max(
+      0,
+      Math.floor(Number(value) || 0)
+    );
+
+    if (seconds >= 3600) {
+      return Math.floor(seconds / 3600) +
+        "h " +
+        Math.floor(seconds % 3600 / 60) +
+        "m";
+    }
+
+    if (seconds >= 60) {
+      return Math.floor(seconds / 60) +
+        "m " +
+        seconds % 60 +
+        "s";
+    }
+
+    return seconds + "s";
+  }
+
+  function formatDate(timestamp) {
+    if (!timestamp) return "—";
+
+    return new Date(timestamp).toLocaleDateString(
+      undefined,
+      {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      }
+    );
+  }
+
+  const selected = () => $("period").value;
+
+  function inPeriod(timestamp) {
+    if (selected() === "all") return true;
+
+    const days = Number(selected());
+
+    return new Date(timestamp).getTime() >=
+      Date.now() - days * 86400000;
+  }
+
+  // ====================================
+  // READ GAME STATISTICS
+  // ====================================
+
+  function gameStats() {
+    const data = get(DATA_KEY);
+
+    return games.map(([id, name]) => {
+      const game = data.games?.[id] || {};
+
+      let seconds = 0;
+      let sessions = 0;
+
+      const buckets = game.days || {};
+
+      if (
+        selected() === "all" &&
+        !Object.keys(buckets).length
+      ) {
+        seconds = Number(game.seconds) || 0;
+        sessions = Number(game.sessions) || 0;
+
+      } else {
+        for (
+          const [day, value]
+          of Object.entries(buckets)
+        ) {
+          if (inPeriod(day + "T12:00:00")) {
+            seconds += Number(value.seconds) || 0;
+            sessions += Number(value.sessions) || 0;
+          }
+        }
+      }
+
+      return {
+        id,
+        name,
+        seconds,
+        sessions,
+        first: game.firstSeen || null,
+        last: game.lastSeen || null
+      };
+    });
+  }
+
+  // ====================================
+  // READ CODE STATISTICS
+  // ====================================
+
+  function codeStats() {
+    const used = get(CODES_KEY);
+
+    return catalog.map(
+      ([code, game, reward]) => ({
+        code,
+        game,
+        reward,
+        used:
+          !!used[code] &&
+          inPeriod(used[code].when || 0),
+        date: used[code]?.when || null
+      })
+    );
+  }
+
+  const sum = (arr, key) =>
+    arr.reduce(
+      (n, v) => n + (Number(v[key]) || 0),
+      0
+    );
+
+  function kpi(label, value, note) {
+    return `
+      <div class="kpi">
+        <small>${label}</small>
+        <b>${value}</b>
+        <span>${note}</span>
+      </div>
+    `;
+  }
+
+  function table(heads, rows) {
+    return `
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              ${heads.map(h =>
+                `<th>${h}</th>`
+              ).join("")}
+            </tr>
+          </thead>
+
+          <tbody>
+            ${
+              rows.length
+                ? rows.join("")
+                : `<tr>
+                     <td colspan="${heads.length}"
+                         class="empty">
+                       No data yet
+                     </td>
+                   </tr>`
+            }
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  let activeTab = "overview";
+  let codeQuery = "";
+
+  // ====================================
+  // BAR CHARTS
+  // ====================================
+
+  function bars(stats) {
+    const sorted = [...stats].sort(
+      (a, b) => b.seconds - a.seconds
+    );
+
+    const max = Math.max(
+      1,
+      ...sorted.map(g => g.seconds)
+    );
+
+    return sorted.map(g => `
+      <div class="barrow">
+        <span>${esc(g.name)}</span>
+
+        <div class="bar-bg">
+          <div
+            class="bar-fill"
+            style="width:${
+              Math.min(100, g.seconds / max * 100)
+            }%"
+          ></div>
+        </div>
+
+        <b class="right">
+          ${fmtTime(g.seconds)}
+        </b>
+      </div>
+    `).join("");
+  }
+
+  // ====================================
+  // OVERVIEW
+  // ====================================
+
+  function overview() {
+    const gs = gameStats();
+    const codes = codeStats();
+
+    const total = sum(gs, "seconds");
+    const sessions = sum(gs, "sessions");
+
+    const redeemed = codes.filter(
+      c => c.used
+    ).length;
+
+    const most = [...gs].sort(
+      (a, b) => b.seconds - a.seconds
+    )[0];
+
+    $("view").innerHTML = `
+      <div class="grid">
+        ${kpi(
+          "Estimated active time",
+          fmtTime(total),
+          "Foreground game pages"
+        )}
+
+        ${kpi(
+          "Game page opens",
+          sessions,
+          "Across the 9 games"
+        )}
+
+        ${kpi(
+          "Codes used here",
+          redeemed,
+          "Not global redemptions"
+        )}
+
+        ${kpi(
+          "Tracked local players",
+          "1 browser",
+          "Not individual people"
+        )}
+      </div>
+
+      <div class="two-col">
+        <section class="panel">
+          <h2>🎮 Favorite games by time</h2>
+
+          ${bars(gs)}
+
+          <p>
+            ${
+              total
+                ? `Top game: <b>${esc(most.name)}</b>.`
+                : "Open games after installing the tracker to start recording."
+            }
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2>📌 Highlights</h2>
+
+          <div class="callout">
+            ${
+              sessions
+                ? "These metrics represent activity on this device only."
+                : "No tracking data recorded yet."
+            }
+
+            <br>
+            Engagement time pauses when the page
+            is hidden or after 60 seconds without input.
+          </div>
+
+          <p>
+            <b>Average estimated time per page open:</b>
+            ${fmtTime(sessions ? total / sessions : 0)}
+          </p>
+
+          <p>
+            <b>Games opened:</b>
+            ${gs.filter(x => x.sessions > 0).length} / 9
+          </p>
+
+          <p>
+            <b>Redeemed code definitions:</b>
+            ${redeemed} / ${catalog.length}
+          </p>
+
+          <p>
+            <a href="../">← Open Luxton Arcade</a>
+          </p>
+        </section>
+      </div>
+    `;
+  }
+
+  // ====================================
+  // ANALYTICS
+  // ====================================
+
+  function analytics() {
+    const gs = gameStats();
+
+    const sessions = sum(gs, "sessions");
+    const seconds = sum(gs, "seconds");
+
+    $("view").innerHTML = `
+      <div class="grid">
+        ${kpi(
+          "Engaged time",
+          fmtTime(seconds),
+          "Local estimate"
+        )}
+
+        ${kpi(
+          "Game opens",
+          sessions,
+          "Tracked in browser"
+        )}
+
+        ${kpi(
+          "Average per open",
+          fmtTime(
+            sessions ? seconds / sessions : 0
+          ),
+          "Estimated engagement"
+        )}
+
+        ${kpi(
+          "Games visited",
+          gs.filter(g => g.sessions).length,
+          "Out of nine"
+        )}
+      </div>
+
+      <section class="panel">
+        <h2>📊 Engagement by game</h2>
+        ${bars(gs)}
+      </section>
+
+      <section class="panel">
+        <h2>Game breakdown</h2>
+
+        ${table(
+          [
+            "Game",
+            "Opens",
+            "Estimated engaged time",
+            "Avg. per open",
+            "First played",
+            "Last played"
+          ],
+
+          gs.map(g => `
+            <tr>
+              <td>
+                <strong>${esc(g.name)}</strong>
+              </td>
+              <td>${g.sessions}</td>
+              <td>${fmtTime(g.seconds)}</td>
+              <td>
+                ${fmtTime(
+                  g.sessions
+                    ? g.seconds / g.sessions
+                    : 0
+                )}
+              </td>
+              <td>${formatDate(g.first)}</td>
+              <td>${formatDate(g.last)}</td>
+            </tr>
+          `)
+        )}
+      </section>
+    `;
+  }
+
+  // ====================================
+  // CODES
+  // ====================================
+
+  function codes() {
+    const cs = codeStats().filter(c =>
+      (
+        c.code + " " +
+        c.game + " " +
+        c.reward
+      ).toLowerCase().includes(
+        codeQuery.toLowerCase()
+      )
+    );
+
+    const used = cs.filter(
+      c => c.used
+    ).length;
+
+    const rows = cs.map(c => `
+      <tr>
+        <td class="code">
+          ${esc(c.code)}
+        </td>
+
+        <td>${esc(c.game)}</td>
+
+        <td>${esc(c.reward)}</td>
+
+        <td>
+          <span class="status">
+            ${c.used ? "1" : "0"}
+          </span>
+        </td>
+
+        <td>${c.used ? "1" : "0"}</td>
+
+        <td>
+          ${
+            c.used
+              ? formatDate(c.date)
+              : "—"
+          }
+        </td>
+      </tr>
+    `);
+
+    $("view").innerHTML = `
+      <div class="grid">
+        ${kpi(
+          "Code definitions",
+          catalog.length,
+          "Homepage + Rare Rewards"
+        )}
+
+        ${kpi(
+          "Used in this browser",
+          used,
+          "New + existing local history"
+        )}
+
+        ${kpi(
+          "Unused here",
+          catalog.length - used,
+          "Not global availability"
+        )}
+
+        ${kpi(
+          "Visible unique redeemers",
+          used ? "1" : "0",
+          "Only this browser"
+        )}
+      </div>
+
+      <section class="panel">
+        <div class="headrow">
+          <div>
+            <h2>🎟️ Code catalog</h2>
+
+            <p>
+              Read-only. Counts come from
+              this browser's redemption history.
+            </p>
+          </div>
+
+          <input
+            class="input narrow"
+            id="codeSearch"
+            type="search"
+            placeholder="Search codes, games, rewards"
+            value="${esc(codeQuery)}"
+          >
+        </div>
+
+        ${table(
+          [
+            "Code",
+            "Game",
+            "Reward",
+            "Uses here",
+            "Players visible",
+            "Last used"
+          ],
+          rows
+        )}
+
+        <p>
+          Historical redemptions on other devices
+          cannot be recovered from this site.
+          A global counter needs a shared server.
+        </p>
+      </section>
+    `;
+
+    $("codeSearch").addEventListener(
+      "input",
+      e => {
+        const pos = e.target.selectionStart;
+
+        codeQuery = e.target.value;
+        codes();
+
+        const input = $("codeSearch");
+        input.focus();
+        input.setSelectionRange(pos, pos);
+      }
+    );
+  }
+
+  // ====================================
+  // USERS
+  // ====================================
+
+  function users() {
+    const data = get(DATA_KEY);
+    const gs = gameStats();
+
+    const seconds = sum(gs, "seconds");
+    const sessions = sum(gs, "sessions");
+
+    const top = [...gs].sort(
+      (a, b) => b.seconds - a.seconds
+    )[0];
+
+    const visitor =
+      data.visitorId || "Not yet tracked";
+
+    $("view").innerHTML = `
+      <div class="grid">
+        ${kpi(
+          "Browsers visible",
+          "1",
+          "Only this browser"
+        )}
+
+        ${kpi(
+          "Estimated total playtime",
+          fmtTime(seconds),
+          "Local foreground engagement"
+        )}
+
+        ${kpi(
+          "Game opens",
+          sessions,
+          "This browser"
+        )}
+
+        ${kpi(
+          "Favorite game",
+          top?.seconds
+            ? esc(top.name)
+            : "—",
+          "Based on time"
+        )}
+      </div>
+
+      <section class="panel">
+        <h2>👥 Local player records</h2>
+
+        <p>
+          No name or email collection is enabled.
+          Each browser is not necessarily
+          a unique person.
+        </p>
+
+        ${table(
+          [
+            "Player ID",
+            "Name",
+            "Email",
+            "First seen",
+            "Last seen",
+            "Time played",
+            "Favorite game",
+            "Sessions"
+          ],
+
+          [`
+            <tr>
+              <td>
+                <span class="code">
+                  ${esc(visitor)}
+                </span>
+              </td>
+
+              <td>Anonymous local player</td>
+
+              <td>Not collected</td>
+
+              <td>
+                ${formatDate(data.firstSeen)}
+              </td>
+
+              <td>
+                ${formatDate(data.lastSeen)}
+              </td>
+
+              <td>
+                ${fmtTime(seconds)}
+              </td>
+
+              <td>
+                ${
+                  top?.seconds
+                    ? esc(top.name)
+                    : "—"
+                }
+              </td>
+
+              <td>${sessions}</td>
+            </tr>
+          `]
+        )}
+
+        <h3 class="section-title">
+          Time spent in each game
+        </h3>
+
+        ${table(
+          [
+            "Game",
+            "Estimated playtime",
+            "Page opens",
+            "Last visited"
+          ],
+
+          gs.map(g => `
+            <tr>
+              <td>${esc(g.name)}</td>
+              <td>${fmtTime(g.seconds)}</td>
+              <td>${g.sessions}</td>
+              <td>${formatDate(g.last)}</td>
+            </tr>
+          `)
+        )}
+      </section>
+    `;
+  }
+
+  // ====================================
+  // SETTINGS
+  // ====================================
+
+  function settings() {
+    $("view").innerHTML = `
+      <section class="panel">
+        <h2>⚙️ Admin preview settings</h2>
+
+        <p>
+          This interface runs entirely on
+          GitHub Pages and your own browser.
+          The login is a local passphrase,
+          not secure site-wide authorization.
+        </p>
+
+        <div class="callout">
+          Only your browser has these local
+          statistics. You cannot see other users'
+          names, emails, sessions, or code use
+          without a backend receiving
+          consented events from them.
+        </div>
+
+        <div
+          class="tools"
+          style="margin-top:15px"
+        >
+          <button
+            class="btn alt"
+            id="exportGames"
+          >
+            ⬇ Export game stats CSV
+          </button>
+
+          <button
+            class="btn alt"
+            id="exportCodes"
+          >
+            ⬇ Export code stats CSV
+          </button>
+
+          <button
+            class="btn danger"
+            id="logoutSettings"
+          >
+            Log out
+          </button>
+        </div>
+      </section>
+    `;
+
+    $("exportGames").onclick = () =>
+      downloadCSV(
+        "luxton-game-stats.csv",
+        [
+          "Game",
+          "Opens",
+          "Engaged seconds",
+          "Last seen"
+        ],
+        gameStats().map(g => [
+          g.name,
+          g.sessions,
+          Math.floor(g.seconds),
+          g.last
+            ? new Date(g.last).toISOString()
+            : ""
+        ])
+      );
+
+    $("exportCodes").onclick = () =>
+      downloadCSV(
+        "luxton-codes.csv",
+        [
+          "Code",
+          "Game",
+          "Reward",
+          "Used here"
+        ],
+        codeStats().map(c => [
+          c.code,
+          c.game,
+          c.reward,
+          c.used ? 1 : 0
+        ])
+      );
+
+    $("logoutSettings").onclick = logout;
+  }
+
+  function downloadCSV(name, headers, rows) {
+    const csv = [headers, ...rows]
+      .map(
+        row => row.map(
+          x =>
+            '"' +
+            String(x ?? "").replaceAll(
+              '"',
+              '""'
+            ) +
+            '"'
+        ).join(",")
+      ).join("\n");
+
+    const url = URL.createObjectURL(
+      new Blob(
+        [csv],
+        { type: "text/csv;charset=utf-8" }
+      )
+    );
+
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = name;
+    a.click();
+
+    setTimeout(
+      () => URL.revokeObjectURL(url),
+      1000
+    );
+  }
+
+  // ====================================
+  // MENU NAVIGATION
+  // ====================================
+
+  function render() {
+    const row = menu.find(
+      x => x[0] === activeTab
+    ) || menu[0];
+
+    $("pageTitle").textContent =
+      row[1] + " " + row[2];
+
+    const descriptions = {
+      overview:
+        "Dashboard summary for this browser.",
+      analytics:
+        "Estimated engagement and visits across your nine games.",
+      codes:
+        "Your existing codes and this browser's uses.",
+      users:
+        "Local player profile and game-by-game activity.",
+      settings:
+        "Exports and local dashboard information."
+    };
+
+    $("pageDesc").textContent =
+      descriptions[activeTab];
+
+    for (
+      const button of document.querySelectorAll(
+        "[data-tab]"
+      )
+    ) {
+      button.classList.toggle(
+        "active",
+        button.dataset.tab === activeTab
+      );
+    }
+
+    const pages = {
+      overview,
+      analytics,
+      codes,
+      users,
+      settings
+    };
+
+    pages[activeTab]();
+  }
+
+  function nav() {
+    for (
+      const target of [
+        "sideNav",
+        "mobileNav"
+      ]
+    ) {
+      $(target).innerHTML = menu.map(
+        ([id, icon, label]) => `
+          <button
+            type="button"
+            class="nav-btn"
+            data-tab="${id}"
+          >
+            ${icon} ${label}
+          </button>
+        `
+      ).join("");
+
+      $(target).addEventListener(
+        "click",
+        event => {
+          const button = event.target.closest(
+            "[data-tab]"
+          );
+
+          if (button) {
+            activeTab = button.dataset.tab;
+            render();
+          }
+        }
+      );
+    }
+  }
+
+  // ====================================
+  // LOCAL LOGIN
+  // ====================================
+  // Password is hashed locally.
+  // This is not a secure server login.
+
+  const hex = a =>
+    [...new Uint8Array(a)]
+      .map(
+        x => x.toString(16).padStart(2, "0")
+      ).join("");
+
+  async function hashPassword(password, salt) {
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(password),
+      "PBKDF2",
+      false,
+      ["deriveBits"]
+    );
+
+    const bits = await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt: new Uint8Array(salt),
+        iterations: 120000,
+        hash: "SHA-256"
+      },
+      key,
+      256
+    );
+
+    return hex(bits);
+  }
+
+  function authState() {
+    const configured = !!get(PASS_KEY).hash;
+
+    $("authTitle").textContent =
+      configured
+        ? "🔐 Sign in"
+        : "🔑 Create a local passphrase";
+
+    $("authButton").textContent =
+      configured
+        ? "Sign in"
+        : "Create passphrase";
+
+    $("confirmRow").hidden = configured;
+
+    $("password").autocomplete =
+      configured
+        ? "current-password"
+        : "new-password";
+  }
+
+  function showApp() {
+    $("authWrap").hidden = true;
+    $("app").hidden = false;
+    render();
+  }
+
+  function logout() {
+    sessionStorage.removeItem(
+      SESSION_KEY
+    );
+
+    $("app").hidden = true;
+    $("authWrap").hidden = false;
+
+    $("password").value = "";
+    $("confirm").value = "";
+    $("authError").textContent = "";
+
+    authState();
+  }
+
+  $("loginForm").addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+
+      const password = $("password").value;
+      const existing = get(PASS_KEY);
+
+      $("authError").textContent = "";
+
+      if (password.length < 8) {
+        $("authError").textContent =
+          "Use at least 8 characters.";
+        return;
+      }
+
+      try {
+        if (!existing.hash) {
+          if (
+            password !== $("confirm").value
+          ) {
+            $("authError").textContent =
+              "Passwords do not match.";
+            return;
+          }
+
+          const salt = [
+            ...crypto.getRandomValues(
+              new Uint8Array(16)
+            )
+          ];
+
+          const hash = await hashPassword(
+            password,
+            salt
+          );
+
+          localStorage.setItem(
+            PASS_KEY,
+            JSON.stringify({
+              salt,
+              hash
+            })
+          );
+
+        } else {
+          const hash = await hashPassword(
+            password,
+            existing.salt
+          );
+
+          if (hash !== existing.hash) {
+            $("authError").textContent =
+              "Incorrect passphrase for this browser.";
+            return;
+          }
+        }
+
+        sessionStorage.setItem(
+          SESSION_KEY,
+          "yes"
+        );
+
+        $("password").value = "";
+        $("confirm").value = "";
+
+        showApp();
+
+      } catch (error) {
+        $("authError").textContent =
+          "Could not save or verify locally. Browser storage may be blocked.";
+      }
+    }
+  );
+
+  $("period").addEventListener(
+    "change",
+    render
+  );
+
+  $("refresh").addEventListener(
+    "click",
+    render
+  );
+
+  $("logout").addEventListener(
+    "click",
+    logout
+  );
+
+  nav();
+
+  if (
+    sessionStorage.getItem(
+      SESSION_KEY
+    ) === "yes"
+  ) {
+    showApp();
+  } else {
+    authState();
+  }
+
+})();
+</script>
+</body>
+</html>
