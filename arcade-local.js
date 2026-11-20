@@ -223,3 +223,14 @@
   );
 
 })();
+
+// Load username setup in all nine games.
+// Keep all the existing analytics code above.
+
+(() => {
+  const script = document.createElement("script");
+
+  script.src = "../../arcade-identity.js";
+
+  document.body.appendChild(script);
+})();
