@@ -1151,131 +1151,332 @@ label.inline{
   // USERS
   // ====================================
 
-  function users() {
-    const data = get(DATA_KEY);
-    const gs = gameStats();
 
-    const seconds = sum(gs, "seconds");
-    const sessions = sum(gs, "sessions");
+/* ===== USERS V2: PLAYER DIRECTORY ===== */
 
-    const top = [...gs].sort(
-      (a, b) => b.seconds - a.seconds
+function users() {
+  const IMPORT_KEY = "luxton_arcade_imported_players_v2";
+  const NAME_KEY = "luxton_arcade_username_v1";
+
+  const gameNames = Object.fromEntries(games);
+
+  function readImports() {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem(IMPORT_KEY) || "{}"
+      );
+      return saved && typeof saved === "object" &&
+        !Array.isArray(saved) ? saved : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveImports(records) {
+    localStorage.setItem(
+      IMPORT_KEY,
+      JSON.stringify(records)
+    );
+  }
+
+  function safeNumber(value) {
+    const n = Number(value);
+    return Number.isFinite(n)
+      ? Math.max(0, n)
+      : 0;
+  }
+
+  function normalizePlayer(raw, imported = true) {
+    const username = String(raw.username || "").trim();
+    const id = String(raw.visitorId || "").trim();
+
+    if (!/^[A-Za-z0-9_]{3,18}$/.test(username))
+      throw Error("Invalid player username.");
+
+    if (!/^[A-Za-z0-9_-]{1,100}$/.test(id))
+      throw Error("Invalid player browser ID.");
+
+    const cleanGames = {};
+
+    for (const gameId of Object.keys(gameNames)) {
+      const g = raw.games?.[gameId];
+      if (!g) continue;
+
+      cleanGames[gameId] = {
+        seconds: safeNumber(g.seconds),
+        sessions: safeNumber(g.sessions),
+        lastSeen: Number(g.lastSeen) || null
+      };
+    }
+
+    return {
+      username,
+      visitorId: id,
+      games: cleanGames,
+      exportedAt: imported
+        ? String(raw.exportedAt || "")
+        : new Date().toISOString(),
+      source: imported ? "Imported" : "This browser"
+    };
+  }
+
+  function summarize(player) {
+    const entries = Object.entries(player.games || {});
+
+    const seconds = entries.reduce(
+      (n, [, g]) => n + safeNumber(g.seconds), 0
+    );
+
+    const sessions = entries.reduce(
+      (n, [, g]) => n + safeNumber(g.sessions), 0
+    );
+
+    const top = [...entries].sort(
+      (a, b) =>
+        safeNumber(b[1].seconds) -
+        safeNumber(a[1].seconds)
     )[0];
 
-    const visitor =
-      data.visitorId || "Not yet tracked";
+    const favorite = top && safeNumber(top[1].seconds)
+      ? gameNames[top[0]]
+      : "—";
 
-    $("view").innerHTML = `
-      <div class="grid">
-        ${kpi(
-          "Browsers visible",
-          "1",
-          "Only this browser"
-        )}
+    const lastSeen = entries.reduce(
+      (n, [, g]) => Math.max(n, Number(g.lastSeen) || 0),
+      0
+    );
 
-        ${kpi(
-          "Estimated total playtime",
-          fmtTime(seconds),
-          "Local foreground engagement"
-        )}
-
-        ${kpi(
-          "Game opens",
-          sessions,
-          "This browser"
-        )}
-
-        ${kpi(
-          "Favorite game",
-          top?.seconds
-            ? esc(top.name)
-            : "—",
-          "Based on time"
-        )}
-      </div>
-
-      <section class="panel">
-        <h2>👥 Local player records</h2>
-
-        <p>
-          No name or email collection is enabled.
-          Each browser is not necessarily
-          a unique person.
-        </p>
-
-        ${table(
-          [
-            "Player ID",
-            "Name",
-            "Email",
-            "First seen",
-            "Last seen",
-            "Time played",
-            "Favorite game",
-            "Sessions"
-          ],
-
-          [`
-            <tr>
-              <td>
-                <span class="code">
-                  ${esc(visitor)}
-                </span>
-              </td>
-
-              <td>Anonymous local player</td>
-
-              <td>Not collected</td>
-
-              <td>
-                ${formatDate(data.firstSeen)}
-              </td>
-
-              <td>
-                ${formatDate(data.lastSeen)}
-              </td>
-
-              <td>
-                ${fmtTime(seconds)}
-              </td>
-
-              <td>
-                ${
-                  top?.seconds
-                    ? esc(top.name)
-                    : "—"
-                }
-              </td>
-
-              <td>${sessions}</td>
-            </tr>
-          `]
-        )}
-
-        <h3 class="section-title">
-          Time spent in each game
-        </h3>
-
-        ${table(
-          [
-            "Game",
-            "Estimated playtime",
-            "Page opens",
-            "Last visited"
-          ],
-
-          gs.map(g => `
-            <tr>
-              <td>${esc(g.name)}</td>
-              <td>${fmtTime(g.seconds)}</td>
-              <td>${g.sessions}</td>
-              <td>${formatDate(g.last)}</td>
-            </tr>
-          `)
-        )}
-      </section>
-    `;
+    return {
+      ...player,
+      seconds,
+      sessions,
+      favorite,
+      lastSeen
+    };
   }
+
+  // Current browser's username and game statistics.
+  const local = get(DATA_KEY);
+  const records = readImports();
+
+  let localName = "";
+
+  try {
+    localName =
+      localStorage.getItem(NAME_KEY) || "";
+  } catch {}
+
+  if (
+    /^[A-Za-z0-9_]{3,18}$/.test(localName) &&
+    local.visitorId
+  ) {
+    try {
+      records[local.visitorId] = normalizePlayer({
+        username: localName,
+        visitorId: local.visitorId,
+        games: local.games || {}
+      }, false);
+    } catch {}
+  }
+
+  const players = Object.values(records)
+    .filter(p => p && typeof p === "object")
+    .map(summarize)
+    .sort((a, b) => b.seconds - a.seconds);
+
+  const totalSeconds = players.reduce(
+    (n, p) => n + p.seconds, 0
+  );
+
+  const totalSessions = players.reduce(
+    (n, p) => n + p.sessions, 0
+  );
+
+  const rows = players.map((p, i) => `
+    <tr>
+      <td><strong>${esc(p.username)}</strong></td>
+      <td>${esc(p.source)}</td>
+      <td>${esc(p.favorite)}</td>
+      <td>${fmtTime(p.seconds)}</td>
+      <td>${p.sessions.toLocaleString()}</td>
+      <td>${formatDate(p.lastSeen)}</td>
+      <td>
+        <button class="btn alt" type="button"
+          data-player-detail="${i}">
+          View
+        </button>
+      </td>
+    </tr>
+  `);
+
+  $("view").innerHTML = `
+    <div class="grid">
+      ${kpi(
+        "Players in directory",
+        players.length,
+        "This browser + imported records"
+      )}
+      ${kpi(
+        "Total recorded playtime",
+        fmtTime(totalSeconds),
+        "All-time snapshot totals"
+      )}
+      ${kpi(
+        "Game sessions",
+        totalSessions.toLocaleString(),
+        "Across available player records"
+      )}
+      ${kpi(
+        "Games available",
+        games.length,
+        "Luxton Arcade"
+      )}
+    </div>
+
+    <section class="panel">
+      <h2>👥 Player Directory V2</h2>
+      <p>
+        Import player files from other devices.
+        Importing a newer file from the same browser
+        replaces the previous snapshot.
+      </p>
+
+      <div class="tools">
+        <label for="playerImport"
+          class="btn alt"
+          style="display:inline-block;cursor:pointer">
+          📥 Import Player Data
+        </label>
+        <input id="playerImport"
+          type="file"
+          accept=".json,application/json"
+          style="max-width:100%;margin:10px 0">
+      </div>
+      <p id="importStatus" role="status"></p>
+
+      ${table(
+        [
+          "Username", "Source", "Favorite game",
+          "Playtime", "Sessions", "Last active",
+          "Details"
+        ],
+        rows.length ? rows : [
+          '<tr><td colspan="7">No players recorded yet.</td></tr>'
+        ]
+      )}
+    </section>
+
+    <section class="panel" id="playerDetails" hidden>
+    </section>
+
+    <div class="callout">
+      Records are stored only in this admin browser.
+      They are manually imported and are not live.
+      Username exports are not verified accounts.
+      The totals here are all-time and do not use
+      the dashboard's date filter.
+    </div>
+  `;
+
+  // Show per-game statistics for an individual player.
+  $("view").querySelectorAll("[data-player-detail]")
+    .forEach(button => {
+      button.addEventListener("click", () => {
+        const p = players[
+          Number(button.dataset.playerDetail)
+        ];
+
+        if (!p) return;
+
+        const gameRows = games.map(([id, name]) => {
+          const g = p.games[id] || {};
+
+          return `
+            <tr>
+              <td>${esc(name)}</td>
+              <td>${fmtTime(safeNumber(g.seconds))}</td>
+              <td>${safeNumber(g.sessions)}</td>
+              <td>${formatDate(g.lastSeen)}</td>
+            </tr>
+          `;
+        });
+
+        const details = $("playerDetails");
+        details.hidden = false;
+
+        details.innerHTML = `
+          <h2>🎮 ${esc(p.username)}</h2>
+          <p>
+            Favorite game: <b>${esc(p.favorite)}</b>
+            · Total: <b>${fmtTime(p.seconds)}</b>
+          </p>
+          ${table(
+            ["Game", "Playtime", "Sessions", "Last active"],
+            gameRows
+          )}
+        `;
+
+        details.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
+      });
+    });
+
+  // Import a JSON player snapshot.
+  $("playerImport").addEventListener(
+    "change",
+    async event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const status = $("importStatus");
+
+      if (file.size > 1024 * 1024) {
+        status.textContent =
+          "File is too large (1 MB maximum).";
+        return;
+      }
+
+      try {
+        const raw = JSON.parse(await file.text());
+
+        if (
+          raw.format !== "luxton-player-export" ||
+          raw.version !== 2
+        ) {
+          throw Error("Not a Luxton Users V2 export.");
+        }
+
+        const player = normalizePlayer(raw);
+
+        const updated = readImports();
+        const previous = updated[player.visitorId];
+
+        if (
+          previous?.exportedAt &&
+          player.exportedAt &&
+          Date.parse(previous.exportedAt) >
+            Date.parse(player.exportedAt)
+        ) {
+          throw Error(
+            "This export is older than the saved record."
+          );
+        }
+
+        updated[player.visitorId] = player;
+        saveImports(updated);
+
+        users();
+
+      } catch (error) {
+        status.textContent =
+          "Import failed: " + error.message;
+      }
+    }
+  );
+}
+
 
   // ====================================
   // SETTINGS
