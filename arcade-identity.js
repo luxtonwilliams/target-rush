@@ -543,52 +543,165 @@
   // START PLAYER SYSTEM
   // =====================================
 
-  function start() {
-    chip = button(
-      "👤 Player",
-      () => usernameEditor(false)
+function start() {
+
+  // Show the username button, but do NOT force a
+  // visitor to create a username on page load.
+
+  chip = button(
+    "👤 Player",
+    () => usernameEditor(false)
+  );
+
+  chip.id = "lx-player-chip";
+
+  const footer = document.querySelector("footer");
+
+  if (footer) {
+    footer.append(chip);
+  } else {
+    chip.style.cssText =
+      "position:fixed;right:12px;bottom:12px;" +
+      "z-index:2147482000";
+    document.body.append(chip);
+  }
+
+  function updateGuestChip() {
+    chip.textContent = valid(readName())
+      ? "👤 " + readName() + " · Edit"
+      : "👤 Guest · Choose username";
+  }
+
+  updateGuestChip();
+
+  const isGamePage =
+    /\/games\/[a-z-]+\/?/i.test(location.pathname);
+
+  // Controls that begin or actively play games.
+  const playControls = [
+    "#startBtn",
+    "#start",
+    "#again",
+    "#go",
+    "#playBtn",
+    "#classicBtn",
+    "#champBtn",
+    "#action",
+    "#mine",
+    "#shoot",
+    "#fire",
+    "#jumpBtn",
+    "#pinchBtn",
+    "#jump",
+    "#lift",
+    "button[data-action='start']",
+    "button[data-act='start']",
+    "button[data-dir]"
+  ].join(",");
+
+  let asking = false;
+
+  function askForUsername() {
+    if (asking) return;
+
+    asking = true;
+    usernameEditor(false);
+
+    // Visitors can cancel and continue browsing.
+    // After saving, click Play again.
+    const modal = document.getElementById(
+      "lx-identity-modal"
     );
 
-    chip.id = "lx-player-chip";
+    if (modal) {
+      const observer = new MutationObserver(() => {
+        if (!document.getElementById(
+          "lx-identity-modal"
+        )) {
+          asking = false;
+          updateGuestChip();
+          observer.disconnect();
+        }
+      });
 
-    const footer =
-      document.querySelector("footer");
-
-    if (footer) {
-      footer.append(chip);
-    } else {
-      chip.style.cssText =
-        "position:fixed;" +
-        "right:12px;" +
-        "bottom:12px;" +
-        "z-index:2147482000";
-
-      document.body.append(chip);
-    }
-
-    updateChip();
-
-    // First-time players choose a username.
-    if (!valid(readName())) {
-      usernameEditor(true);
-    } else {
-      showGiftIfPresent();
+      observer.observe(document.body, {
+        childList: true
+      });
     }
   }
 
-  window.LuxtonArcadePlayer = {
-    getUsername: readName,
-    chooseUsername: () => usernameEditor(false)
-  };
+  function protectPlay(event) {
+    if (valid(readName())) return;
 
-  if (document.readyState === "loading") {
-    document.addEventListener(
-      "DOMContentLoaded",
-      start,
-      { once: true }
-    );
-  } else {
-    start();
+    const target = event.target;
+
+    if (!(target instanceof Element)) return;
+
+    // Never block the username popup itself.
+    if (target.closest("#lx-identity-modal")) return;
+
+    let wantsToPlay = false;
+
+    if (isGamePage) {
+      wantsToPlay = !!target.closest(playControls);
+    } else {
+      wantsToPlay = !!target.closest(
+        "a[data-game], #randomBtn"
+      );
+    }
+
+    if (!wantsToPlay) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    askForUsername();
+  }
+
+  // Intercept game launches and game controls.
+  document.addEventListener(
+    "pointerdown",
+    protectPlay,
+    true
+  );
+
+  document.addEventListener(
+    "click",
+    protectPlay,
+    true
+  );
+
+  // Protect keyboard controls used for gameplay.
+  if (isGamePage) {
+    window.addEventListener("keydown", event => {
+      if (valid(readName())) return;
+
+      const target = event.target;
+
+      if (
+        target instanceof Element &&
+        target.closest(
+          "input, textarea, select, #lx-identity-modal"
+        )
+      ) return;
+
+      if (
+        ["Space", "ArrowUp", "ArrowDown",
+         "ArrowLeft", "ArrowRight"].includes(event.code)
+      ) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        askForUsername();
+      }
+    }, true);
+  }
+
+  // Gift links may still display for existing players.
+  if (valid(readName())) {
+    showGiftIfPresent();
+  }
+}
+ start();
   }
 
 })();
