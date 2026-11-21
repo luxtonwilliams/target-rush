@@ -322,9 +322,16 @@
         return;
       }
 
-      updateChip();
-      closeModal();
-      showGiftIfPresent();
+      
+updateChip();
+closeModal();
+
+document.dispatchEvent(
+  new Event("luxton:username-saved")
+);
+
+showGiftIfPresent();
+
     });
 
     card.append(form);
@@ -541,18 +548,12 @@
 
   // =====================================
   // START PLAYER SYSTEM
-  // =====================================
-
+  
 function start() {
-
-  // Show the username button, but do NOT force a
-  // visitor to create a username on page load.
-
   chip = button(
     "👤 Player",
     () => usernameEditor(false)
   );
-
   chip.id = "lx-player-chip";
 
   const footer = document.querySelector("footer");
@@ -566,142 +567,114 @@ function start() {
     document.body.append(chip);
   }
 
-  function updateGuestChip() {
-    chip.textContent = valid(readName())
-      ? "👤 " + readName() + " · Edit"
-      : "👤 Guest · Choose username";
-  }
-
-  updateGuestChip();
+  updateChip();
 
   const isGamePage =
     /\/games\/[a-z-]+\/?/i.test(location.pathname);
 
-  // Controls that begin or actively play games.
-  const playControls = [
-    "#startBtn",
-    "#start",
-    "#again",
-    "#go",
-    "#playBtn",
-    "#classicBtn",
-    "#champBtn",
-    "#action",
-    "#mine",
-    "#shoot",
-    "#fire",
-    "#jumpBtn",
-    "#pinchBtn",
-    "#jump",
-    "#lift",
+  const gameControls = [
+    "#startBtn", "#start", "#playBtn",
+    "#classicBtn", "#champBtn", "#again",
+    "#action", "#mine", "#shoot",
+    "#fire", "#go", "#jumpBtn",
+    "#pinchBtn", "#jump", "#lift",
     "button[data-action='start']",
     "button[data-act='start']",
     "button[data-dir]"
   ].join(",");
 
-  let asking = false;
+  let pendingAction = null;
 
-  function askForUsername() {
-    if (asking) return;
+  function playAfterSaving() {
+    updateChip();
 
-    asking = true;
-    usernameEditor(false);
+    const action = pendingAction;
+    pendingAction = null;
 
-    // Visitors can cancel and continue browsing.
-    // After saving, click Play again.
-    const modal = document.getElementById(
-      "lx-identity-modal"
-    );
-
-    if (modal) {
-      const observer = new MutationObserver(() => {
-        if (!document.getElementById(
-          "lx-identity-modal"
-        )) {
-          asking = false;
-          updateGuestChip();
-          observer.disconnect();
-        }
-      });
-
-      observer.observe(document.body, {
-        childList: true
-      });
+    if (action && valid(readName())) {
+      action();
     }
   }
 
-  function protectPlay(event) {
-    if (valid(readName())) return;
+  document.addEventListener(
+    "luxton:username-saved",
+    playAfterSaving
+  );
 
-    const target = event.target;
-
-    if (!(target instanceof Element)) return;
-
-    // Never block the username popup itself.
-    if (target.closest("#lx-identity-modal")) return;
-
-    let wantsToPlay = false;
-
-    if (isGamePage) {
-      wantsToPlay = !!target.closest(playControls);
-    } else {
-      wantsToPlay = !!target.closest(
-        "a[data-game], #randomBtn"
-      );
+  function requestUsername(action) {
+    if (valid(readName())) {
+      action();
+      return;
     }
 
-    if (!wantsToPlay) return;
+    pendingAction = action;
+
+    if (!document.getElementById(
+      "lx-identity-modal"
+    )) {
+      usernameEditor(false);
+    }
+  }
+
+  document.addEventListener("click", event => {
+    if (valid(readName())) return;
+    if (!(event.target instanceof Element)) return;
+
+    const target = isGamePage
+      ? event.target.closest(gameControls)
+      : event.target.closest(
+          "a[data-game], #randomBtn"
+        );
+
+    if (!target) return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    askForUsername();
-  }
+    requestUsername(() => target.click());
+  }, true);
 
-  // Intercept game launches and game controls.
-  document.addEventListener(
-    "pointerdown",
-    protectPlay,
-    true
-  );
-
-  document.addEventListener(
-    "click",
-    protectPlay,
-    true
-  );
-
-  // Protect keyboard controls used for gameplay.
+  // Guard gameplay controls that use pointerdown.
   if (isGamePage) {
-    window.addEventListener("keydown", event => {
-      if (valid(readName())) return;
+    document.addEventListener(
+      "pointerdown",
+      event => {
+        if (valid(readName())) return;
+        if (!(event.target instanceof Element)) return;
 
-      const target = event.target;
+        const target =
+          event.target.closest(gameControls);
 
-      if (
-        target instanceof Element &&
-        target.closest(
-          "input, textarea, select, #lx-identity-modal"
-        )
-      ) return;
+        if (!target) return;
 
-      if (
-        ["Space", "ArrowUp", "ArrowDown",
-         "ArrowLeft", "ArrowRight"].includes(event.code)
-      ) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        askForUsername();
-      }
-    }, true);
+
+        requestUsername(() => target.click());
+      },
+      true
+    );
   }
 
-  // Gift links may still display for existing players.
+  // Existing players can still receive gift links.
   if (valid(readName())) {
     showGiftIfPresent();
   }
 }
- start();
-  }
+
+window.LuxtonArcadePlayer = {
+  getUsername: readName,
+  chooseUsername: () => usernameEditor(false)
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    start,
+    { once: true }
+  );
+} else {
+  start();
+}
 
 })();
