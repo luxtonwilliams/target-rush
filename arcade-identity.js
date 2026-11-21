@@ -677,4 +677,113 @@ if (document.readyState === "loading") {
   start();
 }
 
+/* ===== USERS V2: EXPORT PLAYER DATA ===== */
+
+function exportPlayerData() {
+  const username = readName();
+
+  if (!valid(username)) {
+    usernameEditor(false);
+    return;
+  }
+
+  const key = "luxton_arcade_local_analytics_v1";
+  let data = {};
+
+  try {
+    data = JSON.parse(localStorage.getItem(key) || "{}");
+  } catch {
+    alert("Could not read your player statistics.");
+    return;
+  }
+
+  const allowedGames = [
+    "target-rush", "bike-rush", "basketball-rush",
+    "castle-rush", "fishing-rush", "mining-rush",
+    "space-rush", "golf-rush", "crab-rush"
+  ];
+
+  const games = {};
+
+  for (const id of allowedGames) {
+    const g = data.games?.[id];
+    if (!g) continue;
+
+    games[id] = {
+      seconds: Math.max(0, Number(g.seconds) || 0),
+      sessions: Math.max(0, Number(g.sessions) || 0),
+      lastSeen: Number(g.lastSeen) || null
+    };
+  }
+
+  const record = {
+    format: "luxton-player-export",
+    version: 2,
+    username: username,
+    visitorId: data.visitorId || null,
+    exportedAt: new Date().toISOString(),
+    games: games
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(record, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "luxton-player-" + username + ".json";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function addPlayerExportButton() {
+  // Export from the homepage only.
+  if (/\/games\//i.test(location.pathname)) return;
+
+  const footer = document.querySelector("footer");
+  if (!footer || document.getElementById("lx-export-player"))
+    return;
+
+  const exportButton = document.createElement("button");
+  exportButton.id = "lx-export-player";
+  exportButton.type = "button";
+  exportButton.textContent = "📤 Export My Player Data";
+
+  exportButton.style.cssText = `
+    display:inline-block;
+    margin:10px 6px;
+    padding:11px 15px;
+    background:#234968;
+    color:white;
+    border:1px solid #83c7de;
+    border-radius:10px;
+    font-weight:800;
+    cursor:pointer;
+  `;
+
+  exportButton.addEventListener(
+    "click",
+    exportPlayerData
+  );
+
+  footer.appendChild(exportButton);
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    addPlayerExportButton,
+    { once: true }
+  );
+} else {
+  addPlayerExportButton();
+}
+
 })();
