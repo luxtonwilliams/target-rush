@@ -242,7 +242,132 @@
   // USERNAME SETUP
   // =====================================
 
-  function usernameEditor(required = false) {
+ /* ===== ONLINE PLAYER REGISTRATION ===== */
+const previousReadName = readName;
+const ONLINE_KEY = "luxton_arcade_online_player_v1";
+
+function onlinePlayer() {
+  try {
+    const p = JSON.parse(localStorage.getItem(ONLINE_KEY) || "null");
+
+    return p && valid(p.username) &&
+      /^[A-Za-z0-9_-]{43}$/.test(p.token)
+      ? p : null;
+  } catch {
+    return null;
+  }
+}
+
+readName = () => onlinePlayer()?.username || "";
+
+function usernameEditor(required = false) {
+  const existing = onlinePlayer();
+  const card = openModal("🎮 Player username");
+
+  paragraph(card,
+    "Choose a nickname, not your real name, email, school or phone number. " +
+    "Your nickname is saved in the Arcade database and visible to its administrators. " +
+    "Your game activity will be recorded for Arcade analytics."
+  );
+
+  const form = document.createElement("form");
+  const label = document.createElement("label");
+  label.htmlFor = "lx-username-input";
+  label.textContent = "Your nickname";
+
+  const input = document.createElement("input");
+  input.id = "lx-username-input";
+  input.maxLength = 18;
+  input.autocomplete = "off";
+  input.spellcheck = false;
+  input.placeholder = "RocketPlayer7";
+  input.value = existing?.username || previousReadName();
+  input.readOnly = !!existing;
+
+  paragraph(card, existing
+    ? "This browser already has a registered nickname."
+    : "3–18 letters, numbers or underscores. Continuing creates your player record."
+  );
+
+  const error = document.createElement("p");
+  error.className = "lx-error";
+
+  const save = document.createElement("button");
+  save.type = "submit";
+  save.textContent = existing ? "Continue" : "Register & play";
+
+  form.append(label, input, error, save);
+  card.append(form);
+  card.append(button("Cancel", closeModal, true));
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const name = normalize(input.value);
+
+    if (!valid(name)) {
+      error.textContent = "Use 3–18 letters, numbers or underscores.";
+      return;
+    }
+
+    if (!existing) {
+      save.disabled = true;
+      save.textContent = "Registering...";
+      error.textContent = "";
+
+      try {
+        localStorage.setItem(ONLINE_KEY + "_check", "1");
+        localStorage.removeItem(ONLINE_KEY + "_check");
+
+        const response = await fetch(
+          "https://luxarcade.pythonanywhere.com/public/register",
+          {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username: name}),
+            credentials: "omit",
+            cache: "no-store"
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Registration failed.");
+        }
+
+        if (data.username !== name ||
+            !/^[A-Za-z0-9_-]{43}$/.test(data.token)) {
+          throw new Error("Invalid server response.");
+        }
+
+        localStorage.setItem(ONLINE_KEY, JSON.stringify({
+          username: data.username,
+          token: data.token
+        }));
+
+        localStorage.setItem(NAME_KEY, data.username);
+
+      } catch (err) {
+        error.textContent = err.message || "Could not register. Try again.";
+        save.disabled = false;
+        save.textContent = "Register & play";
+        return;
+      }
+    }
+
+    updateChip();
+    if (!card.isConnected) return;
+    closeModal();
+
+    document.dispatchEvent(new Event("luxton:username-saved"));
+    showGiftIfPresent();
+  });
+
+  input.focus();
+}
+
+/* Previous local-only editor retained as backup. */
+function localUsernameEditor(required = false) {
     const card = openModal(
       required
         ? "🎮 Choose a player username"
