@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Zombie Rush | Luxton Arcade</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#070b16;color:#eaf9ff;
+  font:600 15px system-ui,sans-serif;
+  overscroll-behavior:none
+}
+a{color:#84f7d5}
+button{
+  font:inherit;cursor:pointer;touch-action:manipulation;
+  border:1px solid #476078;border-radius:11px;
+  background:#1b2d44;color:#effaff;padding:10px 15px
+}
+button:hover{border-color:#85f7d3}
+button:disabled{opacity:.45;cursor:default}
+main{max-width:1200px;margin:auto;padding:12px}
+header{
+  display:flex;align-items:center;
+  justify-content:space-between;gap:10px;
+  flex-wrap:wrap;margin-bottom:12px
+}
+h1,h2,p{margin:0}
+h1{font-size:clamp(23px,4vw,34px);letter-spacing:-1px}
+h1 span{color:#83ffa6}
+small,.muted{color:#9db5c8}
+header a{text-decoration:none;font-size:13px}
+.actions{display:flex;gap:6px;align-items:center}
+.hud{
+  display:grid;grid-template-columns:1.7fr repeat(4,1fr);
+  gap:6px;margin-bottom:7px
+}
+.stat{
+  background:#142034;border:1px solid #344b61;
+  padding:8px 12px;border-radius:10px;min-width:0
+}
+.stat b{display:block;color:#dcffeb;font-size:17px}
+.stat small{
+  font-size:10px;text-transform:uppercase;
+  letter-spacing:.8px
+}
+.health{
+  height:8px;background:#402c45;border-radius:8px;
+  margin-top:4px;overflow:hidden
+}
+.health i{
+  display:block;height:100%;
+  background:linear-gradient(90deg,#55e6b3,#a5ff77);
+  width:100%;transition:width .12s
+}
+#arena{
+  position:relative;overflow:hidden;aspect-ratio:16/9;
+  border:1px solid #386678;border-radius:14px;
+  background:#0d1728;box-shadow:0 20px 60px #0008
+}
+canvas{
+  display:block;width:100%;height:100%;touch-action:none
+}
+#overlay{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:#07111dc9;backdrop-filter:blur(5px);
+  padding:10px;overflow:auto
+}
+#overlay[hidden]{display:none}
+.panel{
+  width:min(630px,100%);max-height:100%;overflow:auto;
+  text-align:center;
+  background:linear-gradient(145deg,#182c40,#10172b);
+  border:1px solid #59867d;border-radius:18px;
+  padding:clamp(12px,3vw,26px);
+  box-shadow:0 12px 35px #0009
+}
+.kicker{
+  color:#88ffb5;text-transform:uppercase;
+  letter-spacing:3px;font-size:11px
+}
+.panel h2{
+  font-size:clamp(23px,5vw,44px);margin:5px 0 10px
+}
+.panel p{
+  color:#a9c6db;line-height:1.5;
+  margin:8px 0 14px;font-size:13px
+}
+.primary{
+  background:linear-gradient(125deg,#a4ff8f,#52dccb);
+  color:#08252b;border:0;font-weight:900
+}
+.choices{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;margin:12px 0
+}
+.choice{text-align:left;padding:12px;line-height:1.4}
+.choice strong{
+  display:block;color:#b1ff94;margin-bottom:5px
+}
+.choice small{display:block}
+.row{
+  display:flex;gap:8px;flex-wrap:wrap;
+  justify-content:center;margin:10px 0
+}
+#toast{
+  position:absolute;top:12%;left:50%;
+  transform:translateX(-50%);
+  color:#f6ffbd;text-shadow:0 2px 12px #000;
+  font-size:clamp(14px,3vw,28px);
+  font-weight:950;pointer-events:none;white-space:nowrap
+}
+#touch{
+  display:none;justify-content:space-between;
+  align-items:center;gap:10px;padding:7px 0;
+  touch-action:none
+}
+.stick{
+  width:92px;height:92px;position:relative;
+  border-radius:50%;background:#182c43;
+  border:1px solid #48758a;touch-action:none
+}
+.stick i{
+  position:absolute;left:30px;top:30px;
+  width:30px;height:30px;background:#9ff9d2;
+  border-radius:50%;pointer-events:none
+}
+#touch .row{margin:0}
+#touch button{min-height:50px;padding:15px 12px}
+footer{
+  text-align:center;padding:9px;color:#a0b7c8;
+  font-size:12px
+}
+.help{
+  margin-top:8px;color:#abc5d8;font-size:12px;
+  text-align:center
+}
+@media(pointer:coarse){
+  #touch{display:flex}
+}
+@media(max-width:560px){
+  main{padding:6px}
+  header{margin-bottom:7px}
+  .stat{padding:5px}
+  .stat b{font-size:13px}
+  .stat small{font-size:8px}
+  .hud{gap:3px}
+  .choices{gap:4px}
+  .choice{padding:6px;font-size:11px}
+  .panel p{font-size:11px}
+  .panel h2{margin:3px 0}
+  .panel{padding:9px}
+  .row{margin:5px 0}
+  button{padding:7px 10px}
+  .help{font-size:11px}
+}
+@media(pointer:coarse) and (orientation:landscape) and (max-height:520px){
+  main{max-width:calc((100dvh - 105px)*16/9);padding:4px}
+  header{margin-bottom:4px}
+  h1{font-size:20px}
+  header small{display:none}
+  .stat{padding:4px}
+  .stat b{font-size:12px}
+  .stat small{font-size:9px}
+  .help,footer{display:none}
+  #touch{
+    position:fixed;left:6px;right:6px;bottom:6px;
+    pointer-events:none;z-index:10
+  }
+  #touch>*{pointer-events:auto}
+  .stick{width:80px;height:80px}
+  .stick i{left:25px;top:25px}
+  #touch button{padding:10px;font-size:12px}
+}
+</style>
+</head>
+
+<body>
+<main>
+<header>
+  <div>
+    <a href="../../">← LUXTON ARCADE</a>
+    <h1>🧟 ZOMBIE <span>RUSH</span></h1>
+    <small>GAME #10 · NIGHTFALL SURVIVAL</small>
+  </div>
+  <div class="actions">
+    <button id="pauseBtn">⏸ Pause</button>
+    <button id="soundBtn">🔊 Sound</button>
+  </div>
+</header>
+
+<div class="hud">
+  <div class="stat">
+    <small>Health · Shield</small>
+    <b id="hp">100 / 100</b>
+    <div class="health"><i id="hpBar"></i></div>
+  </div>
+  <div class="stat"><small>Wave</small><b id="wave">1</b></div>
+  <div class="stat"><small>Score</small><b id="score">0</b></div>
+  <div class="stat"><small>Credits</small><b id="coins">0</b></div>
+  <div class="stat"><small>Pulse</small><b id="charge">Ready</b></div>
+</div>
+
+<div id="arena">
+  <canvas id="game" width="960" height="540"
+    aria-label="Zombie Rush arena"></canvas>
+  <div id="toast"></div>
+  <div id="overlay">
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<div id="touch">
+  <div class="stick" id="stick"
+    aria-label="Movement joystick"><i></i></div>
+  <div class="row">
+    <button id="dashBtn">⚡ Dash</button>
+    <button id="pulseBtn">💥 Pulse</button>
+  </div>
+</div>
+
+<p class="help">
+  WASD / arrows to move · Auto-fire · SPACE: dash ·
+  E: energy pulse · P: pause · Mobile: joystick + buttons
+</p>
+
+<footer>
+  Luxton Arcade · Credits and upgrades save on this browser.
+  <a href="../../#codes">Redeem secret codes</a>
+</footer>
+</main>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const cv=$("game"),ctx=cv.getContext("2d");
+const W=cv.width,H=cv.height;
+const rand=(a,b)=>a+Math.random()*(b-a);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+
+const KEY="luxton_zombie_rush_v1";
+
+function load(){
+  try{
+    const x=JSON.parse(localStorage.getItem(KEY)||"{}");
+    return x&&typeof x==="object"&&!Array.isArray(x)?x:{};
+  }catch{return {}}
+}
+
+let save=load();
+
+for(const k of ["coins","best","bestWave","power","armor","speed"]){
+  save[k]=Math.max(0,Math.floor(Number(save[k])||0));
+}
+
+for(const k of ["power","armor","speed"]){
+  save[k]=Math.min(8,save[k]);
+}
+
+function persist(){
+  const latest=load();
+  save.nightArmor=!!(save.nightArmor||latest.nightArmor);
+  save.zapCore=!!(save.zapCore||latest.zapCore);
+  try{localStorage.setItem(KEY,JSON.stringify(save))}catch{}
+}
+
+let state="menu",p,wave=1,score=0;
+let combo=0,comboTime=0,remaining=0;
+let spawn=0,spawned=0,shake=0,flash=0,toastTime=0;
+
+let enemies=[],shots=[],particles=[],drops=[],rings=[];
+
+const keys=new Set();
+let joy={x:0,y:0},sound=true,audio=null;
+
+// SOUND EFFECTS
+
+function tone(f,d=.07,vol=.035){
+  if(!sound)return;
+
+  try{
+    audio=audio||new (window.AudioContext||window.webkitAudioContext)();
+    if(audio.state==="suspended")audio.resume();
+
+    const o=audio.createOscillator();
+    const g=audio.createGain();
+    const t=audio.currentTime;
+
+    o.type="triangle";
+    o.frequency.setValueAtTime(f,t);
+    o.frequency.exponentialRampToValueAtTime(f*.6,t+d);
+
+    g.gain.setValueAtTime(vol,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+d);
+
+    o.connect(g);
+    g.connect(audio.destination);
+    o.start(t);
+    o.stop(t+d);
+  }catch{}
+}
+
+$("soundBtn").onclick=()=>{
+  sound=!sound;
+  $("soundBtn").textContent=sound?"🔊 Sound":"🔇 Muted";
+};
+
+// PLAYER
+
+function makePlayer(){
+  const hp=100+save.armor*12;
+
+  return {
+    x:W/2,y:H/2,r:13,
+    hp,max:hp,
+    shield:save.nightArmor?25:0,
+    speed:190+save.speed*12,
+    damage:18+save.power*3,
+    rate:.47,shot:0,angle:0,
+    dash:0,dashCD:0,pulseCD:0,inv:0,
+    mult:1,magnet:65
+  };
+}
+
+function overlay(html){
+  $("panel").innerHTML=html;
+  $("overlay").hidden=false;
+}
+
+function hide(){$("overlay").hidden=true}
+
+function notify(text){
+  $("toast").textContent=text;
+  toastTime=2;
+}
+
+// MAIN MENU
+
+function menu(){
+  state="menu";
+  keys.clear();
+  joy={x:0,y:0};
+  combo=0;
+  p=makePlayer();
+
+  enemies=[];shots=[];drops=[];particles=[];rings=[];
+  wave=1;score=0;
+
+  overlay(
+    '<div class="kicker">City lockdown · Mission 01</div>'+
+    '<h2>NIGHTFALL</h2>'+
+    '<p>Outlast the zombie swarm. Your energy blaster auto-targets enemies. Dodge, collect credits, and select a new upgrade after each wave.</p>'+
+    '<p>🏆 Best score: <b>'+save.best+
+    '</b> · Highest wave: <b>'+save.bestWave+
+    '</b> · 💳 '+save.coins+' credits</p>'+
+    '<div class="row">'+
+    '<button class="primary" id="startBtn">▶ START SURVIVAL</button>'+
+    '<button id="shopBtn">🛠 Upgrade HQ</button></div>'+
+    '<small>'+
+    (save.nightArmor?'◆ NIGHT ARMOR ACTIVE · ':'')+
+    (save.zapCore?'⚡ ZAP CORE ACTIVE':'Redeem codes at the Arcade homepage')+
+    '</small>'
+  );
+
+  $("startBtn").onclick=start;
+  $("shopBtn").onclick=shop;
+  hud();
+}
+
+// PERMANENT UPGRADE SHOP
+
+function shop(){
+  state="shop";
+
+  const upgrades=[
+    ["power","⚡ Energy output","+3 base damage"],
+    ["armor","🛡 Armor plating","+12 max health"],
+    ["speed","💨 Turbo boots","+12 movement speed"]
+  ];
+
+  overlay(
+    '<div class="kicker">Permanent progress</div>'+
+    '<h2>UPGRADE HQ</h2>'+
+    '<p>💳 '+save.coins+' credits · Upgrades carry into future runs.</p>'+
+    '<div class="choices">'+
+    upgrades.map(([k,t,d])=>
+      '<button class="choice" data-buy="'+k+'">'+
+      '<strong>'+t+'</strong>'+
+      '<small>'+d+' · LV '+save[k]+'/8</small><br>'+
+      (save[k]>=8?"MAXED":(40+save[k]*35)+" credits")+
+      '</button>'
+    ).join("")+
+    '</div><button id="backBtn">← Back</button>'
+  );
+
+  document.querySelectorAll("[data-buy]").forEach(b=>{
+    b.onclick=()=>{
+      const k=b.dataset.buy;
+      const cost=40+save[k]*35;
+
+      if(save[k]>=8||save.coins<cost){
+        tone(100);
+        return;
+      }
+
+      save.coins-=cost;
+      save[k]++;
+      persist();
+      tone(600);
+      shop();
+      hud();
+    };
+  });
+
+  $("backBtn").onclick=menu;
+}
+
+// START GAME
+
+function start(){
+  p=makePlayer();
+  wave=1;score=0;combo=0;
+
+  enemies=[];shots=[];drops=[];particles=[];rings=[];
+
+  state="run";
+  hide();
+  beginWave();
+  tone(440,.2);
+}
+
+function beginWave(){
+  remaining=7+wave*3;
+  spawn=0;
+  spawned=0;
+
+  p.hp=Math.min(p.max,p.hp+12);
+
+  notify(wave%5===0?"⚠ TITAN INCOMING":"WAVE "+wave);
+  hud();
+}
+
+// ZOMBIE TYPES
+
+function spawnEnemy(boss=false){
+  const side=Math.floor(rand(0,4));
+
+  let x=rand(22,W-22),y=rand(22,H-22);
+
+  if(side===0)x=16;
+  if(side===1)x=W-16;
+  if(side===2)y=16;
+  if(side===3)y=H-16;
+
+  const n=Math.random();
+
+  const type=boss?"boss":
+    wave>=3&&n<.20?"tank":
+    wave>=2&&n<.48?"runner":"walker";
+
+  const cfg={
+    walker:[12,44+wave*3,30+wave*4,"#79de80"],
+    runner:[9,86+wave*3,19+wave*3,"#f8ce69"],
+    tank:[19,30+wave*2,85+wave*8,"#b89cff"],
+    boss:[37,40+wave,390+wave*55,"#ff7c9d"]
+  }[type];
+
+  enemies.push({
+    x,y,r:cfg[0],speed:cfg[1],
+    hp:cfg[2],max:cfg[2],
+    color:cfg[3],type,
+    hit:0,attack:3,warning:0
+  });
+}
+
+// PARTICLES AND ENERGY EFFECTS
+
+function burst(x,y,color,n=10){
+  for(let i=0;i<n;i++){
+    particles.push({
+      x,y,vx:rand(-120,120),vy:rand(-120,120),
+      life:rand(.18,.55),color,r:rand(1.4,4)
+    });
+  }
+}
+
+function ring(x,y,r,color){
+  rings.push({x,y,r,life:.45,color});
+}
+
+function damageEnemy(e,d){
+  e.hp-=d;
+  e.hit=.12;
+  burst(e.x,e.y,e.color,4);
+}
+
+function reward(e){
+  combo=comboTime>0?combo+1:1;
+  comboTime=2.8;
+
+  score+=Math.round(
+    (e.type==="boss"?350:e.type==="tank"?45:25)*
+    (1+Math.min(combo-1,15)*.1)
+  );
+
+  save.coins+=e.type==="boss"?30:e.type==="tank"?3:1;
+
+  persist();
+
+  burst(e.x,e.y,e.color,e.type==="boss"?36:13);
+  tone(e.type==="boss"?230:540,.07,.018);
+
+  if(Math.random()<.12){
+    drops.push({x:e.x,y:e.y,kind:"heal",life:14});
+  }
+
+  if(e.type==="boss"){
+    ring(e.x,e.y,95,"#ff9edc");
+    notify("TITAN CLEARED!");
+    shake=10;
+  }
+}
+
+// SPECIAL ABILITIES
+
+function dash(){
+  if(state!=="run"||p.dashCD>0)return;
+
+  p.dash=.17;
+  p.dashCD=2.6;
+  p.inv=.3;
+
+  ring(p.x,p.y,36,"#71eefb");
+  tone(300);
+}
+
+function pulse(){
+  if(state!=="run"||p.pulseCD>0)return;
+
+  p.pulseCD=save.zapCore?7:11;
+
+  const radius=save.zapCore?180:140;
+
+  for(const e of enemies){
+    if(dist(e,p)<radius+e.r){
+      damageEnemy(e,save.zapCore?115:75);
+
+      const a=Math.atan2(e.y-p.y,e.x-p.x);
+      e.x+=Math.cos(a)*45;
+      e.y+=Math.sin(a)*45;
+    }
+  }
+
+  ring(p.x,p.y,radius,"#8ef8ff");
+  shake=7;
+  tone(135,.24,.06);
+}
+
+function hurt(n){
+  if(p.inv>0)return;
+
+  p.inv=.65;
+
+  const blocked=Math.min(p.shield,n);
+  p.shield-=blocked;
+  p.hp-=n-blocked;
+
+  shake=8;
+  flash=.19;
+  tone(90,.18);
+
+  if(p.hp<=0)gameOver();
+}
+
+// WAVE UPGRADES
+
+const perks=[
+  ["⚡ Overcharge","+8 energy damage",()=>p.damage+=8],
+  ["🚀 Rapid fire","15% faster blasts",()=>p.rate=Math.max(.12,p.rate*.85)],
+  ["💨 Speed boost","+25 movement speed",()=>p.speed+=25],
+  ["💚 Vitality","+25 max health and heal",()=>{
+    p.max+=25;
+    p.hp=Math.min(p.max,p.hp+40);
+  }],
+  ["🛡 Shield cell","+40 shield",()=>p.shield+=40],
+  ["✨ Twin blast","Extra energy projectile",()=>p.mult=Math.min(4,p.mult+1)],
+  ["🧲 Med magnet","Larger pickup range",()=>p.magnet+=55]
+];
+
+function upgrade(){
+  state="upgrade";
+
+  save.coins+=wave*5;
+  save.bestWave=Math.max(save.bestWave,wave);
+  save.best=Math.max(save.best,score);
+  persist();
+
+  const options=[...perks].sort(()=>Math.random()-.5).slice(0,3);
+
+  overlay(
+    '<div class="kicker">Wave '+wave+' cleared · +'+wave*5+' credits</div>'+
+    '<h2>CHOOSE A POWER</h2>'+
+    '<p>Upgrades stack for this run.</p>'+
+    '<div class="choices">'+
+    options.map((a,i)=>
+      '<button class="choice" data-perk="'+i+'">'+
+      '<strong>'+a[0]+'</strong><small>'+a[1]+'</small></button>'
+    ).join("")+
+    '</div>'
+  );
+
+  document.querySelectorAll("[data-perk]").forEach(b=>{
+    b.onclick=()=>{
+      options[+b.dataset.perk][2]();
+      wave++;
+      state="run";
+      hide();
+      beginWave();
+      tone(720);
+    };
+  });
+
+  hud();
+}
+
+// GAME OVER
+
+function gameOver(){
+  state="over";
+
+  save.best=Math.max(save.best,score);
+  save.bestWave=Math.max(save.bestWave,wave);
+  persist();
+
+  overlay(
+    '<div class="kicker">Mission complete</div>'+
+    '<h2>RUN ENDED</h2>'+
+    '<p>Score <b>'+score+'</b> · Wave <b>'+wave+
+    '</b> · Best '+save.best+'</p>'+
+    '<div class="row">'+
+    '<button class="primary" id="again">▶ PLAY AGAIN</button>'+
+    '<button id="shopBtn">🛠 Upgrade HQ</button>'+
+    '<button id="menuBtn">Main menu</button></div>'
+  );
+
+  $("again").onclick=start;
+  $("shopBtn").onclick=shop;
+  $("menuBtn").onclick=menu;
+}
+
+function pause(){
+  if(state==="run"){
+    state="paused";
+
+    overlay(
+      '<div class="kicker">Take a break</div>'+
+      '<h2>PAUSED</h2><div class="row">'+
+      '<button class="primary" id="resume">▶ Resume</button>'+
+      '<button id="quit">Main menu</button></div>'
+    );
+
+    $("resume").onclick=()=>{
+      state="run";
+      hide();
+    };
+
+    $("quit").onclick=menu;
+
+  }else if(state==="paused"){
+    state="run";
+    hide();
+  }
+}
+
+$("pauseBtn").onclick=pause;
+
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden&&state==="run")pause();
+});
+
+// COMPUTER CONTROLS
+
+addEventListener("keydown",e=>{
+  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(e.code)){
+    e.preventDefault();
+  }
+
+  keys.add(e.code);
+
+  if(e.repeat)return;
+
+  if(e.code==="Space")dash();
+  if(e.code==="KeyE")pulse();
+  if(e.code==="KeyP")pause();
+});
+
+addEventListener("keyup",e=>keys.delete(e.code));
+
+addEventListener("blur",()=>{
+  keys.clear();
+  joy={x:0,y:0};
+
+  if(state==="run")pause();
+});
+
+// MOBILE CONTROLS
+
+const stick=$("stick");
+const knob=stick.querySelector("i");
+let pointer=null;
+
+function moveStick(e){
+  const r=stick.getBoundingClientRect();
+  const dx=e.clientX-r.left-r.width/2;
+  const dy=e.clientY-r.top-r.height/2;
+  const m=Math.max(30,Math.hypot(dx,dy));
+
+  joy={x:dx/m,y:dy/m};
+
+  knob.style.transform=
+    "translate("+joy.x*29+"px,"+joy.y*29+"px)";
+}
+
+stick.onpointerdown=e=>{
+  pointer=e.pointerId;
+  stick.setPointerCapture(pointer);
+  moveStick(e);
+};
+
+stick.onpointermove=e=>{
+  if(e.pointerId===pointer)moveStick(e);
+};
+
+function release(e){
+  if(e.pointerId!==pointer)return;
+
+  pointer=null;
+  joy={x:0,y:0};
+  knob.style.transform="";
+}
+
+stick.onpointerup=release;
+stick.onpointercancel=release;
+
+$("dashBtn").onclick=dash;
+$("pulseBtn").onclick=pulse;
+
+// GAME ENGINE
+
+function update(dt){
+  toastTime-=dt;
+  if(toastTime<=0)$("toast").textContent="";
+
+  shake=Math.max(0,shake-dt*35);
+  flash=Math.max(0,flash-dt);
+
+  if(state!=="run")return;
+
+  for(const k of ["shot","dash","dashCD","pulseCD","inv"]){
+    p[k]=Math.max(0,p[k]-dt);
+  }
+
+  comboTime-=dt;
+  if(comboTime<=0)combo=0;
+
+  let x=
+    (keys.has("KeyD")||keys.has("ArrowRight")?1:0)-
+    (keys.has("KeyA")||keys.has("ArrowLeft")?1:0)+joy.x;
+
+  let y=
+    (keys.has("KeyS")||keys.has("ArrowDown")?1:0)-
+    (keys.has("KeyW")||keys.has("ArrowUp")?1:0)+joy.y;
+
+  let m=Math.hypot(x,y);
+
+  if(m>1){x/=m;y/=m}
+  if(m>0)p.move=Math.atan2(y,x);
+
+  if(p.dash>0&&m===0){
+    x=Math.cos(p.move||0);
+    y=Math.sin(p.move||0);
+  }
+
+  p.x=clamp(
+    p.x+x*p.speed*dt*(p.dash>0?3.4:1),
+    p.r,W-p.r
+  );
+
+  p.y=clamp(
+    p.y+y*p.speed*dt*(p.dash>0?3.4:1),
+    p.r,H-p.r
+  );
+
+  // Spawn the next zombie.
+
+  spawn-=dt;
+
+  if(remaining>0&&spawn<=0){
+    spawn=Math.max(.19,.69-wave*.025);
+
+    spawnEnemy(wave%5===0&&spawned===0);
+
+    remaining--;
+    spawned++;
+  }
+
+  // Auto-target nearest zombie.
+
+  let closest=null;
+
+  for(const e of enemies){
+    if(!closest||dist(e,p)<dist(closest,p)){
+      closest=e;
+    }
+  }
+
+  if(closest){
+    p.angle=Math.atan2(closest.y-p.y,closest.x-p.x);
+
+    if(p.shot<=0){
+      p.shot=p.rate;
+
+      for(let i=0;i<p.mult;i++){
+        const a=p.angle+(i-(p.mult-1)/2)*.16;
+
+        shots.push({
+          x:p.x+Math.cos(a)*18,
+          y:p.y+Math.sin(a)*18,
+          vx:Math.cos(a)*520,
+          vy:Math.sin(a)*520,
+          life:1.8
+        });
+      }
+    }
+  }
+
+  // Energy projectile movement.
+
+  for(const s of shots){
+    s.x+=s.vx*dt;
+    s.y+=s.vy*dt;
+    s.life-=dt;
+
+    for(const e of enemies){
+      if(s.life>0&&e.hp>0&&dist(s,e)<e.r+5){
+        damageEnemy(e,p.damage);
+        s.life=0;
+      }
+    }
+  }
+
+  shots=shots.filter(s=>
+    s.life>0&&s.x>-10&&s.x<W+10&&s.y>-10&&s.y<H+10
+  );
+
+  // Zombie movement and Titan attacks.
+
+  for(const e of enemies){
+    if(e.hp<=0)continue;
+
+    e.hit=Math.max(0,e.hit-dt);
+
+    const a=Math.atan2(p.y-e.y,p.x-e.x);
+
+    e.x+=Math.cos(a)*e.speed*dt;
+    e.y+=Math.sin(a)*e.speed*dt;
+
+    if(e.type==="boss"){
+      e.attack-=dt;
+
+      if(e.attack<=.8)e.warning=.8;
+
+      if(e.attack<=0){
+        ring(e.x,e.y,115,"#ff688e");
+
+        if(dist(e,p)<115)hurt(24);
+
+        e.attack=3.5;
+        e.warning=0;
+      }
+    }
+
+    const d=dist(e,p);
+
+    if(d<e.r+p.r){
+      hurt(e.type==="boss"?22:e.type==="tank"?16:10);
+
+      if(state!=="run")return;
+
+      e.x-=Math.cos(a)*15;
+      e.y-=Math.sin(a)*15;
+    }
+  }
+
+  // Keep the swarm from overlapping.
+
+  for(let i=0;i<enemies.length;i++){
+    for(let j=i+1;j<enemies.length;j++){
+      const a=enemies[i],b=enemies[j];
+
+      const dx=b.x-a.x,dy=b.y-a.y;
+      const d=Math.hypot(dx,dy);
+      const want=(a.r+b.r)*.72;
+
+      if(d>0&&d<want){
+        const k=(want-d)*.12/d;
+
+        a.x-=dx*k;a.y-=dy*k;
+        b.x+=dx*k;b.y+=dy*k;
+      }
+    }
+  }
+
+  for(const e of enemies){
+    if(e.hp<=0)reward(e);
+  }
+
+  enemies=enemies.filter(e=>e.hp>0);
+
+  // Health pickups.
+
+  for(const d of drops){
+    d.life-=dt;
+
+    const a=Math.atan2(p.y-d.y,p.x-d.x);
+    const distance=dist(d,p);
+
+    if(distance<p.magnet){
+      d.x+=Math.cos(a)*160*dt;
+      d.y+=Math.sin(a)*160*dt;
+    }
+
+    if(distance<20){
+      d.life=0;
+      p.hp=Math.min(p.max,p.hp+18);
+      tone(790);
+      burst(d.x,d.y,"#7bff9a",9);
+    }
+  }
+
+  drops=drops.filter(d=>d.life>0);
+
+  if(!remaining&&!enemies.length){
+    upgrade();
+    return;
+  }
+
+  hud();
+}
+
+// HUD
+
+function hud(){
+  $("hp").textContent=
+    Math.max(0,Math.ceil(p.hp))+" / "+p.max+
+    (p.shield?" +"+Math.ceil(p.shield):"");
+
+  $("hpBar").style.width=clamp(p.hp/p.max*100,0,100)+"%";
+
+  $("wave").textContent=wave;
+  $("score").textContent=score;
+  $("coins").textContent=save.coins;
+
+  $("charge").textContent=
+    p.pulseCD>0?Math.ceil(p.pulseCD)+"s":"Ready";
+
+  $("dashBtn").textContent=
+    p.dashCD>0?"Dash "+p.dashCD.toFixed(1)+"s":"⚡ Dash";
+
+  $("pulseBtn").textContent=
+    p.pulseCD>0?"Pulse "+Math.ceil(p.pulseCD)+"s":"💥 Pulse";
+}
+
+// DRAWING HELPERS
+
+function circle(x,y,r,c){
+  ctx.fillStyle=c;
+  ctx.beginPath();
+  ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fill();
+}
+
+function rect(x,y,w,h,c){
+  ctx.fillStyle=c;
+  ctx.fillRect(x,y,w,h);
+}
+
+// NEON ARENA GRAPHICS
+
+function draw(dt){
+  rect(0,0,W,H,"#101d2a");
+
+  ctx.save();
+  ctx.translate(rand(-shake,shake),rand(-shake,shake));
+
+  // Arena floor.
+
+  for(let i=0;i<W;i+=48){
+    for(let j=0;j<H;j+=48){
+      rect(i+1,j+1,46,46,
+        (i+j)%96===0?"#132331":"#142632");
+    }
+  }
+
+  ctx.strokeStyle="#355064";
+  ctx.lineWidth=3;
+  ctx.setLineDash([18,14]);
+  ctx.strokeRect(24,24,W-48,H-48);
+  ctx.setLineDash([]);
+
+  for(let i=45;i<W;i+=110){
+    rect(i,6,44,6,"#d5b56b");
+    rect(i,H-12,44,6,"#d5b56b");
+  }
+
+  // Dynamic lighting.
+
+  const glow=ctx.createRadialGradient(
+    p.x,p.y,15,p.x,p.y,260
+  );
+
+  glow.addColorStop(0,"#54b5c51a");
+  glow.addColorStop(1,"#02081677");
+
+  ctx.fillStyle=glow;
+  ctx.fillRect(0,0,W,H);
+
+  // Health packs.
+
+  for(const d of drops){
+    circle(d.x,d.y,11,"#2d925c");
+    rect(d.x-2,d.y-7,4,14,"#e4ffe5");
+    rect(d.x-7,d.y-2,14,4,"#e4ffe5");
+  }
+
+  // Stylized zombies.
+
+  for(const e of enemies){
+    if(e.warning){
+      ctx.strokeStyle="#ff688e";
+      ctx.lineWidth=3;
+      ctx.beginPath();
+      ctx.arc(e.x,e.y,115,0,Math.PI*2);
+      ctx.stroke();
+    }
+
+    circle(e.x+2,e.y+5,e.r+1,"#070d1b");
+
+    ctx.save();
+    ctx.translate(e.x,e.y);
+    ctx.rotate(Math.atan2(p.y-e.y,p.x-e.x));
+    ctx.globalAlpha=e.hit>0?.65:1;
+
+    circle(-e.r*.15,0,e.r,e.color);
+    circle(e.r*.36,-e.r*.34,e.r*.2,"#101827");
+    circle(e.r*.36,e.r*.34,e.r*.2,"#101827");
+
+    rect(-e.r*.25,-e.r*.98,e.r*.6,e.r*.28,"#325849");
+    rect(-e.r*.25,e.r*.70,e.r*.6,e.r*.28,"#325849");
+
+    ctx.restore();
+
+    if(e.type==="boss"||e.hp<e.max){
+      rect(e.x-e.r,e.y-e.r-9,e.r*2,4,"#263649");
+
+      rect(
+        e.x-e.r,e.y-e.r-9,
+        e.r*2*clamp(e.hp/e.max,0,1),
+        4,e.color
+      );
+    }
+  }
+
+  // Energy projectiles.
+
+  for(const s of shots){
+    ctx.shadowBlur=13;
+    ctx.shadowColor="#81edff";
+    circle(s.x,s.y,4,"#d4ffff");
+    ctx.shadowBlur=0;
+  }
+
+  // Shield.
+
+  if(p.shield>0){
+    ctx.strokeStyle="#9df3ff";
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,21,0,Math.PI*2);
+    ctx.stroke();
+  }
+
+  // Player graphics.
+
+  ctx.save();
+  ctx.translate(p.x,p.y);
+  ctx.rotate(p.angle);
+  ctx.globalAlpha=p.inv>0?.65:1;
+
+  circle(1,4,15,"#070e18");
+  circle(0,0,13,save.nightArmor?"#bda2ff":"#91ffca");
+
+  rect(-6,-8,9,16,"#233651");
+  rect(5,-4,15,8,"#68cfff");
+  rect(14,-2,7,4,"#f0ffff");
+
+  ctx.restore();
+
+  // Energy particles.
+
+  for(const q of particles){
+    q.life-=dt;
+    q.x+=q.vx*dt;
+    q.y+=q.vy*dt;
+
+    ctx.globalAlpha=clamp(q.life*3,0,1);
+    circle(q.x,q.y,q.r,q.color);
+  }
+
+  ctx.globalAlpha=1;
+  particles=particles.filter(q=>q.life>0);
+
+  // Pulse shockwaves.
+
+  for(const r of rings){
+    r.life-=dt;
+    ctx.globalAlpha=clamp(r.life/.45,0,1);
+
+    ctx.strokeStyle=r.color;
+    ctx.lineWidth=4;
+
+    ctx.beginPath();
+    ctx.arc(
+      r.x,r.y,r.r*(1-r.life/.45)+5,
+      0,Math.PI*2
+    );
+    ctx.stroke();
+  }
+
+  ctx.globalAlpha=1;
+  rings=rings.filter(r=>r.life>0);
+
+  // Combo indicator.
+
+  if(combo>1){
+    ctx.font="bold 19px system-ui";
+    ctx.fillStyle="#fdffb6";
+    ctx.textAlign="center";
+    ctx.fillText(combo+"× CHAIN",p.x,p.y-30);
+    ctx.textAlign="left";
+  }
+
+  ctx.restore();
+
+  if(flash>0){
+    rect(0,0,W,H,"rgba(255,90,120,"+flash+")");
+  }
+}
+
+// MAIN LOOP
+
+menu();
+
+let last=performance.now();
+
+function frame(now){
+  const dt=Math.min(.035,(now-last)/1000);
+  last=now;
+
+  update(dt);
+  draw(dt);
+
+  requestAnimationFrame(frame);
+}
+
+requestAnimationFrame(frame);
+</script>
+
+<script src="../../arcade-local.js"></script>
+
+</body>
+</html>
