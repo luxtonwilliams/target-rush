@@ -255,6 +255,139 @@
   // =====================================
 
   function mountGiftBuilder() {
+  if (app.hidden || !document.getElementById("codeSearch") ||
+      document.getElementById("lx-gift-builder")) return;
+
+  const section = el("section", undefined, "panel");
+  section.id = "lx-gift-builder";
+
+  section.append(
+    el("h2", "🎁 Send a code directly to a player")
+  );
+
+  const pass = el("input");
+  pass.type = "password";
+  pass.autocomplete = "current-password";
+
+  const connect = el("button", "Connect to database", "btn");
+  const to = el("select");
+  const select = el("select");
+
+  for (const [code, label] of codeRows) {
+    select.append(new Option(code + " — " + label, code));
+  }
+
+  const send = el("button", "🎁 Send Gift", "btn");
+  send.disabled = true;
+
+  const status = el("p", "Not connected.");
+  status.setAttribute("role", "status");
+
+  section.append(
+    inputField("Server admin password", pass),
+    connect,
+    inputField("Registered player", to),
+    inputField("Reward code", select),
+    send,
+    status
+  );
+
+  const api = "https://luxarcade.pythonanywhere.com";
+  let auth = "";
+
+  connect.onclick = async () => {
+    connect.disabled = true;
+    auth = "Basic " + btoa(String.fromCharCode(
+      ...new TextEncoder().encode("admin:" + pass.value)
+    ));
+
+    pass.value = "";
+    send.disabled = true;
+    to.replaceChildren();
+
+    try {
+      const r = await fetch(api + "/admin/users", {
+        headers: {Authorization: auth},
+        credentials: "omit",
+        cache: "no-store"
+      });
+
+      if (!r.ok) throw Error("Server login failed.");
+
+      const data = await r.json();
+
+      for (const player of data.players) {
+        to.append(new Option(player.username, player.username));
+      }
+
+      send.disabled = !to.options.length || app.hidden || !section.isConnected;
+      status.textContent = "Connected. Choose a player.";
+
+    } catch (err) {
+      auth = "";
+      status.textContent = err.message;
+    } finally {
+      connect.disabled = false;
+    }
+  };
+
+  send.onclick = async () => {
+    if (!auth || !to.value || app.hidden || !section.isConnected) return;
+
+    send.disabled = true;
+
+    try {
+      const r = await fetch(api + "/admin/gifts", {
+        method: "POST",
+        headers: {
+          Authorization: auth,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: to.value,
+          code: select.value
+        }),
+        credentials: "omit",
+        cache: "no-store"
+      });
+
+      const data = await r.json();
+
+      if (!r.ok) throw Error(data.error || "Could not send gift.");
+
+      status.textContent = "🎉 Gift sent! It will appear in the player's Arcade.";
+
+    } catch (err) {
+      status.textContent = err.message;
+    } finally {
+      send.disabled = false;
+    }
+  };
+
+  const observer = new MutationObserver(() => {
+    if (app.hidden || !section.isConnected) {
+      auth = "";
+      send.disabled = true;
+      pass.value = "";
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(app, {
+    attributes: true,
+    attributeFilter: ["hidden"]
+  });
+
+  observer.observe(view, {childList: true});
+
+  view.insertBefore(
+    section,
+    document.getElementById("codeSearch").closest(".panel")
+  );
+}
+
+/* Old gift link system retained as backup. */
+function localGiftBuilder() {
     if (
       app.hidden ||
       !document.getElementById("codeSearch") ||
@@ -669,7 +802,7 @@
   // SHOW USERNAME IN USERS TAB
   // =====================================
 
-  function updateUsers() {
+  function updateUsers() { return;
     if (
       app.hidden ||
       !/Users/i.test(
