@@ -20,6 +20,7 @@
 
   // ORIGINAL GAME SAVE KEYS
   const SAVE_KEYS = {
+        zombie: "zombie_rush_v1",
     bike: "luxton_bike_rush_v1",
     space: "luxton_space_rush_v1",
     castle: "luxton_castle_rush_v2",
@@ -40,7 +41,21 @@
   // ======================================
 
   const CODES = {
+    NIGHTARMOR: {
+      game: "zombie",
+      label: "🛡 Night Armor + Starting Shield",
+      set: {
+        nightArmor: true
+      }
+    },
 
+    ZAPCORE: {
+      game: "zombie",
+      label: "⚡ Supercharged Pulse Core",
+      set: {
+        zapCore: true
+      }
+    },
     // 🚴 BIKE RUSH
 
     PRISMRIDER: {
