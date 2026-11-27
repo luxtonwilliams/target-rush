@@ -234,3 +234,108 @@
 
   document.body.appendChild(script);
 })();
+/* ===== LIVE GAME ANALYTICS ===== */
+(() => {
+  const game = location.pathname.match(/\/games\/([a-z-]+)(?:\/|$)/i)?.[1];
+  if (!game) return;
+
+  const KEY = "luxton_arcade_online_player_v1";
+  const URL = "https://luxarcade.pythonanywhere.com/public/activity";
+
+  let token = "";
+  let session = "";
+  let seconds = 0;
+  let lastInput = 0;
+  let lastTick = performance.now();
+  let sent = -1;
+  let busy = false;
+
+  function getToken() {
+    try {
+      const player = JSON.parse(localStorage.getItem(KEY) || "null");
+      return /^[A-Za-z0-9_-]{43}$/.test(player?.token || "")
+        ? player.token : "";
+    } catch {
+      return "";
+    }
+  }
+
+  async function sync() {
+    if (!token || !session || busy) return;
+
+    const total = Math.floor(seconds);
+    if (total === sent) return;
+
+    busy = true;
+    const currentSession = session;
+
+    try {
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({game, session, seconds: total}),
+        credentials: "omit",
+        cache: "no-store",
+        keepalive: true
+      });
+
+      if (response.ok && session === currentSession) sent = total;
+
+    } catch {
+      // Retry on the next update.
+    } finally {
+      busy = false;
+    }
+  }
+
+  function engage(event) {
+    if (event && (!event.isTrusted ||
+        event.target?.closest?.("#lx-identity-modal, #lx-player-chip"))) return;
+
+    const current = getToken();
+    if (!current || document.hidden) return;
+
+    lastInput = performance.now();
+
+    if (current !== token) {
+      token = current;
+      session = crypto.randomUUID();
+      seconds = 0;
+      sent = -1;
+      lastTick = performance.now();
+      sync();
+    }
+  }
+
+  window.addEventListener("pointerdown", engage, {
+    passive: true, capture: true
+  });
+
+  window.addEventListener("keydown", engage, {
+    capture: true
+  });
+
+  document.addEventListener("luxton:username-saved", () => engage());
+
+  setInterval(() => {
+    const now = performance.now();
+
+    if (token && getToken() === token && !document.hidden &&
+        document.hasFocus() && now - lastInput < 60000) {
+      seconds += Math.min(2, (now - lastTick) / 1000);
+    }
+
+    lastTick = now;
+  }, 1000);
+
+  setInterval(() => {
+    if (getToken() === token) sync();
+  }, 10000);
+
+  window.addEventListener("pagehide", () => {
+    if (getToken() === token) sync();
+  });
+})();
