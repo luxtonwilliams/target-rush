@@ -912,3 +912,161 @@ if (document.readyState === "loading") {
 }
 
 })();
+/* ===== IN-GAME CODE GIFTS ===== */
+(() => {
+  const API = "https://luxarcade.pythonanywhere.com/public/gifts";
+  const KEY = "luxton_arcade_online_player_v1";
+  const CLAIM = "lx_gift_to_claim_v1";
+
+  let busy = false;
+  let notice = null;
+  let dismissed = null;
+
+  function profile() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY) || "null");
+    } catch {
+      return null;
+    }
+  }
+
+  function redeemed(code) {
+    try {
+      const codes = JSON.parse(
+        localStorage.getItem("luxton_arcade_codes_v1") || "{}"
+      );
+
+      return Object.prototype.hasOwnProperty.call(codes, code);
+    } catch {
+      return false;
+    }
+  }
+
+  async function requestGift(player, id) {
+    const options = {
+      headers: {Authorization: "Bearer " + player.token},
+      credentials: "omit",
+      cache: "no-store"
+    };
+
+    if (id !== undefined) {
+      options.method = "POST";
+      options.headers["Content-Type"] = "application/json";
+      options.body = JSON.stringify({id});
+      options.keepalive = true;
+    }
+
+    const r = await fetch(API, options);
+    if (!r.ok) throw Error("Gift connection failed");
+
+    return r.json();
+  }
+
+  async function claim(player, gift) {
+    const form = document.getElementById("codeForm");
+    const input = document.getElementById("codeInput");
+
+    if (!form || !input) {
+      sessionStorage.setItem(CLAIM, String(gift.id));
+      location.assign("/#codes");
+      return;
+    }
+
+    if (!redeemed(gift.code)) {
+      input.value = gift.code;
+      form.requestSubmit();
+    }
+
+    if (redeemed(gift.code)) {
+      await requestGift(player, gift.id);
+      notice?.remove();
+      notice = null;
+    } else {
+      throw Error("Reward not saved");
+    }
+  }
+
+  async function poll() {
+    if (busy || document.hidden) return;
+
+    const p = profile();
+    if (!p || !/^[A-Za-z0-9_-]{43}$/.test(p.token || "")) return;
+
+    busy = true;
+
+    try {
+      const data = await requestGift(p);
+      const pending = data.gifts.filter(g => !redeemed(g.code));
+
+      for (const gift of data.gifts.filter(g => redeemed(g.code))) {
+        await requestGift(p, gift.id);
+      }
+
+      const requested = sessionStorage.getItem(CLAIM);
+      const auto = pending.find(g => String(g.id) === requested);
+
+      if (auto && document.getElementById("codeForm")) {
+        sessionStorage.removeItem(CLAIM);
+        await claim(p, auto);
+        return;
+      }
+
+      const gift = pending.find(g => g.id !== dismissed);
+
+      if (!gift || notice ||
+          document.getElementById("lx-identity-modal")) return;
+
+      notice = document.createElement("aside");
+
+      notice.style.cssText = "position:fixed;top:14px;right:14px;max-width:300px;z-index:2147483000;padding:15px;background:#142e4b;color:white;border:2px solid #7cebd5;border-radius:14px;font:700 15px system-ui;box-shadow:0 5px 30px #0008";
+
+      const title = document.createElement("p");
+      title.textContent = "🎁 You received an Arcade reward: " + gift.code;
+
+      const take = document.createElement("button");
+
+      take.textContent = document.getElementById("codeForm")
+        ? "Claim reward"
+        : "Redeem on Arcade";
+
+      take.onclick = async () => {
+        take.disabled = true;
+
+        try {
+          await claim(p, gift);
+        } catch {
+          take.disabled = false;
+          title.textContent = "Could not claim reward. Try again.";
+        }
+      };
+
+      const later = document.createElement("button");
+      later.textContent = "Later";
+
+      later.onclick = () => {
+        dismissed = gift.id;
+        notice.remove();
+        notice = null;
+      };
+
+      notice.append(title, take, later);
+      document.body.append(notice);
+
+    } catch {
+      // Retry on the next check.
+    } finally {
+      busy = false;
+    }
+  }
+
+  document.addEventListener("luxton:username-saved", poll);
+  window.addEventListener("focus", poll);
+
+  setInterval(poll, 30000);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", poll, {once: true});
+  } else {
+    poll();
+  }
+})();
